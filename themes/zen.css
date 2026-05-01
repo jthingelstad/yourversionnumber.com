@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300&family=Shippori+Mincho:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,
+400;1,
+300&family=Shippori+Mincho:wght@400;600&display=swap');
 
 :root {
   --paper: #f4f1ea;
@@ -80,7 +82,7 @@ body {
   background-position: right 0.1rem center;
 }
 
-.about-btn {
+.about-btn, .edit-btn {
   background: transparent;
   color: var(--ink-soft);
   border: 0;
@@ -93,7 +95,7 @@ body {
   font-size: 0.95rem;
 }
 
-.about-btn:hover { color: var(--vermillion); border-color: var(--vermillion); }
+.about-btn:hover, .edit-btn:hover { color: var(--vermillion); border-color: var(--vermillion); }
 
 .intro {
   font-size: 1.15rem;
@@ -142,41 +144,6 @@ body {
   color: var(--vermillion);
 }
 
-.person-meta {
-  width: 100%;
-  font-size: 0.95rem;
-}
-
-.name-input, .date-input {
-  background: transparent;
-  border: 0;
-  color: var(--ink);
-  font-family: 'Cormorant', serif;
-  font-weight: 300;
-  padding: 0.2rem 0.4rem;
-  font-size: 1rem;
-}
-
-.name-input { font-style: italic; letter-spacing: 0.02em; }
-.date-input { color: var(--gray); letter-spacing: 0.05em; }
-
-.name-input::placeholder { color: var(--gray); }
-
-.name-input:focus, .date-input:focus {
-  outline: none;
-  background: var(--paper-2);
-}
-
-.remove-btn {
-  margin-left: auto;
-  color: var(--gray);
-  font-size: 1.1rem;
-  font-weight: 300;
-  font-family: 'Cormorant', serif;
-}
-
-.remove-btn:hover { color: var(--vermillion); }
-
 .add-btn {
   display: block;
   margin: 3rem auto 0;
@@ -192,7 +159,7 @@ body {
 }
 
 .add-btn::before { content: "— "; color: var(--vermillion); }
-.add-btn::after  { content: " —"; color: var(--vermillion); }
+.add-btn::after { content: " —"; color: var(--vermillion); }
 
 .add-btn:hover { color: var(--ink); }
 
@@ -206,66 +173,3 @@ body {
 }
 
 .site-footer a { color: var(--ink-soft); font-style: normal; }
-
-.about-content {
-  background: var(--paper-2);
-  color: var(--ink);
-  border: 0;
-  border-radius: 0;
-  padding: 3rem 3rem 2.5rem;
-  line-height: 1.8;
-  box-shadow: 0 16px 60px rgba(0,0,0,0.15);
-}
-
-.about-content h2 {
-  font-family: 'Shippori Mincho', serif;
-  font-weight: 400;
-  font-size: 1.2rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  margin: 0;
-  color: var(--ink);
-}
-
-.about-content h2::before {
-  content: "";
-  display: inline-block;
-  width: 0.5em;
-  height: 0.5em;
-  background: var(--vermillion);
-  border-radius: 50%;
-  margin-right: 0.85em;
-  vertical-align: 0.2em;
-}
-
-.about-close {
-  color: var(--ink-soft);
-  font-size: 1.3rem;
-  font-weight: 300;
-  font-family: 'Cormorant', serif;
-}
-
-.about-close:hover { color: var(--vermillion); }
-
-.about-content code {
-  font-family: 'Shippori Mincho', serif;
-  background: transparent;
-  border-bottom: 1px solid var(--gold);
-  padding: 0;
-  letter-spacing: 0.05em;
-}
-
-.about-content a {
-  color: var(--vermillion);
-  border-bottom: 1px solid var(--vermillion);
-  text-decoration: none;
-}
-
-.about-content strong { font-weight: 600; color: var(--ink); }
-
-.about-credit, .about-tip {
-  font-size: 0.9rem;
-  font-style: italic;
-  color: var(--gray);
-  margin-top: 1.5rem;
-}

@@ -66,7 +66,7 @@ body {
   background-position: right 0.7rem center;
 }
 
-.about-btn {
+.about-btn, .edit-btn {
   background: var(--lavender);
   color: var(--ink);
   border: 0;
@@ -75,7 +75,7 @@ body {
   font-weight: 500;
 }
 
-.about-btn:hover { background: var(--pink); }
+.about-btn:hover, .edit-btn:hover { background: var(--pink); }
 
 .intro {
   font-family: 'DM Serif Display', serif;
@@ -140,45 +140,6 @@ body {
   letter-spacing: -0.03em;
 }
 
-.person-meta {
-  border-top: 1px dashed var(--pink);
-  padding-top: 0.85rem;
-  width: 100%;
-}
-
-.name-input, .date-input {
-  background: transparent;
-  border: 0;
-  font-family: 'Inter', sans-serif;
-  color: var(--ink);
-  padding: 0.25rem 0.4rem;
-}
-
-.name-input { font-weight: 600; font-size: 1.05rem; }
-.date-input { color: var(--muted); }
-
-.name-input::placeholder { color: var(--muted); opacity: 0.6; }
-
-.name-input:focus, .date-input:focus {
-  outline: none;
-  background: var(--bg-2);
-  border-radius: 8px;
-}
-
-.remove-btn {
-  margin-left: auto;
-  color: var(--muted);
-  font-size: 1.4rem;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-}
-
-.remove-btn:hover {
-  background: var(--pink);
-  color: var(--ink);
-}
-
 .add-btn {
   display: block;
   margin: 0 auto;
@@ -199,52 +160,3 @@ body {
 }
 
 .site-footer a { color: var(--leaf); font-weight: 600; }
-
-.about-content {
-  background: var(--card);
-  color: var(--ink);
-  border-radius: 24px;
-  padding: 2rem 2.25rem;
-  font-family: 'Inter', sans-serif;
-  line-height: 1.6;
-  box-shadow: 0 20px 60px rgba(154, 134, 168, 0.3);
-}
-
-.about-content h2 {
-  font-family: 'DM Serif Display', serif;
-  font-weight: 400;
-  font-style: italic;
-  font-size: 2rem;
-  margin: 0;
-  color: var(--ink);
-}
-
-.about-close {
-  background: var(--bg-2);
-  color: var(--ink);
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  font-size: 1.4rem;
-}
-
-.about-close:hover { background: var(--pink); }
-
-.about-content code {
-  background: var(--mint);
-  padding: 0.1em 0.5em;
-  border-radius: 999px;
-  font-family: 'Inter', monospace;
-  font-size: 0.85em;
-  font-weight: 500;
-}
-
-.about-content a { color: var(--leaf); font-weight: 600; }
-.about-content strong { color: var(--ink); }
-
-.about-credit, .about-tip {
-  font-size: 0.9rem;
-  color: var(--muted);
-  font-style: italic;
-  margin-top: 1.25rem;
-}

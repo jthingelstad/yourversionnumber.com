@@ -102,7 +102,7 @@ body::before {
 
 .theme-select option { background: var(--void); color: var(--silver); }
 
-.about-btn {
+.about-btn, .edit-btn {
   background: transparent;
   color: var(--magenta);
   border: 1px solid var(--magenta);
@@ -115,7 +115,7 @@ body::before {
   font-size: 0.8rem;
 }
 
-.about-btn:hover {
+.about-btn:hover, .edit-btn:hover {
   background: var(--magenta);
   color: var(--space);
   box-shadow: 0 0 16px var(--magenta);
@@ -177,41 +177,6 @@ body::before {
   filter: drop-shadow(0 0 12px rgba(255, 92, 182, 0.5));
 }
 
-.person-meta {
-  border-top: 1px solid rgba(110, 231, 255, 0.25);
-  padding-top: 0.85rem;
-  width: 100%;
-}
-
-.name-input, .date-input {
-  background: transparent;
-  border: 0;
-  color: var(--silver);
-  font-family: 'Exo 2', sans-serif;
-  padding: 0.25rem 0.4rem;
-}
-
-.name-input { font-weight: 500; font-size: 1.05rem; color: var(--cyan); }
-.date-input { color: var(--silver); color-scheme: dark; }
-
-.name-input:focus, .date-input:focus {
-  outline: 1px solid var(--cyan);
-  outline-offset: 2px;
-}
-
-.remove-btn {
-  margin-left: auto;
-  color: var(--silver);
-  opacity: 0.6;
-  font-size: 1.2rem;
-}
-
-.remove-btn:hover {
-  color: var(--magenta);
-  opacity: 1;
-  text-shadow: 0 0 8px var(--magenta);
-}
-
 .add-btn {
   display: block;
   margin: 0 auto;
@@ -243,54 +208,3 @@ body::before {
 }
 
 .site-footer a { color: var(--cyan); }
-
-.about-content {
-  background: rgba(10, 10, 36, 0.97);
-  color: var(--silver);
-  border: 1px solid var(--cyan);
-  border-radius: 8px;
-  padding: 2rem 2.25rem;
-  line-height: 1.7;
-  box-shadow: 0 0 60px rgba(110, 231, 255, 0.4);
-}
-
-.about-content h2 {
-  font-family: 'Audiowide', cursive;
-  font-weight: 400;
-  font-size: 1.9rem;
-  margin: 0;
-  background: linear-gradient(135deg, var(--cyan), var(--magenta));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.about-close {
-  color: var(--cyan);
-  border: 1px solid var(--cyan);
-  width: 2rem;
-  height: 2rem;
-  border-radius: 4px;
-  font-size: 1.2rem;
-}
-
-.about-close:hover { background: var(--cyan); color: var(--space); }
-
-.about-content code {
-  background: rgba(110, 231, 255, 0.12);
-  color: var(--cyan);
-  border: 1px solid rgba(110, 231, 255, 0.3);
-  padding: 0.05em 0.4em;
-  border-radius: 3px;
-  font-family: 'Exo 2', monospace;
-}
-
-.about-content a { color: var(--magenta); }
-.about-content strong { color: var(--gold); }
-
-.about-credit, .about-tip {
-  font-size: 0.85rem;
-  color: var(--silver);
-  opacity: 0.75;
-  margin-top: 1.25rem;
-}

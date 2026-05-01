@@ -51,7 +51,7 @@ body {
   border-color: var(--accent);
 }
 
-.about-btn {
+.about-btn, .edit-btn {
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -61,58 +61,9 @@ body {
   font-weight: 500;
 }
 
-.about-btn:hover {
+.about-btn:hover, .edit-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
-}
-
-.about-content {
-  background: var(--row-bg);
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 2rem;
-  font-family: inherit;
-  line-height: 1.55;
-}
-
-.about-content h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 0;
-  letter-spacing: -0.01em;
-}
-
-.about-close {
-  font-size: 1.5rem;
-  line-height: 1;
-  color: var(--muted);
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-}
-
-.about-close:hover {
-  background: #ececea;
-  color: var(--fg);
-}
-
-.about-content code {
-  background: #ececea;
-  padding: 0.05em 0.35em;
-  border-radius: 3px;
-  font-size: 0.9em;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-}
-
-.about-content a {
-  color: var(--accent);
-}
-
-.about-credit,
-.about-tip {
-  font-size: 0.9rem;
-  color: var(--muted);
-  margin-top: 1.25rem;
 }
 
 .intro {
@@ -145,51 +96,6 @@ body {
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-weight: 700;
   margin-bottom: 0.75rem;
-}
-
-.person-meta {
-  border-top: 1px solid var(--border);
-  padding-top: 0.85rem;
-  width: 100%;
-}
-
-.name-input,
-.date-input {
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  padding: 0.25rem 0.4rem;
-  margin: -0.25rem -0.4rem;
-}
-
-.name-input:focus,
-.date-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  background: #fff;
-}
-
-.name-input {
-  font-weight: 500;
-}
-
-.date-input {
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.remove-btn {
-  color: var(--muted);
-  font-size: 1.25rem;
-  line-height: 1;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  margin-left: auto;
-}
-
-.remove-btn:hover {
-  color: #c53030;
-  background: #fff0f0;
 }
 
 .add-btn {

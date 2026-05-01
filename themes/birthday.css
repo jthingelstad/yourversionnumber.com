@@ -68,7 +68,7 @@ body {
   background-position: right 0.7rem center;
 }
 
-.about-btn {
+.about-btn, .edit-btn {
   background: var(--party-yellow);
   color: var(--ink);
   border: 3px solid var(--ink);
@@ -79,7 +79,7 @@ body {
   box-shadow: 3px 3px 0 var(--party-purple);
 }
 
-.about-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--party-purple); }
+.about-btn:hover, .edit-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--party-purple); }
 
 .intro {
   font-size: 1.05rem;
@@ -119,7 +119,7 @@ body {
 .person:nth-child(5n+2) { box-shadow: 6px 6px 0 var(--party-blue); }
 .person:nth-child(5n+3) { box-shadow: 6px 6px 0 var(--party-yellow); }
 .person:nth-child(5n+4) { box-shadow: 6px 6px 0 var(--party-purple); }
-.person:nth-child(5n)   { box-shadow: 6px 6px 0 var(--party-green); }
+.person:nth-child(5n) { box-shadow: 6px 6px 0 var(--party-green); }
 
 /* Balloon hanging from top of card */
 .person::before {
@@ -159,46 +159,6 @@ body {
   letter-spacing: -0.02em;
 }
 
-.person-meta {
-  border-top: 2px dashed var(--party-pink);
-  padding-top: 0.85rem;
-  width: 100%;
-}
-
-.name-input, .date-input {
-  background: transparent;
-  border: 0;
-  color: var(--ink);
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  padding: 0.25rem 0.4rem;
-  font-size: 1.05rem;
-}
-
-.date-input { font-weight: 500; color: var(--soft); }
-
-.name-input:focus, .date-input:focus {
-  outline: none;
-  background: var(--bg-1);
-  border-radius: 8px;
-}
-
-.remove-btn {
-  margin-left: auto;
-  background: var(--party-pink);
-  color: #fff;
-  border: 2px solid var(--ink);
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.remove-btn:hover { transform: rotate(-12deg); }
-
 .add-btn {
   display: block;
   margin: 0 auto;
@@ -214,7 +174,7 @@ body {
 }
 
 .add-btn::before { content: "🎉 "; }
-.add-btn::after  { content: " 🎉"; }
+.add-btn::after { content: " 🎉"; }
 
 .add-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--party-yellow); }
 
@@ -227,59 +187,3 @@ body {
 }
 
 .site-footer a { color: var(--party-pink); font-weight: 700; }
-
-.about-content {
-  background: var(--card);
-  color: var(--ink);
-  border: 3px solid var(--ink);
-  border-radius: 24px;
-  padding: 2rem 2.25rem;
-  font-family: 'Fredoka', sans-serif;
-  line-height: 1.6;
-  box-shadow: 8px 8px 0 var(--party-pink);
-}
-
-.about-content h2 {
-  font-family: 'Pacifico', cursive;
-  font-weight: 400;
-  font-size: 2.25rem;
-  margin: 0;
-  background: linear-gradient(90deg, var(--party-pink), var(--party-purple));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.about-close {
-  background: var(--party-pink);
-  color: #fff;
-  border: 2px solid var(--ink);
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-
-.about-close:hover { transform: rotate(-12deg); }
-
-.about-content code {
-  background: var(--party-blue);
-  color: #fff;
-  padding: 0.1em 0.5em;
-  border-radius: 999px;
-  font-family: 'Fredoka', monospace;
-  font-weight: 700;
-  font-size: 0.85em;
-}
-
-.about-content a { color: var(--party-pink); font-weight: 700; }
-
-.about-credit, .about-tip {
-  font-size: 0.9rem;
-  color: var(--soft);
-  font-weight: 500;
-  border-top: 2px dashed var(--party-pink);
-  padding-top: 0.85rem;
-  margin-top: 1.25rem;
-}

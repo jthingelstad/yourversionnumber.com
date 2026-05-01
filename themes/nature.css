@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Karla:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,
+600;1,
+400&family=Karla:wght@400;600;700&display=swap');
 
 :root {
   --bark: #3d2f1f;
@@ -72,7 +74,7 @@ body {
   background-position: right 0.6rem center;
 }
 
-.about-btn {
+.about-btn, .edit-btn {
   background: var(--leaf-deep);
   color: var(--cream);
   border: 0;
@@ -83,7 +85,7 @@ body {
   font-size: 0.9rem;
 }
 
-.about-btn:hover { background: var(--leaf); }
+.about-btn:hover, .edit-btn:hover { background: var(--leaf); }
 
 .intro {
   font-family: 'Cormorant Garamond', serif;
@@ -138,37 +140,6 @@ body {
   line-height: 0.95;
 }
 
-.person-meta {
-  border-top: 1px solid var(--moss);
-  padding-top: 0.85rem;
-  width: 100%;
-}
-
-.name-input, .date-input {
-  background: transparent;
-  border: 0;
-  color: var(--bark);
-  font-family: 'Karla', sans-serif;
-  padding: 0.25rem 0.4rem;
-}
-
-.name-input { font-weight: 700; font-size: 1.05rem; }
-.date-input { color: var(--shade); font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; }
-
-.name-input:focus, .date-input:focus {
-  outline: none;
-  background: var(--cream);
-  border-radius: 2px;
-}
-
-.remove-btn {
-  margin-left: auto;
-  color: var(--shade);
-  font-size: 1.25rem;
-}
-
-.remove-btn:hover { color: #a44; }
-
 .add-btn {
   display: block;
   margin: 0 auto;
@@ -201,50 +172,3 @@ body {
 }
 
 .site-footer a { color: var(--leaf-deep); font-weight: 600; font-style: normal; }
-
-.about-content {
-  background: var(--paper);
-  color: var(--bark);
-  border: 1px solid var(--moss);
-  border-radius: 4px;
-  padding: 2rem 2.25rem;
-  line-height: 1.7;
-  box-shadow: 0 16px 48px rgba(45, 84, 41, 0.25);
-}
-
-.about-content h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 2rem;
-  margin: 0;
-  color: var(--leaf-deep);
-}
-
-.about-close {
-  color: var(--shade);
-  font-size: 1.4rem;
-  border: 1px solid var(--moss);
-  width: 2rem;
-  height: 2rem;
-  border-radius: 4px;
-}
-
-.about-close:hover { background: var(--leaf-deep); color: var(--cream); }
-
-.about-content code {
-  font-family: 'Karla', monospace;
-  background: var(--cream);
-  border: 1px solid var(--moss);
-  padding: 0 0.4em;
-}
-
-.about-content a { color: var(--leaf-deep); font-weight: 600; }
-
-.about-credit, .about-tip {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1.05rem;
-  color: var(--shade);
-  margin-top: 1.25rem;
-}

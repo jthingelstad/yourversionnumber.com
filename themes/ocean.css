@@ -82,7 +82,7 @@ body::before {
   backdrop-filter: blur(6px);
 }
 
-.about-btn {
+.about-btn, .edit-btn {
   background: var(--coral);
   color: var(--shell);
   border: 0;
@@ -92,7 +92,7 @@ body::before {
   box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
 }
 
-.about-btn:hover { transform: translateY(-1px); }
+.about-btn:hover, .edit-btn:hover { transform: translateY(-1px); }
 
 .intro {
   color: var(--foam);
@@ -148,40 +148,6 @@ body::before {
   letter-spacing: 0.01em;
 }
 
-.person-meta {
-  border-top: 1px dashed var(--surf);
-  padding-top: 0.85rem;
-  width: 100%;
-}
-
-.name-input, .date-input {
-  background: transparent;
-  border: 0;
-  color: var(--deep);
-  font-family: 'Quicksand', sans-serif;
-  padding: 0.25rem 0.4rem;
-}
-
-.name-input { font-weight: 700; font-size: 1.1rem; }
-.date-input { color: var(--mid); font-weight: 500; }
-
-.name-input:focus, .date-input:focus {
-  outline: none;
-  background: var(--foam);
-  border-radius: 6px;
-}
-
-.remove-btn {
-  margin-left: auto;
-  color: var(--mid);
-  font-size: 1.4rem;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-}
-
-.remove-btn:hover { background: var(--coral); color: #fff; }
-
 .add-btn {
   display: block;
   margin: 0 auto;
@@ -208,49 +174,3 @@ body::before {
 }
 
 .site-footer a { color: var(--shell); font-weight: 600; }
-
-.about-content {
-  background: var(--shell);
-  color: var(--deep);
-  border-radius: 24px;
-  padding: 2rem 2.25rem;
-  line-height: 1.6;
-  box-shadow: 0 24px 60px rgba(0, 53, 84, 0.5);
-}
-
-.about-content h2 {
-  font-family: 'Pacifico', cursive;
-  font-weight: 400;
-  font-size: 2.25rem;
-  margin: 0;
-  color: var(--mid);
-}
-
-.about-close {
-  background: var(--foam);
-  color: var(--deep);
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  font-size: 1.4rem;
-}
-
-.about-close:hover { background: var(--coral); color: #fff; }
-
-.about-content code {
-  background: var(--foam);
-  color: var(--deep);
-  padding: 0.05em 0.5em;
-  border-radius: 999px;
-  font-family: 'Quicksand', monospace;
-  font-weight: 700;
-}
-
-.about-content a { color: var(--mid); font-weight: 700; }
-.about-content strong { color: var(--coral); }
-
-.about-credit, .about-tip {
-  font-size: 0.9rem;
-  color: var(--seaweed);
-  margin-top: 1.25rem;
-}

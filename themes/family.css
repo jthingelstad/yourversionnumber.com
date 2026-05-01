@@ -61,7 +61,7 @@ body {
   border-color: var(--accent-2);
 }
 
-.about-btn {
+.about-btn, .edit-btn {
   font-family: 'Caveat', cursive;
   font-size: 1.4rem;
   font-weight: 700;
@@ -73,63 +73,8 @@ body {
   box-shadow: var(--shadow);
 }
 
-.about-btn:hover {
+.about-btn:hover, .edit-btn:hover {
   transform: scale(1.05);
-}
-
-.about-content {
-  background: var(--card);
-  color: var(--fg);
-  border-radius: 24px;
-  padding: 2rem 2.25rem;
-  font-family: 'Nunito', sans-serif;
-  line-height: 1.6;
-  box-shadow: 0 18px 60px rgba(120, 60, 0, 0.25);
-}
-
-.about-content h2 {
-  font-family: 'Caveat', cursive;
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: var(--accent-2);
-  margin: 0;
-}
-
-.about-close {
-  font-size: 1.75rem;
-  line-height: 1;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  color: var(--muted);
-  background: rgba(190, 24, 93, 0.08);
-}
-
-.about-close:hover {
-  background: rgba(190, 24, 93, 0.18);
-  color: var(--accent-2);
-}
-
-.about-content code {
-  font-family: 'Nunito', monospace;
-  background: rgba(217, 119, 6, 0.15);
-  color: var(--accent);
-  padding: 0.1em 0.5em;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.85em;
-}
-
-.about-content a {
-  color: var(--accent-2);
-  font-weight: 600;
-}
-
-.about-credit,
-.about-tip {
-  font-size: 0.95rem;
-  color: var(--muted);
-  margin-top: 1.25rem;
 }
 
 .intro {
@@ -168,9 +113,9 @@ body {
   transform: translateY(-2px);
 }
 
-.person:nth-child(odd)  { transform: rotate(-0.5deg); }
+.person:nth-child(odd) { transform: rotate(-0.5deg); }
 .person:nth-child(even) { transform: rotate(0.5deg); }
-.person:nth-child(odd):hover  { transform: translateY(-2px) rotate(-0.5deg); }
+.person:nth-child(odd):hover { transform: translateY(-2px) rotate(-0.5deg); }
 .person:nth-child(even):hover { transform: translateY(-2px) rotate(0.5deg); }
 
 .version {
@@ -179,58 +124,6 @@ body {
   color: var(--accent);
   margin-bottom: 0.5rem;
   letter-spacing: -0.04em;
-}
-
-.person-meta {
-  width: 100%;
-}
-
-.name-input,
-.date-input {
-  background: transparent;
-  border: 0;
-  border-bottom: 2px dashed transparent;
-  padding: 0.2rem 0;
-}
-
-.name-input {
-  font-family: 'Caveat', cursive;
-  font-size: 1.85rem;
-  font-weight: 700;
-  color: var(--accent-2);
-}
-
-.name-input::placeholder {
-  color: var(--muted);
-  opacity: 0.6;
-}
-
-.date-input {
-  color: var(--muted);
-  font-weight: 600;
-}
-
-.name-input:focus,
-.date-input:focus {
-  outline: none;
-  border-bottom-color: var(--accent);
-}
-
-.remove-btn {
-  font-size: 1.5rem;
-  line-height: 1;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  color: var(--muted);
-  opacity: 0.5;
-  margin-left: auto;
-}
-
-.remove-btn:hover {
-  opacity: 1;
-  background: rgba(190, 24, 93, 0.1);
-  color: var(--accent-2);
 }
 
 .add-btn {

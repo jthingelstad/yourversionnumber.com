@@ -11,15 +11,31 @@ https://yourversionnumber.com/?theme=family&p=Jamie:1974-01-15&p=Sara:1976-03-20
 ```
 
 - `theme` — name of a stylesheet in `themes/`. Optional; defaults to `default`.
-- `p` — repeatable. `Name:YYYY-MM-DD`. Name is optional (`p=:1974-01-15` is valid and renders the version with no label).
+- `p` — repeatable. `Name:YYYY-MM-DD`, or just `YYYY-MM-DD` for an unnamed entry. (The old `p=:YYYY-MM-DD` form is still parsed, for old bookmarks.)
 
 Unknown themes fall back to `default`. Malformed `p` entries are skipped (with a console warning).
 
 ## Themes
 
-Eighteen ship by default: `default`, `dark`, `family`, `pastel`, `birthday`, `nature`, `ocean`, `galaxy`, `zen`, `terminal`, `arcade`, `vaporwave`, `y2k`, `newspaper`, `steampunk`, `brutalist`, `comic`, `memphis`. Each is a standalone stylesheet in `themes/` — themes can override any styling, not just colors.
+Eighteen ship by default: `default`, `dark`, `family`, `pastel`, `birthday`, `nature`, `ocean`, `galaxy`, `zen`, `terminal`, `arcade`, `vaporwave`, `y2k`, `newspaper`, `steampunk`, `brutalist`, `comic`, `memphis`. Each is a standalone stylesheet in `themes/`.
 
-To add one: drop a new file at `themes/<name>.css`, add `<name>` to the `THEMES` array in `assets/app.js`, and reference it as `?theme=<name>`.
+Themes paint the **display**: header, person rows, footer, empty-state CTA. They do not style the About or Edit dialogs — those are app chrome with a neutral look in `assets/base.css` that follows the OS light/dark preference. This keeps themes simple and the dialogs consistent on every theme.
+
+To add one: drop a new file at `themes/<name>.css`, add an entry to the `THEMES` array in `assets/app.js`, and reference it as `?theme=<name>`. Each entry has:
+
+- `name` — filename (without `.css`).
+- `label` — human-readable name shown in the picker.
+- `kind` — `light`, `dark`, `fun`, or `retro`. Drives the `<optgroup>` it appears under.
+- `animate` — `true` to opt the theme into the count-up animation on initial render. Calmer themes should leave this `false`.
+
+Hooks available for theme-side polish, with no JS cost when ignored:
+
+- `body[data-people-count="0|1|many"]` — style solo vs group views differently.
+- `body[data-birthday="true"]` — present when any person on the page has `patch === 0`.
+- `.person-name` — renders inside `.person` when a name is set. Themes can opt into styling it; falls back to a small muted treatment in `base.css`.
+- `.edit-btn` — header button, sits next to `.about-btn`. Theme files pair the two so the new button picks up the same look.
+
+A first-time visitor with no `?theme=` in the URL gets `dark` if their OS is in dark mode, otherwise `default`. Once any theme is chosen it's written to the URL and that's what the bookmark holds.
 
 ## Local development
 

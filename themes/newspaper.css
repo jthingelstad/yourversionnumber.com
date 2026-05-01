@@ -78,7 +78,7 @@ body {
   background-position: right 0.3rem center;
 }
 
-.about-btn {
+.about-btn, .edit-btn {
   font-family: 'Old Standard TT', serif;
   font-size: 0.9rem;
   font-style: italic;
@@ -90,7 +90,7 @@ body {
   padding: 0.2rem 0.4rem;
 }
 
-.about-btn:hover {
+.about-btn:hover, .edit-btn:hover {
   color: var(--stamp);
   border-bottom-color: var(--stamp);
 }
@@ -107,7 +107,7 @@ body {
 }
 
 .intro::before { content: "« "; }
-.intro::after  { content: " »"; }
+.intro::after { content: " »"; }
 
 .intro code {
   font-family: 'Special Elite', 'Courier New', monospace;
@@ -156,52 +156,6 @@ body {
   text-shadow: 1px 1px 0 rgba(0,0,0,0.05);
 }
 
-.person-meta {
-  border-top: 1px solid var(--rule);
-  padding-top: 0.75rem;
-  width: 100%;
-  font-family: 'Special Elite', 'Courier New', monospace;
-  font-size: 0.95rem;
-}
-
-.name-input,
-.date-input {
-  background: transparent;
-  border: 0;
-  color: var(--ink);
-  font-family: 'Special Elite', 'Courier New', monospace;
-  padding: 0.2rem 0.3rem;
-}
-
-.name-input {
-  font-size: 1.1rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.name-input::placeholder {
-  color: var(--faded);
-  text-transform: none;
-  font-style: italic;
-}
-
-.name-input:focus,
-.date-input:focus {
-  outline: 1px dashed var(--ink);
-  outline-offset: 2px;
-}
-
-.remove-btn {
-  margin-left: auto;
-  color: var(--faded);
-  font-size: 1.1rem;
-}
-
-.remove-btn:hover {
-  color: var(--stamp);
-}
-
 .add-btn {
   display: block;
   margin: 2rem auto 0;
@@ -217,7 +171,7 @@ body {
 }
 
 .add-btn::before { content: "— "; }
-.add-btn::after  { content: " —"; }
+.add-btn::after { content: " —"; }
 
 .add-btn:hover {
   color: var(--stamp);
@@ -237,56 +191,4 @@ body {
 .site-footer a {
   color: var(--ink);
   font-style: normal;
-}
-
-.about-content {
-  background: var(--paper);
-  color: var(--ink);
-  border: 1px solid var(--rule);
-  border-radius: 0;
-  padding: 2rem 2.25rem;
-  font-family: 'Old Standard TT', serif;
-  line-height: 1.6;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
-  background-image: repeating-linear-gradient(0deg, transparent 0 23px, rgba(28,24,16,0.025) 23px 24px);
-}
-
-.about-content h2 {
-  font-family: 'UnifrakturCook', serif;
-  font-size: 2.5rem;
-  margin: 0;
-}
-
-.about-close {
-  font-size: 1.4rem;
-  color: var(--ink);
-  border: 1px solid var(--ink);
-  width: 2rem;
-  height: 2rem;
-  border-radius: 0;
-}
-
-.about-close:hover {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.about-content code {
-  font-family: 'Special Elite', monospace;
-  background: transparent;
-  letter-spacing: -0.02em;
-}
-
-.about-content a {
-  color: var(--stamp);
-}
-
-.about-credit,
-.about-tip {
-  font-size: 0.95rem;
-  font-style: italic;
-  color: var(--faded);
-  border-top: 1px solid var(--rule);
-  padding-top: 0.85rem;
-  margin-top: 1.25rem;
 }

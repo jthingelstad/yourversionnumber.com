@@ -1,10 +1,29 @@
 const THEMES = [
-  'default', 'dark', 'family', 'pastel', 'birthday',
-  'nature', 'ocean', 'galaxy', 'zen',
-  'terminal', 'arcade', 'vaporwave', 'y2k',
-  'newspaper', 'steampunk', 'brutalist', 'comic', 'memphis'
+  { name: 'default',    label: 'Default',    kind: 'light', animate: false },
+  { name: 'dark',       label: 'Dark',       kind: 'dark',  animate: false },
+  { name: 'family',     label: 'Family',     kind: 'light', animate: false },
+  { name: 'pastel',     label: 'Pastel',     kind: 'light', animate: false },
+  { name: 'birthday',   label: 'Birthday',   kind: 'fun',   animate: false },
+  { name: 'nature',     label: 'Nature',     kind: 'light', animate: false },
+  { name: 'ocean',      label: 'Ocean',      kind: 'dark',  animate: false },
+  { name: 'galaxy',     label: 'Galaxy',     kind: 'dark',  animate: true  },
+  { name: 'zen',        label: 'Zen',        kind: 'light', animate: false },
+  { name: 'terminal',   label: 'Terminal',   kind: 'retro', animate: true  },
+  { name: 'arcade',     label: 'Arcade',     kind: 'retro', animate: true  },
+  { name: 'vaporwave',  label: 'Vaporwave',  kind: 'retro', animate: true  },
+  { name: 'y2k',        label: 'Y2K',        kind: 'retro', animate: true  },
+  { name: 'newspaper',  label: 'Newspaper',  kind: 'light', animate: false },
+  { name: 'steampunk',  label: 'Steampunk',  kind: 'dark',  animate: false },
+  { name: 'brutalist',  label: 'Brutalist',  kind: 'light', animate: false },
+  { name: 'comic',      label: 'Comic',      kind: 'fun',   animate: false },
+  { name: 'memphis',    label: 'Memphis',    kind: 'fun',   animate: false },
 ];
+const THEME_NAMES = THEMES.map(t => t.name);
+const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
+const THEME_KINDS = ['light', 'dark', 'fun', 'retro'];
+const KIND_LABELS = { light: 'Light', dark: 'Dark', fun: 'Fun', retro: 'Retro' };
 const DEFAULT_THEME = 'default';
+const RANDOM_THEME = '__random__';
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 // Tinylytics has no JS API — events fire via clicks on elements with
@@ -31,20 +50,24 @@ const state = { theme: DEFAULT_THEME, people: [] };
 
 function parseURL() {
   const params = new URLSearchParams(location.search);
-  let theme = params.get('theme') || DEFAULT_THEME;
-  if (!THEMES.includes(theme)) {
-    console.warn(`Unknown theme "${theme}", falling back to "${DEFAULT_THEME}".`);
-    theme = DEFAULT_THEME;
+  const urlTheme = params.get('theme');
+  let theme;
+  if (urlTheme) {
+    if (!THEME_NAMES.includes(urlTheme)) {
+      console.warn(`Unknown theme "${urlTheme}", falling back to "${DEFAULT_THEME}".`);
+      theme = DEFAULT_THEME;
+    } else {
+      theme = urlTheme;
+    }
+  } else {
+    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+    theme = prefersDark ? 'dark' : DEFAULT_THEME;
   }
   const people = [];
   for (const value of params.getAll('p')) {
     const idx = value.indexOf(':');
-    if (idx === -1) {
-      console.warn(`Skipping malformed p=${value} (missing ":")`);
-      continue;
-    }
-    const name = value.slice(0, idx);
-    const birthday = value.slice(idx + 1);
+    const name = idx === -1 ? '' : value.slice(0, idx);
+    const birthday = idx === -1 ? value : value.slice(idx + 1);
     if (!DATE_RE.test(birthday) || !isRealDate(birthday)) {
       console.warn(`Skipping invalid date in p=${value}`);
       continue;
@@ -64,7 +87,7 @@ function writeURL() {
   const params = new URLSearchParams();
   if (state.theme !== DEFAULT_THEME) params.set('theme', state.theme);
   for (const p of state.people) {
-    params.append('p', `${p.name}:${p.birthday}`);
+    params.append('p', p.name ? `${p.name}:${p.birthday}` : p.birthday);
   }
   const qs = params.toString();
   history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
@@ -108,6 +131,16 @@ function render() {
   const app = document.getElementById('app');
   app.innerHTML = '';
 
+  const count = state.people.length;
+  document.body.dataset.peopleCount = count === 0 ? '0' : count === 1 ? '1' : 'many';
+
+  const anyBirthday = state.people.some(p => {
+    if (!DATE_RE.test(p.birthday) || !isRealDate(p.birthday)) return false;
+    return computeVersion(p.birthday).patch === 0;
+  });
+  if (anyBirthday) document.body.dataset.birthday = 'true';
+  else delete document.body.dataset.birthday;
+
   const header = document.createElement('header');
   header.className = 'site-header';
   const title = document.createElement('h1');
@@ -126,105 +159,52 @@ function render() {
 
   const list = document.createElement('div');
   list.className = 'people';
-  state.people.forEach((person, i) => list.appendChild(renderRow(person, i)));
+  state.people.forEach(person => list.appendChild(renderRow(person)));
   app.appendChild(list);
 
-  const addBtn = document.createElement('button');
-  addBtn.type = 'button';
-  addBtn.className = 'add-btn';
-  addBtn.textContent = '+ Add a birthday';
-  addBtn.setAttribute('data-tinylytics-event', 'person.add');
-  addBtn.addEventListener('click', addNewRow);
-  app.appendChild(addBtn);
+  if (state.people.length === 0) {
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'add-btn';
+    addBtn.textContent = '+ Add a birthday';
+    addBtn.setAttribute('data-tinylytics-event', 'person.add');
+    addBtn.addEventListener('click', () => openEdit({ addBlankRow: true }));
+    app.appendChild(addBtn);
+  }
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
-  footer.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Bookmark this URL to save what’s here.';
+  footer.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a> &mdash; new themes welcome via pull request. Bookmark this URL to save what’s here.';
 
   const stats = document.createElement('div');
   stats.className = 'site-stats';
   const hitsSpan = document.getElementById('hits-span');
-  const countriesSpan = document.getElementById('countries-span');
   if (hitsSpan) {
     const hitsWrap = document.createElement('span');
     hitsWrap.className = 'hit-counter';
     hitsWrap.append(hitsSpan, ' visits');
     stats.appendChild(hitsWrap);
   }
-  if (countriesSpan) {
-    const flagsWrap = document.createElement('span');
-    flagsWrap.className = 'visitor-flags';
-    flagsWrap.append('Hello from ', countriesSpan);
-    stats.appendChild(flagsWrap);
-  }
   footer.appendChild(stats);
   app.appendChild(footer);
 }
 
-function renderRow(person, index) {
+function renderRow(person) {
   const row = document.createElement('div');
   row.className = 'person';
-  row.dataset.index = String(index);
+
+  if (person.name) {
+    const nameEl = document.createElement('div');
+    nameEl.className = 'person-name';
+    nameEl.textContent = person.name;
+    row.appendChild(nameEl);
+  }
 
   const version = document.createElement('div');
   version.className = 'version';
   updateVersionDisplay(version, person.birthday);
+  row.appendChild(version);
 
-  const meta = document.createElement('div');
-  meta.className = 'person-meta';
-
-  const nameInput = document.createElement('input');
-  nameInput.type = 'text';
-  nameInput.className = 'name-input';
-  nameInput.placeholder = 'Name (optional)';
-  nameInput.value = person.name;
-  nameInput.setAttribute('aria-label', 'Name');
-
-  const dateInput = document.createElement('input');
-  dateInput.type = 'date';
-  dateInput.className = 'date-input';
-  dateInput.value = person.birthday;
-  dateInput.max = new Date().toISOString().slice(0, 10);
-  dateInput.setAttribute('aria-label', 'Birthday');
-
-  const removeBtn = document.createElement('button');
-  removeBtn.type = 'button';
-  removeBtn.className = 'remove-btn';
-  removeBtn.textContent = '×';
-  removeBtn.title = 'Remove';
-  removeBtn.setAttribute('aria-label', 'Remove');
-  removeBtn.setAttribute('data-tinylytics-event', 'person.remove');
-  removeBtn.addEventListener('click', () => {
-    state.people.splice(index, 1);
-    writeURL();
-    render();
-  });
-
-  const commitName = () => {
-    const newName = nameInput.value.trim();
-    if (newName !== state.people[index].name) {
-      state.people[index].name = newName;
-      writeURL();
-    }
-  };
-
-  const commitDate = () => {
-    const newDate = dateInput.value;
-    if (!DATE_RE.test(newDate) || !isRealDate(newDate)) return;
-    if (newDate !== state.people[index].birthday) {
-      state.people[index].birthday = newDate;
-      writeURL();
-      updateVersionDisplay(version, newDate);
-    }
-  };
-
-  nameInput.addEventListener('change', commitName);
-  nameInput.addEventListener('blur', commitName);
-  dateInput.addEventListener('change', commitDate);
-  dateInput.addEventListener('blur', commitDate);
-
-  meta.append(nameInput, dateInput, removeBtn);
-  row.append(version, meta);
   return row;
 }
 
@@ -241,6 +221,14 @@ function renderHeaderControls() {
   aboutBtn.addEventListener('click', openAbout);
   wrap.appendChild(aboutBtn);
 
+  const editBtn = document.createElement('button');
+  editBtn.type = 'button';
+  editBtn.className = 'edit-btn';
+  editBtn.textContent = 'Edit';
+  editBtn.setAttribute('data-tinylytics-event', 'edit.open');
+  editBtn.addEventListener('click', () => openEdit());
+  wrap.appendChild(editBtn);
+
   return wrap;
 }
 
@@ -248,16 +236,35 @@ function renderThemeSelector() {
   const select = document.createElement('select');
   select.className = 'theme-select';
   select.setAttribute('aria-label', 'Theme');
-  for (const name of THEMES) {
-    const opt = document.createElement('option');
-    opt.value = name;
-    opt.textContent = name;
-    if (name === state.theme) opt.selected = true;
-    select.appendChild(opt);
+
+  const randomOpt = document.createElement('option');
+  randomOpt.value = RANDOM_THEME;
+  randomOpt.textContent = '🎲 Surprise me';
+  select.appendChild(randomOpt);
+
+  for (const kind of THEME_KINDS) {
+    const group = document.createElement('optgroup');
+    group.label = KIND_LABELS[kind];
+    for (const t of THEMES.filter(t => t.kind === kind)) {
+      const opt = document.createElement('option');
+      opt.value = t.name;
+      opt.textContent = t.label;
+      if (t.name === state.theme) opt.selected = true;
+      group.appendChild(opt);
+    }
+    select.appendChild(group);
   }
+
   select.addEventListener('change', () => {
-    const next = select.value;
-    if (state.theme === next) return;
+    let next = select.value;
+    if (next === RANDOM_THEME) {
+      const pool = THEME_NAMES.filter(n => n !== state.theme);
+      next = pool[Math.floor(Math.random() * pool.length)];
+    }
+    if (state.theme === next) {
+      select.value = state.theme;
+      return;
+    }
     state.theme = next;
     applyTheme(next);
     writeURL();
@@ -267,41 +274,198 @@ function renderThemeSelector() {
   return select;
 }
 
+function attachBackdropClose(dialog) {
+  dialog.addEventListener('click', (e) => {
+    const rect = dialog.getBoundingClientRect();
+    const inside = e.clientX >= rect.left && e.clientX <= rect.right &&
+                   e.clientY >= rect.top && e.clientY <= rect.bottom;
+    if (!inside) dialog.close();
+  });
+}
+
 function openAbout() {
   let dialog = document.getElementById('about-dialog');
   if (!dialog) {
     dialog = document.createElement('dialog');
     dialog.id = 'about-dialog';
-    dialog.className = 'about-dialog';
+    dialog.className = 'app-dialog';
     dialog.innerHTML = `
-      <article class="about-content">
-        <header class="about-header">
-          <h2>About</h2>
-          <button type="button" class="about-close" aria-label="Close">&times;</button>
+      <article class="app-dialog__content">
+        <header class="app-dialog__header">
+          <h2 class="app-dialog__title">About</h2>
+          <button type="button" class="app-dialog__close" aria-label="Close">&times;</button>
         </header>
-        <p>A <strong>version number</strong> for a person, based on their birthday &mdash; just like software.</p>
-        <p>Software is versioned <code>MAJOR.MINOR.PATCH</code>. A major bump signals an incompatible change. Minor bumps add features but stay backwards-compatible. Patches are small fixes.</p>
-        <p>People work the same way:</p>
-        <ul class="about-list">
-          <li><strong>MAJOR</strong> &mdash; your decade. The 30s are not the 20s. Breaking changes.</li>
-          <li><strong>MINOR</strong> &mdash; your age inside that decade. Backwards-compatible growth.</li>
-          <li><strong>PATCH</strong> &mdash; days since your most recent birthday. Daily refinements.</li>
-        </ul>
-        <p>Someone who is 46 years old and 52 days past their birthday is on <code>v4.6.52</code>.</p>
-        <p class="about-credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>.</p>
-        <p class="about-tip">Tip: the URL holds everything &mdash; names, birthdays, theme. Bookmark a URL to save the view.</p>
+        <div class="app-dialog__body">
+          <p>A <strong>version number</strong> for a person, based on their birthday &mdash; just like software.</p>
+          <p>Software is versioned <code>MAJOR.MINOR.PATCH</code>. A major bump signals an incompatible change. Minor bumps add features but stay backwards-compatible. Patches are small fixes.</p>
+          <p>People work the same way:</p>
+          <ul>
+            <li><strong>MAJOR</strong> &mdash; your decade. The 30s are not the 20s. Breaking changes.</li>
+            <li><strong>MINOR</strong> &mdash; your age inside that decade. Backwards-compatible growth.</li>
+            <li><strong>PATCH</strong> &mdash; days since your most recent birthday. Daily refinements.</li>
+          </ul>
+          <p>Someone who is 46 years old and 52 days past their birthday is on <code>v4.6.52</code>.</p>
+          <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>.</p>
+          <p class="app-dialog__tip">Tip: the URL holds everything &mdash; names, birthdays, theme. Bookmark a URL to save the view.</p>
+        </div>
       </article>
     `;
-    dialog.querySelector('.about-close').addEventListener('click', () => dialog.close());
-    dialog.addEventListener('click', (e) => {
-      const rect = dialog.getBoundingClientRect();
-      const inside = e.clientX >= rect.left && e.clientX <= rect.right &&
-                     e.clientY >= rect.top && e.clientY <= rect.bottom;
-      if (!inside) dialog.close();
-    });
+    dialog.querySelector('.app-dialog__close').addEventListener('click', () => dialog.close());
+    attachBackdropClose(dialog);
     document.body.appendChild(dialog);
   }
   dialog.showModal();
+}
+
+function openEdit({ addBlankRow = false } = {}) {
+  let dialog = document.getElementById('edit-dialog');
+  let list;
+  if (!dialog) {
+    dialog = document.createElement('dialog');
+    dialog.id = 'edit-dialog';
+    dialog.className = 'app-dialog';
+    dialog.innerHTML = `
+      <article class="app-dialog__content">
+        <header class="app-dialog__header">
+          <h2 class="app-dialog__title">Edit</h2>
+          <button type="button" class="app-dialog__close" aria-label="Close">&times;</button>
+        </header>
+        <div class="app-dialog__body">
+          <div class="edit-list"></div>
+          <button type="button" class="edit-add">+ Add another</button>
+        </div>
+      </article>
+    `;
+    dialog.querySelector('.app-dialog__close').addEventListener('click', () => dialog.close());
+    attachBackdropClose(dialog);
+    list = dialog.querySelector('.edit-list');
+    dialog.querySelector('.edit-add').addEventListener('click', () => {
+      const today = new Date().toISOString().slice(0, 10);
+      state.people.push({ name: '', birthday: today });
+      writeURL();
+      render();
+      appendEditRow(list, true);
+    });
+    document.body.appendChild(dialog);
+  } else {
+    list = dialog.querySelector('.edit-list');
+  }
+
+  list.innerHTML = '';
+  if (addBlankRow && state.people.length === 0) {
+    const today = new Date().toISOString().slice(0, 10);
+    state.people.push({ name: '', birthday: today });
+    writeURL();
+    render();
+  }
+  state.people.forEach(() => appendEditRow(list, false));
+
+  dialog.showModal();
+
+  if (addBlankRow) {
+    const inputs = list.querySelectorAll('.edit-row__name');
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  }
+}
+
+function appendEditRow(list, focusName) {
+  const row = document.createElement('div');
+  row.className = 'edit-row';
+
+  const findIndex = () => Array.from(list.children).indexOf(row);
+
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text';
+  nameInput.className = 'edit-row__name';
+  nameInput.placeholder = 'Name (optional)';
+  nameInput.setAttribute('aria-label', 'Name');
+
+  const dateInput = document.createElement('input');
+  dateInput.type = 'date';
+  dateInput.className = 'edit-row__date';
+  dateInput.max = new Date().toISOString().slice(0, 10);
+  dateInput.setAttribute('aria-label', 'Birthday');
+
+  list.appendChild(row); // append before reading state by index
+  const i = findIndex();
+  nameInput.value = state.people[i].name;
+  dateInput.value = state.people[i].birthday;
+
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.className = 'edit-row__remove';
+  removeBtn.textContent = '×';
+  removeBtn.setAttribute('aria-label', 'Remove');
+  removeBtn.setAttribute('data-tinylytics-event', 'person.remove');
+
+  const commitName = () => {
+    const idx = findIndex();
+    if (idx < 0) return;
+    const newName = nameInput.value.trim();
+    if (newName !== state.people[idx].name) {
+      state.people[idx].name = newName;
+      writeURL();
+      render();
+    }
+  };
+
+  const commitDate = () => {
+    const idx = findIndex();
+    if (idx < 0) return;
+    const newDate = dateInput.value;
+    if (!DATE_RE.test(newDate) || !isRealDate(newDate)) return;
+    if (newDate !== state.people[idx].birthday) {
+      state.people[idx].birthday = newDate;
+      writeURL();
+      render();
+    }
+  };
+
+  removeBtn.addEventListener('click', () => {
+    const idx = findIndex();
+    if (idx < 0) return;
+    state.people.splice(idx, 1);
+    writeURL();
+    render();
+    row.remove();
+  });
+
+  nameInput.addEventListener('change', commitName);
+  nameInput.addEventListener('blur', commitName);
+  dateInput.addEventListener('change', commitDate);
+  dateInput.addEventListener('blur', commitDate);
+
+  row.append(nameInput, dateInput, removeBtn);
+  if (focusName) nameInput.focus();
+}
+
+let isFirstRender = true;
+
+function countUp(el, version) {
+  const themeMeta = THEME_BY_NAME[state.theme];
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const shouldAnimate = themeMeta?.animate && isFirstRender && !reduceMotion;
+
+  if (!shouldAnimate) {
+    el.textContent = formatVersion(version);
+    return;
+  }
+
+  const start = performance.now();
+  const duration = 700;
+  const ease = t => 1 - Math.pow(1 - t, 3);
+
+  function frame(now) {
+    const t = Math.min(1, (now - start) / duration);
+    const k = ease(t);
+    const major = Math.round(version.major * k);
+    const minor = Math.round(version.minor * k);
+    const patch = Math.round(version.patch * k);
+    el.textContent = `v${major}.${minor}.${patch}`;
+    if (t < 1) requestAnimationFrame(frame);
+    else el.textContent = formatVersion(version);
+  }
+  requestAnimationFrame(frame);
 }
 
 function updateVersionDisplay(el, birthday) {
@@ -310,18 +474,19 @@ function updateVersionDisplay(el, birthday) {
     return;
   }
   const v = computeVersion(birthday);
-  el.textContent = formatVersion(v);
+  countUp(el, v);
   el.title = `${v.age} years old, ${v.patch} day${v.patch === 1 ? '' : 's'} since last birthday`;
 }
 
-function addNewRow() {
-  const today = new Date().toISOString().slice(0, 10);
-  state.people.push({ name: '', birthday: today });
-  writeURL();
-  render();
-  const rows = document.querySelectorAll('.person');
-  const last = rows[rows.length - 1];
-  if (last) last.querySelector('.name-input').focus();
+let midnightTimer = null;
+function scheduleMidnightTick() {
+  if (midnightTimer) clearTimeout(midnightTimer);
+  const now = new Date();
+  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 5);
+  midnightTimer = setTimeout(() => {
+    render();
+    scheduleMidnightTick();
+  }, next - now);
 }
 
 const parsed = parseURL();
@@ -329,6 +494,8 @@ state.theme = parsed.theme;
 state.people = parsed.people;
 applyTheme(state.theme);
 render();
+isFirstRender = false;
+scheduleMidnightTick();
 // Fire after render so the proxy attaches and Tinylytics is more likely loaded.
 // Wrapped in a microtask so it runs after the deferred Tinylytics script has had a chance to register its click listener.
 setTimeout(() => trackEvent('theme.viewed', state.theme), 0);

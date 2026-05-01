@@ -63,7 +63,7 @@ body {
   border-color: var(--accent);
 }
 
-.about-btn {
+.about-btn, .edit-btn {
   background: transparent;
   color: var(--fg);
   border: 1px solid var(--border);
@@ -73,7 +73,7 @@ body {
   font-weight: 500;
 }
 
-.about-btn:hover {
+.about-btn:hover, .edit-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
 }
@@ -121,48 +121,6 @@ body {
   margin-bottom: 0.85rem;
 }
 
-.person-meta {
-  border-top: 1px solid var(--border);
-  padding-top: 0.85rem;
-  width: 100%;
-}
-
-.name-input,
-.date-input {
-  background: transparent;
-  color: var(--fg);
-  border: 1px solid transparent;
-  border-radius: 6px;
-  padding: 0.3rem 0.5rem;
-  margin: -0.3rem -0.5rem;
-}
-
-.name-input:focus,
-.date-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  background: var(--surface-2);
-}
-
-.name-input { font-weight: 500; }
-.date-input {
-  color: var(--muted);
-  color-scheme: dark;
-}
-
-.remove-btn {
-  margin-left: auto;
-  color: var(--muted);
-  font-size: 1.25rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-}
-
-.remove-btn:hover {
-  color: #ff6b8a;
-  background: rgba(255, 107, 138, 0.1);
-}
-
 .add-btn {
   display: inline-block;
   padding: 0.6rem 1.25rem;
@@ -186,46 +144,3 @@ body {
 }
 
 .site-footer a { color: var(--accent); }
-
-.about-content {
-  background: var(--surface);
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem;
-  line-height: 1.6;
-}
-
-.about-content h2 {
-  margin: 0;
-  font-size: 1.4rem;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.about-close {
-  color: var(--muted);
-  font-size: 1.5rem;
-  padding: 0.25rem 0.55rem;
-  border-radius: 6px;
-}
-
-.about-close:hover { background: var(--surface-2); color: var(--fg); }
-
-.about-content code {
-  background: var(--surface-2);
-  color: var(--accent);
-  padding: 0.05em 0.4em;
-  border-radius: 4px;
-  font-family: ui-monospace, monospace;
-}
-
-.about-content a { color: var(--accent); }
-
-.about-credit, .about-tip {
-  font-size: 0.9rem;
-  color: var(--muted);
-  margin-top: 1.25rem;
-}
