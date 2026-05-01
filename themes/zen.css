@@ -1,56 +1,87 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,
-400;1,
-300&family=Shippori+Mincho:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Cormorant:ital,wght@0,300;0,400;1,300&display=swap');
 
 :root {
-  --paper: #f4f1ea;
-  --paper-2: #faf8f3;
-  --ink: #1a1a1a;
-  --ink-soft: #4a4a4a;
-  --gray: #8a8580;
-  --vermillion: #c14040;
+  --paper: #ece6d6;
+  --paper-2: #f3eddd;
+  --ink: #232220;
+  --ink-soft: #58544c;
+  --gray: #918a7c;
+  --vermillion: #b53a2c;
+  --moss: #6f8062;
   --gold: #b8956a;
-  --rule: #d4cfc4;
+  --rule: rgba(88, 84, 76, 0.18);
+  --sand-line: rgba(88, 84, 76, 0.07);
+  --stone: rgba(88, 84, 76, 0.04);
 }
 
 body {
   margin: 0;
+  /* Raked sand: concentric ripples around two imagined stones */
   background:
-    /* subtle paper texture - sumi ink dots */
-    radial-gradient(circle at 12% 20%, rgba(26, 26, 26, 0.025) 0, transparent 5%),
-    radial-gradient(circle at 78% 35%, rgba(26, 26, 26, 0.02) 0, transparent 6%),
-    radial-gradient(circle at 30% 70%, rgba(26, 26, 26, 0.03) 0, transparent 4%),
-    radial-gradient(circle at 88% 85%, rgba(26, 26, 26, 0.02) 0, transparent 5%),
+    repeating-radial-gradient(
+      circle at 88% 8%,
+      transparent 0,
+      transparent 26px,
+      var(--sand-line) 26px,
+      var(--sand-line) 27px
+    ),
+    repeating-radial-gradient(
+      circle at 8% 96%,
+      transparent 0,
+      transparent 34px,
+      var(--sand-line) 34px,
+      var(--sand-line) 35px
+    ),
     var(--paper);
   background-attachment: fixed;
   color: var(--ink);
   font-family: 'Cormorant', serif;
   font-weight: 300;
-  font-size: 17px;
-  line-height: 1.7;
+  font-size: 18px;
+  line-height: 1.75;
   min-height: 100vh;
 }
 
 #app {
-  max-width: 600px;
+  max-width: 620px;
   margin: 0 auto;
-  padding: 5rem 1.5rem;
+  padding: 5.5rem 1.75rem 4rem;
 }
 
+/* ─── Header ─────────────────────────────────────────── */
+
 .site-header {
-  margin-bottom: 4rem;
+  position: relative;
+  margin-bottom: 5rem;
+  padding-bottom: 2rem;
   border-bottom: 1px solid var(--rule);
-  padding-bottom: 1.5rem;
+}
+
+/* Enso — hand-drawn brushed circle behind the title */
+.site-header::before {
+  content: "";
+  position: absolute;
+  top: -2.2rem;
+  left: -1.5rem;
+  width: 9rem;
+  height: 9rem;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M 52 8 C 78 8 92 30 92 52 C 92 76 72 92 50 92 C 28 92 10 76 10 52 C 10 32 24 14 44 9' stroke='%23232220' stroke-width='3.2' fill='none' stroke-linecap='round' opacity='0.16'/><path d='M 50 9 C 76 9 90 30 90 52' stroke='%23232220' stroke-width='1.8' fill='none' stroke-linecap='round' opacity='0.10'/></svg>");
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .site-title {
-  font-family: 'Shippori Mincho', serif;
-  font-weight: 400;
-  font-size: 1.5rem;
-  margin: 0;
-  letter-spacing: 0.3em;
+  position: relative;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: 1.35rem;
+  margin: 0 0 1.5rem;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--ink);
+  z-index: 1;
 }
 
 .site-title::before {
@@ -60,55 +91,63 @@ body {
   height: 0.5em;
   background: var(--vermillion);
   border-radius: 50%;
-  margin-right: 0.85em;
-  vertical-align: 0.2em;
+  margin-right: 0.95em;
+  vertical-align: 0.18em;
+  box-shadow: 0 0 0 4px rgba(181, 58, 44, 0.08);
 }
 
-.theme-select {
+.header-controls {
+  position: relative;
+  z-index: 1;
+}
+
+.theme-select,
+.about-btn,
+.edit-btn {
   appearance: none;
   background: transparent;
   color: var(--ink-soft);
   border: 0;
-  border-bottom: 1px solid var(--ink-soft);
+  border-bottom: 1px solid var(--rule);
   border-radius: 0;
-  padding: 0.2rem 1.4rem 0.2rem 0;
+  padding: 0.25rem 0.5rem;
   font-family: 'Cormorant', serif;
   font-weight: 300;
   font-style: italic;
   font-size: 0.95rem;
   cursor: pointer;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 3l3 4 3-4' stroke='%234a4a4a' stroke-width='0.7' fill='none'/></svg>");
+  transition: color 0.4s ease, border-color 0.4s ease;
+}
+
+.theme-select {
+  padding-right: 1.4rem;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 3l3 4 3-4' stroke='%2358544c' stroke-width='0.7' fill='none'/></svg>");
   background-repeat: no-repeat;
   background-position: right 0.1rem center;
 }
 
-.about-btn, .edit-btn {
-  background: transparent;
-  color: var(--ink-soft);
-  border: 0;
-  border-bottom: 1px solid var(--ink-soft);
-  border-radius: 0;
-  padding: 0.2rem 0.4rem;
-  font-family: 'Cormorant', serif;
-  font-weight: 300;
-  font-style: italic;
-  font-size: 0.95rem;
+.about-btn:hover, .edit-btn:hover, .theme-select:hover {
+  color: var(--vermillion);
+  border-color: var(--vermillion);
 }
 
-.about-btn:hover, .edit-btn:hover { color: var(--vermillion); border-color: var(--vermillion); }
+/* ─── Intro (empty state) ────────────────────────────── */
 
 .intro {
-  font-size: 1.15rem;
+  position: relative;
+  font-size: 1.2rem;
   font-style: italic;
   font-weight: 300;
   color: var(--ink-soft);
   margin: 0 0 4rem;
-  line-height: 1.8;
-  max-width: 32ch;
+  line-height: 1.85;
+  max-width: 34ch;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--moss);
 }
 
 .intro code {
-  font-family: 'Shippori Mincho', serif;
+  font-family: 'Noto Serif JP', serif;
   font-style: normal;
   background: transparent;
   letter-spacing: 0.05em;
@@ -117,59 +156,164 @@ body {
   padding: 0;
 }
 
+/* ─── People (the stones) ────────────────────────────── */
+
 .people {
-  gap: 3.5rem;
-  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin: 0 0 4rem;
 }
 
 .person {
-  background: transparent;
+  position: relative;
+  background: linear-gradient(180deg, var(--paper-2) 0%, transparent 100%);
   border: 0;
   border-bottom: 1px solid var(--rule);
-  padding: 0 0 1.5rem;
+  padding: 2rem 1.5rem 2.5rem;
   width: 100%;
+  border-radius: 50% 50% 4px 4px / 18% 18% 4px 4px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 1px 0 rgba(88, 84, 76, 0.04);
+}
+
+/* Small kanji-like stroke marker on each row */
+.person::before {
+  content: "";
+  position: absolute;
+  top: 1.6rem;
+  right: 1.5rem;
+  width: 14px;
+  height: 1.5px;
+  background: var(--vermillion);
+  opacity: 0.55;
+  transform: rotate(-12deg);
+}
+
+.person-name {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: 0.85rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 1.25rem;
 }
 
 .version {
-  font-family: 'Shippori Mincho', serif;
-  font-weight: 400;
-  font-size: clamp(4rem, 12vw, 7rem);
-  letter-spacing: -0.04em;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: clamp(3.6rem, 11vw, 6.5rem);
+  letter-spacing: -0.03em;
   line-height: 1;
   color: var(--ink);
-  margin-bottom: 1rem;
+  text-align: center;
+  margin: 0;
 }
 
 .version::first-letter {
   color: var(--vermillion);
+  font-weight: 400;
 }
+
+/* ─── Birthday state ─────────────────────────────────── */
+
+body[data-birthday="true"] .person::before {
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: 1.5px solid var(--vermillion);
+  border-radius: 50%;
+  opacity: 0.7;
+  transform: rotate(0);
+  top: 1.4rem;
+}
+
+body[data-birthday="true"] .version::first-letter {
+  color: var(--vermillion);
+}
+
+/* ─── Empty-state CTA ────────────────────────────────── */
 
 .add-btn {
   display: block;
-  margin: 3rem auto 0;
+  margin: 3.5rem auto 0;
   background: transparent;
   color: var(--ink-soft);
   border: 0;
   font-family: 'Cormorant', serif;
   font-weight: 300;
   font-style: italic;
-  font-size: 1rem;
-  padding: 0;
-  letter-spacing: 0.05em;
+  font-size: 1.05rem;
+  padding: 0.5rem 1.5rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: color 0.4s ease;
 }
 
-.add-btn::before { content: "— "; color: var(--vermillion); }
-.add-btn::after { content: " —"; color: var(--vermillion); }
+.add-btn::before { content: "—  "; color: var(--moss); }
+.add-btn::after  { content: "  —"; color: var(--moss); }
 
-.add-btn:hover { color: var(--ink); }
+.add-btn:hover {
+  color: var(--vermillion);
+}
+
+.add-btn:hover::before, .add-btn:hover::after {
+  color: var(--vermillion);
+}
+
+/* ─── Footer ─────────────────────────────────────────── */
 
 .site-footer {
-  margin-top: 5rem;
-  padding-top: 1.5rem;
+  position: relative;
+  margin-top: 6rem;
+  padding-top: 2rem;
   border-top: 1px solid var(--rule);
   font-size: 0.85rem;
   font-style: italic;
   color: var(--gray);
+  line-height: 1.8;
+  text-align: center;
 }
 
-.site-footer a { color: var(--ink-soft); font-style: normal; }
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 7px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+}
+
+.site-footer a {
+  color: var(--ink-soft);
+  font-style: normal;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color 0.4s ease;
+}
+
+.site-footer a:hover {
+  border-color: var(--vermillion);
+}
+
+.site-stats {
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--gray);
+}
+
+/* ─── Reduced motion ─────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-select, .about-btn, .edit-btn,
+  .add-btn, .site-footer a {
+    transition: none;
+  }
+}
