@@ -134,7 +134,25 @@ function render() {
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
-  footer.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Bookmark this URL to save what’s here. <span class="hit-counter">&middot; <span class="tinylytics_hits" data-path="/">&mdash;</span> visits</span>';
+  footer.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Bookmark this URL to save what’s here.';
+
+  const stats = document.createElement('div');
+  stats.className = 'site-stats';
+  const hitsSpan = document.getElementById('hits-span');
+  const countriesSpan = document.getElementById('countries-span');
+  if (hitsSpan) {
+    const hitsWrap = document.createElement('span');
+    hitsWrap.className = 'hit-counter';
+    hitsWrap.append(hitsSpan, ' visits');
+    stats.appendChild(hitsWrap);
+  }
+  if (countriesSpan) {
+    const flagsWrap = document.createElement('span');
+    flagsWrap.className = 'visitor-flags';
+    flagsWrap.append('Hello from ', countriesSpan);
+    stats.appendChild(flagsWrap);
+  }
+  footer.appendChild(stats);
   app.appendChild(footer);
 }
 

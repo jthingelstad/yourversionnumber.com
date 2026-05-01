@@ -85,6 +85,13 @@ input {
   margin-bottom: 0.5rem;
 }
 
+.site-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
 .people {
   display: flex;
   flex-direction: column;
