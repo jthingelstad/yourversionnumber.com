@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+DW+Pica+SC&display=swap');
+
+:root {
+  --bg-1: #f4ead0;
+  --bg-2: #d9c391;
+  --leather: #4a2e1a;
+  --brass: #b08542;
+  --brass-dark: #7a5a28;
+  --copper: #c4642a;
+  --rust: #8a3a1a;
+  --ink: #2a1810;
+  --gear-shadow: rgba(74, 46, 26, 0.18);
+}
+
+body {
+  margin: 0;
+  background:
+    /* gears scattered */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><g fill='none' stroke='%237a5a28' stroke-width='2' opacity='0.18'><g transform='translate(60 60)'><circle r='28'/><circle r='14'/><g><rect x='-3' y='-36' width='6' height='8'/><rect x='-3' y='28' width='6' height='8'/><rect x='-36' y='-3' width='8' height='6'/><rect x='28' y='-3' width='8' height='6'/><rect x='-3' y='-36' width='6' height='8' transform='rotate(45)'/><rect x='-3' y='28' width='6' height='8' transform='rotate(45)'/><rect x='-36' y='-3' width='8' height='6' transform='rotate(45)'/><rect x='28' y='-3' width='8' height='6' transform='rotate(45)'/></g></g><g transform='translate(320 130)'><circle r='42'/><circle r='22'/><g><rect x='-4' y='-52' width='8' height='10'/><rect x='-4' y='42' width='8' height='10'/><rect x='-52' y='-4' width='10' height='8'/><rect x='42' y='-4' width='10' height='8'/><rect x='-4' y='-52' width='8' height='10' transform='rotate(30)'/><rect x='-4' y='-52' width='8' height='10' transform='rotate(60)'/><rect x='-4' y='42' width='8' height='10' transform='rotate(30)'/><rect x='-4' y='42' width='8' height='10' transform='rotate(60)'/></g></g><g transform='translate(120 280)'><circle r='32'/><circle r='16'/><g><rect x='-3' y='-42' width='6' height='10'/><rect x='-3' y='32' width='6' height='10'/><rect x='-42' y='-3' width='10' height='6'/><rect x='32' y='-3' width='10' height='6'/><rect x='-3' y='-42' width='6' height='10' transform='rotate(36)'/><rect x='-3' y='-42' width='6' height='10' transform='rotate(72)'/><rect x='-3' y='32' width='6' height='10' transform='rotate(36)'/><rect x='-3' y='32' width='6' height='10' transform='rotate(72)'/></g></g></g></svg>"),
+    radial-gradient(ellipse at center, var(--bg-1) 0, var(--bg-2) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'IM Fell English', serif;
+  font-size: 17px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.site-header {
+  margin-bottom: 2rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(180deg, var(--bg-1) 0%, #ebd9a8 100%);
+  border: 3px double var(--brass-dark);
+  border-radius: 4px;
+  box-shadow: 0 6px 0 var(--gear-shadow), inset 0 0 24px rgba(176, 133, 66, 0.2);
+}
+
+.site-title {
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-weight: 400;
+  font-size: 2rem;
+  margin: 0;
+  color: var(--leather);
+  letter-spacing: 0.04em;
+  text-shadow: 1px 1px 0 var(--brass);
+}
+
+.site-title::before { content: "⚙ "; color: var(--brass); }
+.site-title::after  { content: " ⚙"; color: var(--brass); }
+
+.theme-select {
+  appearance: none;
+  background: var(--bg-1);
+  color: var(--leather);
+  border: 2px solid var(--brass-dark);
+  border-radius: 2px;
+  padding: 0.4rem 1.8rem 0.4rem 0.7rem;
+  font-family: 'IM Fell English', serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%237a5a28' stroke-width='1.5' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  box-shadow: inset 0 0 8px rgba(176, 133, 66, 0.25);
+}
+
+.about-btn {
+  background: linear-gradient(180deg, var(--brass) 0%, var(--brass-dark) 100%);
+  color: var(--bg-1);
+  border: 2px solid var(--leather);
+  border-radius: 2px;
+  padding: 0.4rem 1rem;
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 3px 0 var(--leather), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.about-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--leather); }
+
+.intro {
+  font-style: italic;
+  color: var(--leather);
+  margin: 0 0 2rem;
+  font-size: 1.1rem;
+}
+
+.intro::first-letter {
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-size: 2.5em;
+  font-style: normal;
+  float: left;
+  line-height: 0.85;
+  margin: 0.05em 0.1em 0 0;
+  color: var(--copper);
+}
+
+.intro code {
+  font-family: 'IM Fell English', monospace;
+  background: var(--bg-1);
+  border: 1px solid var(--brass-dark);
+  padding: 0 0.4em;
+  font-style: normal;
+  color: var(--rust);
+}
+
+.people {
+  gap: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.person {
+  background: linear-gradient(180deg, #faf3df 0%, var(--bg-1) 100%);
+  border: 3px double var(--brass-dark);
+  border-radius: 4px;
+  padding: 1.5rem 1.75rem;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 4px 0 var(--gear-shadow), inset 0 0 20px rgba(176, 133, 66, 0.15);
+}
+
+/* Brass rivet corners */
+.person::before, .person::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at 35% 35%, #e6c787 0%, var(--brass) 50%, var(--brass-dark) 100%);
+  border-radius: 50%;
+  box-shadow: inset 0 -1px 1px rgba(0,0,0,0.3);
+}
+
+.person::before { top: 6px; left: 6px; }
+.person::after  { top: 6px; right: 6px; }
+
+.version {
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-weight: 400;
+  color: var(--rust);
+  margin-bottom: 0.85rem;
+  letter-spacing: 0.02em;
+  text-shadow: 2px 2px 0 var(--brass);
+}
+
+.person-meta {
+  border-top: 2px double var(--brass-dark);
+  padding-top: 0.85rem;
+  width: 100%;
+}
+
+.name-input, .date-input {
+  background: transparent;
+  border: 0;
+  color: var(--ink);
+  font-family: 'IM Fell English', serif;
+  padding: 0.25rem 0.4rem;
+  font-size: 1.05rem;
+}
+
+.name-input { font-weight: 400; font-style: italic; }
+.date-input { color: var(--leather); font-family: 'IM Fell DW Pica SC', serif; letter-spacing: 0.05em; }
+
+.name-input:focus, .date-input:focus {
+  outline: 1px solid var(--brass-dark);
+  outline-offset: 2px;
+  background: var(--bg-1);
+}
+
+.remove-btn {
+  margin-left: auto;
+  color: var(--leather);
+  font-size: 1.3rem;
+  font-family: serif;
+}
+
+.remove-btn:hover { color: var(--rust); }
+
+.add-btn {
+  display: block;
+  margin: 0 auto;
+  background: linear-gradient(180deg, var(--copper) 0%, var(--rust) 100%);
+  color: var(--bg-1);
+  border: 2px solid var(--leather);
+  border-radius: 2px;
+  padding: 0.7rem 2rem;
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.05em;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 4px 0 var(--leather), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.add-btn:hover { transform: translateY(-1px); }
+.add-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--leather); }
+
+.site-footer {
+  margin-top: 4rem;
+  padding-top: 1.25rem;
+  border-top: 3px double var(--brass-dark);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--leather);
+  text-align: center;
+}
+
+.site-footer a { color: var(--rust); font-style: normal; font-family: 'IM Fell DW Pica SC', serif; }
+
+.about-content {
+  background: linear-gradient(180deg, #faf3df 0%, var(--bg-1) 100%);
+  color: var(--ink);
+  border: 4px double var(--brass-dark);
+  border-radius: 4px;
+  padding: 2rem 2.25rem;
+  line-height: 1.65;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.4), inset 0 0 30px rgba(176, 133, 66, 0.18);
+}
+
+.about-content h2 {
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-weight: 400;
+  font-size: 2rem;
+  margin: 0;
+  color: var(--leather);
+  letter-spacing: 0.04em;
+  text-shadow: 1px 1px 0 var(--brass);
+}
+
+.about-close {
+  background: linear-gradient(180deg, var(--brass) 0%, var(--brass-dark) 100%);
+  color: var(--bg-1);
+  border: 2px solid var(--leather);
+  width: 2.25rem;
+  height: 2.25rem;
+  font-weight: 700;
+  border-radius: 2px;
+}
+
+.about-close:hover { background: var(--rust); }
+
+.about-content code {
+  font-family: 'IM Fell English', monospace;
+  background: var(--bg-1);
+  border: 1px solid var(--brass-dark);
+  color: var(--rust);
+  padding: 0 0.4em;
+}
+
+.about-content a { color: var(--rust); font-family: 'IM Fell DW Pica SC', serif; }
+.about-content strong { color: var(--leather); }
+
+.about-credit, .about-tip {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--leather);
+  border-top: 2px double var(--brass-dark);
+  padding-top: 0.85rem;
+  margin-top: 1.25rem;
+}

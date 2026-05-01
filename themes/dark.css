@@ -1,0 +1,231 @@
+:root {
+  --bg: #0d0f14;
+  --surface: #161922;
+  --surface-2: #1f2330;
+  --fg: #e8eaf0;
+  --muted: #8b92a5;
+  --accent: #7c9cff;
+  --accent-2: #a78bff;
+  --border: #2a2f3d;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.site-header {
+  margin-bottom: 2.5rem;
+}
+
+.site-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.theme-select {
+  appearance: none;
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 2rem 0.45rem 0.85rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%238b92a5' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+}
+
+.theme-select option {
+  background: var(--surface);
+  color: var(--fg);
+}
+
+.theme-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.about-btn {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.about-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.intro {
+  color: var(--muted);
+  margin: 0 0 2.5rem;
+}
+
+.intro code {
+  background: var(--surface-2);
+  color: var(--accent);
+  padding: 0.05em 0.4em;
+  border-radius: 4px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.9em;
+}
+
+.people {
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.person {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  width: 100%;
+  transition: border-color 0.15s ease;
+}
+
+.person:hover {
+  border-color: var(--accent);
+}
+
+.version {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.85rem;
+}
+
+.person-meta {
+  border-top: 1px solid var(--border);
+  padding-top: 0.85rem;
+  width: 100%;
+}
+
+.name-input,
+.date-input {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  margin: -0.3rem -0.5rem;
+}
+
+.name-input:focus,
+.date-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+
+.name-input { font-weight: 500; }
+.date-input {
+  color: var(--muted);
+  color-scheme: dark;
+}
+
+.remove-btn {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 1.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+.remove-btn:hover {
+  color: #ff6b8a;
+  background: rgba(255, 107, 138, 0.1);
+}
+
+.add-btn {
+  display: inline-block;
+  padding: 0.6rem 1.25rem;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.add-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.site-footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.site-footer a { color: var(--accent); }
+
+.about-content {
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  line-height: 1.6;
+}
+
+.about-content h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.about-close {
+  color: var(--muted);
+  font-size: 1.5rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+}
+
+.about-close:hover { background: var(--surface-2); color: var(--fg); }
+
+.about-content code {
+  background: var(--surface-2);
+  color: var(--accent);
+  padding: 0.05em 0.4em;
+  border-radius: 4px;
+  font-family: ui-monospace, monospace;
+}
+
+.about-content a { color: var(--accent); }
+
+.about-credit, .about-tip {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 1.25rem;
+}

@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Karla:wght@400;600;700&display=swap');
+
+:root {
+  --bark: #3d2f1f;
+  --moss: #6b8e4e;
+  --leaf: #4a7c3a;
+  --leaf-deep: #2d5429;
+  --cream: #f6f1e3;
+  --paper: #fbf7ec;
+  --earth: #8b6f47;
+  --sun: #d4a847;
+  --shade: #5d6e4f;
+}
+
+body {
+  margin: 0;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><g fill='%234a7c3a' opacity='0.08'><path d='M30 40 Q35 20 50 25 Q60 35 50 50 Q35 55 30 40 Z'/><path d='M120 80 Q130 60 150 70 Q160 85 145 100 Q130 95 120 80 Z'/><path d='M70 130 Q80 115 95 125 Q100 140 88 150 Q75 145 70 130 Z'/><path d='M150 160 Q160 145 175 155 Q180 170 168 180 Q155 175 150 160 Z'/><path d='M20 170 Q30 160 42 168 Q45 180 33 188 Q22 183 20 170 Z'/></g></svg>"),
+    linear-gradient(180deg, #f6f1e3 0%, #ebe4ce 100%);
+  background-attachment: fixed;
+  color: var(--bark);
+  font-family: 'Karla', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.site-header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--moss);
+}
+
+.site-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 2.75rem;
+  margin: 0;
+  color: var(--leaf-deep);
+  letter-spacing: 0.01em;
+}
+
+.site-title::before {
+  content: "";
+  display: inline-block;
+  width: 1.6em;
+  height: 1.6em;
+  margin-right: 0.4em;
+  vertical-align: -0.4em;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 4 C8 8, 4 16, 8 26 C18 26, 26 18, 26 8 C20 6, 18 4, 16 4 Z' fill='none' stroke='%232d5429' stroke-width='1.5'/><path d='M10 24 Q14 18, 22 10' stroke='%232d5429' stroke-width='1' fill='none'/></svg>") no-repeat center / contain;
+}
+
+.theme-select {
+  appearance: none;
+  background: var(--paper);
+  color: var(--bark);
+  border: 1px solid var(--moss);
+  border-radius: 4px;
+  padding: 0.4rem 1.8rem 0.4rem 0.7rem;
+  font-family: 'Karla', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%236b8e4e' stroke-width='1.5' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+}
+
+.about-btn {
+  background: var(--leaf-deep);
+  color: var(--cream);
+  border: 0;
+  border-radius: 4px;
+  padding: 0.45rem 1rem;
+  font-family: 'Karla', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.about-btn:hover { background: var(--leaf); }
+
+.intro {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--shade);
+  margin: 0 0 2.5rem;
+}
+
+.intro code {
+  font-family: 'Karla', monospace;
+  background: var(--paper);
+  border: 1px solid var(--moss);
+  padding: 0 0.4em;
+  font-style: normal;
+  font-size: 0.85em;
+}
+
+.people {
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.person {
+  background: var(--paper);
+  border: 1px solid var(--moss);
+  border-radius: 4px;
+  padding: 1.5rem 1.75rem;
+  width: 100%;
+  position: relative;
+  box-shadow: 2px 4px 0 rgba(45, 84, 41, 0.08);
+}
+
+.person::after {
+  content: "";
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 28px;
+  height: 28px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 6 C10 10, 8 18, 12 26 Q20 22, 24 14 Q22 8, 16 6 Z' fill='%236b8e4e' opacity='0.3'/><path d='M14 22 Q18 16, 22 12' stroke='%232d5429' stroke-width='1' fill='none'/></svg>") no-repeat center / contain;
+  opacity: 0.6;
+}
+
+.version {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--leaf-deep);
+  margin-bottom: 0.85rem;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.person-meta {
+  border-top: 1px solid var(--moss);
+  padding-top: 0.85rem;
+  width: 100%;
+}
+
+.name-input, .date-input {
+  background: transparent;
+  border: 0;
+  color: var(--bark);
+  font-family: 'Karla', sans-serif;
+  padding: 0.25rem 0.4rem;
+}
+
+.name-input { font-weight: 700; font-size: 1.05rem; }
+.date-input { color: var(--shade); font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; }
+
+.name-input:focus, .date-input:focus {
+  outline: none;
+  background: var(--cream);
+  border-radius: 2px;
+}
+
+.remove-btn {
+  margin-left: auto;
+  color: var(--shade);
+  font-size: 1.25rem;
+}
+
+.remove-btn:hover { color: #a44; }
+
+.add-btn {
+  display: block;
+  margin: 0 auto;
+  background: var(--paper);
+  color: var(--leaf-deep);
+  border: 1px dashed var(--moss);
+  border-radius: 4px;
+  padding: 0.7rem 1.75rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.add-btn::before { content: "✦ "; color: var(--sun); }
+
+.add-btn:hover {
+  background: var(--leaf-deep);
+  color: var(--cream);
+  border-style: solid;
+}
+
+.site-footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--moss);
+  font-size: 0.9rem;
+  color: var(--shade);
+  font-style: italic;
+}
+
+.site-footer a { color: var(--leaf-deep); font-weight: 600; font-style: normal; }
+
+.about-content {
+  background: var(--paper);
+  color: var(--bark);
+  border: 1px solid var(--moss);
+  border-radius: 4px;
+  padding: 2rem 2.25rem;
+  line-height: 1.7;
+  box-shadow: 0 16px 48px rgba(45, 84, 41, 0.25);
+}
+
+.about-content h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 2rem;
+  margin: 0;
+  color: var(--leaf-deep);
+}
+
+.about-close {
+  color: var(--shade);
+  font-size: 1.4rem;
+  border: 1px solid var(--moss);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 4px;
+}
+
+.about-close:hover { background: var(--leaf-deep); color: var(--cream); }
+
+.about-content code {
+  font-family: 'Karla', monospace;
+  background: var(--cream);
+  border: 1px solid var(--moss);
+  padding: 0 0.4em;
+}
+
+.about-content a { color: var(--leaf-deep); font-weight: 600; }
+
+.about-credit, .about-tip {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--shade);
+  margin-top: 1.25rem;
+}

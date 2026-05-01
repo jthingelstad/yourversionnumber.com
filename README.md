@@ -17,7 +17,7 @@ Unknown themes fall back to `default`. Malformed `p` entries are skipped (with a
 
 ## Themes
 
-Eight ship by default: `default`, `family`, `terminal`, `vaporwave`, `brutalist`, `comic`, `newspaper`, `arcade`. Each is a standalone stylesheet in `themes/` — themes can override any styling, not just colors.
+Eighteen ship by default: `default`, `dark`, `family`, `pastel`, `birthday`, `nature`, `ocean`, `galaxy`, `zen`, `terminal`, `arcade`, `vaporwave`, `y2k`, `newspaper`, `steampunk`, `brutalist`, `comic`, `memphis`. Each is a standalone stylesheet in `themes/` — themes can override any styling, not just colors.
 
 To add one: drop a new file at `themes/<name>.css`, add `<name>` to the `THEMES` array in `assets/app.js`, and reference it as `?theme=<name>`.
 

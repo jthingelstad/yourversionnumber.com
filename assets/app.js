@@ -1,4 +1,9 @@
-const THEMES = ['default', 'family', 'terminal', 'vaporwave', 'brutalist', 'comic', 'newspaper', 'arcade'];
+const THEMES = [
+  'default', 'dark', 'family', 'pastel', 'birthday',
+  'nature', 'ocean', 'galaxy', 'zen',
+  'terminal', 'arcade', 'vaporwave', 'y2k',
+  'newspaper', 'steampunk', 'brutalist', 'comic', 'memphis'
+];
 const DEFAULT_THEME = 'default';
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 

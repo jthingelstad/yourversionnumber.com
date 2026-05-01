@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #fef6f9;
+  --bg-2: #f0f9f4;
+  --pink: #f7c8d6;
+  --mint: #b8e0c8;
+  --lavender: #d4c5e8;
+  --peach: #fcd9b6;
+  --ink: #4a3b52;
+  --muted: #9b8aa3;
+  --card: #ffffff;
+  --leaf: #7eb88f;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 15% 20%, var(--pink) 0, transparent 25%),
+    radial-gradient(circle at 85% 30%, var(--lavender) 0, transparent 28%),
+    radial-gradient(circle at 70% 85%, var(--mint) 0, transparent 30%),
+    radial-gradient(circle at 20% 80%, var(--peach) 0, transparent 25%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.site-header { margin-bottom: 2.5rem; }
+
+.site-title {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 400;
+  font-size: 2.5rem;
+  margin: 0;
+  color: var(--ink);
+  font-style: italic;
+}
+
+.site-title::after {
+  content: " ❀";
+  color: var(--pink);
+  font-style: normal;
+}
+
+.theme-select {
+  appearance: none;
+  background: var(--card);
+  color: var(--ink);
+  border: 2px solid var(--pink);
+  border-radius: 999px;
+  padding: 0.4rem 2rem 0.4rem 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%23f7c8d6' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+}
+
+.about-btn {
+  background: var(--lavender);
+  color: var(--ink);
+  border: 0;
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  font-weight: 500;
+}
+
+.about-btn:hover { background: var(--pink); }
+
+.intro {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--muted);
+  margin: 0 0 2.5rem;
+  text-align: center;
+  max-width: 36ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro code {
+  font-family: 'Inter', monospace;
+  background: var(--mint);
+  padding: 0.05em 0.5em;
+  border-radius: 999px;
+  font-size: 0.85em;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.people {
+  gap: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.person {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 1.75rem 2rem;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(154, 134, 168, 0.12);
+  position: relative;
+}
+
+.person::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: 24px;
+  width: 32px;
+  height: 32px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='4' fill='%23f7c8d6'/><circle cx='16' cy='6' r='5' fill='%23f7c8d6'/><circle cx='26' cy='16' r='5' fill='%23f7c8d6'/><circle cx='16' cy='26' r='5' fill='%23f7c8d6'/><circle cx='6' cy='16' r='5' fill='%23f7c8d6'/><circle cx='16' cy='16' r='3' fill='%23fcd9b6'/></svg>") no-repeat center / contain;
+}
+
+.person:nth-child(2n)::before {
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 4 C20 12, 28 12, 24 20 C20 28, 12 28, 8 20 C4 12, 12 12, 16 4 Z' fill='%237eb88f'/></svg>") no-repeat center / contain;
+}
+
+.person:nth-child(3n)::before {
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='5' fill='%23d4c5e8'/><circle cx='16' cy='6' r='4' fill='%23d4c5e8'/><circle cx='25' cy='12' r='4' fill='%23d4c5e8'/><circle cx='25' cy='20' r='4' fill='%23d4c5e8'/><circle cx='16' cy='26' r='4' fill='%23d4c5e8'/><circle cx='7' cy='20' r='4' fill='%23d4c5e8'/><circle cx='7' cy='12' r='4' fill='%23d4c5e8'/></svg>") no-repeat center / contain;
+}
+
+.version {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.03em;
+}
+
+.person-meta {
+  border-top: 1px dashed var(--pink);
+  padding-top: 0.85rem;
+  width: 100%;
+}
+
+.name-input, .date-input {
+  background: transparent;
+  border: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  padding: 0.25rem 0.4rem;
+}
+
+.name-input { font-weight: 600; font-size: 1.05rem; }
+.date-input { color: var(--muted); }
+
+.name-input::placeholder { color: var(--muted); opacity: 0.6; }
+
+.name-input:focus, .date-input:focus {
+  outline: none;
+  background: var(--bg-2);
+  border-radius: 8px;
+}
+
+.remove-btn {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 1.4rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.remove-btn:hover {
+  background: var(--pink);
+  color: var(--ink);
+}
+
+.add-btn {
+  display: block;
+  margin: 0 auto;
+  background: var(--mint);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.7rem 2rem;
+  font-weight: 600;
+}
+
+.add-btn:hover { background: var(--leaf); color: #fff; }
+
+.site-footer {
+  margin-top: 4rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.site-footer a { color: var(--leaf); font-weight: 600; }
+
+.about-content {
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 24px;
+  padding: 2rem 2.25rem;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  box-shadow: 0 20px 60px rgba(154, 134, 168, 0.3);
+}
+
+.about-content h2 {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 2rem;
+  margin: 0;
+  color: var(--ink);
+}
+
+.about-close {
+  background: var(--bg-2);
+  color: var(--ink);
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  font-size: 1.4rem;
+}
+
+.about-close:hover { background: var(--pink); }
+
+.about-content code {
+  background: var(--mint);
+  padding: 0.1em 0.5em;
+  border-radius: 999px;
+  font-family: 'Inter', monospace;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+.about-content a { color: var(--leaf); font-weight: 600; }
+.about-content strong { color: var(--ink); }
+
+.about-credit, .about-tip {
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 1.25rem;
+}
