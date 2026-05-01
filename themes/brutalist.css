@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Archivo+Black&display=swap');
+
+:root {
+  --bg: #ffff00;
+  --fg: #000000;
+  --accent: #ff0000;
+  --paper: #ffffff;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Space Mono', monospace;
+  font-size: 16px;
+  line-height: 1.3;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.site-header {
+  margin-bottom: 0;
+  padding-bottom: 1rem;
+  border-bottom: 6px solid var(--fg);
+  align-items: flex-end;
+}
+
+.site-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+}
+
+.theme-select {
+  appearance: none;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  background: var(--paper);
+  color: var(--fg);
+  border: 4px solid var(--fg);
+  border-radius: 0;
+  padding: 0.4rem 2rem 0.4rem 0.6rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><path d='M2 5l5 5 5-5' stroke='black' stroke-width='3' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.4rem center;
+}
+
+.about-btn {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--accent);
+  color: var(--paper);
+  border: 4px solid var(--fg);
+  border-radius: 0;
+  padding: 0.4rem 0.85rem;
+}
+
+.about-btn:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.about-content {
+  background: var(--paper);
+  color: var(--fg);
+  border: 6px solid var(--fg);
+  border-radius: 0;
+  padding: 1.75rem 2rem;
+  font-family: 'Space Mono', monospace;
+  line-height: 1.45;
+  box-shadow: 12px 12px 0 var(--fg);
+}
+
+.about-content h2 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+.about-close {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.4rem;
+  background: var(--fg);
+  color: var(--bg);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0;
+}
+
+.about-close:hover {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.about-content code {
+  background: var(--accent);
+  color: var(--paper);
+  padding: 0 0.3em;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+}
+
+.about-content strong {
+  background: var(--bg);
+  color: var(--fg);
+  padding: 0 0.25em;
+}
+
+.about-content a {
+  color: var(--accent);
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.about-credit,
+.about-tip {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-top: 4px solid var(--fg);
+  padding-top: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.intro {
+  background: var(--fg);
+  color: var(--bg);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0 2rem;
+  border: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.intro code {
+  background: var(--accent);
+  color: var(--bg);
+  padding: 0 0.3em;
+  font-family: 'Space Mono', monospace;
+}
+
+.people {
+  gap: 0;
+  margin: 2rem 0;
+}
+
+.person {
+  background: var(--paper);
+  border: 6px solid var(--fg);
+  border-bottom: 0;
+  padding: 1.25rem 1.5rem;
+  width: 100%;
+}
+
+.person:last-of-type {
+  border-bottom: 6px solid var(--fg);
+}
+
+.person:nth-child(even) {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.version {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 14vw, 9rem);
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  margin-bottom: 0.75rem;
+  color: inherit;
+}
+
+.person-meta {
+  border-top: 4px solid currentColor;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  width: 100%;
+  gap: 1rem;
+}
+
+.name-input,
+.date-input {
+  background: transparent;
+  color: inherit;
+  border: 0;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0.25rem 0;
+  text-transform: uppercase;
+}
+
+.name-input::placeholder {
+  color: currentColor;
+  opacity: 0.5;
+}
+
+.date-input {
+  color-scheme: light;
+}
+
+.name-input:focus,
+.date-input:focus {
+  outline: 3px solid var(--fg);
+  outline-offset: 3px;
+}
+
+.person:nth-child(even) .name-input:focus,
+.person:nth-child(even) .date-input:focus {
+  outline-color: var(--paper);
+}
+
+.remove-btn {
+  margin-left: auto;
+  background: var(--fg);
+  color: var(--bg);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.2rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}
+
+.person:nth-child(even) .remove-btn {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.add-btn {
+  display: block;
+  width: 100%;
+  background: var(--fg);
+  color: var(--bg);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem 1.25rem;
+  border: 0;
+}
+
+.add-btn:hover {
+  background: var(--accent);
+}
+
+.site-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 6px solid var(--fg);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.site-footer a {
+  color: var(--accent);
+  font-weight: 700;
+}

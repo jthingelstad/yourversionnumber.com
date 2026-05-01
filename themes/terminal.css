@@ -1,0 +1,330 @@
+:root {
+  --bg: #0a0e0a;
+  --fg: #00ff66;
+  --dim: #00aa44;
+  --muted: #006622;
+  --warn: #ffcc00;
+  --danger: #ff3333;
+  --scanline: rgba(0, 255, 102, 0.03);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, "Courier New", monospace;
+  font-size: 15px;
+  line-height: 1.5;
+  text-shadow: 0 0 2px rgba(0, 255, 102, 0.5);
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    var(--scanline) 2px,
+    var(--scanline) 3px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+#app {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.site-header {
+  border-bottom: 1px dashed var(--dim);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.site-title {
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.site-title::before {
+  content: "$ ";
+  color: var(--dim);
+}
+
+.site-title::after {
+  content: "_";
+  margin-left: 0.25em;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.theme-select {
+  appearance: none;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.9rem;
+  border: 1px solid var(--dim);
+  border-radius: 0;
+  padding: 0.25rem 1.75rem 0.25rem 0.6rem;
+  text-shadow: inherit;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 4l3 3 3-3' stroke='%2300aa44' stroke-width='1' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+}
+
+.theme-select:focus {
+  outline: 1px solid var(--fg);
+  outline-offset: 1px;
+}
+
+.theme-select option {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.about-btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  text-transform: lowercase;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--dim);
+  padding: 0.25rem 0.75rem;
+  text-shadow: inherit;
+}
+
+.about-btn::before { content: "./"; color: var(--dim); margin-right: 0.15em; }
+
+.about-btn:hover {
+  background: rgba(0, 255, 102, 0.08);
+  border-color: var(--fg);
+}
+
+.about-content {
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--fg);
+  border-radius: 0;
+  padding: 1.75rem 2rem;
+  font-family: inherit;
+  text-shadow: inherit;
+  box-shadow: 0 0 30px rgba(0, 255, 102, 0.25);
+}
+
+.about-content h2 {
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--warn);
+}
+
+.about-content h2::before {
+  content: "## ";
+  color: var(--dim);
+}
+
+.about-close {
+  font-size: 1rem;
+  color: var(--dim);
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--dim);
+}
+
+.about-close:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.about-content code {
+  background: transparent;
+  color: var(--warn);
+}
+
+.about-content a {
+  color: var(--warn);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--warn);
+}
+
+.about-content strong {
+  color: var(--warn);
+}
+
+.about-credit,
+.about-tip {
+  font-size: 0.85rem;
+  color: var(--dim);
+  border-top: 1px dashed var(--muted);
+  padding-top: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.about-tip::before {
+  content: "// tip: ";
+  color: var(--muted);
+}
+
+.about-credit::before {
+  content: "// ";
+  color: var(--muted);
+}
+
+.intro {
+  color: var(--dim);
+  margin: 0 0 1.5rem;
+  white-space: pre-wrap;
+}
+
+.intro::before {
+  content: "# ";
+  color: var(--muted);
+}
+
+.intro code {
+  color: var(--fg);
+  background: transparent;
+  padding: 0;
+}
+
+.people {
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.person {
+  border: 1px solid var(--muted);
+  padding: 1rem 1.25rem;
+  width: 100%;
+  position: relative;
+}
+
+.person::before {
+  content: "> entry";
+  position: absolute;
+  top: -0.6em;
+  left: 0.75rem;
+  background: var(--bg);
+  padding: 0 0.4rem;
+  color: var(--dim);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.version {
+  color: var(--warn);
+  font-family: inherit;
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
+  margin: 0.25rem 0 0.75rem;
+}
+
+.version::before { content: "["; color: var(--dim); margin-right: 0.1em; }
+.version::after  { content: "]"; color: var(--dim); margin-left: 0.1em; }
+
+.person-meta {
+  border-top: 1px dotted var(--muted);
+  padding-top: 0.6rem;
+  width: 100%;
+}
+
+.name-input,
+.date-input {
+  background: transparent;
+  border: 0;
+  padding: 0.15rem 0.3rem;
+  color: var(--fg);
+  font-family: inherit;
+  text-shadow: inherit;
+}
+
+.name-input {
+  font-weight: 700;
+}
+
+.name-input::placeholder {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.date-input {
+  color: var(--dim);
+  color-scheme: dark;
+}
+
+.name-input:focus,
+.date-input:focus {
+  outline: 1px solid var(--dim);
+  outline-offset: 2px;
+  background: rgba(0, 255, 102, 0.05);
+}
+
+.remove-btn {
+  color: var(--muted);
+  font-size: 1rem;
+  padding: 0 0.4rem;
+  margin-left: auto;
+}
+
+.remove-btn:hover {
+  color: var(--danger);
+  text-shadow: 0 0 4px rgba(255, 51, 51, 0.6);
+}
+
+.add-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0;
+  color: var(--dim);
+  font-family: inherit;
+  text-transform: lowercase;
+}
+
+.add-btn::before {
+  content: "$ ";
+  color: var(--muted);
+}
+
+.add-btn:hover {
+  color: var(--fg);
+}
+
+.site-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--dim);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.site-footer::before {
+  content: "// ";
+}
+
+.site-footer a {
+  color: var(--dim);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--dim);
+}
+
+.site-footer a:hover {
+  color: var(--fg);
+  border-bottom-color: var(--fg);
+}

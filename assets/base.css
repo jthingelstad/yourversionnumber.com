@@ -1,0 +1,118 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.theme-select {
+  font: inherit;
+  color: inherit;
+}
+
+.about-dialog {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.about-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.about-content {
+  max-width: 540px;
+  width: calc(100vw - 2rem);
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  background: #fff;
+  color: #111;
+  padding: 1.75rem 2rem;
+  border-radius: 8px;
+}
+
+.about-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.about-list {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.about-list li {
+  margin-bottom: 0.5rem;
+}
+
+.people {
+  display: flex;
+  flex-direction: column;
+}
+
+.person {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.version {
+  font-size: clamp(3.5rem, 10vw, 6.5rem);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.person-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.name-input {
+  flex: 1 1 auto;
+  min-width: 0;
+}

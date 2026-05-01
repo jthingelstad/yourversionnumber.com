@@ -1,0 +1,313 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap');
+
+:root {
+  --bg: #fff8e1;
+  --ink: #111111;
+  --red: #ee2222;
+  --yellow: #ffd400;
+  --blue: #1d8eff;
+  --pink: #ff80c0;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 212, 0, 0.25) 0, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(29, 142, 255, 0.2) 0, transparent 40%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Comic Neue', "Comic Sans MS", cursive;
+  font-size: 17px;
+  line-height: 1.4;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.site-header {
+  margin-bottom: 1.5rem;
+}
+
+.site-title {
+  font-family: 'Bangers', cursive;
+  font-size: 3.75rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin: 0;
+  color: var(--red);
+  -webkit-text-stroke: 2px var(--ink);
+  text-shadow:
+    4px 4px 0 var(--yellow),
+    4px 4px 0 var(--ink);
+  transform: rotate(-3deg);
+  display: inline-block;
+}
+
+.theme-select {
+  appearance: none;
+  font-family: 'Bangers', cursive;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.3rem 2rem 0.3rem 1rem;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><path d='M3 5l4 4 4-4' stroke='black' stroke-width='2.5' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+}
+
+.about-btn {
+  font-family: 'Bangers', cursive;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  background: var(--blue);
+  color: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.2rem 1rem;
+  -webkit-text-stroke: 0.5px var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.about-btn:hover {
+  background: var(--red);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.about-content {
+  background: #fff;
+  color: var(--ink);
+  border: 4px solid var(--ink);
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  font-family: 'Comic Neue', cursive;
+  font-weight: 700;
+  line-height: 1.5;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.about-content h2 {
+  font-family: 'Bangers', cursive;
+  font-weight: 400;
+  font-size: 2.5rem;
+  letter-spacing: 0.04em;
+  color: var(--red);
+  -webkit-text-stroke: 1.5px var(--ink);
+  text-shadow: 3px 3px 0 var(--yellow), 3px 3px 0 var(--ink);
+  margin: 0;
+  transform: rotate(-2deg);
+}
+
+.about-close {
+  background: var(--red);
+  color: #fff;
+  border: 3px solid var(--ink);
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.about-close:hover {
+  transform: rotate(-12deg);
+}
+
+.about-content code {
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  padding: 0 0.4em;
+  font-weight: 700;
+  border-radius: 4px;
+  font-family: 'Comic Neue', monospace;
+}
+
+.about-content a {
+  color: var(--blue);
+  font-weight: 700;
+  -webkit-text-stroke: 0.4px var(--ink);
+}
+
+.about-credit,
+.about-tip {
+  font-size: 0.95rem;
+  border-top: 3px dashed var(--ink);
+  padding-top: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.intro {
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0 2rem;
+  position: relative;
+  box-shadow: 4px 4px 0 var(--ink);
+  font-weight: 700;
+}
+
+.intro::after {
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  left: 2.5rem;
+  border: 8px solid transparent;
+  border-top-color: var(--ink);
+}
+
+.intro code {
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  padding: 0 0.4em;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.people {
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.person {
+  background: #fff;
+  border: 4px solid var(--ink);
+  border-radius: 16px;
+  padding: 1.5rem 1.75rem;
+  width: 100%;
+  box-shadow: 6px 6px 0 var(--ink);
+  position: relative;
+}
+
+.person:nth-child(3n+1) { background: #fff; }
+.person:nth-child(3n+2) { background: #ffeef5; }
+.person:nth-child(3n)   { background: #e8f3ff; }
+
+.person::before {
+  content: "POW!";
+  position: absolute;
+  top: -18px;
+  right: 16px;
+  font-family: 'Bangers', cursive;
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  background: var(--yellow);
+  color: var(--red);
+  -webkit-text-stroke: 1px var(--ink);
+  border: 3px solid var(--ink);
+  padding: 0.1rem 0.7rem;
+  border-radius: 999px;
+  transform: rotate(8deg);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.person:nth-child(3n+2)::before { content: "ZAP!"; background: var(--pink); color: var(--ink); }
+.person:nth-child(3n)::before   { content: "BOOM!"; background: var(--blue); color: var(--yellow); }
+
+.version {
+  font-family: 'Bangers', cursive;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--red);
+  -webkit-text-stroke: 2px var(--ink);
+  text-shadow: 4px 4px 0 var(--ink);
+  margin-bottom: 0.75rem;
+  line-height: 0.95;
+}
+
+.person-meta {
+  border-top: 3px dashed var(--ink);
+  padding-top: 0.75rem;
+  width: 100%;
+  gap: 1rem;
+}
+
+.name-input,
+.date-input {
+  background: transparent;
+  border: 0;
+  font-family: 'Comic Neue', cursive;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ink);
+  padding: 0.2rem 0.3rem;
+}
+
+.name-input::placeholder {
+  color: var(--ink);
+  opacity: 0.4;
+}
+
+.name-input:focus,
+.date-input:focus {
+  outline: 3px solid var(--blue);
+  outline-offset: 1px;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.remove-btn {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  border: 2px solid var(--ink);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.remove-btn:hover {
+  transform: rotate(-10deg);
+}
+
+.add-btn {
+  display: block;
+  margin: 0 auto;
+  font-family: 'Bangers', cursive;
+  font-size: 1.6rem;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  background: var(--yellow);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.5rem 2rem;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.add-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.site-footer {
+  margin-top: 3rem;
+  font-weight: 700;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.site-footer a {
+  color: var(--blue);
+  font-weight: 700;
+  -webkit-text-stroke: 0.5px var(--ink);
+}

@@ -1,0 +1,292 @@
+@import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=UnifrakturCook:wght@700&family=Special+Elite&display=swap');
+
+:root {
+  --paper: #f4f0e6;
+  --paper-edge: #d8cfb6;
+  --ink: #1c1810;
+  --faded: #5b5343;
+  --rule: #2a2418;
+  --stamp: #8b1414;
+}
+
+body {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(180,160,110,0.08) 0, transparent 35%),
+    radial-gradient(circle at 85% 80%, rgba(120,100,60,0.08) 0, transparent 30%),
+    var(--paper);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Old Standard TT', 'Times New Roman', serif;
+  font-size: 17px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 23px, rgba(28,24,16,0.025) 23px 24px),
+    var(--paper);
+  border-left: 1px solid var(--paper-edge);
+  border-right: 1px solid var(--paper-edge);
+  box-shadow: 0 0 30px rgba(0,0,0,0.05);
+}
+
+.site-header {
+  border-top: 4px double var(--rule);
+  border-bottom: 4px double var(--rule);
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.site-title {
+  font-family: 'UnifrakturCook', 'Old Standard TT', serif;
+  font-weight: 700;
+  font-size: 3.5rem;
+  margin: 0;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.header-controls {
+  font-size: 0.85rem;
+  color: var(--faded);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.theme-select {
+  appearance: none;
+  background: transparent;
+  color: var(--ink);
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  padding: 0.2rem 1.5rem 0.2rem 0.3rem;
+  font-family: 'Old Standard TT', serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 4l3 3 3-3' stroke='%231c1810' stroke-width='1' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.3rem center;
+}
+
+.about-btn {
+  font-family: 'Old Standard TT', serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  background: transparent;
+  color: var(--ink);
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  padding: 0.2rem 0.4rem;
+}
+
+.about-btn:hover {
+  color: var(--stamp);
+  border-bottom-color: var(--stamp);
+}
+
+.intro {
+  text-align: center;
+  font-style: italic;
+  color: var(--faded);
+  font-size: 1.05rem;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.85rem 0;
+  margin: 1.5rem 0 2rem;
+}
+
+.intro::before { content: "« "; }
+.intro::after  { content: " »"; }
+
+.intro code {
+  font-family: 'Special Elite', 'Courier New', monospace;
+  font-style: normal;
+  background: transparent;
+  padding: 0;
+  letter-spacing: -0.02em;
+}
+
+.people {
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.person {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 1.25rem 0;
+  width: 100%;
+  position: relative;
+}
+
+.person::before {
+  content: "★ ENTRY ★";
+  position: absolute;
+  top: -0.75em;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--paper);
+  padding: 0 0.85rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--faded);
+}
+
+.version {
+  font-family: 'Old Standard TT', serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(4.5rem, 13vw, 8.5rem);
+  text-align: center;
+  color: var(--ink);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0.5rem 0 1rem;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.05);
+}
+
+.person-meta {
+  border-top: 1px solid var(--rule);
+  padding-top: 0.75rem;
+  width: 100%;
+  font-family: 'Special Elite', 'Courier New', monospace;
+  font-size: 0.95rem;
+}
+
+.name-input,
+.date-input {
+  background: transparent;
+  border: 0;
+  color: var(--ink);
+  font-family: 'Special Elite', 'Courier New', monospace;
+  padding: 0.2rem 0.3rem;
+}
+
+.name-input {
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.name-input::placeholder {
+  color: var(--faded);
+  text-transform: none;
+  font-style: italic;
+}
+
+.name-input:focus,
+.date-input:focus {
+  outline: 1px dashed var(--ink);
+  outline-offset: 2px;
+}
+
+.remove-btn {
+  margin-left: auto;
+  color: var(--faded);
+  font-size: 1.1rem;
+}
+
+.remove-btn:hover {
+  color: var(--stamp);
+}
+
+.add-btn {
+  display: block;
+  margin: 2rem auto 0;
+  font-family: 'Old Standard TT', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.5rem 2rem;
+}
+
+.add-btn::before { content: "— "; }
+.add-btn::after  { content: " —"; }
+
+.add-btn:hover {
+  color: var(--stamp);
+  border-color: var(--stamp);
+}
+
+.site-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 4px double var(--rule);
+  text-align: center;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--faded);
+}
+
+.site-footer a {
+  color: var(--ink);
+  font-style: normal;
+}
+
+.about-content {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 2rem 2.25rem;
+  font-family: 'Old Standard TT', serif;
+  line-height: 1.6;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  background-image: repeating-linear-gradient(0deg, transparent 0 23px, rgba(28,24,16,0.025) 23px 24px);
+}
+
+.about-content h2 {
+  font-family: 'UnifrakturCook', serif;
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.about-close {
+  font-size: 1.4rem;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0;
+}
+
+.about-close:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.about-content code {
+  font-family: 'Special Elite', monospace;
+  background: transparent;
+  letter-spacing: -0.02em;
+}
+
+.about-content a {
+  color: var(--stamp);
+}
+
+.about-credit,
+.about-tip {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--faded);
+  border-top: 1px solid var(--rule);
+  padding-top: 0.85rem;
+  margin-top: 1.25rem;
+}
