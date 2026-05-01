@@ -211,23 +211,26 @@ function renderRow(person) {
 function renderHeaderControls() {
   const wrap = document.createElement('div');
   wrap.className = 'header-controls';
+
+  const editBtn = document.createElement('button');
+  editBtn.type = 'button';
+  editBtn.className = 'edit-btn';
+  editBtn.textContent = 'Birthdays';
+  editBtn.setAttribute('data-tinylytics-event', 'edit.open');
+  editBtn.addEventListener('click', () => openEdit());
+  wrap.appendChild(editBtn);
+
   wrap.appendChild(renderThemeSelector());
 
   const aboutBtn = document.createElement('button');
   aboutBtn.type = 'button';
   aboutBtn.className = 'about-btn';
-  aboutBtn.textContent = 'About';
+  aboutBtn.textContent = '?';
+  aboutBtn.setAttribute('aria-label', 'About');
+  aboutBtn.title = 'About';
   aboutBtn.setAttribute('data-tinylytics-event', 'about.open');
   aboutBtn.addEventListener('click', openAbout);
   wrap.appendChild(aboutBtn);
-
-  const editBtn = document.createElement('button');
-  editBtn.type = 'button';
-  editBtn.className = 'edit-btn';
-  editBtn.textContent = 'Edit';
-  editBtn.setAttribute('data-tinylytics-event', 'edit.open');
-  editBtn.addEventListener('click', () => openEdit());
-  wrap.appendChild(editBtn);
 
   return wrap;
 }
