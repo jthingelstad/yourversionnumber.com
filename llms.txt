@@ -7,7 +7,7 @@ The site is a single-page static app served from GitHub Pages. No build step, no
 ## Pages
 
 - [Your Version Number](https://yourversionnumber.com/): birthday-based version number. URL state: `?theme=<name>&p=Name:YYYY-MM-DD` (the `p` parameter is repeatable; the name is optional).
-- [Your Version Number at Work](https://yourversionnumber.com/work/): quarter-anchored version number for a job. `MAJOR` is years of tenure, `MINOR` is the quarter within the current tenure year (0–3, 3 calendar months apart from the anniversary), `PATCH` is business days into that quarter. URL state: `?theme=<name>&j=Title:YYYY-MM-DD`.
+- [Your Version Number: Work Edition](https://yourversionnumber.com/work/): quarter-anchored version number for a job. `MAJOR` is years of tenure, `MINOR` is the quarter within the current tenure year (0–3, 3 calendar months apart from the anniversary), `PATCH` is business days into that quarter. URL state: `?theme=<name>&j=Title:YYYY-MM-DD`.
 
 ## Source
 

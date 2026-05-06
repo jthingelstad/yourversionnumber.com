@@ -57,7 +57,7 @@ Each theme is its own world. They don't share variables, they don't extend each 
 - [ ] Footer is readable and the visit counter is visible.
 - [ ] Open Edit and About — the neutral dialogs should still look right against your theme's backdrop.
 - [ ] At narrow widths (~360px) nothing overflows or truncates.
-- [ ] You added the entry to `THEMES` in `assets/app.js` — without it, the picker doesn't list your theme and `?theme=your-name` will fall back to default.
+- [ ] You added the entry to `THEMES` in `assets/app.js` — without it, the picker doesn't list your theme and `?theme=your-name` will fall back to a random pick.
 
 ## Work themes
 
@@ -75,6 +75,6 @@ Drop work themes at `work/themes/<name>.css`, register them in `work/assets/app.
 
 - Filename and `name` field: lowercase, hyphenated, short. `cyberpunk-2077.css` is fine; `My Cool Theme!.css` isn't.
 - `label`: title case, what users see in the picker.
-- Pick a `kind` that fits — when in doubt, look at the existing 18 themes for which bucket your aesthetic belongs in.
+- Pick a `kind` that fits — when in doubt, look at the existing themes for which bucket your aesthetic belongs in.
 
 That's it. Have fun.

@@ -1,5 +1,4 @@
 const THEMES = [
-  { name: 'default',    label: 'Default',    kind: 'light', animate: false },
   { name: 'dark',       label: 'Dark',       kind: 'dark',  animate: false },
   { name: 'family',     label: 'Family',     kind: 'light', animate: false },
   { name: 'pastel',     label: 'Pastel',     kind: 'light', animate: false },
@@ -22,8 +21,12 @@ const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
 const THEME_KINDS = ['light', 'dark', 'fun', 'retro'];
 const KIND_LABELS = { light: 'Light', dark: 'Dark', fun: 'Fun', retro: 'Retro' };
-const DEFAULT_THEME = 'default';
 const RANDOM_THEME = '__random__';
+
+function pickRandomTheme(except) {
+  const pool = except ? THEME_NAMES.filter(n => n !== except) : THEME_NAMES;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 // Tinylytics has no JS API — events fire via clicks on elements with
@@ -46,22 +49,19 @@ function trackEvent(name, value) {
   proxy.click();
 }
 
-const state = { theme: DEFAULT_THEME, people: [] };
+const state = { theme: null, themeIsExplicit: false, people: [] };
 
 function parseURL() {
   const params = new URLSearchParams(location.search);
   const urlTheme = params.get('theme');
-  let theme;
-  if (urlTheme) {
-    if (!THEME_NAMES.includes(urlTheme)) {
-      console.warn(`Unknown theme "${urlTheme}", falling back to "${DEFAULT_THEME}".`);
-      theme = DEFAULT_THEME;
-    } else {
-      theme = urlTheme;
-    }
+  let theme, themeIsExplicit;
+  if (urlTheme && THEME_NAMES.includes(urlTheme)) {
+    theme = urlTheme;
+    themeIsExplicit = true;
   } else {
-    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-    theme = prefersDark ? 'dark' : DEFAULT_THEME;
+    if (urlTheme) console.warn(`Unknown theme "${urlTheme}", picking a random one.`);
+    theme = pickRandomTheme();
+    themeIsExplicit = false;
   }
   const people = [];
   for (const value of params.getAll('p')) {
@@ -74,7 +74,7 @@ function parseURL() {
     }
     people.push({ name, birthday });
   }
-  return { theme, people };
+  return { theme, themeIsExplicit, people };
 }
 
 function isRealDate(ymd) {
@@ -85,7 +85,7 @@ function isRealDate(ymd) {
 
 function writeURL() {
   const params = new URLSearchParams();
-  if (state.theme !== DEFAULT_THEME) params.set('theme', state.theme);
+  if (state.themeIsExplicit) params.set('theme', state.theme);
   for (const p of state.people) {
     params.append('p', p.name ? `${p.name}:${p.birthday}` : p.birthday);
   }
@@ -174,7 +174,16 @@ function render() {
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
-  footer.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a> &mdash; new themes welcome via pull request. Bookmark this URL to save what’s here.';
+
+  const crossLink = document.createElement('div');
+  crossLink.className = 'site-cross-link';
+  crossLink.innerHTML = 'Now also available &mdash; <a href="/work/">Your Version Number: Work Edition</a>™.';
+  footer.appendChild(crossLink);
+
+  const attribution = document.createElement('div');
+  attribution.className = 'site-attribution';
+  attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a> &mdash; new themes welcome via pull request. Bookmark this URL to save what’s here.';
+  footer.appendChild(attribution);
 
   const stats = document.createElement('div');
   stats.className = 'site-stats';
@@ -260,15 +269,13 @@ function renderThemeSelector() {
 
   select.addEventListener('change', () => {
     let next = select.value;
-    if (next === RANDOM_THEME) {
-      const pool = THEME_NAMES.filter(n => n !== state.theme);
-      next = pool[Math.floor(Math.random() * pool.length)];
-    }
+    if (next === RANDOM_THEME) next = pickRandomTheme(state.theme);
     if (state.theme === next) {
       select.value = state.theme;
       return;
     }
     state.theme = next;
+    state.themeIsExplicit = true;
     applyTheme(next);
     writeURL();
     trackEvent('theme.change', next);
@@ -308,7 +315,7 @@ function openAbout() {
             <li><strong>PATCH</strong> &mdash; days since your most recent birthday. Daily refinements.</li>
           </ul>
           <p>Someone who is 46 years old and 52 days past their birthday is on <code>v4.6.52</code>.</p>
-          <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. Working life has its own version number &mdash; see <a href="/work/">Your Version Number at Work</a>.</p>
+          <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. Now available in a thrilling new flavor &mdash; <a href="/work/">Your Version Number: Work Edition</a>™.</p>
           <p class="app-dialog__tip">Tip: the URL holds everything &mdash; names, birthdays, theme. Bookmark a URL to save the view.</p>
         </div>
       </article>
@@ -494,6 +501,7 @@ function scheduleMidnightTick() {
 
 const parsed = parseURL();
 state.theme = parsed.theme;
+state.themeIsExplicit = parsed.themeIsExplicit;
 state.people = parsed.people;
 applyTheme(state.theme);
 render();

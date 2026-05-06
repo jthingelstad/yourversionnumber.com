@@ -1,5 +1,4 @@
 const THEMES = [
-  { name: 'default',     label: 'Default',     kind: 'light', animate: false },
   { name: 'boardroom',   label: 'Boardroom',   kind: 'dark',  animate: false },
   { name: 'whiteboard',  label: 'Whiteboard',  kind: 'light', animate: false },
   { name: 'spreadsheet', label: 'Spreadsheet', kind: 'retro', animate: true  },
@@ -9,9 +8,12 @@ const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
 const THEME_KINDS = ['light', 'dark', 'fun', 'retro'];
 const KIND_LABELS = { light: 'Light', dark: 'Dark', fun: 'Fun', retro: 'Retro' };
-const DEFAULT_THEME = 'default';
-const DARK_DEFAULT_THEME = 'boardroom';
 const RANDOM_THEME = '__random__';
+
+function pickRandomTheme(except) {
+  const pool = except ? THEME_NAMES.filter(n => n !== except) : THEME_NAMES;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function trackEvent(name, value) {
@@ -31,22 +33,19 @@ function trackEvent(name, value) {
   proxy.click();
 }
 
-const state = { theme: DEFAULT_THEME, roles: [] };
+const state = { theme: null, themeIsExplicit: false, roles: [] };
 
 function parseURL() {
   const params = new URLSearchParams(location.search);
   const urlTheme = params.get('theme');
-  let theme;
-  if (urlTheme) {
-    if (!THEME_NAMES.includes(urlTheme)) {
-      console.warn(`Unknown theme "${urlTheme}", falling back to "${DEFAULT_THEME}".`);
-      theme = DEFAULT_THEME;
-    } else {
-      theme = urlTheme;
-    }
+  let theme, themeIsExplicit;
+  if (urlTheme && THEME_NAMES.includes(urlTheme)) {
+    theme = urlTheme;
+    themeIsExplicit = true;
   } else {
-    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-    theme = prefersDark ? DARK_DEFAULT_THEME : DEFAULT_THEME;
+    if (urlTheme) console.warn(`Unknown theme "${urlTheme}", picking a random one.`);
+    theme = pickRandomTheme();
+    themeIsExplicit = false;
   }
   const roles = [];
   for (const value of params.getAll('j')) {
@@ -59,7 +58,7 @@ function parseURL() {
     }
     roles.push({ title, startDate });
   }
-  return { theme, roles };
+  return { theme, themeIsExplicit, roles };
 }
 
 function isRealDate(ymd) {
@@ -70,7 +69,7 @@ function isRealDate(ymd) {
 
 function writeURL() {
   const params = new URLSearchParams();
-  if (state.theme !== DEFAULT_THEME) params.set('theme', state.theme);
+  if (state.themeIsExplicit) params.set('theme', state.theme);
   for (const r of state.roles) {
     params.append('j', r.title ? `${r.title}:${r.startDate}` : r.startDate);
   }
@@ -169,7 +168,7 @@ function render() {
   header.className = 'site-header';
   const title = document.createElement('h1');
   title.className = 'site-title';
-  title.textContent = 'Your Version Number at Work';
+  title.innerHTML = 'Your Version Number: <span class="edition">Work Edition</span><sup class="tm">™</sup>';
   header.appendChild(title);
   header.appendChild(renderHeaderControls());
   app.appendChild(header);
@@ -177,7 +176,7 @@ function render() {
   if (state.roles.length === 0) {
     const intro = document.createElement('p');
     intro.className = 'intro';
-    intro.innerHTML = 'A version number for your work life — <code>YEARS.QUARTERS.DAYS</code>, where days are <em>business</em> days. Quarters are the operational heartbeat of corporate life. Add a role to begin.';
+    intro.innerHTML = 'It’s the version number you know and love &mdash; now <strong>ENTERPRISE-READY</strong>. The <strong>Work Edition</strong>™ ships with <code>YEARS.QUARTERS.DAYS</code>, where days are <em>business</em> days, because real work doesn’t happen on weekends. Synergize your timeline. Add a role to begin.';
     app.appendChild(intro);
   }
 
@@ -190,7 +189,7 @@ function render() {
     const addBtn = document.createElement('button');
     addBtn.type = 'button';
     addBtn.className = 'add-btn';
-    addBtn.textContent = '+ Add a role';
+    addBtn.textContent = '+ Onboard a role';
     addBtn.setAttribute('data-tinylytics-event', 'role.add');
     addBtn.addEventListener('click', () => openEdit({ addBlankRow: true }));
     app.appendChild(addBtn);
@@ -198,7 +197,16 @@ function render() {
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
-  footer.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. For the birthday version, see <a href="/">Your Version Number</a>. Bookmark this URL to save what’s here.';
+
+  const crossLink = document.createElement('div');
+  crossLink.className = 'site-cross-link';
+  crossLink.innerHTML = 'A wholly-owned subsidiary of <a href="/">Your Version Number</a> &mdash; the original birthday-powered semver.';
+  footer.appendChild(crossLink);
+
+  const attribution = document.createElement('div');
+  attribution.className = 'site-attribution';
+  attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. Bookmark this URL to lock in your value proposition.';
+  footer.appendChild(attribution);
 
   const stats = document.createElement('div');
   stats.className = 'site-stats';
@@ -286,15 +294,13 @@ function renderThemeSelector() {
 
   select.addEventListener('change', () => {
     let next = select.value;
-    if (next === RANDOM_THEME) {
-      const pool = THEME_NAMES.filter(n => n !== state.theme);
-      next = pool[Math.floor(Math.random() * pool.length)];
-    }
+    if (next === RANDOM_THEME) next = pickRandomTheme(state.theme);
     if (state.theme === next) {
       select.value = state.theme;
       return;
     }
     state.theme = next;
+    state.themeIsExplicit = true;
     applyTheme(next);
     writeURL();
     trackEvent('theme.change', next);
@@ -325,13 +331,13 @@ function openAbout() {
           <button type="button" class="app-dialog__close" aria-label="Close">&times;</button>
         </header>
         <div class="app-dialog__body">
-          <p>A <strong>version number</strong> for your work life — same <code>MAJOR.MINOR.PATCH</code> shape as semver, anchored on quarters because quarters are the operational heartbeat of corporate life: OKRs, earnings, planning, reviews.</p>
+          <p>Introducing the <strong>Work Edition</strong>™ &mdash; the same beloved <code>MAJOR.MINOR.PATCH</code> you trust, now <strong>OPTIMIZED FOR THE MODERN ENTERPRISE</strong>. Where the original tracked your trip around the sun, the Work Edition™ tracks your trip through the corporate calendar. Quarters. OKRs. Earnings. The eternal march of fiscal time.</p>
           <ul>
-            <li><strong>MAJOR</strong> &mdash; years of tenure. Bumps on every work anniversary.</li>
-            <li><strong>MINOR</strong> &mdash; quarter within the current tenure year (0&ndash;3). Quarters are 3 calendar months on the same day as your anniversary &mdash; if you started Feb 10, your Q1 starts May 10.</li>
-            <li><strong>PATCH</strong> &mdash; business days into the current quarter. Weekdays only &mdash; weekends don&rsquo;t tick.</li>
+            <li><strong>MAJOR</strong> &mdash; years of tenure. Bumps when HR sends the anniversary email.</li>
+            <li><strong>MINOR</strong> &mdash; quarter (0&ndash;3). Three calendar months from your start date &mdash; if you started Feb 10, Q1 begins May 10. The unit of all things scheduled, planned, and reviewed.</li>
+            <li><strong>PATCH</strong> &mdash; business days into the quarter. Weekends do not tick, because real work doesn&rsquo;t happen on weekends. <em>You&rsquo;re welcome.</em></li>
           </ul>
-          <p>Hired on 2024-01-15, today: two years in, second quarter (0-indexed, started Apr 15), 15 work-days deep &rarr; <code>v2.1.15</code>.</p>
+          <p>Hired on 2024-01-15? Today you&rsquo;re shipping <code>v2.1.15</code>. That&rsquo;s two years of impact, into the second quarter (0-indexed, because we&rsquo;re engineers), fifteen work-days deep. <strong>Ship it.</strong></p>
           <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. For the birthday version, see <a href="/">Your Version Number</a>.</p>
           <p class="app-dialog__tip">Tip: the URL holds everything &mdash; titles, start dates, theme. Bookmark a URL to save the view.</p>
         </div>
@@ -524,6 +530,7 @@ function scheduleMidnightTick() {
 
 const parsed = parseURL();
 state.theme = parsed.theme;
+state.themeIsExplicit = parsed.themeIsExplicit;
 state.roles = parsed.roles;
 applyTheme(state.theme);
 render();

@@ -10,14 +10,14 @@ The URL is the source of truth. Bookmark a URL, get the same view back later.
 https://yourversionnumber.com/?theme=family&p=Jamie:1974-01-15&p=Sara:1976-03-20&p=:2008-09-04
 ```
 
-- `theme` — name of a stylesheet in `themes/`. Optional; defaults to `default`.
+- `theme` — name of a stylesheet in `themes/`. Optional; if omitted, the page picks a random theme on each visit.
 - `p` — repeatable. `Name:YYYY-MM-DD`, or just `YYYY-MM-DD` for an unnamed entry. (The old `p=:YYYY-MM-DD` form is still parsed, for old bookmarks.)
 
-Unknown themes fall back to `default`. Malformed `p` entries are skipped (with a console warning).
+Unknown or omitted themes resolve to a random pick from the manifest, and the random pick is **not** written back to the URL — so a clean bookmark stays a surprise on every visit. Malformed `p` entries are skipped (with a console warning).
 
 ## Themes
 
-Eighteen ship by default: `default`, `dark`, `family`, `pastel`, `birthday`, `nature`, `ocean`, `galaxy`, `zen`, `terminal`, `arcade`, `vaporwave`, `y2k`, `newspaper`, `steampunk`, `brutalist`, `comic`, `memphis`. Each is a standalone stylesheet in `themes/`.
+Seventeen ship: `dark`, `family`, `pastel`, `birthday`, `nature`, `ocean`, `galaxy`, `zen`, `terminal`, `arcade`, `vaporwave`, `y2k`, `newspaper`, `steampunk`, `brutalist`, `comic`, `memphis`. Each is a standalone stylesheet in `themes/`.
 
 Themes paint the **display**: header, person rows, footer, empty-state CTA. They do not style the About or Edit dialogs — those are app chrome with a neutral look in `assets/base.css` that follows the OS light/dark preference. This keeps themes simple and the dialogs consistent on every theme.
 
@@ -35,11 +35,11 @@ Hooks available for theme-side polish, with no JS cost when ignored:
 - `.person-name` — renders inside `.person` when a name is set. Themes can opt into styling it; falls back to a small muted treatment in `base.css`.
 - `.edit-btn` — header button, sits next to `.about-btn`. Theme files pair the two so the new button picks up the same look.
 
-A first-time visitor with no `?theme=` in the URL gets `dark` if their OS is in dark mode, otherwise `default`. Once any theme is chosen it's written to the URL and that's what the bookmark holds.
+A first-time visitor with no `?theme=` in the URL gets a random theme each visit. Once a theme is explicitly chosen via the picker (or specified in the URL), it's written to the URL and that's what the bookmark holds.
 
-## Work mode
+## Work Edition™
 
-There's a sibling page at [`/work/`](https://yourversionnumber.com/work/) with the same idea applied to your work life: `<years-of-tenure>.<quarter-within-tenure-year>.<business-days-in-quarter>`. Quarters are reckoned from your work anniversary (not the calendar), and PATCH counts business days only — weekends don't tick.
+There's a sibling page at [`/work/`](https://yourversionnumber.com/work/) — _Your Version Number: Work Edition™_ — with the same idea applied to your work life: `<years-of-tenure>.<quarter-within-tenure-year>.<business-days-in-quarter>`. Quarters are 3 calendar months from your start date (Feb 10 start → Q1 May 10), and PATCH counts business days only — weekends don't tick.
 
 ```
 https://yourversionnumber.com/work/?theme=boardroom&j=Engineer:2024-01-15
