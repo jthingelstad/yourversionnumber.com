@@ -1,0 +1,208 @@
+:root {
+  --bg: #000000;
+  --panel: #0a0a0a;
+  --fg: #ff8800;
+  --fg-dim: #b85f00;
+  --muted: #6a4a1f;
+  --up: #00ff66;
+  --down: #ff3344;
+  --border: #2a1a05;
+  --scan: rgba(255, 136, 0, 0.04);
+}
+
+@keyframes ticker-blink {
+  0%, 95% { opacity: 1; }
+  97%, 100% { opacity: 0.4; }
+}
+
+body {
+  background:
+    repeating-linear-gradient(0deg, transparent 0, transparent 2px, var(--scan) 2px, var(--scan) 3px),
+    var(--bg);
+  color: var(--fg);
+  font-family: "SF Mono", Menlo, Consolas, "Lucida Console", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.site-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  margin: 0;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+.site-title::before {
+  content: "● LIVE  ";
+  color: var(--down);
+  letter-spacing: 0.05em;
+  animation: ticker-blink 2s infinite;
+}
+
+.header-controls {
+  gap: 0.4rem;
+}
+
+.theme-select {
+  appearance: none;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.35rem 1.7rem 0.35rem 0.7rem;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--fg);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 3l3 3 3-3' stroke='%23ff8800' stroke-width='1.2' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+}
+.theme-select:focus { outline: none; border-color: var(--fg); }
+
+.about-btn, .edit-btn {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.35rem 0.85rem;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--fg);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.about-btn:hover, .edit-btn:hover {
+  border-color: var(--fg);
+  color: #fff;
+}
+
+.intro {
+  color: var(--fg-dim);
+  margin: 0 0 2rem;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  max-width: 64ch;
+}
+.intro::before {
+  content: "[ INFO ] ";
+  color: var(--up);
+}
+.intro code {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 0 0.4em;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.people {
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.person {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--up);
+  padding: 1.25rem 1.5rem;
+  width: 100%;
+  position: relative;
+}
+
+.person::before {
+  content: "▲";
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  color: var(--up);
+  font-size: 1rem;
+}
+
+.person-name {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--fg-dim);
+  margin-bottom: 0.5rem;
+  opacity: 1;
+  font-weight: 700;
+}
+.person-name::before {
+  content: "TKR ";
+  color: var(--muted);
+}
+
+.version {
+  color: var(--up);
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
+}
+
+.add-btn {
+  display: inline-block;
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.add-btn:hover {
+  border-color: var(--up);
+  color: var(--up);
+}
+
+.site-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--fg-dim);
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+.site-footer a {
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--fg-dim);
+}
+.site-footer a:hover { color: #fff; border-bottom-color: var(--fg); }
+
+body[data-quarter-start="true"] .version {
+  text-shadow: 0 0 24px rgba(0, 255, 102, 0.7);
+}
+
+body[data-tenure-anniversary="true"] .person {
+  border-left-color: var(--fg);
+  box-shadow: 0 0 30px rgba(255, 136, 0, 0.25);
+}
+body[data-tenure-anniversary="true"] .person::before {
+  content: "★";
+  color: var(--fg);
+  animation: ticker-blink 1.5s infinite;
+}
+body[data-tenure-anniversary="true"] .version {
+  color: var(--fg);
+  text-shadow: 0 0 24px rgba(255, 136, 0, 0.6);
+}

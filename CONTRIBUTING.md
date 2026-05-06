@@ -59,6 +59,18 @@ Each theme is its own world. They don't share variables, they don't extend each 
 - [ ] At narrow widths (~360px) nothing overflows or truncates.
 - [ ] You added the entry to `THEMES` in `assets/app.js` — without it, the picker doesn't list your theme and `?theme=your-name` will fall back to default.
 
+## Work themes
+
+The `/work/` page has its own independent theme set in `work/themes/` and its own `THEMES` array in `work/assets/app.js`. Same recipe, same `{ name, label, kind, animate }` shape, same off-limits selectors (`.app-dialog*`, `.edit-row*`).
+
+Extra hooks unique to work mode:
+
+- `body[data-mode="work"]` — always present on the `/work/` page. Useful if you ever share styles between modes.
+- `body[data-quarter-start="true"]` — a role on the page just rolled over to a new quarter (PATCH = 0). Analogous to `data-birthday="true"` on the root site.
+- `body[data-tenure-anniversary="true"]` — a role's MAJOR just bumped (MINOR = 0 ∧ PATCH = 0). Always implies `data-quarter-start="true"`.
+
+Drop work themes at `work/themes/<name>.css`, register them in `work/assets/app.js`, and verify with `?theme=<name>&j=Engineer:2024-01-15`.
+
 ## Naming
 
 - Filename and `name` field: lowercase, hyphenated, short. `cyberpunk-2077.css` is fine; `My Cool Theme!.css` isn't.

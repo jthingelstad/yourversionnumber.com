@@ -1,0 +1,282 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.theme-select {
+  font: inherit;
+  color: inherit;
+}
+
+.site-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.people {
+  display: flex;
+  flex-direction: column;
+}
+
+.person {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.person-name {
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.version {
+  font-size: clamp(3.5rem, 10vw, 6.5rem);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.app-dialog {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+.app-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.app-dialog__content {
+  max-width: 540px;
+  width: calc(100vw - 2rem);
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  background: #fff;
+  color: #111;
+  border-radius: 10px;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.app-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.app-dialog__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.app-dialog__close {
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  color: #666;
+}
+
+.app-dialog__close:hover {
+  background: #ececea;
+  color: #111;
+}
+
+.app-dialog__body p {
+  margin: 0.6rem 0;
+}
+
+.app-dialog__body ul {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.app-dialog__body li {
+  margin-bottom: 0.4rem;
+}
+
+.app-dialog__body code {
+  background: #ececea;
+  padding: 0.05em 0.35em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.app-dialog__body a {
+  color: #2b6cb0;
+}
+
+.app-dialog__credit,
+.app-dialog__tip {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 1.25rem;
+}
+
+.edit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.edit-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit-row__name,
+.edit-row__date {
+  font: inherit;
+  color: inherit;
+  background: #fff;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+}
+
+.edit-row__name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.edit-row__name:focus,
+.edit-row__date:focus {
+  outline: none;
+  border-color: #2b6cb0;
+}
+
+.edit-row__date {
+  font-variant-numeric: tabular-nums;
+}
+
+.edit-row__remove {
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  color: #888;
+}
+
+.edit-row__remove:hover {
+  background: #fff0f0;
+  color: #c53030;
+}
+
+.edit-add {
+  display: inline-block;
+  padding: 0.4rem 0.85rem;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  color: #666;
+  font-weight: 500;
+}
+
+.edit-add:hover {
+  border-color: #2b6cb0;
+  color: #2b6cb0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .app-dialog__content {
+    background: #1c1c1e;
+    color: #f2f2f2;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  }
+  .app-dialog__close {
+    color: #aaa;
+  }
+  .app-dialog__close:hover {
+    background: #2a2a2d;
+    color: #fff;
+  }
+  .app-dialog__body code {
+    background: #2a2a2d;
+  }
+  .app-dialog__body a {
+    color: #6ea8ff;
+  }
+  .app-dialog__credit,
+  .app-dialog__tip {
+    color: #aaa;
+  }
+  .edit-row__name,
+  .edit-row__date {
+    background: #2a2a2d;
+    border-color: #3a3a3d;
+    color: #f2f2f2;
+    color-scheme: dark;
+  }
+  .edit-row__name:focus,
+  .edit-row__date:focus {
+    border-color: #6ea8ff;
+  }
+  .edit-row__remove {
+    color: #aaa;
+  }
+  .edit-row__remove:hover {
+    background: #3a1d1d;
+    color: #ff8585;
+  }
+  .edit-add {
+    border-color: #3a3a3d;
+    color: #aaa;
+  }
+  .edit-add:hover {
+    border-color: #6ea8ff;
+    color: #6ea8ff;
+  }
+}

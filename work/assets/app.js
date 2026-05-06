@@ -1,34 +1,19 @@
 const THEMES = [
-  { name: 'default',    label: 'Default',    kind: 'light', animate: false },
-  { name: 'dark',       label: 'Dark',       kind: 'dark',  animate: false },
-  { name: 'family',     label: 'Family',     kind: 'light', animate: false },
-  { name: 'pastel',     label: 'Pastel',     kind: 'light', animate: false },
-  { name: 'birthday',   label: 'Birthday',   kind: 'fun',   animate: false },
-  { name: 'nature',     label: 'Nature',     kind: 'light', animate: false },
-  { name: 'ocean',      label: 'Ocean',      kind: 'dark',  animate: false },
-  { name: 'galaxy',     label: 'Galaxy',     kind: 'dark',  animate: true  },
-  { name: 'zen',        label: 'Zen',        kind: 'light', animate: false },
-  { name: 'terminal',   label: 'Terminal',   kind: 'retro', animate: true  },
-  { name: 'arcade',     label: 'Arcade',     kind: 'retro', animate: true  },
-  { name: 'vaporwave',  label: 'Vaporwave',  kind: 'retro', animate: true  },
-  { name: 'y2k',        label: 'Y2K',        kind: 'retro', animate: true  },
-  { name: 'newspaper',  label: 'Newspaper',  kind: 'light', animate: false },
-  { name: 'steampunk',  label: 'Steampunk',  kind: 'dark',  animate: false },
-  { name: 'brutalist',  label: 'Brutalist',  kind: 'light', animate: false },
-  { name: 'comic',      label: 'Comic',      kind: 'fun',   animate: false },
-  { name: 'memphis',    label: 'Memphis',    kind: 'fun',   animate: false },
+  { name: 'default',     label: 'Default',     kind: 'light', animate: false },
+  { name: 'boardroom',   label: 'Boardroom',   kind: 'dark',  animate: false },
+  { name: 'whiteboard',  label: 'Whiteboard',  kind: 'light', animate: false },
+  { name: 'spreadsheet', label: 'Spreadsheet', kind: 'retro', animate: true  },
+  { name: 'earnings',    label: 'Earnings',    kind: 'dark',  animate: true  },
 ];
 const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
 const THEME_KINDS = ['light', 'dark', 'fun', 'retro'];
 const KIND_LABELS = { light: 'Light', dark: 'Dark', fun: 'Fun', retro: 'Retro' };
 const DEFAULT_THEME = 'default';
+const DARK_DEFAULT_THEME = 'boardroom';
 const RANDOM_THEME = '__random__';
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-// Tinylytics has no JS API — events fire via clicks on elements with
-// data-tinylytics-event. For events that don't originate from a click
-// (page load, <select> change), proxy through a hidden button.
 function trackEvent(name, value) {
   let proxy = document.getElementById('__tly_proxy');
   if (!proxy) {
@@ -46,7 +31,7 @@ function trackEvent(name, value) {
   proxy.click();
 }
 
-const state = { theme: DEFAULT_THEME, people: [] };
+const state = { theme: DEFAULT_THEME, roles: [] };
 
 function parseURL() {
   const params = new URLSearchParams(location.search);
@@ -61,20 +46,20 @@ function parseURL() {
     }
   } else {
     const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-    theme = prefersDark ? 'dark' : DEFAULT_THEME;
+    theme = prefersDark ? DARK_DEFAULT_THEME : DEFAULT_THEME;
   }
-  const people = [];
-  for (const value of params.getAll('p')) {
+  const roles = [];
+  for (const value of params.getAll('j')) {
     const idx = value.indexOf(':');
-    const name = idx === -1 ? '' : value.slice(0, idx);
-    const birthday = idx === -1 ? value : value.slice(idx + 1);
-    if (!DATE_RE.test(birthday) || !isRealDate(birthday)) {
-      console.warn(`Skipping invalid date in p=${value}`);
+    const title = idx === -1 ? '' : value.slice(0, idx);
+    const startDate = idx === -1 ? value : value.slice(idx + 1);
+    if (!DATE_RE.test(startDate) || !isRealDate(startDate)) {
+      console.warn(`Skipping invalid date in j=${value}`);
       continue;
     }
-    people.push({ name, birthday });
+    roles.push({ title, startDate });
   }
-  return { theme, people };
+  return { theme, roles };
 }
 
 function isRealDate(ymd) {
@@ -86,8 +71,8 @@ function isRealDate(ymd) {
 function writeURL() {
   const params = new URLSearchParams();
   if (state.theme !== DEFAULT_THEME) params.set('theme', state.theme);
-  for (const p of state.people) {
-    params.append('p', p.name ? `${p.name}:${p.birthday}` : p.birthday);
+  for (const r of state.roles) {
+    params.append('j', r.title ? `${r.title}:${r.startDate}` : r.startDate);
   }
   const qs = params.toString();
   history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
@@ -98,29 +83,59 @@ function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
 }
 
-function computeVersion(birthday, today = new Date()) {
-  const [by, bm, bd] = birthday.split('-').map(Number);
-  const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-  let anniversaryYear = todayMid.getFullYear();
-  let anniversary = anniversaryDate(anniversaryYear, bm, bd);
-  if (todayMid < anniversary) {
-    anniversaryYear -= 1;
-    anniversary = anniversaryDate(anniversaryYear, bm, bd);
-  }
-
-  const age = anniversaryYear - by;
-  const major = Math.floor(age / 10);
-  const minor = age % 10;
-  const patch = Math.round((todayMid - anniversary) / 86_400_000);
-
-  return { major, minor, patch, age };
-}
-
-// For Feb 29 birthdays in non-leap years, JS new Date(y, 1, 29) silently rolls
-// to March 1 — which matches the spec ("treat Mar 1 as the anniversary").
+// Feb 29 starts: new Date(y, 1, 29) silently rolls to March 1 in non-leap years,
+// matching the convention used by the birthday version.
 function anniversaryDate(year, month1Indexed, day) {
   return new Date(year, month1Indexed - 1, day);
+}
+
+function computeWorkVersion(startDate, today = new Date()) {
+  const [sy, sm, sd] = startDate.split('-').map(Number);
+  const startMid = new Date(sy, sm - 1, sd);
+  const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  if (todayMid < startMid) return null;
+
+  let anniversaryYear = todayMid.getFullYear();
+  let anniversary = anniversaryDate(anniversaryYear, sm, sd);
+  if (todayMid < anniversary) {
+    anniversaryYear -= 1;
+    anniversary = anniversaryDate(anniversaryYear, sm, sd);
+  }
+
+  const tenureYears = anniversaryYear - sy;
+
+  // Quarters are 3 calendar months on the anniversary day-of-month.
+  // Start Feb 10 → Q1 May 10, Q2 Aug 10, Q3 Nov 10. End-of-month rollover
+  // (e.g. Aug 31 → Nov 31 → Dec 1) follows JS's Date convention, matching
+  // how anniversaryDate handles Feb 29.
+  let minor = 0;
+  let quarterStart = anniversary;
+  for (let q = 1; q <= 3; q++) {
+    const candidate = anniversaryDate(anniversaryYear, sm + q * 3, sd);
+    if (todayMid >= candidate) {
+      minor = q;
+      quarterStart = candidate;
+    } else {
+      break;
+    }
+  }
+
+  const patch = businessDaysBetween(quarterStart, todayMid);
+  return { major: tenureYears, minor, patch };
+}
+
+// Counts business days (Mon–Fri) strictly after `start`, up to and including `end`.
+// PATCH = 0 on the quarter-start date; weekends do not tick PATCH.
+function businessDaysBetween(start, end) {
+  let count = 0;
+  const cur = new Date(start);
+  while (cur < end) {
+    cur.setDate(cur.getDate() + 1);
+    const dow = cur.getDay();
+    if (dow >= 1 && dow <= 5) count++;
+  }
+  return count;
 }
 
 function formatVersion(v) {
@@ -131,50 +146,59 @@ function render() {
   const app = document.getElementById('app');
   app.innerHTML = '';
 
-  const count = state.people.length;
+  document.body.dataset.mode = 'work';
+
+  const count = state.roles.length;
   document.body.dataset.peopleCount = count === 0 ? '0' : count === 1 ? '1' : 'many';
 
-  const anyBirthday = state.people.some(p => {
-    if (!DATE_RE.test(p.birthday) || !isRealDate(p.birthday)) return false;
-    return computeVersion(p.birthday).patch === 0;
-  });
-  if (anyBirthday) document.body.dataset.birthday = 'true';
-  else delete document.body.dataset.birthday;
+  let anyQuarterStart = false;
+  let anyAnniversary = false;
+  for (const r of state.roles) {
+    if (!DATE_RE.test(r.startDate) || !isRealDate(r.startDate)) continue;
+    const v = computeWorkVersion(r.startDate);
+    if (!v) continue;
+    if (v.patch === 0) anyQuarterStart = true;
+    if (v.minor === 0 && v.patch === 0) anyAnniversary = true;
+  }
+  if (anyQuarterStart) document.body.dataset.quarterStart = 'true';
+  else delete document.body.dataset.quarterStart;
+  if (anyAnniversary) document.body.dataset.tenureAnniversary = 'true';
+  else delete document.body.dataset.tenureAnniversary;
 
   const header = document.createElement('header');
   header.className = 'site-header';
   const title = document.createElement('h1');
   title.className = 'site-title';
-  title.textContent = 'Your Version Number';
+  title.textContent = 'Your Version Number at Work';
   header.appendChild(title);
   header.appendChild(renderHeaderControls());
   app.appendChild(header);
 
-  if (state.people.length === 0) {
+  if (state.roles.length === 0) {
     const intro = document.createElement('p');
     intro.className = 'intro';
-    intro.innerHTML = 'A person’s version number is their age in <code>MAJOR.MINOR.PATCH</code> &mdash; decade, year-in-decade, days since their last birthday. Add a birthday to begin.';
+    intro.innerHTML = 'A version number for your work life — <code>YEARS.QUARTERS.DAYS</code>, where days are <em>business</em> days. Quarters are the operational heartbeat of corporate life. Add a role to begin.';
     app.appendChild(intro);
   }
 
   const list = document.createElement('div');
   list.className = 'people';
-  state.people.forEach(person => list.appendChild(renderRow(person)));
+  state.roles.forEach(role => list.appendChild(renderRow(role)));
   app.appendChild(list);
 
-  if (state.people.length === 0) {
+  if (state.roles.length === 0) {
     const addBtn = document.createElement('button');
     addBtn.type = 'button';
     addBtn.className = 'add-btn';
-    addBtn.textContent = '+ Add a birthday';
-    addBtn.setAttribute('data-tinylytics-event', 'person.add');
+    addBtn.textContent = '+ Add a role';
+    addBtn.setAttribute('data-tinylytics-event', 'role.add');
     addBtn.addEventListener('click', () => openEdit({ addBlankRow: true }));
     app.appendChild(addBtn);
   }
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
-  footer.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a> &mdash; new themes welcome via pull request. Bookmark this URL to save what’s here.';
+  footer.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. For the birthday version, see <a href="/">Your Version Number</a>. Bookmark this URL to save what’s here.';
 
   const stats = document.createElement('div');
   stats.className = 'site-stats';
@@ -189,20 +213,20 @@ function render() {
   app.appendChild(footer);
 }
 
-function renderRow(person) {
+function renderRow(role) {
   const row = document.createElement('div');
   row.className = 'person';
 
-  if (person.name) {
+  if (role.title) {
     const nameEl = document.createElement('div');
     nameEl.className = 'person-name';
-    nameEl.textContent = person.name;
+    nameEl.textContent = role.title;
     row.appendChild(nameEl);
   }
 
   const version = document.createElement('div');
   version.className = 'version';
-  updateVersionDisplay(version, person.birthday);
+  updateVersionDisplay(version, role.startDate);
   row.appendChild(version);
 
   return row;
@@ -215,7 +239,7 @@ function renderHeaderControls() {
   const editBtn = document.createElement('button');
   editBtn.type = 'button';
   editBtn.className = 'edit-btn';
-  editBtn.textContent = 'Birthdays';
+  editBtn.textContent = 'Roles';
   editBtn.setAttribute('data-tinylytics-event', 'edit.open');
   editBtn.addEventListener('click', () => openEdit());
   wrap.appendChild(editBtn);
@@ -246,9 +270,11 @@ function renderThemeSelector() {
   select.appendChild(randomOpt);
 
   for (const kind of THEME_KINDS) {
+    const inKind = THEMES.filter(t => t.kind === kind);
+    if (!inKind.length) continue;
     const group = document.createElement('optgroup');
     group.label = KIND_LABELS[kind];
-    for (const t of THEMES.filter(t => t.kind === kind)) {
+    for (const t of inKind) {
       const opt = document.createElement('option');
       opt.value = t.name;
       opt.textContent = t.label;
@@ -299,17 +325,15 @@ function openAbout() {
           <button type="button" class="app-dialog__close" aria-label="Close">&times;</button>
         </header>
         <div class="app-dialog__body">
-          <p>A <strong>version number</strong> for a person, based on their birthday &mdash; just like software.</p>
-          <p>Software is versioned <code>MAJOR.MINOR.PATCH</code>. A major bump signals an incompatible change. Minor bumps add features but stay backwards-compatible. Patches are small fixes.</p>
-          <p>People work the same way:</p>
+          <p>A <strong>version number</strong> for your work life — same <code>MAJOR.MINOR.PATCH</code> shape as semver, anchored on quarters because quarters are the operational heartbeat of corporate life: OKRs, earnings, planning, reviews.</p>
           <ul>
-            <li><strong>MAJOR</strong> &mdash; your decade. The 30s are not the 20s. Breaking changes.</li>
-            <li><strong>MINOR</strong> &mdash; your age inside that decade. Backwards-compatible growth.</li>
-            <li><strong>PATCH</strong> &mdash; days since your most recent birthday. Daily refinements.</li>
+            <li><strong>MAJOR</strong> &mdash; years of tenure. Bumps on every work anniversary.</li>
+            <li><strong>MINOR</strong> &mdash; quarter within the current tenure year (0&ndash;3). Quarters are 3 calendar months on the same day as your anniversary &mdash; if you started Feb 10, your Q1 starts May 10.</li>
+            <li><strong>PATCH</strong> &mdash; business days into the current quarter. Weekdays only &mdash; weekends don&rsquo;t tick.</li>
           </ul>
-          <p>Someone who is 46 years old and 52 days past their birthday is on <code>v4.6.52</code>.</p>
-          <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. Working life has its own version number &mdash; see <a href="/work/">Your Version Number at Work</a>.</p>
-          <p class="app-dialog__tip">Tip: the URL holds everything &mdash; names, birthdays, theme. Bookmark a URL to save the view.</p>
+          <p>Hired on 2024-01-15, today: two years in, second quarter (0-indexed, started Apr 15), 15 work-days deep &rarr; <code>v2.1.15</code>.</p>
+          <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. For the birthday version, see <a href="/">Your Version Number</a>.</p>
+          <p class="app-dialog__tip">Tip: the URL holds everything &mdash; titles, start dates, theme. Bookmark a URL to save the view.</p>
         </div>
       </article>
     `;
@@ -344,7 +368,7 @@ function openEdit({ addBlankRow = false } = {}) {
     list = dialog.querySelector('.edit-list');
     dialog.querySelector('.edit-add').addEventListener('click', () => {
       const today = new Date().toISOString().slice(0, 10);
-      state.people.push({ name: '', birthday: today });
+      state.roles.push({ title: '', startDate: today });
       writeURL();
       render();
       appendEditRow(list, true);
@@ -355,13 +379,13 @@ function openEdit({ addBlankRow = false } = {}) {
   }
 
   list.innerHTML = '';
-  if (addBlankRow && state.people.length === 0) {
+  if (addBlankRow && state.roles.length === 0) {
     const today = new Date().toISOString().slice(0, 10);
-    state.people.push({ name: '', birthday: today });
+    state.roles.push({ title: '', startDate: today });
     writeURL();
     render();
   }
-  state.people.forEach(() => appendEditRow(list, false));
+  state.roles.forEach(() => appendEditRow(list, false));
 
   dialog.showModal();
 
@@ -380,33 +404,33 @@ function appendEditRow(list, focusName) {
   const nameInput = document.createElement('input');
   nameInput.type = 'text';
   nameInput.className = 'edit-row__name';
-  nameInput.placeholder = 'Name (optional)';
-  nameInput.setAttribute('aria-label', 'Name');
+  nameInput.placeholder = 'Title (optional)';
+  nameInput.setAttribute('aria-label', 'Title');
 
   const dateInput = document.createElement('input');
   dateInput.type = 'date';
   dateInput.className = 'edit-row__date';
   dateInput.max = new Date().toISOString().slice(0, 10);
-  dateInput.setAttribute('aria-label', 'Birthday');
+  dateInput.setAttribute('aria-label', 'Start date');
 
-  list.appendChild(row); // append before reading state by index
+  list.appendChild(row);
   const i = findIndex();
-  nameInput.value = state.people[i].name;
-  dateInput.value = state.people[i].birthday;
+  nameInput.value = state.roles[i].title;
+  dateInput.value = state.roles[i].startDate;
 
   const removeBtn = document.createElement('button');
   removeBtn.type = 'button';
   removeBtn.className = 'edit-row__remove';
   removeBtn.textContent = '×';
   removeBtn.setAttribute('aria-label', 'Remove');
-  removeBtn.setAttribute('data-tinylytics-event', 'person.remove');
+  removeBtn.setAttribute('data-tinylytics-event', 'role.remove');
 
   const commitName = () => {
     const idx = findIndex();
     if (idx < 0) return;
     const newName = nameInput.value.trim();
-    if (newName !== state.people[idx].name) {
-      state.people[idx].name = newName;
+    if (newName !== state.roles[idx].title) {
+      state.roles[idx].title = newName;
       writeURL();
       render();
     }
@@ -417,8 +441,8 @@ function appendEditRow(list, focusName) {
     if (idx < 0) return;
     const newDate = dateInput.value;
     if (!DATE_RE.test(newDate) || !isRealDate(newDate)) return;
-    if (newDate !== state.people[idx].birthday) {
-      state.people[idx].birthday = newDate;
+    if (newDate !== state.roles[idx].startDate) {
+      state.roles[idx].startDate = newDate;
       writeURL();
       render();
     }
@@ -427,7 +451,7 @@ function appendEditRow(list, focusName) {
   removeBtn.addEventListener('click', () => {
     const idx = findIndex();
     if (idx < 0) return;
-    state.people.splice(idx, 1);
+    state.roles.splice(idx, 1);
     writeURL();
     render();
     row.remove();
@@ -471,14 +495,20 @@ function countUp(el, version) {
   requestAnimationFrame(frame);
 }
 
-function updateVersionDisplay(el, birthday) {
-  if (!DATE_RE.test(birthday) || !isRealDate(birthday)) {
+function updateVersionDisplay(el, startDate) {
+  if (!DATE_RE.test(startDate) || !isRealDate(startDate)) {
     el.textContent = '';
     return;
   }
-  const v = computeVersion(birthday);
+  const v = computeWorkVersion(startDate);
+  if (!v) {
+    el.textContent = '';
+    return;
+  }
   countUp(el, v);
-  el.title = `${v.age} years old, ${v.patch} day${v.patch === 1 ? '' : 's'} since last birthday`;
+  const yearWord = v.major === 1 ? 'year' : 'years';
+  const dayWord = v.patch === 1 ? 'day' : 'days';
+  el.title = `${v.major} ${yearWord} of tenure, quarter ${v.minor} of 4, ${v.patch} business ${dayWord} in`;
 }
 
 let midnightTimer = null;
@@ -494,11 +524,9 @@ function scheduleMidnightTick() {
 
 const parsed = parseURL();
 state.theme = parsed.theme;
-state.people = parsed.people;
+state.roles = parsed.roles;
 applyTheme(state.theme);
 render();
 isFirstRender = false;
 scheduleMidnightTick();
-// Fire after render so the proxy attaches and Tinylytics is more likely loaded.
-// Wrapped in a microtask so it runs after the deferred Tinylytics script has had a chance to register its click listener.
 setTimeout(() => trackEvent('theme.viewed', state.theme), 0);

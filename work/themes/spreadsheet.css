@@ -1,0 +1,211 @@
+:root {
+  --bg: #ffffff;
+  --grid: #d4d4d4;
+  --header-bg: #e8e8e8;
+  --header-fg: #4a4a4a;
+  --selection: #217346;
+  --selection-light: rgba(33, 115, 70, 0.08);
+  --fg: #000000;
+  --muted: #6a6a6a;
+  --formula-bg: #f5f5f5;
+}
+
+body {
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 100% 28px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 120px 100%,
+    var(--bg);
+  color: var(--fg);
+  font-family: "SF Mono", Menlo, Consolas, "Lucida Console", monospace;
+  font-size: 13px;
+  line-height: 28px;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 0 2rem;
+}
+
+.site-header {
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--grid);
+  padding: 0.6rem 1rem;
+  margin-bottom: 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.site-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0;
+  color: var(--header-fg);
+  text-transform: uppercase;
+}
+.site-title::before {
+  content: "▦  ";
+  color: var(--selection);
+}
+
+.header-controls {
+  gap: 0.4rem;
+}
+
+.theme-select {
+  appearance: none;
+  background: #fff;
+  border: 1px solid var(--grid);
+  border-radius: 0;
+  padding: 0.2rem 1.6rem 0.2rem 0.5rem;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--fg);
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 3l3 3 3-3' stroke='%234a4a4a' stroke-width='1.2' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.4rem center;
+}
+
+.about-btn, .edit-btn {
+  background: #fff;
+  border: 1px solid var(--grid);
+  border-radius: 0;
+  padding: 0.2rem 0.7rem;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--fg);
+}
+.about-btn:hover, .edit-btn:hover {
+  background: var(--selection-light);
+  border-color: var(--selection);
+}
+
+.intro {
+  background: var(--formula-bg);
+  border-bottom: 1px solid var(--grid);
+  margin: 0;
+  padding: 0.7rem 1rem;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.intro::before {
+  content: "fx  ";
+  color: var(--selection);
+  font-weight: 700;
+}
+
+.intro code {
+  background: #fff;
+  border: 1px solid var(--grid);
+  padding: 0 0.35em;
+  font-family: inherit;
+  color: var(--fg);
+  font-size: 12px;
+}
+
+.people {
+  gap: 0;
+  margin: 0;
+}
+
+.person {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  align-items: stretch;
+  background: transparent;
+  border-bottom: 1px solid var(--grid);
+  padding: 0;
+  width: 100%;
+  position: relative;
+  counter-increment: row;
+}
+
+.person::before {
+  content: counter(row);
+  background: var(--header-bg);
+  color: var(--header-fg);
+  border-right: 1px solid var(--grid);
+  text-align: center;
+  font-size: 11px;
+  padding: 0.5rem 0;
+}
+
+.people {
+  counter-reset: row;
+  border-bottom: 1px solid var(--grid);
+}
+
+.person-name {
+  grid-column: 2;
+  background: var(--formula-bg);
+  border-bottom: 1px solid var(--grid);
+  padding: 0.25rem 0.75rem;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 1;
+  font-weight: 400;
+}
+
+.version {
+  grid-column: 2;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--selection);
+  padding: 0.5rem 0.75rem 0.7rem;
+  background: #fff;
+  outline: 2px solid var(--selection);
+  outline-offset: -4px;
+}
+
+.add-btn {
+  display: inline-block;
+  margin: 1rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--grid);
+  border-radius: 0;
+  background: #fff;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 12px;
+}
+.add-btn:hover {
+  background: var(--selection);
+  color: #fff;
+  border-color: var(--selection);
+}
+
+.site-footer {
+  background: var(--header-bg);
+  border-top: 1px solid var(--grid);
+  padding: 0.6rem 1rem;
+  margin-top: 0;
+  font-size: 11px;
+  color: var(--header-fg);
+  line-height: 1.5;
+}
+
+.site-footer a {
+  color: var(--selection);
+}
+
+.site-stats {
+  margin-top: 0.25rem;
+}
+
+body[data-quarter-start="true"] .version {
+  background: var(--selection-light);
+}
+
+body[data-tenure-anniversary="true"] .version {
+  background: #fff5b1;
+  outline-color: #d4a93c;
+}

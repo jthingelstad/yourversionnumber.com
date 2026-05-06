@@ -1,0 +1,185 @@
+:root {
+  --bg: #0a1628;
+  --bg-deep: #050d18;
+  --fg: #e8d9a4;
+  --muted: #8a7d5a;
+  --accent: #d4af37;
+  --accent-dim: #8a6f1f;
+  --border: rgba(212, 175, 55, 0.25);
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 50% -200px, rgba(212, 175, 55, 0.08), transparent 70%),
+    var(--bg);
+  color: var(--fg);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.55;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3.5rem 1.75rem;
+}
+
+.site-header {
+  margin-bottom: 3rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--accent-dim);
+}
+
+.site-title {
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  margin: 0;
+  color: var(--accent);
+}
+
+.theme-select {
+  appearance: none;
+  background: var(--bg-deep);
+  border: 1px solid var(--accent-dim);
+  border-radius: 0;
+  padding: 0.4rem 2rem 0.4rem 0.8rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--fg);
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%23d4af37' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+}
+
+.theme-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.about-btn, .edit-btn {
+  background: transparent;
+  border: 1px solid var(--accent-dim);
+  border-radius: 0;
+  padding: 0.4rem 0.95rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+.about-btn:hover, .edit-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.intro {
+  color: var(--muted);
+  margin: 0 0 2.5rem;
+  font-style: italic;
+  max-width: 56ch;
+}
+
+.intro code {
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--accent);
+  padding: 0.05em 0.4em;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-style: normal;
+  font-size: 0.85em;
+}
+
+.people {
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.person {
+  background: var(--bg-deep);
+  border-top: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+  padding: 2rem 2.25rem;
+  width: 100%;
+  position: relative;
+}
+
+.person::before,
+.person::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--accent-dim);
+}
+.person::before { top: 3px; }
+.person::after { bottom: 3px; }
+
+.person-name {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.78rem;
+  font-style: normal;
+  color: var(--muted);
+  margin-bottom: 0.85rem;
+  opacity: 1;
+}
+
+.version {
+  color: var(--accent);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.add-btn {
+  display: inline-block;
+  padding: 0.55rem 1.25rem;
+  border: 1px solid var(--accent-dim);
+  border-radius: 0;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.add-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.site-footer {
+  margin-top: 4.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--accent-dim);
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.site-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-dim);
+}
+.site-footer a:hover {
+  border-bottom-color: var(--accent);
+}
+
+body[data-quarter-start="true"] .version {
+  text-shadow: 0 0 32px rgba(212, 175, 55, 0.5);
+}
+
+body[data-tenure-anniversary="true"] .person {
+  border-color: var(--accent);
+  box-shadow: 0 0 60px rgba(212, 175, 55, 0.2);
+}
+body[data-tenure-anniversary="true"] .person::before,
+body[data-tenure-anniversary="true"] .person::after {
+  background: var(--accent);
+}

@@ -37,6 +37,19 @@ Hooks available for theme-side polish, with no JS cost when ignored:
 
 A first-time visitor with no `?theme=` in the URL gets `dark` if their OS is in dark mode, otherwise `default`. Once any theme is chosen it's written to the URL and that's what the bookmark holds.
 
+## Work mode
+
+There's a sibling page at [`/work/`](https://yourversionnumber.com/work/) with the same idea applied to your work life: `<years-of-tenure>.<quarter-within-tenure-year>.<business-days-in-quarter>`. Quarters are reckoned from your work anniversary (not the calendar), and PATCH counts business days only — weekends don't tick.
+
+```
+https://yourversionnumber.com/work/?theme=boardroom&j=Engineer:2024-01-15
+```
+
+- `theme` — name of a stylesheet in `work/themes/`. Independent set from the root themes.
+- `j` — repeatable. `Title:YYYY-MM-DD`, or just `YYYY-MM-DD` for a nameless entry.
+
+Code lives at `work/index.html`, `work/assets/app.js`, `work/assets/base.css`, `work/themes/*.css` — fully separate from the root site. Same repo, same deploy.
+
 ## Local development
 
 No build step. From the repo root:

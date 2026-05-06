@@ -1,0 +1,151 @@
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --fg: #0f172a;
+  --muted: #64748b;
+  --accent: #4f46e5;
+  --border: #e2e8f0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+#app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.site-header {
+  margin-bottom: 2.5rem;
+}
+
+.site-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.theme-select {
+  appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 2rem 0.45rem 0.8rem;
+  font-size: 0.9rem;
+  color: var(--fg);
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+}
+
+.theme-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.about-btn, .edit-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  color: var(--fg);
+  font-weight: 500;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.about-btn:hover, .edit-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.intro {
+  color: var(--muted);
+  margin: 0 0 2.5rem;
+  max-width: 56ch;
+}
+
+.intro code {
+  background: #e2e8f0;
+  color: #1e293b;
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.people {
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.person {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  width: 100%;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.person-name {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+  opacity: 1;
+}
+
+.version {
+  color: var(--accent);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.add-btn {
+  display: inline-block;
+  padding: 0.55rem 1.1rem;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  background: var(--surface);
+  font-weight: 500;
+}
+
+.add-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.site-footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.site-footer a {
+  color: var(--accent);
+}
+
+body[data-quarter-start="true"] .version {
+  text-shadow: 0 0 24px rgba(79, 70, 229, 0.35);
+}
+
+body[data-tenure-anniversary="true"] .person {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 8px 32px rgba(79, 70, 229, 0.15);
+}
