@@ -1,0 +1,13 @@
+/* TEAM */
+Concept & code: Jamie Thingelstad
+Site: https://www.thingelstad.com
+GitHub: @jthingelstad
+
+/* THANKS */
+Theme contributors via pull request.
+
+/* SITE */
+Standards: HTML5, CSS3, ES modules
+Components: vanilla JavaScript, no build step
+Software: GitHub Pages
+Source: https://github.com/jthingelstad/yourversionnumber.com

@@ -1,0 +1,20 @@
+# Your Version Number
+
+> A bookmarkable web page that displays a person's "version number" — their age expressed as `MAJOR.MINOR.PATCH` (decade.year-in-decade.days since their last birthday). The URL is the source of truth: bookmark a URL to save the view. Inspired by [Jamie Thingelstad's 2018 post](https://www.thingelstad.com/2018/02/24/your-version-number.html) and Semantic Versioning.
+
+The site is a single-page static app served from GitHub Pages. No build step, no framework, vanilla JavaScript and CSS. Each "theme" is a standalone stylesheet contributors can add via pull request.
+
+## Pages
+
+- [Your Version Number](https://yourversionnumber.com/): birthday-based version number. URL state: `?theme=<name>&p=Name:YYYY-MM-DD` (the `p` parameter is repeatable; the name is optional).
+- [Your Version Number at Work](https://yourversionnumber.com/work/): quarter-anchored version number for a job. `MAJOR` is years of tenure, `MINOR` is the quarter within the current tenure year (0–3, 3 calendar months apart from the anniversary), `PATCH` is business days into that quarter. URL state: `?theme=<name>&j=Title:YYYY-MM-DD`.
+
+## Source
+
+- [GitHub repository](https://github.com/jthingelstad/yourversionnumber.com)
+- [README](https://github.com/jthingelstad/yourversionnumber.com/blob/main/README.md): URL format, theme list, deployment notes
+- [CONTRIBUTING](https://github.com/jthingelstad/yourversionnumber.com/blob/main/CONTRIBUTING.md): how to add a new theme
+
+## Privacy
+
+Birthdays and start dates live entirely in the URL — they are visible to anyone who has the link and to browser history sync. The site does no server-side storage. Do not paste sensitive data into the URL.
