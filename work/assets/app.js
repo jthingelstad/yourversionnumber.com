@@ -3,6 +3,14 @@ const THEMES = [
   { name: 'whiteboard',  label: 'Whiteboard',  kind: 'light', animate: false },
   { name: 'spreadsheet', label: 'Spreadsheet', kind: 'retro', animate: true  },
   { name: 'earnings',    label: 'Earnings',    kind: 'dark',  animate: true  },
+  { name: 'inbox',       label: 'Inbox',       kind: 'light', animate: false },
+  { name: 'slack',       label: 'Slack',       kind: 'dark',  animate: false },
+  { name: 'slidedeck',   label: 'Slide Deck',  kind: 'dark',  animate: false },
+  { name: 'okr',         label: 'OKR',         kind: 'light', animate: true  },
+  { name: 'cubicle',     label: 'Cubicle',     kind: 'light', animate: false },
+  { name: 'kanban',      label: 'Kanban',      kind: 'light', animate: false },
+  { name: 'pomodoro',    label: 'Pomodoro',    kind: 'fun',   animate: false },
+  { name: 'ooo',         label: 'OOO',         kind: 'fun',   animate: false },
 ];
 const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));

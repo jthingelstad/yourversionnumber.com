@@ -1,0 +1,195 @@
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --fg: #0b1f3a;
+  --muted: #6b7a90;
+  --border: #d9e1ec;
+  --on-track: #1aa564;
+  --on-track-bg: rgba(26, 165, 100, 0.12);
+  --at-risk: #f5a623;
+  --off-track: #d83a52;
+  --accent: #2563eb;
+  --bar-bg: #e8eef7;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.site-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+}
+.site-title::before {
+  content: "Q2 SCORECARD  ·  ";
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.7em;
+  letter-spacing: 0.15em;
+  vertical-align: 0.15em;
+}
+
+.theme-select, .about-btn, .edit-btn {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  font-size: 13px;
+  color: var(--fg);
+  font-family: inherit;
+  font-weight: 600;
+}
+.theme-select {
+  appearance: none;
+  padding-right: 1.9rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 3l3 3 3-3' stroke='%236b7a90' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+}
+.about-btn:hover, .edit-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.intro {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0 0 1.5rem;
+}
+.intro::before {
+  content: "EXECUTIVE SUMMARY  ";
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.78em;
+  letter-spacing: 0.15em;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.intro code {
+  background: var(--bar-bg);
+  color: var(--accent);
+  padding: 0.05em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+
+.people { gap: 1rem; margin: 0 0 1.5rem; }
+
+.person {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "name status"
+    "version status"
+    "bar bar";
+  gap: 0.4rem 1rem;
+  align-items: center;
+}
+
+.person-name {
+  grid-area: name;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 800;
+  margin: 0;
+  opacity: 1;
+}
+.person-name::before { content: "OBJECTIVE  ·  "; color: var(--accent); }
+
+.version {
+  grid-area: version;
+  color: var(--fg);
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-size: clamp(2.75rem, 7vw, 4.5rem) !important;
+}
+
+.person::before {
+  grid-area: status;
+  content: "🟢 ON TRACK";
+  background: var(--on-track-bg);
+  color: var(--on-track);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  align-self: start;
+  white-space: nowrap;
+}
+
+.person::after {
+  grid-area: bar;
+  content: "";
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--on-track) 0% 110%, var(--bar-bg) 110% 100%);
+  margin-top: 0.5rem;
+  position: relative;
+}
+
+.add-btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: inherit;
+}
+.add-btn::before { content: "+ NEW OBJECTIVE  "; letter-spacing: 0.06em; font-size: 0.85em; }
+.add-btn:hover { background: #1d4ed8; }
+
+.site-footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+}
+.site-cross-link {
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+.site-footer a { color: var(--accent); font-weight: 600; }
+
+body[data-quarter-start="true"] .person::before { content: "🟡 NEW QUARTER"; background: rgba(245, 166, 35, 0.15); color: var(--at-risk); }
+body[data-tenure-anniversary="true"] .person::before { content: "🏆 ANNIVERSARY"; background: rgba(37, 99, 235, 0.12); color: var(--accent); }

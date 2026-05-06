@@ -1,0 +1,219 @@
+:root {
+  --bg: #1a1d21;
+  --sidebar: #19171d;
+  --paper: #1a1d21;
+  --fg: #d1d2d3;
+  --fg-bright: #ffffff;
+  --muted: #868686;
+  --border: #35373b;
+  --green: #007a5a;
+  --green-bright: #2bac76;
+  --purple: #4a154b;
+  --link: #1d9bd1;
+  --reaction-bg: rgba(29, 155, 209, 0.12);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Lato", -apple-system, BlinkMacSystemFont, "Helvetica Neue", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.46;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.site-header {
+  background: var(--sidebar);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+}
+
+.site-title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  margin: 0;
+  color: var(--fg-bright);
+  letter-spacing: -0.005em;
+}
+.site-title::before {
+  content: "# ";
+  color: var(--muted);
+  font-weight: 400;
+}
+.site-title::after {
+  content: " 🟢";
+  font-size: 0.7em;
+  margin-left: 0.4em;
+  vertical-align: middle;
+}
+
+.theme-select, .about-btn, .edit-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.35rem 0.75rem;
+  font-size: 13px;
+  color: var(--fg);
+  font-family: inherit;
+}
+.theme-select {
+  appearance: none;
+  padding-right: 1.7rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 3l3 3 3-3' stroke='%23d1d2d3' stroke-width='1.2' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+}
+.about-btn:hover, .edit-btn:hover { background: var(--border); color: var(--fg-bright); }
+
+.intro {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  color: var(--muted);
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.intro::before {
+  content: "📌  Pinned by Manager  ·  ";
+  color: var(--green-bright);
+  font-weight: 700;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.intro code {
+  background: var(--border);
+  color: #ec7063;
+  padding: 0.05em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  font-family: "Monaco", "Menlo", monospace;
+}
+
+.people { gap: 0; margin: 0; }
+
+.person {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "avatar header"
+    "avatar message"
+    "avatar reactions";
+  gap: 0.1rem 0.85rem;
+  align-items: start;
+  padding: 1rem 1.25rem 0.85rem;
+  width: 100%;
+  position: relative;
+}
+.person:hover { background: rgba(255, 255, 255, 0.02); }
+
+.person::before {
+  grid-area: avatar;
+  content: "🧑‍💻";
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #ecb22e, #e01e5a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.person:nth-child(2n)::before {
+  background: linear-gradient(135deg, #2eb67d, #1d9bd1);
+  content: "👩‍💼";
+}
+.person:nth-child(3n)::before {
+  background: linear-gradient(135deg, #4a154b, #ecb22e);
+  content: "🧙";
+}
+
+.person-name {
+  grid-area: header;
+  font-weight: 900;
+  color: var(--fg-bright);
+  font-size: 15px;
+  opacity: 1;
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+.person-name::after {
+  content: "  9:42 AM";
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 12px;
+  margin-left: 0.4em;
+}
+
+.version {
+  grid-area: message;
+  font-family: inherit !important;
+  font-weight: 400 !important;
+  font-size: 1.15rem !important;
+  color: var(--fg);
+  letter-spacing: -0.01em !important;
+  line-height: 1.4 !important;
+  margin: 0.1rem 0 0.5rem;
+}
+.version::before {
+  content: "shipped ";
+  color: var(--muted);
+  font-weight: 400;
+}
+.version::after {
+  content: "  🚀";
+  font-size: 0.85em;
+}
+
+.person::after {
+  grid-area: reactions;
+  content: "🎉 7   ✅ 4   🚀 12";
+  display: inline-block;
+  background: var(--reaction-bg);
+  border: 1px solid rgba(29, 155, 209, 0.3);
+  border-radius: 16px;
+  padding: 0.2rem 0.7rem;
+  font-size: 13px;
+  color: var(--link);
+  width: max-content;
+  font-family: inherit;
+}
+
+.add-btn {
+  display: inline-block;
+  margin: 1.25rem;
+  padding: 0.55rem 1.1rem;
+  border: 0;
+  border-radius: 4px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: inherit;
+}
+.add-btn::before { content: "+ "; }
+.add-btn:hover { background: var(--green-bright); }
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 0.85rem 1.25rem;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 0;
+}
+.site-cross-link {
+  margin-bottom: 0.4rem;
+  color: var(--fg);
+}
+.site-footer a { color: var(--link); }
+
+body[data-quarter-start="true"] .person::after { content: "🎯 1   📈 8   💯 3"; }
+body[data-tenure-anniversary="true"] .person::after { content: "🎂 12   🎉 47   🍾 9"; }

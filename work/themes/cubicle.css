@@ -1,0 +1,194 @@
+:root {
+  --bg: #d4cdb8;
+  --partition: #b8a988;
+  --paper: #ece5cf;
+  --paper-stained: #e6dcc0;
+  --fg: #2a2418;
+  --muted: #6b614a;
+  --highlight: #f7d34c;
+  --highlight-line: #e8b923;
+  --link: #5a4a2a;
+  --border: #aa9870;
+  --stapler-red: #8b1f1f;
+}
+
+body {
+  background:
+    repeating-linear-gradient(45deg,
+      transparent 0,
+      transparent 10px,
+      rgba(0, 0, 0, 0.025) 10px,
+      rgba(0, 0, 0, 0.025) 11px),
+    var(--bg);
+  color: var(--fg);
+  font-family: "Comic Sans MS", "Chalkboard SE", "Trebuchet MS", sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.site-header {
+  background: var(--paper);
+  border: 2px solid var(--partition);
+  border-bottom-width: 4px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 3px 3px 0 var(--partition);
+}
+
+.site-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--fg);
+}
+.site-title::before { content: "📎  "; }
+
+.theme-select, .about-btn, .edit-btn {
+  background: var(--paper);
+  border: 2px solid var(--fg);
+  border-radius: 4px;
+  padding: 0.35rem 0.8rem;
+  font-size: 13px;
+  color: var(--fg);
+  font-family: inherit;
+  font-weight: 700;
+  box-shadow: 2px 2px 0 var(--partition);
+}
+.theme-select {
+  appearance: none;
+  padding-right: 1.8rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 3l3 3 3-3' stroke='%232a2418' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.55rem center;
+}
+.about-btn:hover, .edit-btn:hover { background: var(--highlight); }
+
+.intro {
+  background: var(--paper-stained);
+  border: 2px solid var(--partition);
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.75rem;
+  color: var(--fg);
+  font-size: 14px;
+  position: relative;
+  box-shadow: 3px 3px 0 var(--partition);
+}
+.intro::before {
+  content: "FROM: HR  ·  RE: TPS REPORTS";
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  border-bottom: 1px dashed var(--partition);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+}
+.intro code {
+  background: var(--highlight);
+  padding: 0.05em 0.35em;
+  border: 1px solid var(--highlight-line);
+  font-family: inherit;
+  font-size: 0.95em;
+  font-weight: 700;
+}
+
+.people { gap: 1.5rem; margin: 0 0 2rem; }
+
+.person {
+  background: var(--paper);
+  border: 2px solid var(--fg);
+  padding: 1.5rem 1.75rem 1.75rem;
+  width: 100%;
+  position: relative;
+  box-shadow: 4px 4px 0 var(--partition);
+}
+
+.person::before {
+  content: "MEMO";
+  position: absolute;
+  top: -10px;
+  left: 1.25rem;
+  background: var(--stapler-red);
+  color: var(--paper);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  padding: 0.15rem 0.55rem;
+  border: 2px solid var(--fg);
+}
+
+.person::after {
+  content: "Have you seen my stapler?";
+  display: block;
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 0.6rem;
+  text-align: right;
+}
+
+.person-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+  opacity: 1;
+}
+.person-name::before { content: "ATTN:  "; }
+
+.version {
+  color: var(--fg);
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  background: linear-gradient(transparent 60%, var(--highlight) 60%);
+  display: inline-block;
+  padding: 0 0.1em;
+}
+
+.add-btn {
+  display: inline-block;
+  padding: 0.55rem 1.25rem;
+  border: 2px solid var(--fg);
+  border-radius: 4px;
+  background: var(--highlight);
+  color: var(--fg);
+  font-weight: 700;
+  font-size: 13px;
+  font-family: inherit;
+  box-shadow: 3px 3px 0 var(--partition);
+}
+
+.site-footer {
+  margin-top: 2.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--paper-stained);
+  border: 2px solid var(--partition);
+  font-size: 12px;
+  color: var(--muted);
+  box-shadow: 3px 3px 0 var(--partition);
+}
+.site-cross-link {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+.site-footer a {
+  color: var(--link);
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+body[data-quarter-start="true"] .person::before { content: "URGENT"; background: var(--stapler-red); }
+body[data-tenure-anniversary="true"] .person::after { content: "🎂  Cake in the breakroom! 🎂"; font-style: normal; color: var(--stapler-red); font-weight: 700; }

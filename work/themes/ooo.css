@@ -1,0 +1,202 @@
+:root {
+  --bg: #fdf6d8;
+  --paper: #fffceb;
+  --fg: #4a3a14;
+  --muted: #8a7748;
+  --border: #e8d987;
+  --link: #b8860b;
+  --tape: rgba(232, 217, 135, 0.4);
+  --header: #f7e88a;
+  --warning: #b8860b;
+  --green: #6a8e3c;
+}
+
+body {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 24px,
+      rgba(184, 134, 11, 0.05) 24px,
+      rgba(184, 134, 11, 0.05) 25px),
+    var(--bg);
+  color: var(--fg);
+  font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.site-header {
+  background: var(--header);
+  border: 2px solid var(--border);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0;
+  position: relative;
+  border-bottom: 0;
+  box-shadow: inset 0 -1px 0 var(--border);
+}
+.site-header::before {
+  content: "AUTO-REPLY";
+  position: absolute;
+  top: -10px;
+  left: 1.25rem;
+  background: var(--warning);
+  color: var(--paper);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0;
+}
+
+.site-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--fg);
+  font-family: inherit;
+}
+.site-title::before { content: "Subject: "; color: var(--muted); font-weight: 400; }
+.site-title::after { content: " (Auto-Reply)"; color: var(--muted); font-weight: 400; }
+
+.theme-select, .about-btn, .edit-btn {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.3rem 0.7rem;
+  font-size: 12px;
+  color: var(--fg);
+  font-family: inherit;
+}
+.theme-select {
+  appearance: none;
+  padding-right: 1.5rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 3l3 3 3-3' stroke='%234a3a14' stroke-width='1.2' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.4rem center;
+}
+.about-btn:hover, .edit-btn:hover { background: var(--header); }
+
+.intro {
+  background: var(--paper);
+  border: 2px solid var(--border);
+  border-top: 0;
+  padding: 1.25rem;
+  color: var(--fg);
+  font-size: 14px;
+  margin: 0 0 1.5rem;
+  font-family: inherit;
+}
+.intro::before {
+  content: "Hi,\A\AI'm currently out of the office returning ";
+  white-space: pre;
+  display: block;
+  margin-bottom: 0;
+}
+.intro::after {
+  content: "\A\AFor anything urgent, please loop in literally anyone else. I will respond to your version number when I return.\A\A— The team";
+  white-space: pre;
+  display: block;
+  color: var(--muted);
+}
+.intro code {
+  background: var(--header);
+  padding: 0 0.35em;
+  font-family: inherit;
+  color: var(--fg);
+  font-weight: 700;
+  border: 1px solid var(--border);
+}
+
+.people {
+  gap: 1rem;
+  margin: 0 0 2rem;
+  background: var(--paper);
+  border: 2px solid var(--border);
+  padding: 1.25rem;
+}
+.people::before {
+  content: "— Forwarded version numbers —";
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.person {
+  background: var(--header);
+  border-left: 3px solid var(--warning);
+  padding: 0.85rem 1rem;
+  width: 100%;
+}
+
+.person-name {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+  opacity: 1;
+  font-family: inherit;
+}
+.person-name::before { content: "From: "; }
+.person-name::after { content: "  <auto-reply@enterprise.corp>"; font-size: 0.9em; }
+
+.version {
+  color: var(--fg);
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: clamp(2.5rem, 7vw, 4rem) !important;
+  line-height: 1.1 !important;
+}
+
+.add-btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px dashed var(--warning);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--fg);
+  font-weight: 700;
+  font-size: 13px;
+  font-family: inherit;
+}
+.add-btn::before { content: "↩  "; color: var(--warning); }
+.add-btn:hover { background: var(--header); }
+
+.site-footer {
+  background: var(--paper);
+  border: 2px solid var(--border);
+  padding: 0.85rem 1.25rem;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 0;
+  font-family: inherit;
+}
+.site-cross-link {
+  margin-bottom: 0.4rem;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 0.4rem;
+}
+.site-footer a { color: var(--link); font-weight: 700; text-decoration: underline; }
+
+body[data-quarter-start="true"] .person { border-left-color: var(--green); }
+body[data-tenure-anniversary="true"] .person::before {
+  content: "🍾  Out for the celebration";
+  display: block;
+  color: var(--green);
+  font-weight: 700;
+  font-size: 0.78rem;
+  margin-bottom: 0.4rem;
+}
