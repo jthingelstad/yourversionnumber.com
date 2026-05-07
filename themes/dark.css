@@ -152,3 +152,6 @@ body {
   0%, 100% { text-shadow: none; }
   40%      { text-shadow: 0 0 24px var(--accent, #6ea8ff); }
 }
+
+.person{position:relative;overflow:hidden;}
+.person::after{content:'';position:absolute;inset:auto -30% -40% auto;width:220px;height:220px;background:radial-gradient(circle,rgba(121,95,255,.22),transparent 70%);}

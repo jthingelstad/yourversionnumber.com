@@ -218,3 +218,5 @@ body::before {
   60%  { transform: translateY(2px) rotate(0.3deg); }
   100% { transform: translateY(0) rotate(0); }
 }
+
+.theme-fx::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='180' viewBox='0 0 320 180'><g opacity='.25'><path d='M18 78 q16-12 32 0 q-16 12-32 0z' fill='%23ffd166'/><path d='M120 130 q16-12 32 0 q-16 12-32 0z' fill='%23ff9f1c'/><path d='M232 94 q16-12 32 0 q-16 12-32 0z' fill='%23ffd166'/><path d='M42 152 l10-8 l10 8 z' fill='%23f4a261'/><circle cx='160' cy='26' r='12' fill='%23ffe08a'/></g></svg>") repeat;animation:ocean-fx 30s linear infinite;opacity:.45;}@keyframes ocean-fx{to{transform:translateX(-320px)}}
