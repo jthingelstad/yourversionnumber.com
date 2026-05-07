@@ -131,13 +131,13 @@ body {
 .person-name {
   position: absolute;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(0.7rem, 2.5vw, 1rem);
+  font-size: clamp(0.95rem, 3vw, 1.25rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--label-text);
+  color: #23180e;
   opacity: 1;
   z-index: 2;
-  width: 36%;
+  width: 44%;
   text-align: center;
   top: 30%;
   left: 50%;
@@ -150,12 +150,12 @@ body {
   position: absolute;
   font-family: 'Bebas Neue', sans-serif;
   font-weight: 400;
-  font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+  font-size: clamp(1.6rem, 5.2vw, 2.25rem);
   letter-spacing: 0.04em;
-  color: var(--label-text);
+  color: #23180e;
   z-index: 2;
   bottom: 28%;
-  width: 36%;
+  width: 44%;
   text-align: center;
   left: 50%;
   transform: translateX(-50%);

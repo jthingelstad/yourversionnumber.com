@@ -139,13 +139,13 @@ body {
 }
 
 .person[data-row-variant="0"]::before { background: var(--signal-red); content: "1"; }
-.person[data-row-variant="1"]::before { background: var(--signal-green); content: "4"; }
-.person[data-row-variant="2"]::before { background: var(--signal-orange); content: "B"; }
-.person[data-row-variant="3"]::before { background: var(--signal-blue); content: "A"; }
-.person[data-row-variant="4"]::before { background: var(--signal-yellow); color: var(--black); content: "N"; }
-.person[data-row-variant="5"]::before { background: var(--signal-purple); content: "7"; }
-.person[data-row-variant="6"]::before { background: #6cbe45; content: "G"; }
-.person[data-row-variant="7"]::before { background: #808183; content: "L"; }
+.person[data-row-variant="1"]::before { background: var(--signal-green); content: "2"; }
+.person[data-row-variant="2"]::before { background: var(--signal-orange); content: "3"; }
+.person[data-row-variant="3"]::before { background: var(--signal-blue); content: "4"; }
+.person[data-row-variant="4"]::before { background: var(--signal-yellow); color: var(--black); content: "5"; }
+.person[data-row-variant="5"]::before { background: var(--signal-purple); content: "6"; }
+.person[data-row-variant="6"]::before { background: #6cbe45; content: "7"; }
+.person[data-row-variant="7"]::before { background: #808183; content: "8"; }
 
 .person-name {
   grid-area: name;

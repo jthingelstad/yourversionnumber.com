@@ -3,10 +3,10 @@
 :root {
   --bg: #fef6f9;
   --bg-2: #f0f9f4;
-  --pink: #f7c8d6;
-  --mint: #b8e0c8;
-  --lavender: #d4c5e8;
-  --peach: #fcd9b6;
+  --pink: #ffb8d4;
+  --mint: #aeeed5;
+  --lavender: #cab8ff;
+  --peach: #ffc5a3;
   --ink: #4a3b52;
   --muted: #9b8aa3;
   --card: #ffffff;
@@ -109,7 +109,7 @@ body {
   border-radius: 24px;
   padding: 1.75rem 2rem;
   width: 100%;
-  box-shadow: 0 8px 32px rgba(154, 134, 168, 0.12);
+  box-shadow: 0 14px 36px rgba(169, 105, 170, 0.22);
   position: relative;
 }
 

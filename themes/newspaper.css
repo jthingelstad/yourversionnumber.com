@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=UnifrakturCook:wght@700&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@500;700&family=Special+Elite&display=swap');
 
 :root {
   --paper: #f4f0e6;
@@ -16,7 +16,7 @@ body {
     var(--paper);
   background-attachment: fixed;
   color: var(--ink);
-  font-family: 'Old Standard TT', 'Times New Roman', serif;
+  font-family: 'Libre Baskerville', 'Georgia', serif;
   font-size: 17px;
   line-height: 1.5;
   min-height: 100vh;
@@ -46,11 +46,12 @@ body {
 }
 
 .site-title {
-  font-family: 'UnifrakturCook', 'Old Standard TT', serif;
+  font-family: 'Libre Baskerville', 'Georgia', serif;
   font-weight: 700;
-  font-size: 3.5rem;
+  font-size: 2.4rem;
   margin: 0;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   line-height: 1;
 }
 
@@ -131,7 +132,7 @@ body {
 }
 
 .person::before {
-  content: "★ ENTRY ★";
+  content: "SECTION";
   position: absolute;
   top: -0.75em;
   left: 50%;
@@ -201,3 +202,6 @@ body {
   50%  { filter: contrast(1.4) brightness(0.92); }
   100% { filter: contrast(1) brightness(1); }
 }
+
+.site-title{letter-spacing:.02em;}
+.person{border-bottom:1px solid #c9c9c9;}

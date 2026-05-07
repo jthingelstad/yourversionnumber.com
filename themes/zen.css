@@ -178,17 +178,19 @@ body {
     0 1px 0 rgba(88, 84, 76, 0.04);
 }
 
-/* Small kanji-like stroke marker on each row */
+/* Raked-circle stones marker on each row */
 .person::before {
   content: "";
   position: absolute;
   top: 1.6rem;
   right: 1.5rem;
-  width: 14px;
-  height: 1.5px;
-  background: var(--vermillion);
-  opacity: 0.55;
-  transform: rotate(-12deg);
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--moss);
+  border-radius: 50%;
+  opacity: 0.45;
+  transform: none;
+  background: transparent;
 }
 
 .person-name {

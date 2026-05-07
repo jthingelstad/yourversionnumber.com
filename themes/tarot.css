@@ -215,3 +215,7 @@ body {
   0%, 100% { box-shadow: 0 0 0 1px var(--night), 0 8px 24px rgba(0,0,0,0.4); }
   50%      { box-shadow: 0 0 0 2px var(--gold-bright), 0 0 40px rgba(244,207,87,0.6); }
 }
+
+.person{box-shadow:0 0 0 1px rgba(198,167,95,.5),0 16px 28px rgba(8,7,16,.35);}
+.person::before{content:'✦';position:absolute;left:1rem;top:.8rem;color:#c6a75f;opacity:.75;}
+.theme-fx::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 20%,rgba(198,167,95,.12),transparent 40%),radial-gradient(circle at 85% 75%,rgba(130,90,220,.14),transparent 35%);}

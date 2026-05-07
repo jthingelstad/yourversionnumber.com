@@ -31,7 +31,7 @@ input {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 1rem;
 }
 
@@ -39,7 +39,7 @@ input {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .theme-picker {
@@ -314,4 +314,9 @@ input {
     border-color: #6ea8ff;
     color: #6ea8ff;
   }
+}
+
+@media (max-width: 820px) {
+  .site-header { flex-wrap: wrap; }
+  .header-controls { flex-wrap: wrap; }
 }
