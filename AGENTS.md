@@ -50,7 +50,7 @@ The two `app.js` files are deliberately parallel. Keep their logic in sync when 
 - `data-quarter-start="true"` / `data-tenure-anniversary="true"` (work edition).
 - `data-palindrome="true"` — concatenated digits read the same forward and back.
 - `data-round-decade="true"` — anyone hit a clean decade today.
-- `data-zero="true"` (birthday edition) — anyone is on `v0.0.0`.
+- `data-zero="true"` (birthday edition) — anyone is on `0.0.0`.
 - `data-mode="work"` (work edition only).
 
 **Per-row hooks (on `.person`):**

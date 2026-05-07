@@ -157,7 +157,7 @@ function businessDaysBetween(start, end) {
 }
 
 function formatVersion(v) {
-  return `v${v.major}.${v.minor}.${v.patch}`;
+  return `${v.major}.${v.minor}.${v.patch}`;
 }
 
 function setFlag(key, on) {
@@ -380,7 +380,7 @@ function openAbout() {
             <li><strong>MINOR</strong> &mdash; quarter (0&ndash;3). Three calendar months from your start date &mdash; if you started Feb 10, Q1 begins May 10. The unit of all things scheduled, planned, and reviewed.</li>
             <li><strong>PATCH</strong> &mdash; business days into the quarter. Weekends do not tick, because real work doesn&rsquo;t happen on weekends. <em>You&rsquo;re welcome.</em></li>
           </ul>
-          <p>Hired on 2024-01-15? Today you&rsquo;re shipping <code>v2.1.15</code>. That&rsquo;s two years of impact, into the second quarter (0-indexed, because we&rsquo;re engineers), fifteen work-days deep. <strong>Ship it.</strong></p>
+          <p>Hired on 2024-01-15? Today you&rsquo;re shipping <code>2.1.15</code>. That&rsquo;s two years of impact, into the second quarter (0-indexed, because we&rsquo;re engineers), fifteen work-days deep. <strong>Ship it.</strong></p>
           <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. For the birthday version, see <a href="/">Your Version Number</a>.</p>
           <p class="app-dialog__tip">Tip: the URL holds everything &mdash; titles, start dates, theme. Bookmark a URL to save the view.</p>
         </div>
@@ -537,7 +537,7 @@ function countUp(el, version) {
     const major = Math.round(version.major * k);
     const minor = Math.round(version.minor * k);
     const patch = Math.round(version.patch * k);
-    el.textContent = `v${major}.${minor}.${patch}`;
+    el.textContent = `${major}.${minor}.${patch}`;
     if (t < 1) requestAnimationFrame(frame);
     else el.textContent = formatVersion(version);
   }

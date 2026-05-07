@@ -141,7 +141,7 @@ function anniversaryDate(year, month1Indexed, day) {
 }
 
 function formatVersion(v) {
-  return `v${v.major}.${v.minor}.${v.patch}`;
+  return `${v.major}.${v.minor}.${v.patch}`;
 }
 
 function setFlag(key, on) {
@@ -367,7 +367,7 @@ function openAbout() {
             <li><strong>MINOR</strong> &mdash; your age inside that decade. Backwards-compatible growth.</li>
             <li><strong>PATCH</strong> &mdash; days since your most recent birthday. Daily refinements.</li>
           </ul>
-          <p>Someone who is 46 years old and 52 days past their birthday is on <code>v4.6.52</code>.</p>
+          <p>Someone who is 46 years old and 52 days past their birthday is on <code>4.6.52</code>.</p>
           <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. Now available in a thrilling new flavor &mdash; <a href="/work/">Your Version Number: Work Edition</a>™.</p>
           <p class="app-dialog__tip">Tip: the URL holds everything &mdash; names, birthdays, theme. Bookmark a URL to save the view.</p>
         </div>
@@ -524,7 +524,7 @@ function countUp(el, version) {
     const major = Math.round(version.major * k);
     const minor = Math.round(version.minor * k);
     const patch = Math.round(version.patch * k);
-    el.textContent = `v${major}.${minor}.${patch}`;
+    el.textContent = `${major}.${minor}.${patch}`;
     if (t < 1) requestAnimationFrame(frame);
     else el.textContent = formatVersion(version);
   }
