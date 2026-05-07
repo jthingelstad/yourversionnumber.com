@@ -1,21 +1,31 @@
+// `swatch` is a 3-color palette used to render a tiny preview chip next to the
+// theme picker. Pick the most representative colors of the theme.
 const THEMES = [
-  { name: 'dark',       label: 'Dark',       kind: 'dark',  animate: false },
-  { name: 'family',     label: 'Family',     kind: 'light', animate: false },
-  { name: 'pastel',     label: 'Pastel',     kind: 'light', animate: false },
-  { name: 'birthday',   label: 'Birthday',   kind: 'fun',   animate: false },
-  { name: 'nature',     label: 'Nature',     kind: 'light', animate: false },
-  { name: 'ocean',      label: 'Ocean',      kind: 'dark',  animate: false },
-  { name: 'galaxy',     label: 'Galaxy',     kind: 'dark',  animate: true  },
-  { name: 'zen',        label: 'Zen',        kind: 'light', animate: false },
-  { name: 'terminal',   label: 'Terminal',   kind: 'retro', animate: true  },
-  { name: 'arcade',     label: 'Arcade',     kind: 'retro', animate: true  },
-  { name: 'vaporwave',  label: 'Vaporwave',  kind: 'retro', animate: true  },
-  { name: 'y2k',        label: 'Y2K',        kind: 'retro', animate: true  },
-  { name: 'newspaper',  label: 'Newspaper',  kind: 'light', animate: false },
-  { name: 'steampunk',  label: 'Steampunk',  kind: 'dark',  animate: false },
-  { name: 'brutalist',  label: 'Brutalist',  kind: 'light', animate: false },
-  { name: 'comic',      label: 'Comic',      kind: 'fun',   animate: false },
-  { name: 'memphis',    label: 'Memphis',    kind: 'fun',   animate: false },
+  { name: 'dark',       label: 'Dark',       kind: 'dark',  animate: false, swatch: ['#0f0f10', '#222', '#fafafa'] },
+  { name: 'family',     label: 'Family',     kind: 'light', animate: false, swatch: ['#fff8e7', '#d97757', '#3d2914'] },
+  { name: 'pastel',     label: 'Pastel',     kind: 'light', animate: false, swatch: ['#fde7f3', '#c8e1ff', '#fff5d6'] },
+  { name: 'birthday',   label: 'Birthday',   kind: 'fun',   animate: false, swatch: ['#ff5f8a', '#ffd23f', '#3aaed8'] },
+  { name: 'nature',     label: 'Nature',     kind: 'light', animate: false, swatch: ['#f6f1e3', '#4a7c3a', '#3d2f1f'] },
+  { name: 'ocean',      label: 'Ocean',      kind: 'dark',  animate: false, swatch: ['#0a2540', '#1a6f9c', '#7fc6d9'] },
+  { name: 'galaxy',     label: 'Galaxy',     kind: 'dark',  animate: true,  swatch: ['#0b0524', '#7c3aed', '#f0abfc'] },
+  { name: 'zen',        label: 'Zen',        kind: 'light', animate: false, swatch: ['#f5f3ee', '#9b8e7c', '#2c2a26'] },
+  { name: 'weather',    label: 'Weather',    kind: 'light', animate: false, swatch: ['#bde0fe', '#ffd166', '#264653'] },
+  { name: 'polaroid',   label: 'Polaroid',   kind: 'light', animate: false, swatch: ['#f4ead5', '#fffdf7', '#3a3a3a'] },
+  { name: 'tarot',      label: 'Tarot',      kind: 'light', animate: false, swatch: ['#1a0e2e', '#d4af37', '#f4ead5'] },
+  { name: 'newspaper',  label: 'Newspaper',  kind: 'light', animate: false, swatch: ['#f4f1ea', '#1a1a1a', '#8b7355'] },
+  { name: 'subway',     label: 'Subway',     kind: 'dark',  animate: false, swatch: ['#000', '#fff', '#ee352e'] },
+  { name: 'receipt',    label: 'Receipt',    kind: 'light', animate: false, swatch: ['#f9f6ee', '#1a1a1a', '#888'] },
+  { name: 'steampunk',  label: 'Steampunk',  kind: 'dark',  animate: false, swatch: ['#2a1810', '#b8860b', '#704214'] },
+  { name: 'brutalist',  label: 'Brutalist',  kind: 'light', animate: false, swatch: ['#fff', '#000', '#ff4500'] },
+  { name: 'comic',      label: 'Comic',      kind: 'fun',   animate: false, swatch: ['#fff200', '#ed1c24', '#000'] },
+  { name: 'memphis',    label: 'Memphis',    kind: 'fun',   animate: false, swatch: ['#ff6b9d', '#fbc846', '#3aaed8'] },
+  { name: 'vinyl',      label: 'Vinyl',      kind: 'fun',   animate: true,  swatch: ['#0d0d0d', '#c8a96b', '#e63946'] },
+  { name: 'terminal',   label: 'Terminal',   kind: 'retro', animate: true,  swatch: ['#0a0e0a', '#33ff33', '#fff'] },
+  { name: 'arcade',     label: 'Arcade',     kind: 'retro', animate: true,  swatch: ['#0a0a23', '#ff2e88', '#ffd23f'] },
+  { name: 'vaporwave',  label: 'Vaporwave',  kind: 'retro', animate: true,  swatch: ['#1a0a2e', '#ff71ce', '#01cdfe'] },
+  { name: 'y2k',        label: 'Y2K',        kind: 'retro', animate: true,  swatch: ['#c0c0c0', '#ff00ff', '#00ffff'] },
+  { name: 'pixel',      label: 'Pixel',      kind: 'retro', animate: true,  swatch: ['#0f380f', '#9bbc0f', '#306230'] },
+  { name: 'gameboy',    label: 'Gameboy',    kind: 'retro', animate: true,  swatch: ['#9bbc0f', '#306230', '#0f380f'] },
 ];
 const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
@@ -77,6 +87,15 @@ function parseURL() {
   return { theme, themeIsExplicit, people };
 }
 
+// Deterministic 32-bit hash of a string. Used for per-row visual variation
+// that's stable for a given name+birthday — Alice always looks like Alice
+// even when Bob is added above her.
+function hashStr(str) {
+  let h = 5381;
+  for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
 function isRealDate(ymd) {
   const [y, m, d] = ymd.split('-').map(Number);
   const date = new Date(y, m - 1, d);
@@ -127,6 +146,11 @@ function formatVersion(v) {
   return `v${v.major}.${v.minor}.${v.patch}`;
 }
 
+function setFlag(key, on) {
+  if (on) document.body.dataset[key] = 'true';
+  else delete document.body.dataset[key];
+}
+
 function render() {
   const app = document.getElementById('app');
   app.innerHTML = '';
@@ -134,12 +158,23 @@ function render() {
   const count = state.people.length;
   document.body.dataset.peopleCount = count === 0 ? '0' : count === 1 ? '1' : 'many';
 
-  const anyBirthday = state.people.some(p => {
-    if (!DATE_RE.test(p.birthday) || !isRealDate(p.birthday)) return false;
-    return computeVersion(p.birthday).patch === 0;
-  });
-  if (anyBirthday) document.body.dataset.birthday = 'true';
-  else delete document.body.dataset.birthday;
+  let anyBirthday = false;
+  let anyPalindrome = false;
+  let anyRoundDecade = false;
+  let anyZero = false;
+  for (const p of state.people) {
+    if (!DATE_RE.test(p.birthday) || !isRealDate(p.birthday)) continue;
+    const v = computeVersion(p.birthday);
+    if (v.patch === 0) anyBirthday = true;
+    const digits = `${v.major}${v.minor}${v.patch}`;
+    if (digits.length > 1 && digits === digits.split('').reverse().join('')) anyPalindrome = true;
+    if (v.major > 0 && v.minor === 0 && v.patch === 0) anyRoundDecade = true;
+    if (v.major === 0 && v.minor === 0 && v.patch === 0) anyZero = true;
+  }
+  setFlag('birthday', anyBirthday);
+  setFlag('palindrome', anyPalindrome);
+  setFlag('roundDecade', anyRoundDecade);
+  setFlag('zero', anyZero);
 
   const header = document.createElement('header');
   header.className = 'site-header';
@@ -157,9 +192,16 @@ function render() {
     app.appendChild(intro);
   }
 
+  // Decorative layer that themes can paint into (falling leaves, drifting waves,
+  // confetti, etc). Empty by default; non-interactive; behind everything.
+  const fx = document.createElement('div');
+  fx.className = 'theme-fx';
+  fx.setAttribute('aria-hidden', 'true');
+  app.appendChild(fx);
+
   const list = document.createElement('div');
   list.className = 'people';
-  state.people.forEach(person => list.appendChild(renderRow(person)));
+  state.people.forEach((person, i) => list.appendChild(renderRow(person, i)));
   app.appendChild(list);
 
   if (state.people.length === 0) {
@@ -198,9 +240,18 @@ function render() {
   app.appendChild(footer);
 }
 
-function renderRow(person) {
+function renderRow(person, index) {
   const row = document.createElement('div');
   row.className = 'person';
+  row.dataset.rowIndex = String(index);
+  // Stable hash of name+birthday so visual variants don't shuffle when rows
+  // are added/removed. Variant 0..7 picks one of eight content styles in
+  // themes that opt in (slack reactions, polaroid tilt, tarot suits, ...).
+  // Hue 0..359 gives each row a deterministic accent color.
+  const h = hashStr((person.name || '') + '|' + person.birthday);
+  row.dataset.rowVariant = String(h % 8);
+  row.style.setProperty('--row-hue', String(h % 360));
+  row.style.setProperty('--row-tilt', `${((h % 7) - 3) * 0.6}deg`);
 
   if (person.name) {
     const nameEl = document.createElement('div');
@@ -245,6 +296,15 @@ function renderHeaderControls() {
 }
 
 function renderThemeSelector() {
+  const wrap = document.createElement('span');
+  wrap.className = 'theme-picker';
+
+  const swatch = document.createElement('span');
+  swatch.className = 'theme-swatch';
+  swatch.setAttribute('aria-hidden', 'true');
+  paintSwatch(swatch, state.theme);
+  wrap.appendChild(swatch);
+
   const select = document.createElement('select');
   select.className = 'theme-select';
   select.setAttribute('aria-label', 'Theme');
@@ -281,7 +341,15 @@ function renderThemeSelector() {
     trackEvent('theme.change', next);
     render();
   });
-  return select;
+  wrap.appendChild(select);
+  return wrap;
+}
+
+function paintSwatch(el, themeName) {
+  const t = THEME_BY_NAME[themeName];
+  const s = t?.swatch || ['#888', '#bbb', '#eee'];
+  el.style.background =
+    `conic-gradient(from 210deg, ${s[0]} 0 33.3%, ${s[1]} 33.3% 66.6%, ${s[2]} 66.6% 100%)`;
 }
 
 function attachBackdropClose(dialog) {
@@ -495,6 +563,15 @@ function scheduleMidnightTick() {
   const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 5);
   midnightTimer = setTimeout(() => {
     render();
+    // Flash every row so themes can opt into a "patch++" celebration without
+    // tracking which row incremented (in practice, *every* row's patch ticks).
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (!reduceMotion) {
+      document.querySelectorAll('.person').forEach(row => {
+        row.classList.add('is-bumping');
+        setTimeout(() => row.classList.remove('is-bumping'), 1200);
+      });
+    }
     scheduleMidnightTick();
   }, next - now);
 }

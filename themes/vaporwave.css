@@ -199,3 +199,24 @@ body::after {
 .site-footer a {
   color: var(--yellow);
 }
+
+/* Aesthetic orb drift. */
+.theme-fx::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,113,206,0.5), rgba(1,205,254,0.2) 60%, transparent);
+  filter: blur(20px);
+  top: 60%;
+  left: -10%;
+  animation: vapor-orb 22s linear infinite;
+  pointer-events: none;
+}
+@keyframes vapor-orb {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(120vw, -40vh); }
+}
+.person { transition: transform 280ms; }
+.person:hover { transform: translateY(-2px) skewX(-1deg); }

@@ -156,3 +156,10 @@ body {
   color: var(--accent-2);
   font-weight: 600;
 }
+
+.person.is-bumping { animation: family-wave 1.1s ease-out; }
+@keyframes family-wave {
+  0%, 100% { transform: rotate(0); }
+  25%      { transform: rotate(-1.5deg); }
+  75%      { transform: rotate(1.5deg); }
+}

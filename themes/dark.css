@@ -144,3 +144,11 @@ body {
 }
 
 .site-footer a { color: var(--accent); }
+
+.person { transition: transform 220ms, box-shadow 220ms; }
+.person:hover { transform: translateY(-1px); box-shadow: 0 4px 24px rgba(255,255,255,0.06); }
+.person.is-bumping .version { animation: dark-pulse 1s ease-out; }
+@keyframes dark-pulse {
+  0%, 100% { text-shadow: none; }
+  40%      { text-shadow: 0 0 24px var(--accent, #6ea8ff); }
+}

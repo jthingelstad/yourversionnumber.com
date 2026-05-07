@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #1a1a1a;
+  --tile: #2c2c2c;
+  --tile-active: #3a3a3a;
+  --ink: #fff;
+  --muted: #a0a0a0;
+  --rule: #3a3a3a;
+  --zoom: #2d8cff;
+  --speaking: #34d399;
+  --red: #e63946;
+  --bar: #232323;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.site-header {
+  background: var(--bar);
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--rule);
+}
+
+.site-title {
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin: 0;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.site-title::before {
+  content: "🎥";
+  font-size: 1.4em;
+}
+.site-title .edition { color: var(--zoom); }
+.site-title::after {
+  content: " · 47 participants";
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.85em;
+}
+
+.theme-select, .about-btn, .edit-btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  background: var(--tile);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.4rem 0.85rem;
+  font-weight: 500;
+}
+.edit-btn { background: var(--zoom); color: var(--ink); border-color: var(--zoom); }
+.theme-select { appearance: none; padding-right: 1.6rem; cursor: pointer; }
+
+.intro {
+  background: var(--bar);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.intro::before {
+  content: "💬 In chat — ";
+  color: var(--zoom);
+  font-weight: 600;
+}
+.intro code {
+  background: var(--tile);
+  color: var(--ink);
+  padding: 0.05em 0.4em;
+  border-radius: 4px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.9em;
+}
+
+.people {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.person {
+  background: var(--tile);
+  border-radius: 8px;
+  padding: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), transparent 60%),
+    linear-gradient(135deg, hsl(var(--row-hue, 220) 25% 28%), hsl(calc(var(--row-hue, 220) + 30) 30% 18%));
+}
+
+/* Avatar circle in the middle */
+.person::before {
+  content: "";
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255,255,255,0.2), transparent 50%),
+    linear-gradient(135deg, hsl(var(--row-hue, 220) 60% 55%), hsl(calc(var(--row-hue, 220) + 40) 50% 45%));
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.person-name {
+  position: absolute;
+  bottom: 0.4rem;
+  left: 0.6rem;
+  background: rgba(0,0,0,0.55);
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 0.8rem;
+  opacity: 1;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 2;
+}
+.person-name::before {
+  content: "🎤";
+  font-size: 0.85em;
+}
+.person[data-row-variant="0"] .person-name::before { content: "🎤"; }
+.person[data-row-variant="1"] .person-name::before { content: "🔇"; }
+.person[data-row-variant="2"] .person-name::before { content: "🎤"; }
+.person[data-row-variant="3"] .person-name::before { content: "🎥"; }
+.person[data-row-variant="4"] .person-name::before { content: "📞"; }
+.person[data-row-variant="5"] .person-name::before { content: "🔇"; }
+.person[data-row-variant="6"] .person-name::before { content: "✋"; }
+.person[data-row-variant="7"] .person-name::before { content: "🎤"; }
+
+.version {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.6rem;
+  font-family: ui-monospace, monospace;
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--ink);
+  letter-spacing: 0;
+  background: rgba(0,0,0,0.55);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* Speaking-now ring (variants 0, 2, 7) */
+.person[data-row-variant="0"], .person[data-row-variant="2"], .person[data-row-variant="7"] {
+  outline: 3px solid var(--speaking);
+  outline-offset: -3px;
+}
+
+body[data-quarter-start="true"] .person::after {
+  content: "🎯 New quarter started!";
+  position: absolute;
+  bottom: 2.5rem; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.7);
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+body[data-tenure-anniversary="true"] .person::after {
+  content: "🎂 Anniversary!";
+  position: absolute;
+  bottom: 2.5rem; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,200,50,0.95);
+  color: #1a1a1a;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.add-btn {
+  display: block;
+  margin: 1rem auto 0;
+  background: var(--zoom);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1.75rem;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.add-btn::before { content: "📞 "; }
+
+.site-footer {
+  margin-top: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--bar);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.site-footer a { color: var(--zoom); }
+
+.person { transition: transform 180ms; }
+.person:hover { transform: scale(1.02); z-index: 2; }
+.person.is-bumping { animation: zoom-speak 1.2s ease-out; }
+@keyframes zoom-speak {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); }
+  50%      { box-shadow: 0 0 0 4px rgba(52,211,153,0.6); }
+}

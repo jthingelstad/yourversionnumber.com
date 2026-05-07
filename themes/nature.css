@@ -128,6 +128,50 @@ body {
   opacity: 0.6;
 }
 
+.person:hover .version {
+  transform: translateX(2px);
+  transition: transform 220ms ease-out;
+}
+.person .version { transition: transform 220ms ease-out; }
+
+/* Falling leaves drifting across the page. Implemented as two layered SVG
+   backgrounds on the theme-fx ::before/::after, each animating translateY at
+   a different speed; the SVGs themselves contain multiple leaf glyphs so we
+   get many particles from two layers. */
+.theme-fx::before,
+.theme-fx::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 200vh;
+  pointer-events: none;
+  background-repeat: repeat;
+  opacity: 0.5;
+}
+.theme-fx::before {
+  top: -100vh;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'><g fill='%234a7c3a'><path d='M40 80 Q55 50 80 60 Q90 90 65 100 Q50 95 40 80 Z' opacity='0.55'/><path d='M310 220 Q330 200 350 215 Q355 240 335 248 Q315 240 310 220 Z' opacity='0.45' transform='rotate(20 330 230)'/><path d='M120 360 Q140 340 160 355 Q165 380 145 388 Q125 380 120 360 Z' opacity='0.6' transform='rotate(-15 140 370)'/><path d='M260 480 Q280 460 300 475 Q305 500 285 508 Q265 500 260 480 Z' opacity='0.4' transform='rotate(35 280 490)'/><path d='M180 140 Q200 120 220 135 Q225 160 205 168 Q185 160 180 140 Z' opacity='0.5'/><path d='M70 540 Q90 520 110 535 Q115 560 95 568 Q75 560 70 540 Z' opacity='0.5' transform='rotate(-25 90 550)'/></g></svg>");
+  background-size: 400px 600px;
+  animation: leaf-fall-slow 24s linear infinite;
+}
+.theme-fx::after {
+  top: -100vh;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='700' viewBox='0 0 500 700'><g fill='%23d4a847'><path d='M80 120 Q100 95 125 110 Q132 140 108 150 Q88 142 80 120 Z' opacity='0.5' transform='rotate(15 105 125)'/><path d='M390 280 Q410 260 430 275 Q435 300 415 308 Q395 300 390 280 Z' opacity='0.4'/><path d='M200 440 Q220 420 240 435 Q245 460 225 468 Q205 460 200 440 Z' opacity='0.55' transform='rotate(-30 220 450)'/><path d='M340 580 Q360 560 380 575 Q385 600 365 608 Q345 600 340 580 Z' opacity='0.45'/><path d='M50 320 Q70 300 90 315 Q95 340 75 348 Q55 340 50 320 Z' opacity='0.5' transform='rotate(40 70 330)'/></g></svg>");
+  background-size: 500px 700px;
+  animation: leaf-fall-fast 17s linear infinite;
+  animation-delay: -4s;
+}
+
+@keyframes leaf-fall-slow {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(40px, 100vh, 0); }
+}
+@keyframes leaf-fall-fast {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-30px, 100vh, 0); }
+}
+
 .version {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 600;

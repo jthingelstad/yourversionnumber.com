@@ -42,9 +42,39 @@ input {
   flex-wrap: wrap;
 }
 
+.theme-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.theme-swatch {
+  width: 1.1em;
+  height: 1.1em;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
 .theme-select {
   font: inherit;
   color: inherit;
+}
+
+.theme-fx {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+#app > *:not(.theme-fx) { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-fx, .theme-fx::before, .theme-fx::after { animation: none !important; }
+  .person.is-bumping { animation: none !important; }
 }
 
 .site-stats {

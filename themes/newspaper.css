@@ -192,3 +192,12 @@ body {
   color: var(--ink);
   font-style: normal;
 }
+
+.person { transition: opacity 220ms; }
+.person:hover { opacity: 0.85; }
+.person.is-bumping { animation: news-print 0.9s steps(6, end); }
+@keyframes news-print {
+  0%   { filter: contrast(1) brightness(1); }
+  50%  { filter: contrast(1.4) brightness(0.92); }
+  100% { filter: contrast(1) brightness(1); }
+}

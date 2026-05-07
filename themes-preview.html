@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Theme preview — yourversionnumber.com</title>
+<style>
+  body {
+    margin: 0;
+    font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    background: #1a1a1a;
+    color: #f0f0f0;
+  }
+  header {
+    padding: 1rem 1.5rem;
+    background: #0f0f0f;
+    border-bottom: 1px solid #2a2a2a;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  h1 {
+    margin: 0 0 0.4rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .subtitle {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 0.85rem;
+  }
+  .controls {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 13px;
+  }
+  .controls label {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+  }
+  select, button {
+    font: inherit;
+    color: inherit;
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem;
+  }
+  button { cursor: pointer; }
+  button:hover { background: #3a3a3a; }
+  main {
+    padding: 1.5rem;
+  }
+  section {
+    margin-bottom: 2.5rem;
+  }
+  section h2 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    color: #aaa;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    background: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-head {
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    background: #161616;
+    border-bottom: 1px solid #2a2a2a;
+    font-size: 12px;
+  }
+  .card-name {
+    font-weight: 600;
+    color: #e0e0e0;
+  }
+  .card-meta {
+    color: #666;
+    font-size: 11px;
+  }
+  .card-head a {
+    color: #6ea8ff;
+    text-decoration: none;
+  }
+  .card-head a:hover { text-decoration: underline; }
+  iframe {
+    width: 100%;
+    height: 720px;
+    border: 0;
+    display: block;
+    background: #fff;
+  }
+  .empty {
+    color: #888;
+    font-style: italic;
+    padding: 2rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Theme preview</h1>
+  <div class="subtitle">
+    Internal tool. Iframes every theme in both editions with a shared roster so you can eyeball-diff at a glance. Iframes are <code>loading="lazy"</code> &mdash; scroll triggers loads. Themes are pulled live from each edition's <code>app.js</code>.
+  </div>
+  <div class="controls">
+    <label>Roster
+      <select id="roster">
+        <option value="default">4 rows · mixed (incl. birthday today)</option>
+        <option value="solo">1 row</option>
+        <option value="empty">empty state</option>
+        <option value="birthday">birthday today only · triggers data-birthday / data-tenure-anniversary</option>
+        <option value="decade">turning 50 today · triggers data-round-decade</option>
+        <option value="quarter">quarter-start today · triggers data-quarter-start</option>
+      </select>
+    </label>
+    <button id="reload" type="button">Reload all</button>
+    <span class="card-meta" id="status">loading…</span>
+  </div>
+</header>
+<main>
+  <section>
+    <h2>Birthday edition · <span id="birthday-count">…</span></h2>
+    <div class="grid" id="birthday-grid"></div>
+  </section>
+  <section>
+    <h2>Work edition · <span id="work-count">…</span></h2>
+    <div class="grid" id="work-grid"></div>
+  </section>
+</main>
+<script type="module">
+// Today is fixed at preview time so the rosters' triggers are stable.
+// Defaults are tuned so:
+//   - Bob (birthday edition) is on patch=0 today.
+//   - "Senior Engineer" (work) is on tenure-anniversary AND quarter-start today.
+//   - "Manager" (work) is on quarter-start (3 months in).
+const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+function isoMinus(years, months = 0) {
+  const d = new Date();
+  d.setFullYear(d.getFullYear() - years);
+  d.setMonth(d.getMonth() - months);
+  return d.toISOString().slice(0, 10);
+}
+
+const ROSTERS = {
+  default: {
+    p: [
+      `Alice:${isoMinus(36, 2)}`,
+      `Bob:${isoMinus(26, 0)}`,           // birthday today (26 yrs ago today)
+      `Carol:${isoMinus(50, 0)}`,         // 50 today → round-decade
+      `Dave:${isoMinus(41, 9)}`,
+    ],
+    j: [
+      `Senior Engineer:${isoMinus(6, 0)}`,    // anniversary today
+      `Director:${isoMinus(8, 3)}`,
+      `Tech Lead:${isoMinus(2, 8)}`,
+      `Manager:${isoMinus(0, 3)}`,            // 3-month quarter-start today
+    ],
+  },
+  solo: {
+    p: [`Alice:${isoMinus(34, 4)}`],
+    j: [`Senior Engineer:${isoMinus(4, 5)}`],
+  },
+  empty: { p: [], j: [] },
+  birthday: {
+    p: [`Bob:${isoMinus(26, 0)}`],
+    j: [`Senior Engineer:${isoMinus(6, 0)}`],
+  },
+  decade: {
+    p: [`Carol:${isoMinus(50, 0)}`],
+    j: [`Tenured:${isoMinus(10, 0)}`],
+  },
+  quarter: {
+    p: [`Alice:${isoMinus(34, 4)}`],
+    j: [`Manager:${isoMinus(0, 3)}`],
+  },
+};
+
+async function fetchManifest(jsPath) {
+  try {
+    const txt = await fetch(jsPath, { cache: 'no-cache' }).then(r => r.text());
+    const m = txt.match(/const THEMES\s*=\s*\[([\s\S]*?)\];/);
+    if (!m) return [];
+    const re = /\{\s*name:\s*'([^']+)'[^}]*?label:\s*'([^']+)'[^}]*?kind:\s*'([^']+)'[^}]*?animate:\s*(true|false)[^}]*?\}/g;
+    const out = [];
+    let match;
+    while ((match = re.exec(m[1])) !== null) {
+      out.push({ name: match[1], label: match[2], kind: match[3], animate: match[4] === 'true' });
+    }
+    return out;
+  } catch (e) {
+    console.error('Failed to fetch manifest', jsPath, e);
+    return [];
+  }
+}
+
+function makeCard(theme, base, kind, items) {
+  const params = new URLSearchParams();
+  params.set('theme', theme.name);
+  for (const v of items) params.append(kind, v);
+  const href = base + '?' + params.toString();
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-head">
+      <span>
+        <span class="card-name"></span>
+        <span class="card-meta"></span>
+      </span>
+      <a target="_blank" rel="noopener">open ↗</a>
+    </div>
+    <iframe loading="lazy"></iframe>
+  `;
+  card.querySelector('.card-name').textContent = theme.label;
+  card.querySelector('.card-meta').textContent = ` · ${theme.kind}${theme.animate ? ' · animate' : ''}`;
+  const a = card.querySelector('a');
+  a.href = href;
+  a.textContent = 'open ↗';
+  card.querySelector('iframe').src = href;
+  return card;
+}
+
+const rosterSel = document.getElementById('roster');
+const reloadBtn = document.getElementById('reload');
+const statusEl = document.getElementById('status');
+
+let birthdayThemes = [];
+let workThemes = [];
+
+async function init() {
+  statusEl.textContent = 'fetching manifests…';
+  [birthdayThemes, workThemes] = await Promise.all([
+    fetchManifest('assets/app.js'),
+    fetchManifest('work/assets/app.js'),
+  ]);
+  document.getElementById('birthday-count').textContent = `${birthdayThemes.length} themes`;
+  document.getElementById('work-count').textContent = `${workThemes.length} themes`;
+  statusEl.textContent = `today is ${today}`;
+  renderAll();
+}
+
+function renderAll() {
+  const r = ROSTERS[rosterSel.value];
+  const bGrid = document.getElementById('birthday-grid');
+  const wGrid = document.getElementById('work-grid');
+  bGrid.innerHTML = '';
+  wGrid.innerHTML = '';
+  for (const t of birthdayThemes) bGrid.appendChild(makeCard(t, '/', 'p', r.p));
+  for (const t of workThemes)     wGrid.appendChild(makeCard(t, '/work/', 'j', r.j));
+  if (!birthdayThemes.length) bGrid.innerHTML = '<div class="empty">No birthday themes parsed from assets/app.js</div>';
+  if (!workThemes.length) wGrid.innerHTML = '<div class="empty">No work themes parsed from work/assets/app.js</div>';
+}
+
+rosterSel.addEventListener('change', renderAll);
+reloadBtn.addEventListener('click', renderAll);
+
+init();
+</script>
+</body>
+</html>

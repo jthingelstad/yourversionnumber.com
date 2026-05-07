@@ -200,3 +200,44 @@ body[data-tenure-anniversary="true"] .person::before {
   font-size: 0.78rem;
   margin-bottom: 0.4rem;
 }
+
+/* Drifting palm leaves + lazy ocean swell. */
+.theme-fx::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'><g fill='none' stroke='%236a8e3c' stroke-width='1.5' opacity='0.18'><path d='M40 60 Q60 40 90 50 M40 60 Q55 50 75 60 M40 60 Q50 55 65 70'/><path d='M210 180 Q230 160 260 170 M210 180 Q225 170 245 180 M210 180 Q220 175 235 190'/></g></svg>");
+  background-repeat: no-repeat;
+  background-size: 280px 280px;
+  background-position: 0 0;
+  animation: ooo-leaves 32s linear infinite;
+  pointer-events: none;
+}
+.theme-fx::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='80' viewBox='0 0 800 80'><path d='M0 50 Q100 30 200 50 T400 50 T600 50 T800 50 V80 H0 Z' fill='%237fc6d9' opacity='0.18'/></svg>") repeat-x;
+  background-size: 800px 80px;
+  animation: ooo-swell 18s ease-in-out infinite;
+}
+@keyframes ooo-leaves {
+  to { background-position: 280px 280px; }
+}
+@keyframes ooo-swell {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(40px); }
+}
+
+.person { transition: transform 250ms; }
+.person:hover { transform: translateX(2px); }
+.person.is-bumping { animation: ooo-sway 1.4s ease-in-out; }
+@keyframes ooo-sway {
+  0%, 100% { transform: rotate(0); }
+  25%      { transform: rotate(0.8deg); }
+  75%      { transform: rotate(-0.8deg); }
+}

@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+:root {
+  --paper: #f9f6ee;
+  --paper-shadow: #e8e2d1;
+  --ink: #1a1a1a;
+  --faded: #888;
+  --highlight: #2a2a2a;
+}
+
+body {
+  margin: 0;
+  background:
+    /* subtle vertical paper grain */
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.015) 0 1px, transparent 1px 4px),
+    radial-gradient(ellipse at center, var(--paper) 0%, var(--paper-shadow) 110%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 2rem 0;
+  background: var(--paper);
+  box-shadow: 0 0 30px rgba(0,0,0,0.08);
+  /* zigzag top + bottom */
+  -webkit-mask:
+    linear-gradient(#000 0 0),
+    radial-gradient(8px 6px at 8px 0, transparent 98%, #000) repeat-x top / 16px 6px,
+    radial-gradient(8px 6px at 8px 100%, transparent 98%, #000) repeat-x bottom / 16px 6px;
+  -webkit-mask-composite: source-out;
+  mask:
+    linear-gradient(#000 0 0),
+    radial-gradient(8px 6px at 8px 0, transparent 98%, #000) repeat-x top / 16px 6px,
+    radial-gradient(8px 6px at 8px 100%, transparent 98%, #000) repeat-x bottom / 16px 6px;
+  mask-composite: exclude;
+  position: relative;
+}
+
+.site-header {
+  text-align: center;
+  margin: 1rem 1.5rem 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed var(--ink);
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+}
+
+.site-title {
+  font-family: 'Courier Prime', monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.site-title::before {
+  content: "★ ★ ★\A";
+  display: block;
+  white-space: pre;
+  font-size: 0.85rem;
+  letter-spacing: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+.site-title::after {
+  content: "\A 1234 EVERGREEN BLVD\A TEL: (555) 0-1-2-3-4";
+  display: block;
+  white-space: pre;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  margin-top: 0.4em;
+  opacity: 0.7;
+}
+
+.header-controls {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  gap: 0.4rem;
+}
+
+.theme-select, .about-btn, .edit-btn {
+  font-family: inherit;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--ink);
+  border: 1px dashed var(--ink);
+  border-radius: 0;
+  padding: 0.25rem 0.6rem;
+  letter-spacing: 0.05em;
+}
+.theme-select { appearance: none; padding-right: 1.4rem; }
+
+.intro {
+  margin: 0 1.5rem 1rem;
+  padding: 0.75rem 0;
+  text-align: center;
+  border-bottom: 1px dashed var(--ink);
+  font-size: 0.85rem;
+}
+
+.intro::before { content: "*** RECEIPT ***\A"; display: block; white-space: pre; font-weight: 700; margin-bottom: 0.4em; }
+
+.intro code {
+  font-family: inherit;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.05em 0.3em;
+  font-size: 0.85em;
+}
+
+.people { gap: 0; margin: 0 1.5rem; }
+
+.person {
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--faded);
+  position: relative;
+}
+.person:last-child { border-bottom: 1px dashed var(--ink); }
+
+.person-name {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 1;
+  font-weight: 700;
+}
+.person-name::before { content: "ITEM #"; color: var(--faded); margin-right: 0.4em; font-weight: 400; }
+.person[data-row-variant="0"] .person-name::before { content: "001 ▸ "; }
+.person[data-row-variant="1"] .person-name::before { content: "042 ▸ "; }
+.person[data-row-variant="2"] .person-name::before { content: "104 ▸ "; }
+.person[data-row-variant="3"] .person-name::before { content: "215 ▸ "; }
+.person[data-row-variant="4"] .person-name::before { content: "337 ▸ "; }
+.person[data-row-variant="5"] .person-name::before { content: "451 ▸ "; }
+.person[data-row-variant="6"] .person-name::before { content: "608 ▸ "; }
+.person[data-row-variant="7"] .person-name::before { content: "729 ▸ "; }
+
+.version {
+  font-family: 'Courier Prime', monospace;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--ink);
+  letter-spacing: 0;
+  margin-top: 0.3rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.version::before { content: "QTY 1"; font-weight: 400; font-size: 0.7em; opacity: 0.6; align-self: center; }
+
+.add-btn {
+  display: block;
+  margin: 1rem auto;
+  font-family: inherit;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: transparent;
+  color: var(--ink);
+  border: 1px dashed var(--ink);
+  border-radius: 0;
+  padding: 0.5rem 1rem;
+}
+
+.site-footer {
+  margin: 1rem 1.5rem 0.5rem;
+  padding-top: 0.75rem;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--faded);
+  border-top: 1px dashed var(--ink);
+}
+.site-footer::before { content: "THANK YOU FOR YOUR VERSION\A   PLEASE COME AGAIN\A"; display: block; white-space: pre; font-weight: 700; color: var(--ink); margin-bottom: 0.5em; }
+.site-footer a { color: var(--ink); }
+
+.person.is-bumping { animation: receipt-print 0.9s steps(8, end); }
+@keyframes receipt-print {
+  0%   { background: rgba(0,0,0,0.08); }
+  100% { background: transparent; }
+}
+.person:hover { background: rgba(0,0,0,0.03); transition: background 150ms; }

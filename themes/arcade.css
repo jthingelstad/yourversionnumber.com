@@ -214,3 +214,35 @@ body {
 .site-footer a {
   color: var(--coin);
 }
+
+/* Drifting CRT scanlines + occasional power-pellet across the page. */
+.theme-fx::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0) 0,
+    rgba(255,255,255,0) 2px,
+    rgba(255,255,255,0.04) 3px,
+    rgba(255,255,255,0) 4px
+  );
+  pointer-events: none;
+}
+.theme-fx::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--coin, #ffd23f);
+  top: 30%;
+  left: -10%;
+  box-shadow: 0 0 12px 3px var(--coin, #ffd23f);
+  animation: arcade-pellet 9s linear infinite;
+}
+@keyframes arcade-pellet {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(120vw); }
+}
+.person:hover { filter: hue-rotate(15deg); transition: filter 200ms; }
