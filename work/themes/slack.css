@@ -102,14 +102,13 @@ body {
 .person {
   display: grid;
   grid-template-columns: 40px 1fr;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto;
   grid-template-areas:
     "avatar header"
-    "avatar message"
-    "avatar reactions";
+    "avatar message";
   gap: 0.1rem 0.85rem;
   align-items: start;
-  padding: 1rem 1.25rem 0.85rem;
+  padding: 1rem 1.25rem 3rem;
   width: 100%;
   position: relative;
 }
@@ -171,44 +170,63 @@ body {
   line-height: 1.4 !important;
   margin: 0.1rem 0 0.5rem;
 }
-.version::before {
-  content: "shipped ";
-  color: var(--muted);
-  font-weight: 400;
-}
-.version::after {
-  content: "  🚀";
-  font-size: 0.85em;
-}
-.person[data-row-variant="1"] .version::after { content: "  ✨"; }
-.person[data-row-variant="2"] .version::after { content: "  💯"; }
-.person[data-row-variant="3"] .version::after { content: "  📈"; }
-.person[data-row-variant="4"] .version::after { content: "  🔥"; }
-.person[data-row-variant="5"] .version::after { content: "  🛳️"; }
-.person[data-row-variant="6"] .version::after { content: "  🧪"; }
-.person[data-row-variant="7"] .version::after { content: "  💥"; }
 
+/* Three reaction pills sit in a strip below the message — each its own bubble */
+.version::before,
+.version::after,
 .person::after {
-  grid-area: reactions;
-  display: inline-block;
+  position: absolute;
+  bottom: 0.75rem;
+  display: inline-flex;
+  align-items: center;
   background: var(--reaction-bg);
   border: 1px solid rgba(29, 155, 209, 0.3);
   border-radius: 16px;
   padding: 0.2rem 0.7rem;
-  font-size: 13px;
-  color: var(--link);
-  width: max-content;
+  font-size: 12px;
   font-family: inherit;
-  content: "🎉 7   ✅ 4   🚀 12";
+  font-weight: 600;
+  color: var(--link);
+  letter-spacing: 0;
+  white-space: nowrap;
+  line-height: 1.3;
 }
-.person[data-row-variant="0"]::after { content: "🎉 7   ✅ 4   🚀 12"; }
-.person[data-row-variant="1"]::after { content: "🔥 14   👀 9   💯 3"; }
-.person[data-row-variant="2"]::after { content: "🧠 5   ✨ 11   ☕ 2"; }
-.person[data-row-variant="3"]::after { content: "📈 6   🙌 8   🎯 4"; }
-.person[data-row-variant="4"]::after { content: "🚢 9   ✅ 7"; }
-.person[data-row-variant="5"]::after { content: "💡 12   👏 6   🧪 3"; }
-.person[data-row-variant="6"]::after { content: "🐛 1   ✅ 22   🛟 4"; }
-.person[data-row-variant="7"]::after { content: "🍕 5   🎉 3   👀 17"; }
+.version::before { left: calc(40px + 1.25rem + 0.85rem); }
+.version::after  { left: calc(40px + 1.25rem + 0.85rem + 4.25rem); }
+.person::after   { left: calc(40px + 1.25rem + 0.85rem + 8.5rem); }
+
+/* Pill 1 — first reaction, varies per row */
+.version::before { content: "🎉 7"; }
+.person[data-row-variant="0"] .version::before { content: "🎉 7"; }
+.person[data-row-variant="1"] .version::before { content: "🔥 14"; }
+.person[data-row-variant="2"] .version::before { content: "🧠 5"; }
+.person[data-row-variant="3"] .version::before { content: "📈 6"; }
+.person[data-row-variant="4"] .version::before { content: "🚢 9"; }
+.person[data-row-variant="5"] .version::before { content: "💡 12"; }
+.person[data-row-variant="6"] .version::before { content: "🐛 1"; }
+.person[data-row-variant="7"] .version::before { content: "🍕 5"; }
+
+/* Pill 2 — second reaction */
+.version::after { content: "✅ 4"; }
+.person[data-row-variant="0"] .version::after { content: "✅ 4"; }
+.person[data-row-variant="1"] .version::after { content: "👀 9"; }
+.person[data-row-variant="2"] .version::after { content: "✨ 11"; }
+.person[data-row-variant="3"] .version::after { content: "🙌 8"; }
+.person[data-row-variant="4"] .version::after { content: "✅ 7"; }
+.person[data-row-variant="5"] .version::after { content: "👏 6"; }
+.person[data-row-variant="6"] .version::after { content: "✅ 22"; }
+.person[data-row-variant="7"] .version::after { content: "🎉 3"; }
+
+/* Pill 3 — third reaction */
+.person::after { content: "🚀 12"; }
+.person[data-row-variant="0"]::after { content: "🚀 12"; }
+.person[data-row-variant="1"]::after { content: "💯 3"; }
+.person[data-row-variant="2"]::after { content: "☕ 2"; }
+.person[data-row-variant="3"]::after { content: "🎯 4"; }
+.person[data-row-variant="4"]::after { content: "➕ add"; opacity: 0.7; }
+.person[data-row-variant="5"]::after { content: "🧪 3"; }
+.person[data-row-variant="6"]::after { content: "🛟 4"; }
+.person[data-row-variant="7"]::after { content: "👀 17"; }
 
 .add-btn {
   display: inline-block;
@@ -238,25 +256,15 @@ body {
 }
 .site-footer a { color: var(--link); }
 
-/* Quarter-start celebrates with target-style reactions; tenure anniversary
-   pulls out the cake. Variants still vary the exact emoji counts. */
-body[data-quarter-start="true"] .person[data-row-variant="0"]::after { content: "🎯 8   📈 14   💯 3"; }
-body[data-quarter-start="true"] .person[data-row-variant="1"]::after { content: "🚀 11   🎯 6   ✅ 9"; }
-body[data-quarter-start="true"] .person[data-row-variant="2"]::after { content: "📊 7   🎯 12   🔥 4"; }
-body[data-quarter-start="true"] .person[data-row-variant="3"]::after { content: "🎯 5   📈 22   💼 2"; }
-body[data-quarter-start="true"] .person[data-row-variant="4"]::after { content: "🆕 9   🎯 4   🚀 13"; }
-body[data-quarter-start="true"] .person[data-row-variant="5"]::after { content: "🎯 3   📈 17   ✨ 6"; }
-body[data-quarter-start="true"] .person[data-row-variant="6"]::after { content: "📈 8   🆕 11   🎯 7"; }
-body[data-quarter-start="true"] .person[data-row-variant="7"]::after { content: "🎯 14   🚀 5   📊 9"; }
+/* Quarter-start swaps in target/rocket reactions; tenure anniversary swaps in
+   cake/celebration ones — still as 3 separate pills. */
+body[data-quarter-start="true"] .person .version::before { content: "🎯 8"; }
+body[data-quarter-start="true"] .person .version::after  { content: "📈 14"; }
+body[data-quarter-start="true"] .person::after           { content: "🚀 11"; }
 
-body[data-tenure-anniversary="true"] .person[data-row-variant="0"]::after { content: "🎂 12   🎉 47   🍾 9"; }
-body[data-tenure-anniversary="true"] .person[data-row-variant="1"]::after { content: "🎉 33   🎂 8   🥂 11"; }
-body[data-tenure-anniversary="true"] .person[data-row-variant="2"]::after { content: "🎂 21   🍾 6   🎉 19"; }
-body[data-tenure-anniversary="true"] .person[data-row-variant="3"]::after { content: "🎉 52   🎂 4   🥳 14"; }
-body[data-tenure-anniversary="true"] .person[data-row-variant="4"]::after { content: "🍾 18   🎂 9   🎉 27"; }
-body[data-tenure-anniversary="true"] .person[data-row-variant="5"]::after { content: "🥳 7   🎉 38   🎂 6"; }
-body[data-tenure-anniversary="true"] .person[data-row-variant="6"]::after { content: "🎂 14   🍾 11   🎉 23"; }
-body[data-tenure-anniversary="true"] .person[data-row-variant="7"]::after { content: "🎉 41   🎂 17   🥂 8"; }
+body[data-tenure-anniversary="true"] .person .version::before { content: "🎂 12"; }
+body[data-tenure-anniversary="true"] .person .version::after  { content: "🎉 47"; }
+body[data-tenure-anniversary="true"] .person::after           { content: "🍾 9"; }
 
 .person:hover .version { color: var(--fg-bright); transition: color 180ms; }
 .person.is-bumping { animation: slack-pop 1s ease-out; }

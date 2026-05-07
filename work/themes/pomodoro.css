@@ -5,7 +5,10 @@
   --muted: #8b6f5f;
   --tomato: #e74c3c;
   --tomato-dark: #c0392b;
+  --tomato-deep: #962a23;
   --leaf: #27ae60;
+  --leaf-dark: #1e8449;
+  --break: #f7c873;
   --border: rgba(231, 76, 60, 0.18);
 }
 
@@ -35,6 +38,13 @@ body {
   letter-spacing: -0.01em;
 }
 .site-title::before { content: "🍅  "; }
+.site-title::after {
+  content: "  🍅🍅🍅⚪";
+  font-size: 0.75em;
+  margin-left: 0.5em;
+  letter-spacing: 0.05em;
+  vertical-align: 0.05em;
+}
 
 .theme-select, .about-btn, .edit-btn {
   background: var(--paper);
@@ -62,6 +72,14 @@ body {
   font-size: 0.95rem;
   max-width: 56ch;
 }
+.intro::before {
+  content: "⏱  25 min focus  ·  5 min break  —  ";
+  color: var(--tomato);
+  font-weight: 700;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
 .intro code {
   background: var(--tomato);
   color: #fff;
@@ -77,31 +95,22 @@ body {
   background: var(--paper);
   border: 3px solid var(--tomato);
   border-radius: 28px;
-  padding: 2rem 2.5rem 1.75rem;
+  padding: 2.25rem 2.5rem 1.75rem;
   width: 100%;
-  align-items: center;
   text-align: center;
   position: relative;
-  box-shadow: 0 4px 0 var(--tomato-dark);
+  box-shadow: 0 4px 0 var(--tomato-dark), inset 0 -8px 24px rgba(231, 76, 60, 0.08);
 }
 
+/* Tomato leaf + stem perched on top of the timer */
 .person::before {
-  content: "FOCUS SESSION";
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--tomato);
-  letter-spacing: 0.25em;
-  margin-bottom: 0.6rem;
-}
-
-.person::after {
-  content: "(don’t check Slack)";
-  display: block;
-  font-size: 0.78rem;
-  color: var(--muted);
-  margin-top: 0.6rem;
-  font-style: italic;
+  content: "🍃";
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-18deg);
+  font-size: 1.6rem;
+  filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.15));
 }
 
 .person-name {
@@ -109,17 +118,77 @@ body {
   letter-spacing: 0.18em;
   font-size: 0.75rem;
   color: var(--muted);
-  margin-bottom: 0.4rem;
+  margin: 0 0 0.55rem;
   opacity: 1;
   font-weight: 700;
 }
+.person-name::before {
+  content: "FOCUS SESSION  ·  ";
+  color: var(--tomato);
+}
+.person[data-row-variant="0"] .person-name::before { content: "FOCUS SESSION  ·  "; color: var(--tomato); }
+.person[data-row-variant="1"] .person-name::before { content: "DEEP WORK  ·  "; color: var(--tomato); }
+.person[data-row-variant="2"] .person-name::before { content: "MAKER MODE  ·  "; color: var(--tomato); }
+.person[data-row-variant="3"] .person-name::before { content: "HEADS DOWN  ·  "; color: var(--tomato); }
+.person[data-row-variant="4"] .person-name::before { content: "SHORT BREAK  ·  "; color: var(--break); }
+.person[data-row-variant="5"] .person-name::before { content: "FOCUS SESSION  ·  "; color: var(--tomato); }
+.person[data-row-variant="6"] .person-name::before { content: "DEEP WORK  ·  "; color: var(--tomato); }
+.person[data-row-variant="7"] .person-name::before { content: "LONG BREAK  ·  "; color: var(--break); }
 
+/* Big timer-face version display */
 .version {
   color: var(--tomato-dark);
-  font-family: "SF Pro Display", -apple-system, sans-serif;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-weight: 800;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
+  font-feature-settings: "tnum" 1;
+  line-height: 1 !important;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: var(--bg);
+  border: 2px dashed var(--tomato);
+  border-radius: 16px;
+  position: relative;
 }
+
+/* Tomato pip row + session counter underneath the timer */
+.version::after {
+  content: "🍅  🍅  🍅  ⚪   ·   Pomodoro 3 of 4   ·   next break in 12 min";
+  display: block;
+  margin-top: 0.85rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+  -webkit-text-fill-color: var(--muted);
+}
+.person[data-row-variant="0"] .version::after { content: "🍅  🍅  🍅  ⚪   ·   Pomodoro 3 of 4   ·   next break in 12 min"; }
+.person[data-row-variant="1"] .version::after { content: "🍅  🍅  ⚪  ⚪   ·   Pomodoro 2 of 4   ·   stay off Slack"; }
+.person[data-row-variant="2"] .version::after { content: "🍅  ⚪  ⚪  ⚪   ·   Pomodoro 1 of 4   ·   warming up"; }
+.person[data-row-variant="3"] .version::after { content: "🍅  🍅  🍅  🍅   ·   long break unlocked  ·   stretch"; }
+.person[data-row-variant="4"] .version::after { content: "☕  short break  ·   look out a window  ·   5 min on the clock"; color: var(--break); -webkit-text-fill-color: var(--break); }
+.person[data-row-variant="5"] .version::after { content: "🍅  🍅  ⚪  ⚪   ·   Pomodoro 2 of 4   ·   inbox can wait"; }
+.person[data-row-variant="6"] .version::after { content: "🍅  🍅  🍅  ⚪   ·   Pomodoro 3 of 4   ·   no notifications"; }
+.person[data-row-variant="7"] .version::after { content: "🛋  long break  ·   step away from the desk  ·   15 min"; color: var(--break); -webkit-text-fill-color: var(--break); }
+
+/* "(don't check Slack)" shipping with the timer */
+.person::after {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.85rem;
+  font-style: italic;
+  content: "(silence your phone)";
+}
+.person[data-row-variant="0"]::after { content: "(silence your phone)"; }
+.person[data-row-variant="1"]::after { content: "(close the chat tab)"; }
+.person[data-row-variant="2"]::after { content: "(no email until the bell)"; }
+.person[data-row-variant="3"]::after { content: "(do not stand up)"; }
+.person[data-row-variant="4"]::after { content: "(walk it off)"; }
+.person[data-row-variant="5"]::after { content: "(headphones on)"; }
+.person[data-row-variant="6"]::after { content: "(stay in flow)"; }
+.person[data-row-variant="7"]::after { content: "(go outside, look at trees)"; }
 
 .add-btn {
   display: inline-block;
@@ -131,6 +200,7 @@ body {
   font-weight: 700;
   font-family: inherit;
 }
+.add-btn::before { content: "▶  "; }
 .add-btn:hover { background: var(--tomato); color: #fff; }
 
 .site-footer {
@@ -152,12 +222,15 @@ body {
 
 body[data-quarter-start="true"] .person {
   border-color: var(--leaf);
-  box-shadow: 0 4px 0 #1e8449;
+  box-shadow: 0 4px 0 var(--leaf-dark), inset 0 -8px 24px rgba(39, 174, 96, 0.08);
 }
-body[data-quarter-start="true"] .person::before { color: var(--leaf); }
-body[data-tenure-anniversary="true"] .person::before { content: "🎉  LEVEL UP  🎉"; color: var(--leaf); }
+body[data-quarter-start="true"] .version { border-color: var(--leaf); color: var(--leaf-dark); }
+body[data-tenure-anniversary="true"] .person::before {
+  content: "🎉";
+  transform: translateX(-50%) rotate(0);
+}
 
-/* Steam wisp drifting up from each tomato. */
+/* A second-hand sweep tick across the timer face */
 .theme-fx::before {
   content: "";
   position: absolute;
@@ -167,9 +240,9 @@ body[data-tenure-anniversary="true"] .person::before { content: "🎉  LEVEL UP 
   height: 120vh;
   transform: translateX(-50%);
   background:
-    radial-gradient(20px 60px at 30% 80%, rgba(192,57,43,0.06), transparent 70%),
-    radial-gradient(15px 50px at 50% 50%, rgba(192,57,43,0.05), transparent 70%),
-    radial-gradient(25px 70px at 70% 20%, rgba(192,57,43,0.05), transparent 70%);
+    radial-gradient(20px 60px at 30% 80%, rgba(192, 57, 43, 0.06), transparent 70%),
+    radial-gradient(15px 50px at 50% 50%, rgba(192, 57, 43, 0.05), transparent 70%),
+    radial-gradient(25px 70px at 70% 20%, rgba(192, 57, 43, 0.05), transparent 70%);
   background-size: 100% 600px;
   animation: pomo-steam 14s linear infinite;
   pointer-events: none;
@@ -178,47 +251,17 @@ body[data-tenure-anniversary="true"] .person::before { content: "🎉  LEVEL UP 
   to { background-position-y: -600px; }
 }
 
-/* Tomato pulse — like a kitchen timer ticking. */
 .person { transition: transform 200ms; }
 .person:hover { transform: scale(1.01); }
 .person.is-bumping { animation: pomo-tick 1s ease-out; }
 @keyframes pomo-tick {
   0%, 100% { transform: rotate(0); }
-  20%      { transform: rotate(-1.5deg); }
-  60%      { transform: rotate(1.5deg); }
+  20%      { transform: rotate(-1.2deg); }
+  60%      { transform: rotate(1.2deg); }
 }
 
-/* Animated timer ring around the tomato session — slow rotation gives a
-   "session in progress" feel. */
-.person {
-  background:
-    var(--paper);
-  position: relative;
-}
-.person::before {
-  position: relative;
-}
-.person {
-  background-image:
-    conic-gradient(from 0deg, var(--tomato) 0deg, var(--tomato) 90deg, transparent 90deg);
-  background-origin: border-box;
-  background-clip: border-box, padding-box;
-}
-/* Override the conic background — too aggressive; instead, add a sweep via
-   a positioned pseudo-layer on the .version. */
-.person { background: var(--paper); background-image: none; }
-
-.version { position: relative; display: inline-block; }
-.version::after {
-  content: "";
-  position: absolute;
-  inset: -0.3em;
-  border-radius: 12px;
-  background: conic-gradient(from -90deg, var(--tomato) 0deg, var(--tomato) 30deg, transparent 30deg);
-  z-index: -1;
-  opacity: 0.12;
-  animation: pomo-sweep 25s linear infinite;
-}
-@keyframes pomo-sweep {
-  to { transform: rotate(360deg); }
+@media (prefers-reduced-motion: reduce) {
+  .theme-fx::before { animation: none; }
+  .person, .person:hover { transition: none; transform: none; }
+  .person.is-bumping { animation: none; }
 }

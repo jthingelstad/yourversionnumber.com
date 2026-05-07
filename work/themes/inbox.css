@@ -153,6 +153,14 @@ body {
   font-weight: 400;
   font-size: 12px;
 }
+.person[data-row-variant="0"] .person-name::after { content: "  <noreply@enterprise.corp>"; }
+.person[data-row-variant="1"] .person-name::after { content: "  <hr-bot@enterprise.corp>"; }
+.person[data-row-variant="2"] .person-name::after { content: "  <calendar@enterprise.corp>"; }
+.person[data-row-variant="3"] .person-name::after { content: "  <docs-share@enterprise.corp>"; }
+.person[data-row-variant="4"] .person-name::after { content: "  <okrs@enterprise.corp>"; }
+.person[data-row-variant="5"] .person-name::after { content: "  <people-ops@enterprise.corp>"; }
+.person[data-row-variant="6"] .person-name::after { content: "  <finance@enterprise.corp>"; }
+.person[data-row-variant="7"] .person-name::after { content: "  <announcements@enterprise.corp>"; }
 
 .version {
   grid-area: version;
@@ -168,6 +176,14 @@ body {
   content: "Re: Q2 milestone shipped — ";
   color: var(--muted);
 }
+.person[data-row-variant="0"] .version::before { content: "Re: Q2 milestone shipped — "; }
+.person[data-row-variant="1"] .version::before { content: "Reminder: complete your compliance training — "; }
+.person[data-row-variant="2"] .version::before { content: "Invitation: weekly 1:1 (recurring) — "; }
+.person[data-row-variant="3"] .version::before { content: "shared a doc with you: “Q3 roadmap” — "; }
+.person[data-row-variant="4"] .version::before { content: "OKR check-in due Friday — "; }
+.person[data-row-variant="5"] .version::before { content: "Org update: small change to the team — "; }
+.person[data-row-variant="6"] .version::before { content: "Expense report awaiting approval — "; }
+.person[data-row-variant="7"] .version::before { content: "Welcome back to the office — "; }
 
 .person::after {
   grid-area: time;
@@ -177,6 +193,14 @@ body {
   font-variant-numeric: tabular-nums;
   align-self: end;
 }
+.person[data-row-variant="0"]::after { content: "9:42 AM"; }
+.person[data-row-variant="1"]::after { content: "11:13 AM"; }
+.person[data-row-variant="2"]::after { content: "Yesterday"; }
+.person[data-row-variant="3"]::after { content: "Mon"; }
+.person[data-row-variant="4"]::after { content: "2:08 PM"; }
+.person[data-row-variant="5"]::after { content: "Tue"; }
+.person[data-row-variant="6"]::after { content: "Apr 18"; }
+.person[data-row-variant="7"]::after { content: "4:52 PM"; }
 
 .add-btn {
   display: inline-block;

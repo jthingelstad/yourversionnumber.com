@@ -150,7 +150,15 @@ body {
   font-family: inherit;
 }
 .person-name::before { content: "From: "; }
-.person-name::after { content: "  <auto-reply@enterprise.corp>"; font-size: 0.9em; }
+.person-name::after { content: "  <alex@enterprise.corp>"; font-size: 0.9em; }
+.person[data-row-variant="0"] .person-name::after { content: "  <alex@enterprise.corp>"; }
+.person[data-row-variant="1"] .person-name::after { content: "  <sam@enterprise.corp>"; }
+.person[data-row-variant="2"] .person-name::after { content: "  <jordan@enterprise.corp>"; }
+.person[data-row-variant="3"] .person-name::after { content: "  <riley@enterprise.corp>"; }
+.person[data-row-variant="4"] .person-name::after { content: "  <casey@enterprise.corp>"; }
+.person[data-row-variant="5"] .person-name::after { content: "  <morgan@enterprise.corp>"; }
+.person[data-row-variant="6"] .person-name::after { content: "  <taylor@enterprise.corp>"; }
+.person[data-row-variant="7"] .person-name::after { content: "  <quinn@enterprise.corp>"; }
 
 .version {
   color: var(--fg);
@@ -160,6 +168,27 @@ body {
   font-size: clamp(2.5rem, 7vw, 4rem) !important;
   line-height: 1.1 !important;
 }
+
+.person::after {
+  display: block;
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--border);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-line;
+  content: "Hi —\AI'm at a conference through the rest of the quarter. Limited email access; for anything urgent, ping @ops.\A\A— sent from my beach chair";
+}
+.person[data-row-variant="0"]::after { content: "Hi —\AI'm at a conference through the rest of the quarter. Limited email access; for anything urgent, ping @ops.\A\A— sent from my beach chair"; }
+.person[data-row-variant="1"]::after { content: "Hello,\AOn vacation through Friday. I will not be checking email. Loop in literally anyone else.\A\A— back when the laundry is done"; }
+.person[data-row-variant="2"]::after { content: "Hi there,\AOut touching grass. Will respond when (if) I return.\A\A— sent from a hammock"; }
+.person[data-row-variant="3"]::after { content: "Hello,\AOn parental leave through Q3. Please contact my backup for anything time-sensitive.\A\A— see you in the fall"; }
+.person[data-row-variant="4"]::after { content: "Hi,\AOn sabbatical. I will not see this email. See you in Q4.\A\A— gone climbing"; }
+.person[data-row-variant="5"]::after { content: "Hello,\AAt a wedding this weekend with patchy reception. Try Slack first. I will respond Monday.\A\A— RSVP yes 🥂"; }
+.person[data-row-variant="6"]::after { content: "Hey —\ABackpacking through the mountains. Cell service is pretend. Will reply in two weeks.\A\A— sent from a summit"; }
+.person[data-row-variant="7"]::after { content: "Hi,\AOut for a long weekend. Back Monday morning bright-eyed and bushy-tailed.\A\A— logging off 🌴"; }
 
 .add-btn {
   display: inline-block;
