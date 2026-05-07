@@ -17,7 +17,35 @@ Unknown or omitted themes resolve to a random pick from the manifest, and the ra
 
 ## Themes
 
-Seventeen ship: `dark`, `family`, `pastel`, `birthday`, `nature`, `ocean`, `galaxy`, `zen`, `terminal`, `arcade`, `vaporwave`, `y2k`, `newspaper`, `steampunk`, `brutalist`, `comic`, `memphis`. Each is a standalone stylesheet in `themes/`.
+Twenty-five ship for the birthday edition. Each is a standalone stylesheet in `themes/`.
+
+| Theme | One-liner |
+| --- | --- |
+| `dark` | Minimalist dark mode with violet accents. |
+| `family` | Warm cream + handwritten Caveat, family-album feel. |
+| `pastel` | Soft gradient haze with pastel cards. |
+| `birthday` | Confetti, balloons, and party-hat pink. |
+| `nature` | Scattered leaves on linen, earthy serif. |
+| `ocean` | Wavy gradients with a tiny shoreline wave. |
+| `galaxy` | Deep-space gradient with neon numerals. |
+| `zen` | Quiet cream with a vermillion first-letter. |
+| `weather` | Sky-blue card with a sun/cloud per row. |
+| `polaroid` | Taped Polaroid grid with a slight tilt. |
+| `tarot` | Purple stars and Fool / Priestess / Empress cards. |
+| `newspaper` | Broadsheet typography with section rules. |
+| `subway` | Black NYC subway map with route bullets. |
+| `receipt` | Thermal-printer monospace with QTY 1. |
+| `steampunk` | Sepia gear-and-cog ledger. |
+| `brutalist` | Yellow + red + black, oversized type. |
+| `comic` | Comic panels with POW / ZAP / BOOM stickers. |
+| `memphis` | 80s squiggles, triangles, and dots. |
+| `vinyl` | Spinning 33⅓ records. |
+| `terminal` | Green-on-black CLI prompt. |
+| `arcade` | Pixel-fonted hi-score CRT cabinet. |
+| `vaporwave` | Pink/cyan grid with a palm-tree sunset. |
+| `y2k` | Frosted-glass chrome and blur. |
+| `pixel` | Eight-bit pixel font on a dark green field. |
+| `gameboy` | Classic GB DMG palette and cart silhouette. |
 
 Themes paint the **display**: header, person rows, footer, empty-state CTA. They do not style the About or Edit dialogs — those are app chrome with a neutral look in `assets/base.css` that follows the OS light/dark preference. This keeps themes simple and the dialogs consistent on every theme.
 
@@ -47,6 +75,28 @@ https://yourversionnumber.com/work/?theme=boardroom&j=Engineer:2024-01-15
 
 - `theme` — name of a stylesheet in `work/themes/`. Independent set from the root themes.
 - `j` — repeatable. `Title:YYYY-MM-DD`, or just `YYYY-MM-DD` for a nameless entry.
+
+Seventeen ship for the work edition:
+
+| Theme | One-liner |
+| --- | --- |
+| `boardroom` | Board-update slide with KPI rail (ARR, NPS, payback). |
+| `slack` | Slack channel feed with reactions and avatars. |
+| `slidedeck` | Confidential business-review slide with three bullets. |
+| `earnings` | Live stock-ticker on a black trading screen. |
+| `github` | GitHub PR list with avatars, labels, and the Open pill. |
+| `whiteboard` | Sticky-note grid in primary colors. |
+| `inbox` | Gmail-style inbox with subject lines and senders. |
+| `okr` | Q-scorecard with progress bar and ON-TRACK pill. |
+| `cubicle` | Manila-folder corporate newsletter. |
+| `kanban` | Jira-style cards in an In-Progress column. |
+| `standup` | Daily-standup card with Yesterday / Today / Blockers. |
+| `invite` | Calendar invite with Accepted check. |
+| `confluence` | Wiki page with breadcrumbs and comment counts. |
+| `zoom` | Gallery-view tiles with reactions. |
+| `spreadsheet` | Excel grid with row numbers. |
+| `pomodoro` | Tomato-timer Deep Work card. |
+| `ooo` | Out-of-office auto-reply with handwritten signature. |
 
 Code lives at `work/index.html`, `work/assets/app.js`, `work/assets/base.css`, `work/themes/*.css` — fully separate from the root site. Same repo, same deploy.
 

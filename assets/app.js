@@ -222,7 +222,9 @@ function render() {
 
   const attribution = document.createElement('div');
   attribution.className = 'site-attribution';
-  attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a> &mdash; new themes welcome via pull request. Bookmark this URL to save what’s here.';
+  attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a> &mdash; new themes welcome via pull request. Bookmark this URL to save what’s here, or ';
+  attribution.appendChild(makeShareButton());
+  attribution.appendChild(document.createTextNode('.'));
   footer.appendChild(attribution);
 
   const stats = document.createElement('div');
@@ -335,6 +337,38 @@ function renderThemeSelector() {
   });
   wrap.appendChild(select);
   return wrap;
+}
+
+function makeShareButton() {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'share-btn';
+  btn.textContent = 'copy link';
+  btn.setAttribute('data-tinylytics-event', 'share.copy');
+  let resetTimer = null;
+  btn.addEventListener('click', async () => {
+    const url = location.href;
+    let label = null;
+    try {
+      if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
+        await navigator.share({ url });
+        label = 'shared!';
+      } else if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        label = 'copied!';
+      }
+    } catch (_) { /* user cancelled or denied */ }
+    if (label) {
+      btn.textContent = label;
+      btn.classList.add('share-btn--ok');
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        btn.textContent = 'copy link';
+        btn.classList.remove('share-btn--ok');
+      }, 2000);
+    }
+  });
+  return btn;
 }
 
 function attachBackdropClose(dialog) {

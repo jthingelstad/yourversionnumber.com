@@ -53,6 +53,22 @@ input {
   color: inherit;
 }
 
+.share-btn {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.share-btn--ok {
+  text-decoration: none;
+  opacity: 0.7;
+}
+
 /* Decorative effects layer. Themes paint into ::before / ::after. */
 .theme-fx {
   position: fixed;
@@ -310,4 +326,8 @@ input {
 @media (max-width: 820px) {
   .site-header { flex-wrap: wrap; }
   .header-controls { flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+  .theme-select { max-width: 8.5rem; min-width: 0; }
 }
