@@ -87,23 +87,24 @@ body {
   padding: 0;
   width: 100%;
   position: relative;
-  display: grid;
-  place-items: center;
   background-image:
     repeating-radial-gradient(circle at 50% 50%, transparent 0 4px, rgba(255,255,255,0.025) 4px 5px);
   box-shadow:
     inset 0 0 30px rgba(0,0,0,0.6),
     0 12px 30px rgba(0,0,0,0.5);
-  animation: vinyl-spin 12s linear infinite;
 }
 
-/* Center label per variant */
+/* Center label per variant — explicit centering so place doesn't depend on
+   browser quirks for absolute children of a grid container. */
 .person::before {
   content: "";
   position: absolute;
-  width: 38%;
+  top: 50%;
+  left: 50%;
+  width: 50%;
   aspect-ratio: 1;
   border-radius: 50%;
+  transform: translate(-50%, -50%);
   background:
     radial-gradient(circle at 50% 50%, var(--label) 0 90%, var(--label-2) 92% 100%);
   box-shadow: inset 0 0 0 4px var(--label-2);
@@ -114,53 +115,76 @@ body {
 .person[data-row-variant="4"]::before { background: radial-gradient(circle, #8a6f1f 0 90%, #5e4a10 92% 100%); }
 .person[data-row-variant="5"]::before { background: radial-gradient(circle, #1f7a4a 0 90%, #0e4a25 92% 100%); }
 .person[data-row-variant="6"]::before { background: radial-gradient(circle, #d97757 0 90%, #8e4a2f 92% 100%); }
-.person[data-row-variant="7"]::before { background: radial-gradient(circle, #2a2a2a 0 90%, #0d0d0d 92% 100%); color: var(--ivory); }
+.person[data-row-variant="7"]::before { background: radial-gradient(circle, #2a2a2a 0 90%, #0d0d0d 92% 100%); }
 
 /* Center hole */
 .person::after {
   content: "";
   position: absolute;
+  top: 50%;
+  left: 50%;
   width: 4%;
   aspect-ratio: 1;
   border-radius: 50%;
+  transform: translate(-50%, -50%);
   background: var(--felt-2);
   box-shadow: 0 0 0 2px rgba(0,0,0,0.6);
   z-index: 3;
 }
 
-.person-name {
+/* Names + versions sit on the label — upper half for the name, lower half
+   for the version, with the spindle hole between them. Width is constrained
+   to the label diameter (50%) so long versions like "2.5.127" don't spill
+   onto the black vinyl where they'd vanish. */
+.person-name,
+.person-name-fallback {
   position: absolute;
+  top: 36%;
+  left: 50%;
+  width: 40%;
+  transform: translate(-50%, -50%);
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(0.95rem, 3vw, 1.25rem);
+  font-size: clamp(0.95rem, 2.6vw, 1.15rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #23180e;
-  opacity: 1;
-  z-index: 2;
-  width: 44%;
   text-align: center;
-  top: 30%;
-  left: 50%;
-  transform: translateX(-50%);
+  color: #23180e;
+  z-index: 2;
 }
-
-.person[data-row-variant="7"] .person-name { color: var(--ivory); }
 
 .version {
   position: absolute;
+  top: 64%;
+  left: 50%;
+  width: 40%;
+  transform: translate(-50%, -50%);
   font-family: 'Bebas Neue', sans-serif;
   font-weight: 400;
-  font-size: clamp(1.6rem, 5.2vw, 2.25rem);
+  font-size: clamp(1.2rem, 3.6vw, 1.6rem);
   letter-spacing: 0.04em;
+  text-align: center;
   color: #23180e;
   z-index: 2;
-  bottom: 28%;
-  width: 44%;
-  text-align: center;
-  left: 50%;
-  transform: translateX(-50%);
 }
+
+/* Lift name + version off dark label variants where dark-brown text would
+   blend in. Gold (default) and orange (variant 6) keep the dark ink. */
+.person[data-row-variant="1"] .person-name,
+.person[data-row-variant="1"] .version,
+.person[data-row-variant="2"] .person-name,
+.person[data-row-variant="2"] .version,
+.person[data-row-variant="3"] .person-name,
+.person[data-row-variant="3"] .version,
+.person[data-row-variant="4"] .person-name,
+.person[data-row-variant="4"] .version,
+.person[data-row-variant="5"] .person-name,
+.person[data-row-variant="5"] .version,
+.person[data-row-variant="7"] .person-name,
 .person[data-row-variant="7"] .version { color: var(--ivory); }
+
+/* Static by default so the labels are readable. Hover spins it for fun
+   — and the midnight tick still gets its skip wiggle below. */
+.person:hover { animation: vinyl-spin 4s linear infinite; }
 
 @keyframes vinyl-spin {
   to { transform: rotate(360deg); }
@@ -191,8 +215,7 @@ body {
 }
 .site-footer a { color: var(--label); font-weight: 700; }
 
-.person:hover { animation-duration: 4s; }
-.person.is-bumping { animation: vinyl-spin 12s linear infinite, vinyl-skip 0.6s ease-out; }
+.person.is-bumping { animation: vinyl-skip 0.6s ease-out; }
 @keyframes vinyl-skip {
   0%   { transform: scale(1); }
   30%  { transform: scale(1.04) translateX(-3px); }
