@@ -1,31 +1,29 @@
-// `swatch` is a 3-color palette used to render a tiny preview chip next to the
-// theme picker. Pick the most representative colors of the theme.
 const THEMES = [
-  { name: 'dark',       label: 'Dark',       kind: 'dark',  animate: false, swatch: ['#0f0f10', '#222', '#fafafa'] },
-  { name: 'family',     label: 'Family',     kind: 'light', animate: false, swatch: ['#fff8e7', '#d97757', '#3d2914'] },
-  { name: 'pastel',     label: 'Pastel',     kind: 'light', animate: false, swatch: ['#fde7f3', '#c8e1ff', '#fff5d6'] },
-  { name: 'birthday',   label: 'Birthday',   kind: 'fun',   animate: false, swatch: ['#ff5f8a', '#ffd23f', '#3aaed8'] },
-  { name: 'nature',     label: 'Nature',     kind: 'light', animate: false, swatch: ['#f6f1e3', '#4a7c3a', '#3d2f1f'] },
-  { name: 'ocean',      label: 'Ocean',      kind: 'dark',  animate: false, swatch: ['#0a2540', '#1a6f9c', '#7fc6d9'] },
-  { name: 'galaxy',     label: 'Galaxy',     kind: 'dark',  animate: true,  swatch: ['#0b0524', '#7c3aed', '#f0abfc'] },
-  { name: 'zen',        label: 'Zen',        kind: 'light', animate: false, swatch: ['#f5f3ee', '#9b8e7c', '#2c2a26'] },
-  { name: 'weather',    label: 'Weather',    kind: 'light', animate: false, swatch: ['#bde0fe', '#ffd166', '#264653'] },
-  { name: 'polaroid',   label: 'Polaroid',   kind: 'light', animate: false, swatch: ['#f4ead5', '#fffdf7', '#3a3a3a'] },
-  { name: 'tarot',      label: 'Tarot',      kind: 'light', animate: false, swatch: ['#1a0e2e', '#d4af37', '#f4ead5'] },
-  { name: 'newspaper',  label: 'Newspaper',  kind: 'light', animate: false, swatch: ['#f4f1ea', '#1a1a1a', '#8b7355'] },
-  { name: 'subway',     label: 'Subway',     kind: 'dark',  animate: false, swatch: ['#000', '#fff', '#ee352e'] },
-  { name: 'receipt',    label: 'Receipt',    kind: 'light', animate: false, swatch: ['#f9f6ee', '#1a1a1a', '#888'] },
-  { name: 'steampunk',  label: 'Steampunk',  kind: 'dark',  animate: false, swatch: ['#2a1810', '#b8860b', '#704214'] },
-  { name: 'brutalist',  label: 'Brutalist',  kind: 'light', animate: false, swatch: ['#fff', '#000', '#ff4500'] },
-  { name: 'comic',      label: 'Comic',      kind: 'fun',   animate: false, swatch: ['#fff200', '#ed1c24', '#000'] },
-  { name: 'memphis',    label: 'Memphis',    kind: 'fun',   animate: false, swatch: ['#ff6b9d', '#fbc846', '#3aaed8'] },
-  { name: 'vinyl',      label: 'Vinyl',      kind: 'fun',   animate: true,  swatch: ['#0d0d0d', '#c8a96b', '#e63946'] },
-  { name: 'terminal',   label: 'Terminal',   kind: 'retro', animate: true,  swatch: ['#0a0e0a', '#33ff33', '#fff'] },
-  { name: 'arcade',     label: 'Arcade',     kind: 'retro', animate: true,  swatch: ['#0a0a23', '#ff2e88', '#ffd23f'] },
-  { name: 'vaporwave',  label: 'Vaporwave',  kind: 'retro', animate: true,  swatch: ['#1a0a2e', '#ff71ce', '#01cdfe'] },
-  { name: 'y2k',        label: 'Y2K',        kind: 'retro', animate: true,  swatch: ['#c0c0c0', '#ff00ff', '#00ffff'] },
-  { name: 'pixel',      label: 'Pixel',      kind: 'retro', animate: true,  swatch: ['#0f380f', '#9bbc0f', '#306230'] },
-  { name: 'gameboy',    label: 'Gameboy',    kind: 'retro', animate: true,  swatch: ['#9bbc0f', '#306230', '#0f380f'] },
+  { name: 'dark',       label: 'Dark',       kind: 'dark',  animate: false },
+  { name: 'family',     label: 'Family',     kind: 'light', animate: false },
+  { name: 'pastel',     label: 'Pastel',     kind: 'light', animate: false },
+  { name: 'birthday',   label: 'Birthday',   kind: 'fun',   animate: false },
+  { name: 'nature',     label: 'Nature',     kind: 'light', animate: false },
+  { name: 'ocean',      label: 'Ocean',      kind: 'dark',  animate: false },
+  { name: 'galaxy',     label: 'Galaxy',     kind: 'dark',  animate: true  },
+  { name: 'zen',        label: 'Zen',        kind: 'light', animate: false },
+  { name: 'weather',    label: 'Weather',    kind: 'light', animate: false },
+  { name: 'polaroid',   label: 'Polaroid',   kind: 'light', animate: false },
+  { name: 'tarot',      label: 'Tarot',      kind: 'light', animate: false },
+  { name: 'newspaper',  label: 'Newspaper',  kind: 'light', animate: false },
+  { name: 'subway',     label: 'Subway',     kind: 'dark',  animate: false },
+  { name: 'receipt',    label: 'Receipt',    kind: 'light', animate: false },
+  { name: 'steampunk',  label: 'Steampunk',  kind: 'dark',  animate: false },
+  { name: 'brutalist',  label: 'Brutalist',  kind: 'light', animate: false },
+  { name: 'comic',      label: 'Comic',      kind: 'fun',   animate: false },
+  { name: 'memphis',    label: 'Memphis',    kind: 'fun',   animate: false },
+  { name: 'vinyl',      label: 'Vinyl',      kind: 'fun',   animate: true  },
+  { name: 'terminal',   label: 'Terminal',   kind: 'retro', animate: true  },
+  { name: 'arcade',     label: 'Arcade',     kind: 'retro', animate: true  },
+  { name: 'vaporwave',  label: 'Vaporwave',  kind: 'retro', animate: true  },
+  { name: 'y2k',        label: 'Y2K',        kind: 'retro', animate: true  },
+  { name: 'pixel',      label: 'Pixel',      kind: 'retro', animate: true  },
+  { name: 'gameboy',    label: 'Gameboy',    kind: 'retro', animate: true  },
 ];
 const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
@@ -299,12 +297,6 @@ function renderThemeSelector() {
   const wrap = document.createElement('span');
   wrap.className = 'theme-picker';
 
-  const swatch = document.createElement('span');
-  swatch.className = 'theme-swatch';
-  swatch.setAttribute('aria-hidden', 'true');
-  paintSwatch(swatch, state.theme);
-  wrap.appendChild(swatch);
-
   const select = document.createElement('select');
   select.className = 'theme-select';
   select.setAttribute('aria-label', 'Theme');
@@ -343,13 +335,6 @@ function renderThemeSelector() {
   });
   wrap.appendChild(select);
   return wrap;
-}
-
-function paintSwatch(el, themeName) {
-  const t = THEME_BY_NAME[themeName];
-  const s = t?.swatch || ['#888', '#bbb', '#eee'];
-  el.style.background =
-    `conic-gradient(from 210deg, ${s[0]} 0 33.3%, ${s[1]} 33.3% 66.6%, ${s[2]} 66.6% 100%)`;
 }
 
 function attachBackdropClose(dialog) {

@@ -1,21 +1,21 @@
 const THEMES = [
-  { name: 'boardroom',   label: 'Boardroom',   kind: 'dark',  animate: true,  swatch: ['#08070d', '#c4b5fd', '#fb923c'] },
-  { name: 'slack',       label: 'Slack',       kind: 'dark',  animate: false, swatch: ['#19171d', '#2eb67d', '#1d9bd1'] },
-  { name: 'slidedeck',   label: 'Slide Deck',  kind: 'dark',  animate: false, swatch: ['#0a0a0a', '#3b82f6', '#fff'] },
-  { name: 'earnings',    label: 'Earnings',    kind: 'dark',  animate: true,  swatch: ['#0a0e14', '#22c55e', '#ef4444'] },
-  { name: 'github',      label: 'GitHub PR',   kind: 'dark',  animate: false, swatch: ['#0d1117', '#3fb950', '#f78166'] },
-  { name: 'whiteboard',  label: 'Whiteboard',  kind: 'light', animate: false, swatch: ['#fafaf7', '#1a1a1a', '#3b82f6'] },
-  { name: 'inbox',       label: 'Inbox',       kind: 'light', animate: false, swatch: ['#fff', '#1a73e8', '#dadce0'] },
-  { name: 'okr',         label: 'OKR',         kind: 'light', animate: true,  swatch: ['#fff', '#16a34a', '#0ea5e9'] },
-  { name: 'cubicle',     label: 'Cubicle',     kind: 'light', animate: false, swatch: ['#8a8d8a', '#fdf08a', '#c83d3d'] },
-  { name: 'kanban',      label: 'Kanban',      kind: 'light', animate: false, swatch: ['#f4f5f7', '#0052cc', '#36b37e'] },
-  { name: 'standup',     label: 'Standup',     kind: 'light', animate: false, swatch: ['#fff', '#16a34a', '#dc2626'] },
-  { name: 'invite',      label: 'Invite',      kind: 'light', animate: false, swatch: ['#fff', '#1a73e8', '#34a853'] },
-  { name: 'confluence',  label: 'Confluence',  kind: 'light', animate: false, swatch: ['#fff', '#0052cc', '#172b4d'] },
-  { name: 'zoom',        label: 'Zoom',        kind: 'light', animate: false, swatch: ['#1a1a1a', '#2d8cff', '#fff'] },
-  { name: 'spreadsheet', label: 'Spreadsheet', kind: 'retro', animate: true,  swatch: ['#fff', '#107c41', '#1a1a1a'] },
-  { name: 'pomodoro',    label: 'Pomodoro',    kind: 'fun',   animate: true,  swatch: ['#e63946', '#fff', '#1d3557'] },
-  { name: 'ooo',         label: 'OOO',         kind: 'fun',   animate: false, swatch: ['#7fc6d9', '#ffd166', '#0a8754'] },
+  { name: 'boardroom',   label: 'Boardroom',   kind: 'dark',  animate: true  },
+  { name: 'slack',       label: 'Slack',       kind: 'dark',  animate: false },
+  { name: 'slidedeck',   label: 'Slide Deck',  kind: 'dark',  animate: false },
+  { name: 'earnings',    label: 'Earnings',    kind: 'dark',  animate: true  },
+  { name: 'github',      label: 'GitHub PR',   kind: 'dark',  animate: false },
+  { name: 'whiteboard',  label: 'Whiteboard',  kind: 'light', animate: false },
+  { name: 'inbox',       label: 'Inbox',       kind: 'light', animate: false },
+  { name: 'okr',         label: 'OKR',         kind: 'light', animate: true  },
+  { name: 'cubicle',     label: 'Cubicle',     kind: 'light', animate: false },
+  { name: 'kanban',      label: 'Kanban',      kind: 'light', animate: false },
+  { name: 'standup',     label: 'Standup',     kind: 'light', animate: false },
+  { name: 'invite',      label: 'Invite',      kind: 'light', animate: false },
+  { name: 'confluence',  label: 'Confluence',  kind: 'light', animate: false },
+  { name: 'zoom',        label: 'Zoom',        kind: 'light', animate: false },
+  { name: 'spreadsheet', label: 'Spreadsheet', kind: 'retro', animate: true  },
+  { name: 'pomodoro',    label: 'Pomodoro',    kind: 'fun',   animate: true  },
+  { name: 'ooo',         label: 'OOO',         kind: 'fun',   animate: false },
 ];
 const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
@@ -310,12 +310,6 @@ function renderThemeSelector() {
   const wrap = document.createElement('span');
   wrap.className = 'theme-picker';
 
-  const swatch = document.createElement('span');
-  swatch.className = 'theme-swatch';
-  swatch.setAttribute('aria-hidden', 'true');
-  paintSwatch(swatch, state.theme);
-  wrap.appendChild(swatch);
-
   const select = document.createElement('select');
   select.className = 'theme-select';
   select.setAttribute('aria-label', 'Theme');
@@ -356,13 +350,6 @@ function renderThemeSelector() {
   });
   wrap.appendChild(select);
   return wrap;
-}
-
-function paintSwatch(el, themeName) {
-  const t = THEME_BY_NAME[themeName];
-  const s = t?.swatch || ['#888', '#bbb', '#eee'];
-  el.style.background =
-    `conic-gradient(from 210deg, ${s[0]} 0 33.3%, ${s[1]} 33.3% 66.6%, ${s[2]} 66.6% 100%)`;
 }
 
 function attachBackdropClose(dialog) {

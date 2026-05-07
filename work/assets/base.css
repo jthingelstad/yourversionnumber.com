@@ -48,15 +48,6 @@ input {
   gap: 0.4rem;
 }
 
-.theme-swatch {
-  width: 1.1em;
-  height: 1.1em;
-  border-radius: 50%;
-  display: inline-block;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
-  flex-shrink: 0;
-}
-
 .theme-select {
   font: inherit;
   color: inherit;

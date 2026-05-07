@@ -40,7 +40,7 @@ The two `app.js` files are deliberately parallel. Keep their logic in sync when 
 3. **Themes are CSS-only.** No per-theme JS. When a theme idea can't be expressed in CSS, the answer is to add a *generic* hook in core `app.js` that all themes can opt into via CSS — that's how we got `.theme-fx`, `data-row-variant`, `--row-hue`, version-event flags, etc. Per-theme JS would create lifecycle/teardown bugs, cross-theme conflicts, review burden, and a real privacy risk: birthdays live in the URL and an accepted-but-malicious theme could beacon them. Don't open that door.
 4. **Themes paint display only.** Header, person rows, footer, empty-state CTA, and the `.theme-fx` decorative layer. They do **not** style the About or Edit dialogs — those are app chrome with a neutral OS-light/dark look in `base.css`. Selectors under `.app-dialog` are off-limits.
 5. **Person rows have no editing affordances.** No inline inputs, no click-to-edit. Editing is gated behind the header's Birthdays/Roles button (class `.edit-btn`) → `<dialog>`. Visual hover effects (tilt, scale, glow) are fine — the rule is no *editing* affordances on rows, not no animation.
-6. **Theme manifest at the top of each `app.js`.** Flat array. Each entry: `{ name, label, kind, animate, swatch }`. `kind` drives `<optgroup>` headers (`light|dark|fun|retro`). `animate: true` opts into count-up. `swatch` is a 3-color array (e.g. `['#0f0f10', '#222', '#fafafa']`) used for the picker chip.
+6. **Theme manifest at the top of each `app.js`.** Flat array. Each entry: `{ name, label, kind, animate }`. `kind` drives `<optgroup>` headers (`light|dark|fun|retro`). `animate: true` opts into count-up.
 
 ## Themable hooks (for theme authors)
 
@@ -63,7 +63,7 @@ The two `app.js` files are deliberately parallel. Keep their logic in sync when 
 - A `position: fixed; inset: 0; pointer-events: none; overflow: hidden` div appended on every render. Themes paint motion (falling leaves, drifting waves, confetti, scanlines, shooting stars, gear silhouettes, …) into `.theme-fx::before` and `.theme-fx::after`.
 - Empty by default; themes that don't use it leave it untouched.
 
-**Class hooks:** `.person`, `.person-name`, `.version`, `.site-header`, `.site-title`, `.intro`, `.add-btn`, `.about-btn`, `.edit-btn`, `.theme-select`, `.theme-swatch`, `.theme-picker`, `.site-footer`, `.site-cross-link`, `.site-attribution`, `.site-stats`.
+**Class hooks:** `.person`, `.person-name`, `.version`, `.site-header`, `.site-title`, `.intro`, `.add-btn`, `.about-btn`, `.edit-btn`, `.theme-select`, `.theme-picker`, `.site-footer`, `.site-cross-link`, `.site-attribution`, `.site-stats`.
 
 **Off-limits** (app chrome, styled in `base.css`):
 - Anything matching `.app-dialog*`, `.edit-row*`, `.edit-list`, `.edit-add`.
