@@ -88,6 +88,10 @@ input {
   .person.is-bumping { animation: none !important; }
 }
 
+.site-cross-link {
+  margin-bottom: 1.5rem;
+}
+
 .site-stats {
   display: flex;
   flex-wrap: wrap;
