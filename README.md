@@ -10,10 +10,8 @@ The URL is the source of truth. Bookmark a URL, get the same view back later.
 https://yourversionnumber.com/?theme=family&p=Jamie:1974-01-15&p=Sara:1976-03-20&p=:2008-09-04
 ```
 
-- `theme` — name of a stylesheet in `themes/`. Optional; if omitted, the page picks a random theme on each visit.
-- `p` — repeatable. `Name:YYYY-MM-DD`, or just `YYYY-MM-DD` for an unnamed entry. (The old `p=:YYYY-MM-DD` form is still parsed, for old bookmarks.)
-
-Unknown or omitted themes resolve to a random pick from the manifest, and the random pick is **not** written back to the URL — so a clean bookmark stays a surprise on every visit. Malformed `p` entries are skipped (with a console warning).
+- `theme` — name of a stylesheet in `themes/`. Optional; when omitted, the page renders with the `birthday` theme so the first paint matches the og-image people see in link previews. The "🎲 Surprise me" option in the picker still rolls a random theme on demand.
+- `p` — repeatable. `Name:YYYY-MM-DD`, or just `YYYY-MM-DD` for an unnamed entry. (The old `p=:YYYY-MM-DD` form is still parsed, for old bookmarks.) Future dates are skipped with a console warning so the math never goes negative; malformed entries the same.
 
 ## Themes
 
@@ -61,7 +59,7 @@ Hooks available for theme-side polish, with no JS cost when ignored:
 - `.person-name` — renders inside `.person` when a name is set. Themes can opt into styling it; falls back to a small muted treatment in `base.css`.
 - `.edit-btn` — header button, sits next to `.about-btn`. Theme files pair the two so the new button picks up the same look.
 
-A first-time visitor with no `?theme=` in the URL gets a random theme each visit. Once a theme is explicitly chosen via the picker (or specified in the URL), it's written to the URL and that's what the bookmark holds.
+A visitor with no `?theme=` in the URL sees the `birthday` theme — same as the og-image. Once a theme is explicitly chosen via the picker (or specified in the URL), it's written to the URL and that's what the bookmark holds. The work edition does the same with `earnings` as its default.
 
 ## Work Edition™
 
@@ -114,4 +112,8 @@ For the custom domain: set `yourversionnumber.com` in the repo's Pages settings,
 
 ## Privacy
 
-Birthdays in the URL are visible to anyone with the link, and to your browser's history sync. Don't paste sensitive data here.
+Birthdays live in the URL and only in the URL. The site has no server, no database, and no birthday telemetry — visit counts go to a privacy-friendly analytics service (tinylytics) but the URL it would normally see is rewritten in `index.html` to drop the `?p=` and `?j=` query strings, so only the page path (`/` or `/work/`) is sent.
+
+Birthdays in the URL are still visible to anyone you share the link with, and to your browser's history sync. Don't paste sensitive data here.
+
+The only thing the site persists locally is a single boolean (`yvn-about-seen` / `yvnw-about-seen` in localStorage) so the About dialog auto-opens once for new visitors and stays out of the way after that.

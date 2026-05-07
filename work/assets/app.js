@@ -48,6 +48,10 @@ function trackEvent(name, value) {
 
 const state = { theme: null, themeIsExplicit: false, roles: [] };
 
+// Default theme when no ?theme= is in the URL. Pinned to 'earnings' so the
+// first paint matches the og-image people see in link previews.
+const DEFAULT_THEME = 'earnings';
+
 function parseURL() {
   const params = new URLSearchParams(location.search);
   const urlTheme = params.get('theme');
@@ -56,8 +60,8 @@ function parseURL() {
     theme = urlTheme;
     themeIsExplicit = true;
   } else {
-    if (urlTheme) console.warn(`Unknown theme "${urlTheme}", picking a random one.`);
-    theme = pickRandomTheme();
+    if (urlTheme) console.warn(`Unknown theme "${urlTheme}", using default.`);
+    theme = DEFAULT_THEME;
     themeIsExplicit = false;
   }
   const roles = [];
@@ -67,6 +71,10 @@ function parseURL() {
     const startDate = idx === -1 ? value : value.slice(idx + 1);
     if (!DATE_RE.test(startDate) || !isRealDate(startDate)) {
       console.warn(`Skipping invalid date in j=${value}`);
+      continue;
+    }
+    if (isFutureDate(startDate)) {
+      console.warn(`Skipping future start date in j=${value}`);
       continue;
     }
     roles.push({ title, startDate });
@@ -84,6 +92,14 @@ function isRealDate(ymd) {
   const [y, m, d] = ymd.split('-').map(Number);
   const date = new Date(y, m - 1, d);
   return date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d;
+}
+
+function isFutureDate(ymd) {
+  const [y, m, d] = ymd.split('-').map(Number);
+  const date = new Date(y, m - 1, d);
+  const today = new Date();
+  const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  return date > todayMid;
 }
 
 function writeURL() {
@@ -179,7 +195,7 @@ function render() {
   let anyPalindrome = false;
   let anyRoundDecade = false;
   for (const r of state.roles) {
-    if (!DATE_RE.test(r.startDate) || !isRealDate(r.startDate)) continue;
+    if (!DATE_RE.test(r.startDate) || !isRealDate(r.startDate) || isFutureDate(r.startDate)) continue;
     const v = computeWorkVersion(r.startDate);
     if (!v) continue;
     if (v.patch === 0) anyQuarterStart = true;
@@ -415,8 +431,8 @@ function openAbout() {
             <li><strong>PATCH</strong> &mdash; business days into the quarter. Weekends do not tick, because real work doesn&rsquo;t happen on weekends. <em>You&rsquo;re welcome.</em></li>
           </ul>
           <p>Hired on 2024-01-15? Today you&rsquo;re shipping <code>2.1.15</code>. That&rsquo;s two years of impact, into the second quarter (0-indexed, because we&rsquo;re engineers), fifteen work-days deep. <strong>Ship it.</strong></p>
+          <p class="app-dialog__privacy"><strong>Your dates stay yours.</strong> The URL is the only place this site keeps them &mdash; no server, no database, nothing collected anywhere. Bookmark a URL to lock it in; share it to brag.</p>
           <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. For the birthday version, see <a href="/">Your Version Number</a>.</p>
-          <p class="app-dialog__tip">Tip: the URL holds everything &mdash; titles, start dates, theme. Bookmark a URL to save the view.</p>
         </div>
       </article>
     `;
@@ -523,7 +539,7 @@ function appendEditRow(list, focusName) {
     const idx = findIndex();
     if (idx < 0) return;
     const newDate = dateInput.value;
-    if (!DATE_RE.test(newDate) || !isRealDate(newDate)) return;
+    if (!DATE_RE.test(newDate) || !isRealDate(newDate) || isFutureDate(newDate)) return;
     if (newDate !== state.roles[idx].startDate) {
       state.roles[idx].startDate = newDate;
       writeURL();
@@ -621,3 +637,12 @@ render();
 isFirstRender = false;
 scheduleMidnightTick();
 setTimeout(() => trackEvent('theme.viewed', state.theme), 0);
+
+// First-visit nudge: pop the About dialog once so new visitors understand the
+// YEARS.QUARTERS.DAYS framing. Single boolean in localStorage — no PII.
+try {
+  if (!localStorage.getItem('yvnw-about-seen')) {
+    localStorage.setItem('yvnw-about-seen', '1');
+    requestAnimationFrame(() => requestAnimationFrame(openAbout));
+  }
+} catch (_) { /* localStorage unavailable (private mode, etc.) — skip */ }

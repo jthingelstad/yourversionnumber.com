@@ -35,7 +35,7 @@ The two `app.js` files are deliberately parallel. Keep their logic in sync when 
 
 ## Core conventions (do not break these)
 
-1. **URL is the single source of truth.** Birthday: `?theme=...&p=Name:YYYY-MM-DD`. Work: `?theme=...&j=Title:YYYY-MM-DD`. Each bookmark is self-contained. Do not add `localStorage`/cookies/IndexedDB for theme or people — different bookmarks intentionally have different themes, and persisting either would cause surprising bleed between bookmarks.
+1. **URL is the single source of truth.** Birthday: `?theme=...&p=Name:YYYY-MM-DD`. Work: `?theme=...&j=Title:YYYY-MM-DD`. Each bookmark is self-contained. Do not add `localStorage`/cookies/IndexedDB for theme or people — different bookmarks intentionally have different themes, and persisting either would cause surprising bleed between bookmarks. The one exception is `yvn-about-seen` / `yvnw-about-seen` — a single boolean each that lets the About dialog auto-open once for new visitors. No PII, no app state.
 2. **No build tooling.** No bundler, no transpiler, no SSG, no `package.json`. The user explicitly prefers lean over conventional. If a feature seems to need tooling, push back; usually it doesn't.
 3. **Themes are CSS-only.** No per-theme JS. When a theme idea can't be expressed in CSS, the answer is to add a *generic* hook in core `app.js` that all themes can opt into via CSS — that's how we got `.theme-fx`, `data-row-variant`, `--row-hue`, version-event flags, etc. Per-theme JS would create lifecycle/teardown bugs, cross-theme conflicts, review burden, and a real privacy risk: birthdays live in the URL and an accepted-but-malicious theme could beacon them. Don't open that door.
 4. **Themes paint display only.** Header, person rows, footer, empty-state CTA, and the `.theme-fx` decorative layer. They do **not** style the About or Edit dialogs — those are app chrome with a neutral OS-light/dark look in `base.css`. Selectors under `.app-dialog` are off-limits.
@@ -96,7 +96,7 @@ Opens at `http://localhost:8080/`. Visit `/` for the birthday edition and `/work
 ## What to avoid
 
 - Per-theme JS files (see core convention 3). Add a generic core hook instead.
-- State persistence (`localStorage`, cookies, IndexedDB).
+- State persistence (`localStorage`, cookies, IndexedDB) for app data. The `yvn-about-seen` / `yvnw-about-seen` flags are the only allowed exception — a single boolean each, used solely to auto-open the About dialog on first visit.
 - Theming inside `.app-dialog`.
 - Reintroducing inline edit controls on person rows.
 - Mass-refactoring themes into shared partials or mixins. Themes intentionally have full freedom; that's the point.
@@ -105,6 +105,8 @@ Opens at `http://localhost:8080/`. Visit `/` for the birthday edition and `/work
 ## Privacy
 
 Birthdays in the URL are visible to anyone with the link and to browser history sync. Do not store sensitive data. Don't add any feature that exfiltrates birthdays beyond the URL the user chose to share. This is the primary reason themes are CSS-only — a JS-capable theme could read URL params and beacon them.
+
+The tinylytics analytics embed normally posts `window.location.href` to its collector — which would leak `?p=` and `?j=` content. Both `index.html` files install a `fetch` interceptor before the deferred tinylytics script loads that strips `url` and `referrer` from any request to `tinylytics.app/collector/`. Only the path counts. If you swap the analytics provider, port the same scrubber.
 
 ## Cache behavior
 

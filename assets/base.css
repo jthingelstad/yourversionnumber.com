@@ -201,7 +201,8 @@ input {
 }
 
 .app-dialog__credit,
-.app-dialog__tip {
+.app-dialog__tip,
+.app-dialog__privacy {
   font-size: 0.9rem;
   color: #666;
   margin-top: 1.25rem;
@@ -292,7 +293,8 @@ input {
     color: #6ea8ff;
   }
   .app-dialog__credit,
-  .app-dialog__tip {
+  .app-dialog__tip,
+  .app-dialog__privacy {
     color: #aaa;
   }
   .edit-row__name,

@@ -23,6 +23,25 @@
 <link rel="stylesheet" href="assets/base.css">
 <link id="theme-css" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%92%BC%3C/text%3E%3C/svg%3E">
+<script>
+// Privacy: tinylytics' embed sends window.location.href (full URL with any
+// ?j= start dates) to its collector. Strip the url and referrer search params
+// from any tinylytics request before fetch fires, so only the path counts.
+(function () {
+  var origFetch = window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    try {
+      if (typeof input === 'string' && input.indexOf('tinylytics.app/collector/') !== -1) {
+        var u = new URL(input, location.origin);
+        u.searchParams.delete('url');
+        u.searchParams.delete('referrer');
+        input = u.toString();
+      }
+    } catch (e) { /* leave fetch input as-is */ }
+    return origFetch(input, init);
+  };
+})();
+</script>
 <script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
 </head>
 <body>

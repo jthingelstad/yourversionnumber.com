@@ -59,6 +59,11 @@ function trackEvent(name, value) {
 
 const state = { theme: null, themeIsExplicit: false, people: [] };
 
+// Default theme when no ?theme= is in the URL. Pinned to 'birthday' so the
+// first paint matches the og-image people see in link previews; "🎲 Surprise
+// me" in the picker is the way in to other themes.
+const DEFAULT_THEME = 'birthday';
+
 function parseURL() {
   const params = new URLSearchParams(location.search);
   const urlTheme = params.get('theme');
@@ -67,8 +72,8 @@ function parseURL() {
     theme = urlTheme;
     themeIsExplicit = true;
   } else {
-    if (urlTheme) console.warn(`Unknown theme "${urlTheme}", picking a random one.`);
-    theme = pickRandomTheme();
+    if (urlTheme) console.warn(`Unknown theme "${urlTheme}", using default.`);
+    theme = DEFAULT_THEME;
     themeIsExplicit = false;
   }
   const people = [];
@@ -78,6 +83,10 @@ function parseURL() {
     const birthday = idx === -1 ? value : value.slice(idx + 1);
     if (!DATE_RE.test(birthday) || !isRealDate(birthday)) {
       console.warn(`Skipping invalid date in p=${value}`);
+      continue;
+    }
+    if (isFutureDate(birthday)) {
+      console.warn(`Skipping future birthday in p=${value}`);
       continue;
     }
     people.push({ name, birthday });
@@ -98,6 +107,14 @@ function isRealDate(ymd) {
   const [y, m, d] = ymd.split('-').map(Number);
   const date = new Date(y, m - 1, d);
   return date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d;
+}
+
+function isFutureDate(ymd) {
+  const [y, m, d] = ymd.split('-').map(Number);
+  const date = new Date(y, m - 1, d);
+  const today = new Date();
+  const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  return date > todayMid;
 }
 
 function writeURL() {
@@ -161,7 +178,7 @@ function render() {
   let anyRoundDecade = false;
   let anyZero = false;
   for (const p of state.people) {
-    if (!DATE_RE.test(p.birthday) || !isRealDate(p.birthday)) continue;
+    if (!DATE_RE.test(p.birthday) || !isRealDate(p.birthday) || isFutureDate(p.birthday)) continue;
     const v = computeVersion(p.birthday);
     if (v.patch === 0) anyBirthday = true;
     const digits = `${v.major}${v.minor}${v.patch}`;
@@ -402,8 +419,8 @@ function openAbout() {
             <li><strong>PATCH</strong> &mdash; days since your most recent birthday. Daily refinements.</li>
           </ul>
           <p>Someone who is 46 years old and 52 days past their birthday is on <code>4.6.52</code>.</p>
+          <p class="app-dialog__privacy"><strong>Your birthdays stay yours.</strong> The URL is the only place this site keeps them &mdash; no server, no database, nothing collected anywhere. Bookmark a URL to save the view; share it to share the view.</p>
           <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. Now available in a thrilling new flavor &mdash; <a href="/work/">Your Version Number: Work Edition</a>™.</p>
-          <p class="app-dialog__tip">Tip: the URL holds everything &mdash; names, birthdays, theme. Bookmark a URL to save the view.</p>
         </div>
       </article>
     `;
@@ -510,7 +527,7 @@ function appendEditRow(list, focusName) {
     const idx = findIndex();
     if (idx < 0) return;
     const newDate = dateInput.value;
-    if (!DATE_RE.test(newDate) || !isRealDate(newDate)) return;
+    if (!DATE_RE.test(newDate) || !isRealDate(newDate) || isFutureDate(newDate)) return;
     if (newDate !== state.people[idx].birthday) {
       state.people[idx].birthday = newDate;
       writeURL();
@@ -566,7 +583,7 @@ function countUp(el, version) {
 }
 
 function updateVersionDisplay(el, birthday) {
-  if (!DATE_RE.test(birthday) || !isRealDate(birthday)) {
+  if (!DATE_RE.test(birthday) || !isRealDate(birthday) || isFutureDate(birthday)) {
     el.textContent = '';
     return;
   }
@@ -606,3 +623,16 @@ scheduleMidnightTick();
 // Fire after render so the proxy attaches and Tinylytics is more likely loaded.
 // Wrapped in a microtask so it runs after the deferred Tinylytics script has had a chance to register its click listener.
 setTimeout(() => trackEvent('theme.viewed', state.theme), 0);
+
+// First-visit nudge: pop the About dialog once so new visitors understand the
+// MAJOR.MINOR.PATCH framing. A single localStorage flag is the only persisted
+// state on the site — no PII, no birthdays, no theme/people memory.
+try {
+  if (!localStorage.getItem('yvn-about-seen')) {
+    localStorage.setItem('yvn-about-seen', '1');
+    // Wait for two animation frames so the page paints once before the modal
+    // pops. requestAnimationFrame fires reliably even where short-delay
+    // setTimeouts get throttled.
+    requestAnimationFrame(() => requestAnimationFrame(openAbout));
+  }
+} catch (_) { /* localStorage unavailable (private mode, etc.) — skip */ }
