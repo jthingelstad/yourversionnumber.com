@@ -180,3 +180,26 @@ body {
 }
 
 .site-footer a { color: var(--hot-pink); font-weight: 700; }
+
+/* Lens-flare orb sweep. */
+.theme-fx::before {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.7), rgba(255,0,255,0.2) 50%, transparent 75%);
+  filter: blur(8px);
+  top: 20%;
+  left: -10%;
+  animation: y2k-flare 15s linear infinite;
+  pointer-events: none;
+}
+@keyframes y2k-flare {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  10%  { opacity: 0.85; }
+  90%  { opacity: 0.85; }
+  100% { transform: translate(120vw, 30vh); opacity: 0; }
+}
+.person { transition: filter 200ms, transform 200ms; }
+.person:hover { filter: brightness(1.05); transform: translateY(-2px); }

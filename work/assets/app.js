@@ -1,16 +1,21 @@
 const THEMES = [
-  { name: 'boardroom',   label: 'Boardroom',   kind: 'dark',  animate: false },
-  { name: 'whiteboard',  label: 'Whiteboard',  kind: 'light', animate: false },
-  { name: 'spreadsheet', label: 'Spreadsheet', kind: 'retro', animate: true  },
-  { name: 'earnings',    label: 'Earnings',    kind: 'dark',  animate: true  },
-  { name: 'inbox',       label: 'Inbox',       kind: 'light', animate: false },
-  { name: 'slack',       label: 'Slack',       kind: 'dark',  animate: false },
-  { name: 'slidedeck',   label: 'Slide Deck',  kind: 'dark',  animate: false },
-  { name: 'okr',         label: 'OKR',         kind: 'light', animate: true  },
-  { name: 'cubicle',     label: 'Cubicle',     kind: 'light', animate: false },
-  { name: 'kanban',      label: 'Kanban',      kind: 'light', animate: false },
-  { name: 'pomodoro',    label: 'Pomodoro',    kind: 'fun',   animate: false },
-  { name: 'ooo',         label: 'OOO',         kind: 'fun',   animate: false },
+  { name: 'boardroom',   label: 'Boardroom',   kind: 'dark',  animate: false, swatch: ['#1a1a1a', '#c9a961', '#f5e6c8'] },
+  { name: 'slack',       label: 'Slack',       kind: 'dark',  animate: false, swatch: ['#19171d', '#2eb67d', '#1d9bd1'] },
+  { name: 'slidedeck',   label: 'Slide Deck',  kind: 'dark',  animate: false, swatch: ['#0a0a0a', '#3b82f6', '#fff'] },
+  { name: 'earnings',    label: 'Earnings',    kind: 'dark',  animate: true,  swatch: ['#0a0e14', '#22c55e', '#ef4444'] },
+  { name: 'github',      label: 'GitHub PR',   kind: 'dark',  animate: false, swatch: ['#0d1117', '#3fb950', '#f78166'] },
+  { name: 'whiteboard',  label: 'Whiteboard',  kind: 'light', animate: false, swatch: ['#fafaf7', '#1a1a1a', '#3b82f6'] },
+  { name: 'inbox',       label: 'Inbox',       kind: 'light', animate: false, swatch: ['#fff', '#1a73e8', '#dadce0'] },
+  { name: 'okr',         label: 'OKR',         kind: 'light', animate: true,  swatch: ['#fff', '#16a34a', '#0ea5e9'] },
+  { name: 'cubicle',     label: 'Cubicle',     kind: 'light', animate: false, swatch: ['#e8e2d0', '#7a8471', '#3a3027'] },
+  { name: 'kanban',      label: 'Kanban',      kind: 'light', animate: false, swatch: ['#f4f5f7', '#0052cc', '#36b37e'] },
+  { name: 'standup',     label: 'Standup',     kind: 'light', animate: false, swatch: ['#fff', '#16a34a', '#dc2626'] },
+  { name: 'invite',      label: 'Invite',      kind: 'light', animate: false, swatch: ['#fff', '#1a73e8', '#34a853'] },
+  { name: 'confluence',  label: 'Confluence',  kind: 'light', animate: false, swatch: ['#fff', '#0052cc', '#172b4d'] },
+  { name: 'zoom',        label: 'Zoom',        kind: 'light', animate: false, swatch: ['#1a1a1a', '#2d8cff', '#fff'] },
+  { name: 'spreadsheet', label: 'Spreadsheet', kind: 'retro', animate: true,  swatch: ['#fff', '#107c41', '#1a1a1a'] },
+  { name: 'pomodoro',    label: 'Pomodoro',    kind: 'fun',   animate: true,  swatch: ['#e63946', '#fff', '#1d3557'] },
+  { name: 'ooo',         label: 'OOO',         kind: 'fun',   animate: false, swatch: ['#7fc6d9', '#ffd166', '#0a8754'] },
 ];
 const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
@@ -67,6 +72,12 @@ function parseURL() {
     roles.push({ title, startDate });
   }
   return { theme, themeIsExplicit, roles };
+}
+
+function hashStr(str) {
+  let h = 5381;
+  for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
+  return Math.abs(h);
 }
 
 function isRealDate(ymd) {
@@ -149,6 +160,11 @@ function formatVersion(v) {
   return `v${v.major}.${v.minor}.${v.patch}`;
 }
 
+function setFlag(key, on) {
+  if (on) document.body.dataset[key] = 'true';
+  else delete document.body.dataset[key];
+}
+
 function render() {
   const app = document.getElementById('app');
   app.innerHTML = '';
@@ -160,17 +176,22 @@ function render() {
 
   let anyQuarterStart = false;
   let anyAnniversary = false;
+  let anyPalindrome = false;
+  let anyRoundDecade = false;
   for (const r of state.roles) {
     if (!DATE_RE.test(r.startDate) || !isRealDate(r.startDate)) continue;
     const v = computeWorkVersion(r.startDate);
     if (!v) continue;
     if (v.patch === 0) anyQuarterStart = true;
     if (v.minor === 0 && v.patch === 0) anyAnniversary = true;
+    const digits = `${v.major}${v.minor}${v.patch}`;
+    if (digits.length > 1 && digits === digits.split('').reverse().join('')) anyPalindrome = true;
+    if (v.major > 0 && v.major % 10 === 0 && v.minor === 0 && v.patch === 0) anyRoundDecade = true;
   }
-  if (anyQuarterStart) document.body.dataset.quarterStart = 'true';
-  else delete document.body.dataset.quarterStart;
-  if (anyAnniversary) document.body.dataset.tenureAnniversary = 'true';
-  else delete document.body.dataset.tenureAnniversary;
+  setFlag('quarterStart', anyQuarterStart);
+  setFlag('tenureAnniversary', anyAnniversary);
+  setFlag('palindrome', anyPalindrome);
+  setFlag('roundDecade', anyRoundDecade);
 
   const header = document.createElement('header');
   header.className = 'site-header';
@@ -188,9 +209,14 @@ function render() {
     app.appendChild(intro);
   }
 
+  const fx = document.createElement('div');
+  fx.className = 'theme-fx';
+  fx.setAttribute('aria-hidden', 'true');
+  app.appendChild(fx);
+
   const list = document.createElement('div');
   list.className = 'people';
-  state.roles.forEach(role => list.appendChild(renderRow(role)));
+  state.roles.forEach((role, i) => list.appendChild(renderRow(role, i)));
   app.appendChild(list);
 
   if (state.roles.length === 0) {
@@ -229,9 +255,14 @@ function render() {
   app.appendChild(footer);
 }
 
-function renderRow(role) {
+function renderRow(role, index) {
   const row = document.createElement('div');
   row.className = 'person';
+  row.dataset.rowIndex = String(index);
+  const h = hashStr((role.title || '') + '|' + role.startDate);
+  row.dataset.rowVariant = String(h % 8);
+  row.style.setProperty('--row-hue', String(h % 360));
+  row.style.setProperty('--row-tilt', `${((h % 7) - 3) * 0.6}deg`);
 
   if (role.title) {
     const nameEl = document.createElement('div');
@@ -276,6 +307,15 @@ function renderHeaderControls() {
 }
 
 function renderThemeSelector() {
+  const wrap = document.createElement('span');
+  wrap.className = 'theme-picker';
+
+  const swatch = document.createElement('span');
+  swatch.className = 'theme-swatch';
+  swatch.setAttribute('aria-hidden', 'true');
+  paintSwatch(swatch, state.theme);
+  wrap.appendChild(swatch);
+
   const select = document.createElement('select');
   select.className = 'theme-select';
   select.setAttribute('aria-label', 'Theme');
@@ -314,7 +354,15 @@ function renderThemeSelector() {
     trackEvent('theme.change', next);
     render();
   });
-  return select;
+  wrap.appendChild(select);
+  return wrap;
+}
+
+function paintSwatch(el, themeName) {
+  const t = THEME_BY_NAME[themeName];
+  const s = t?.swatch || ['#888', '#bbb', '#eee'];
+  el.style.background =
+    `conic-gradient(from 210deg, ${s[0]} 0 33.3%, ${s[1]} 33.3% 66.6%, ${s[2]} 66.6% 100%)`;
 }
 
 function attachBackdropClose(dialog) {
@@ -532,6 +580,13 @@ function scheduleMidnightTick() {
   const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 5);
   midnightTimer = setTimeout(() => {
     render();
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (!reduceMotion) {
+      document.querySelectorAll('.person').forEach(row => {
+        row.classList.add('is-bumping');
+        setTimeout(() => row.classList.remove('is-bumping'), 1200);
+      });
+    }
     scheduleMidnightTick();
   }, next - now);
 }

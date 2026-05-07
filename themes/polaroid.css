@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@400;500&display=swap');
+
+:root {
+  --board: #d9c9a3;
+  --board-dark: #b69960;
+  --photo: #fffdf7;
+  --frame: #f4ead5;
+  --ink: #3a3a3a;
+  --faded: #6e6e6e;
+  --tape: rgba(255, 220, 100, 0.6);
+  --tape-edge: rgba(220, 180, 60, 0.7);
+}
+
+body {
+  margin: 0;
+  background:
+    /* corkboard texture */
+    radial-gradient(circle at 18% 22%, rgba(0,0,0,0.06) 0 2px, transparent 3px),
+    radial-gradient(circle at 73% 41%, rgba(0,0,0,0.05) 0 2px, transparent 3px),
+    radial-gradient(circle at 41% 78%, rgba(0,0,0,0.05) 0 2px, transparent 3px),
+    radial-gradient(circle at 88% 88%, rgba(0,0,0,0.06) 0 2px, transparent 3px),
+    linear-gradient(135deg, var(--board) 0%, var(--board-dark) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.site-header { margin-bottom: 2.5rem; gap: 1.5rem; }
+
+.site-title {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 3rem;
+  margin: 0;
+  color: var(--ink);
+  transform: rotate(-2deg);
+  letter-spacing: 0.01em;
+}
+
+.theme-select, .about-btn, .edit-btn {
+  font-family: 'Caveat', cursive;
+  font-size: 1.15rem;
+  background: var(--photo);
+  color: var(--ink);
+  border: 0;
+  border-radius: 2px;
+  padding: 0.4rem 1rem;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.18);
+}
+.theme-select { appearance: none; padding-right: 1.6rem; cursor: pointer; }
+
+.intro {
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  color: var(--ink);
+  margin: 0 0 2rem;
+  background: var(--photo);
+  padding: 1.25rem 1.5rem;
+  border-radius: 2px;
+  box-shadow: 4px 6px 16px rgba(0,0,0,0.18);
+  transform: rotate(-1deg);
+  position: relative;
+}
+
+.intro::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 30%;
+  width: 80px;
+  height: 22px;
+  background: linear-gradient(180deg, var(--tape) 0%, var(--tape-edge) 100%);
+  transform: rotate(-4deg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.intro code {
+  font-family: 'Inter', monospace;
+  background: var(--frame);
+  padding: 0.05em 0.35em;
+  border-radius: 2px;
+  font-size: 0.85em;
+}
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2rem 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.person {
+  background: var(--photo);
+  padding: 1rem 1rem 3rem;
+  width: 100%;
+  border-radius: 2px;
+  box-shadow: 5px 7px 18px rgba(0,0,0,0.22);
+  position: relative;
+  transform: rotate(var(--row-tilt, 0deg));
+  transition: transform 220ms ease-out, box-shadow 220ms;
+}
+
+/* Washi tape at the top */
+.person::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  width: 70px;
+  height: 22px;
+  background: linear-gradient(180deg, var(--tape) 0%, var(--tape-edge) 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+.person[data-row-variant="0"]::before { left: 14%; transform: rotate(-6deg); }
+.person[data-row-variant="1"]::before { left: 60%; transform: rotate(8deg); background: linear-gradient(180deg, rgba(255, 150, 180, 0.7), rgba(220, 100, 140, 0.7)); }
+.person[data-row-variant="2"]::before { left: 30%; transform: rotate(-3deg); background: linear-gradient(180deg, rgba(140, 200, 255, 0.7), rgba(80, 160, 220, 0.75)); }
+.person[data-row-variant="3"]::before { left: 50%; transform: rotate(5deg); background: linear-gradient(180deg, rgba(160, 220, 160, 0.7), rgba(100, 180, 100, 0.75)); }
+.person[data-row-variant="4"]::before { left: 20%; transform: rotate(2deg); background: linear-gradient(180deg, rgba(220, 180, 240, 0.7), rgba(180, 120, 220, 0.75)); }
+.person[data-row-variant="5"]::before { left: 55%; transform: rotate(-7deg); background: linear-gradient(180deg, rgba(255, 200, 130, 0.7), rgba(220, 150, 80, 0.75)); }
+.person[data-row-variant="6"]::before { left: 35%; transform: rotate(4deg); }
+.person[data-row-variant="7"]::before { left: 25%; transform: rotate(-2deg); background: linear-gradient(180deg, rgba(160, 220, 220, 0.7), rgba(100, 180, 180, 0.75)); }
+
+/* "Photo" surface — placeholder gradient */
+.person::after {
+  content: "";
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  background:
+    radial-gradient(circle at 30% 30%, hsl(var(--row-hue, 200) 40% 70%) 0%, hsl(calc(var(--row-hue, 200) + 40) 50% 55%) 60%, hsl(calc(var(--row-hue, 200) + 80) 40% 35%) 100%);
+  margin-bottom: 0.75rem;
+  position: relative;
+  order: -1;
+}
+
+.person-name {
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  color: var(--ink);
+  text-align: center;
+  width: 100%;
+  margin-bottom: 0.25rem;
+  opacity: 1;
+  font-weight: 600;
+}
+
+.version {
+  font-family: 'Caveat', cursive;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+  width: 100%;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.person:hover {
+  transform: rotate(0) translateY(-4px) scale(1.02);
+  box-shadow: 6px 10px 28px rgba(0,0,0,0.3);
+  z-index: 2;
+}
+
+.add-btn {
+  display: block;
+  margin: 0 auto;
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  background: var(--photo);
+  color: var(--ink);
+  border: 2px dashed var(--faded);
+  border-radius: 2px;
+  padding: 1rem 2rem 2rem;
+  box-shadow: 4px 6px 16px rgba(0,0,0,0.18);
+  font-weight: 600;
+}
+
+.add-btn::before { content: "📸 "; }
+
+.site-footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  font-family: 'Caveat', cursive;
+  font-size: 1.2rem;
+  color: var(--ink);
+  text-align: center;
+  font-weight: 600;
+}
+.site-footer a { color: var(--ink); border-bottom: 1px solid var(--ink); }
+
+.person.is-bumping { animation: polaroid-shake 1s ease-out; }
+@keyframes polaroid-shake {
+  0%, 100% { transform: rotate(var(--row-tilt, 0deg)); }
+  25%      { transform: rotate(calc(var(--row-tilt, 0deg) + 3deg)); }
+  75%      { transform: rotate(calc(var(--row-tilt, 0deg) - 3deg)); }
+}

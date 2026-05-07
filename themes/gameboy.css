@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+:root {
+  --shell: #c4bebb;
+  --shell-2: #a8a29e;
+  --screen-bezel: #59624e;
+  --lcd-1: #c4cfa1;
+  --lcd-2: #8b956d;
+  --lcd-3: #4a533c;
+  --lcd-4: #1a2010;
+  --button: #882a4a;
+  --button-shadow: #5a1a30;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, var(--shell) 0%, var(--shell-2) 100%);
+  background-attachment: fixed;
+  color: var(--lcd-4);
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  line-height: 1.4;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 540px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: var(--screen-bezel);
+  border-radius: 12px 12px 60px 12px;
+  box-shadow:
+    inset 0 0 0 8px var(--shell-2),
+    0 12px 30px rgba(0,0,0,0.25);
+  position: relative;
+}
+
+#app::before {
+  content: "DOT MATRIX WITH STEREO SOUND";
+  position: absolute;
+  top: -1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'VT323', monospace;
+  font-size: 0.85rem;
+  color: var(--lcd-4);
+  letter-spacing: 0.15em;
+  white-space: nowrap;
+  opacity: 0.6;
+}
+
+.site-header {
+  background: var(--lcd-1);
+  padding: 0.75rem 1rem;
+  border: 4px solid var(--lcd-3);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.site-title {
+  font-family: 'VT323', monospace;
+  font-weight: 400;
+  font-size: 1.4rem;
+  margin: 0;
+  color: var(--lcd-4);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.site-title::before { content: "▶ "; color: var(--lcd-3); }
+
+.theme-select, .about-btn, .edit-btn {
+  font-family: 'VT323', monospace;
+  font-size: 1rem;
+  background: var(--lcd-1);
+  color: var(--lcd-4);
+  border: 2px solid var(--lcd-4);
+  border-radius: 0;
+  padding: 0.2rem 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.theme-select { appearance: none; padding-right: 1.4rem; cursor: pointer; }
+
+.about-btn, .edit-btn {
+  background: var(--button);
+  color: var(--shell);
+  border: 0;
+  border-radius: 50%;
+  padding: 0.4rem 0.7rem;
+  box-shadow: 0 2px 0 var(--button-shadow);
+}
+.edit-btn { border-radius: 999px; padding: 0.4rem 0.9rem; }
+
+.intro {
+  background: var(--lcd-1);
+  padding: 0.75rem 1rem;
+  border: 4px solid var(--lcd-3);
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.intro::before {
+  content: "★ PRESS START ";
+  font-weight: 700;
+  color: var(--lcd-4);
+}
+
+.intro code {
+  font-family: 'VT323', monospace;
+  background: var(--lcd-3);
+  color: var(--lcd-1);
+  padding: 0 0.4em;
+}
+
+.people { gap: 0.5rem; margin: 0; }
+
+.person {
+  background: var(--lcd-1);
+  border: 4px solid var(--lcd-3);
+  padding: 0.75rem 1rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "icon name" "icon version";
+  gap: 0.1rem 0.75rem;
+  align-items: center;
+}
+
+.person::before {
+  grid-area: icon;
+  grid-row: span 2;
+  content: "♥";
+  font-size: 1.6rem;
+  color: var(--lcd-4);
+  width: 32px;
+  text-align: center;
+}
+.person[data-row-variant="0"]::before { content: "♥"; }
+.person[data-row-variant="1"]::before { content: "★"; }
+.person[data-row-variant="2"]::before { content: "♦"; }
+.person[data-row-variant="3"]::before { content: "♣"; }
+.person[data-row-variant="4"]::before { content: "✦"; }
+.person[data-row-variant="5"]::before { content: "♪"; }
+.person[data-row-variant="6"]::before { content: "✶"; }
+.person[data-row-variant="7"]::before { content: "✧"; }
+
+.person-name {
+  grid-area: name;
+  font-family: 'VT323', monospace;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--lcd-4);
+  opacity: 1;
+}
+
+.version {
+  grid-area: version;
+  font-family: 'VT323', monospace;
+  font-weight: 400;
+  font-size: 2.4rem;
+  color: var(--lcd-4);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.add-btn {
+  display: block;
+  margin: 1rem auto;
+  font-family: 'VT323', monospace;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  background: var(--lcd-1);
+  color: var(--lcd-4);
+  border: 4px solid var(--lcd-3);
+  border-radius: 0;
+  padding: 0.5rem 1.2rem;
+  letter-spacing: 0.08em;
+}
+
+.site-footer {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--lcd-1);
+  border: 4px solid var(--lcd-3);
+  font-size: 0.9rem;
+  color: var(--lcd-4);
+}
+.site-footer a { color: var(--lcd-4); border-bottom: 1px dotted var(--lcd-4); }
+
+/* LCD ghost / count-up has a slight smear */
+.person.is-bumping .version { animation: gb-ghost 0.8s ease-out; }
+@keyframes gb-ghost {
+  0%   { text-shadow: 0 0 0 var(--lcd-3); }
+  40%  { text-shadow: 2px 0 0 var(--lcd-3), -2px 0 0 var(--lcd-2); }
+  100% { text-shadow: 0 0 0 var(--lcd-3); }
+}
+
+/* Subtle scanline shimmer on the LCD */
+.theme-fx::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+}
+
+.person:hover { background: var(--lcd-2); transition: background 100ms; }

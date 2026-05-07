@@ -154,3 +154,11 @@ body {
   color: var(--accent);
   font-weight: 700;
 }
+
+.person { transition: transform 120ms; }
+.person:hover { transform: translate(-3px, -3px); }
+.person.is-bumping { animation: brut-shift 0.7s steps(2, end); }
+@keyframes brut-shift {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-6px, -6px); }
+}

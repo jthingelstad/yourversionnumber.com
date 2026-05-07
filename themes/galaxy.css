@@ -208,3 +208,51 @@ body::before {
 }
 
 .site-footer a { color: var(--cyan); }
+
+/* Shooting stars across the background. */
+.theme-fx::before {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--star);
+  top: 20%;
+  left: -5%;
+  box-shadow: 0 0 4px 1px var(--cyan);
+  animation: shoot1 7s ease-in 2s infinite;
+}
+.theme-fx::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--star);
+  top: 60%;
+  left: -5%;
+  box-shadow: 0 0 4px 1px var(--magenta);
+  animation: shoot2 11s ease-in 6s infinite;
+}
+@keyframes shoot1 {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  5%   { opacity: 1; }
+  20%  { transform: translate(110vw, 30vh); opacity: 0; }
+  100% { transform: translate(110vw, 30vh); opacity: 0; }
+}
+@keyframes shoot2 {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  4%   { opacity: 1; }
+  18%  { transform: translate(110vw, -25vh); opacity: 0; }
+  100% { transform: translate(110vw, -25vh); opacity: 0; }
+}
+
+.person { transition: transform 280ms ease-out, box-shadow 280ms; }
+.person:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 24px rgba(110, 231, 255, 0.18);
+}
+.person.is-bumping { animation: galaxy-warp 1.1s ease-out; }
+@keyframes galaxy-warp {
+  0%   { filter: blur(0) hue-rotate(0); }
+  30%  { filter: blur(1px) hue-rotate(40deg); }
+  100% { filter: blur(0) hue-rotate(0); }
+}

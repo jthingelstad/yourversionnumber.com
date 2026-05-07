@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Charlie+Display:wght@400;500;700&family=Charlie+Text:wght@400;500&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #fff;
+  --paper: #fafbfc;
+  --rule: #dfe1e6;
+  --ink: #172b4d;
+  --muted: #5e6c84;
+  --link: #0052cc;
+  --link-hover: #0747a6;
+  --tag: #deebff;
+  --hover: #f4f5f7;
+  --warning-bg: #fffae6;
+  --warning-edge: #ffc400;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+}
+
+.site-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-title {
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 1.6rem;
+  margin: 0;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.site-title::before {
+  content: "PROJECT > Tenure > Versioning Doc — ";
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-bottom: 0.4em;
+}
+.site-title .edition { color: var(--link); }
+
+.theme-select, .about-btn, .edit-btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.4rem 0.85rem;
+  font-weight: 500;
+}
+.edit-btn { background: var(--link); color: var(--bg); border-color: var(--link); }
+.theme-select { appearance: none; padding-right: 1.6rem; cursor: pointer; }
+
+.intro {
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-edge);
+  border-left: 4px solid var(--warning-edge);
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+  border-radius: 3px;
+}
+.intro::before {
+  content: "ℹ Info — ";
+  font-weight: 700;
+  color: var(--ink);
+}
+.intro code {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: 0.05em 0.4em;
+  font-family: ui-monospace, monospace;
+  font-size: 0.95em;
+  border-radius: 3px;
+}
+
+.people { gap: 0; margin-bottom: 1rem; }
+
+.person {
+  padding: 1.25rem 0;
+  width: 100%;
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.25rem 1rem;
+  align-items: baseline;
+}
+.person:first-child { border-top: 1px solid var(--rule); }
+
+.person-name {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--link);
+  opacity: 1;
+  cursor: pointer;
+  border-bottom: 1px dotted transparent;
+}
+.person-name::before {
+  content: "📄 ";
+  color: var(--muted);
+}
+.person:hover .person-name { border-bottom-color: var(--link); }
+
+.version {
+  font-family: ui-monospace, monospace;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--muted);
+  letter-spacing: 0;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: 0.15em 0.5em;
+  border-radius: 3px;
+  grid-column: 2;
+  grid-row: span 2;
+  align-self: center;
+  white-space: nowrap;
+}
+
+/* Last edited line per variant */
+.person::after {
+  content: "Last edited 2 hours ago by 👤 Alex · 🏷 q3, planning, doc · 💬 4 comments";
+  grid-column: 1;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.person[data-row-variant="0"]::after { content: "Last edited 2 hours ago · 🏷 q3, planning, doc · 💬 4 comments"; }
+.person[data-row-variant="1"]::after { content: "Last edited yesterday · 🏷 onboarding, runbook · 💬 11 comments"; }
+.person[data-row-variant="2"]::after { content: "Last edited Aug 12 · 🏷 architecture, decision-record · 💬 7 comments"; }
+.person[data-row-variant="3"]::after { content: "Last edited 30m ago · 🏷 retro, action-items · 💬 2 comments"; }
+.person[data-row-variant="4"]::after { content: "Last edited last week · 🏷 roadmap, kickoff · 💬 18 comments"; }
+.person[data-row-variant="5"]::after { content: "Last edited 4 days ago · 🏷 design, spec · 💬 9 comments"; }
+.person[data-row-variant="6"]::after { content: "Last edited Jun 03 · 🏷 incident, postmortem · 💬 14 comments"; }
+.person[data-row-variant="7"]::after { content: "Last edited 1h ago · 🏷 docs, faq · 💬 6 comments"; }
+
+body[data-quarter-start="true"] .version { background: #e3fcef; border-color: #79f2c0; color: #006644; }
+body[data-tenure-anniversary="true"] .version { background: #fff0b3; border-color: var(--warning-edge); color: #974f0c; }
+
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  margin: 1rem 0 0;
+  background: var(--link);
+  color: #fff;
+  border: 0;
+  border-radius: 3px;
+  padding: 0.55rem 1rem;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+.add-btn::before { content: "＋ "; margin-right: 0.25em; }
+
+.site-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.site-footer a { color: var(--link); }
+
+.person { transition: background 120ms; }
+.person:hover { background: var(--hover); }
+.person.is-bumping { animation: conf-flag 1s ease-out; }
+@keyframes conf-flag {
+  0%, 100% { background: transparent; }
+  50%      { background: var(--tag); }
+}

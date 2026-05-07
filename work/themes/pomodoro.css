@@ -156,3 +156,69 @@ body[data-quarter-start="true"] .person {
 }
 body[data-quarter-start="true"] .person::before { color: var(--leaf); }
 body[data-tenure-anniversary="true"] .person::before { content: "🎉  LEVEL UP  🎉"; color: var(--leaf); }
+
+/* Steam wisp drifting up from each tomato. */
+.theme-fx::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  width: 80vw;
+  height: 120vh;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(20px 60px at 30% 80%, rgba(192,57,43,0.06), transparent 70%),
+    radial-gradient(15px 50px at 50% 50%, rgba(192,57,43,0.05), transparent 70%),
+    radial-gradient(25px 70px at 70% 20%, rgba(192,57,43,0.05), transparent 70%);
+  background-size: 100% 600px;
+  animation: pomo-steam 14s linear infinite;
+  pointer-events: none;
+}
+@keyframes pomo-steam {
+  to { background-position-y: -600px; }
+}
+
+/* Tomato pulse — like a kitchen timer ticking. */
+.person { transition: transform 200ms; }
+.person:hover { transform: scale(1.01); }
+.person.is-bumping { animation: pomo-tick 1s ease-out; }
+@keyframes pomo-tick {
+  0%, 100% { transform: rotate(0); }
+  20%      { transform: rotate(-1.5deg); }
+  60%      { transform: rotate(1.5deg); }
+}
+
+/* Animated timer ring around the tomato session — slow rotation gives a
+   "session in progress" feel. */
+.person {
+  background:
+    var(--paper);
+  position: relative;
+}
+.person::before {
+  position: relative;
+}
+.person {
+  background-image:
+    conic-gradient(from 0deg, var(--tomato) 0deg, var(--tomato) 90deg, transparent 90deg);
+  background-origin: border-box;
+  background-clip: border-box, padding-box;
+}
+/* Override the conic background — too aggressive; instead, add a sweep via
+   a positioned pseudo-layer on the .version. */
+.person { background: var(--paper); background-image: none; }
+
+.version { position: relative; display: inline-block; }
+.version::after {
+  content: "";
+  position: absolute;
+  inset: -0.3em;
+  border-radius: 12px;
+  background: conic-gradient(from -90deg, var(--tomato) 0deg, var(--tomato) 30deg, transparent 30deg);
+  z-index: -1;
+  opacity: 0.12;
+  animation: pomo-sweep 25s linear infinite;
+}
+@keyframes pomo-sweep {
+  to { transform: rotate(360deg); }
+}

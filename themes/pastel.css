@@ -160,3 +160,11 @@ body {
 }
 
 .site-footer a { color: var(--leaf); font-weight: 600; }
+
+.person { transition: transform 220ms; }
+.person:hover { transform: translateY(-2px); }
+.person.is-bumping { animation: pastel-bloom 1s ease-out; }
+@keyframes pastel-bloom {
+  0%, 100% { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+  50%      { box-shadow: 0 6px 28px rgba(255,150,200,0.3); }
+}

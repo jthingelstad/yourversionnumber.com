@@ -178,3 +178,18 @@ body {
 }
 
 .site-footer a { color: var(--rust); font-style: normal; font-family: 'IM Fell DW Pica SC', serif; }
+
+/* Drifting brass gear silhouettes on the theme-fx layer. */
+.theme-fx::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><g fill='%23b8860b' opacity='0.18'><path d='M40 8 l4 4 6-2 2 6 6 4-2 6 4 4-4 4 2 6-6 4-2 6-6-2-4 4-4-4-6 2-2-6-6-4 2-6-4-4 4-4-2-6 6-4 2-6 6 2z'/><circle cx='40' cy='40' r='8' fill='%231a1208'/></g></svg>") no-repeat 12% 28% / 80px 80px,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><g fill='%23704214' opacity='0.14'><path d='M40 8 l4 4 6-2 2 6 6 4-2 6 4 4-4 4 2 6-6 4-2 6-6-2-4 4-4-4-6 2-2-6-6-4 2-6-4-4 4-4-2-6 6-4 2-6 6 2z'/><circle cx='40' cy='40' r='8' fill='%231a1208'/></g></svg>") no-repeat 78% 70% / 120px 120px;
+  animation: gears-turn 40s linear infinite;
+}
+@keyframes gears-turn {
+  to { transform: rotate(360deg); }
+}
+.person:hover { box-shadow: 0 0 16px rgba(184, 134, 11, 0.3); transition: box-shadow 280ms; }

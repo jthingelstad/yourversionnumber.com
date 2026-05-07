@@ -202,3 +202,13 @@ body {
 }
 
 .site-footer a { color: var(--yellow); font-weight: 800; }
+
+/* Wiggle on hover; squiggle on bump. */
+.person { transition: transform 220ms ease-out; transform: rotate(var(--row-tilt, 0deg)); }
+.person:hover { transform: rotate(0) translateY(-3px); }
+.person.is-bumping { animation: memphis-wiggle 1s ease-out; }
+@keyframes memphis-wiggle {
+  0%, 100% { transform: rotate(var(--row-tilt, 0deg)); }
+  25%      { transform: rotate(calc(var(--row-tilt, 0deg) + 2deg)) translateX(2px); }
+  75%      { transform: rotate(calc(var(--row-tilt, 0deg) - 2deg)) translateX(-2px); }
+}

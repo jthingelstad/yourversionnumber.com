@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap');
+
+:root {
+  --night: #1a0e2e;
+  --night-2: #2d1b4e;
+  --gold: #d4af37;
+  --gold-bright: #f4cf57;
+  --parchment: #f4ead5;
+  --parchment-shadow: #d8c8a0;
+  --ink: #1a0e2e;
+  --muted: #6e5b85;
+}
+
+body {
+  margin: 0;
+  background:
+    /* starry sky */
+    radial-gradient(2px 2px at 30px 50px, var(--gold-bright), transparent),
+    radial-gradient(1px 1px at 120px 90px, var(--gold), transparent),
+    radial-gradient(1px 1px at 210px 30px, var(--parchment), transparent),
+    radial-gradient(2px 2px at 280px 140px, var(--gold-bright), transparent),
+    radial-gradient(1px 1px at 380px 80px, var(--gold), transparent),
+    linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
+  background-size: 400px 200px, 400px 200px, 400px 200px, 400px 200px, 400px 200px, 100% 100%;
+  background-attachment: fixed;
+  color: var(--parchment);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.site-header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--gold);
+}
+
+.site-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 2.4rem;
+  margin: 0;
+  color: var(--gold-bright);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(212, 175, 55, 0.4);
+  font-style: normal;
+}
+
+.site-title::before { content: "✦ "; color: var(--gold); }
+.site-title::after  { content: " ✦"; color: var(--gold); }
+
+.theme-select, .about-btn, .edit-btn {
+  font-family: 'Cinzel', serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--gold-bright);
+  border: 1px solid var(--gold);
+  border-radius: 0;
+  padding: 0.4rem 0.9rem;
+}
+.theme-select { appearance: none; padding-right: 1.7rem; cursor: pointer; }
+
+.intro {
+  font-size: 1.15rem;
+  color: var(--parchment);
+  margin: 0 0 2rem;
+  text-align: center;
+  max-width: 50ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro::before { content: "✧ "; color: var(--gold); }
+.intro::after  { content: " ✧"; color: var(--gold); }
+
+.intro code {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: normal;
+  background: rgba(212, 175, 55, 0.15);
+  padding: 0 0.4em;
+  color: var(--gold-bright);
+}
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.person {
+  background: var(--parchment);
+  color: var(--ink);
+  border: 3px solid var(--gold);
+  border-radius: 6px;
+  padding: 1.25rem 1rem 1.5rem;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 0 0 1px var(--night), 0 8px 24px rgba(0,0,0,0.4);
+  background-image:
+    radial-gradient(circle at top left, transparent 0 12px, var(--parchment) 13px),
+    radial-gradient(circle at top right, transparent 0 12px, var(--parchment) 13px),
+    radial-gradient(circle at bottom left, transparent 0 12px, var(--parchment) 13px),
+    radial-gradient(circle at bottom right, transparent 0 12px, var(--parchment) 13px),
+    linear-gradient(var(--parchment), var(--parchment));
+  background-position: top left, top right, bottom left, bottom right;
+  background-size: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+/* Roman numeral header per variant */
+.person::before {
+  content: "0";
+  position: absolute;
+  top: 0.4rem;
+  left: 0.6rem;
+  font-family: 'Cinzel', serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+.person[data-row-variant="0"]::before { content: "0  ·  THE FOOL"; }
+.person[data-row-variant="1"]::before { content: "I  ·  THE MAGICIAN"; }
+.person[data-row-variant="2"]::before { content: "II  ·  THE PRIESTESS"; }
+.person[data-row-variant="3"]::before { content: "III  ·  THE EMPRESS"; }
+.person[data-row-variant="4"]::before { content: "VII  ·  THE CHARIOT"; }
+.person[data-row-variant="5"]::before { content: "X  ·  THE WHEEL"; }
+.person[data-row-variant="6"]::before { content: "XVII  ·  THE STAR"; }
+.person[data-row-variant="7"]::before { content: "XIX  ·  THE SUN"; }
+
+/* Decorative central glyph */
+.person::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin: 1.5rem auto 0.5rem;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><g fill='none' stroke='%23d4af37' stroke-width='1.2'><circle cx='40' cy='40' r='30'/><circle cx='40' cy='40' r='22'/><path d='M40 14 L40 66 M14 40 L66 40 M22 22 L58 58 M58 22 L22 58'/><circle cx='40' cy='40' r='6' fill='%23d4af37'/></g></svg>") no-repeat center / contain;
+}
+
+.person-name {
+  font-family: 'Cinzel', serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink);
+  opacity: 1;
+  margin-top: 0.5rem;
+}
+
+.version {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.6rem;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  margin-top: 0.4rem;
+  border-top: 1px solid var(--gold);
+  padding-top: 0.6rem;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.add-btn {
+  display: block;
+  margin: 0 auto;
+  font-family: 'Cinzel', serif;
+  font-style: normal;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  background: transparent;
+  color: var(--gold-bright);
+  border: 1px solid var(--gold);
+  border-radius: 0;
+  padding: 0.85rem 1.75rem;
+}
+
+.add-btn:hover { background: rgba(212,175,55,0.1); }
+
+.site-footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gold);
+  font-size: 0.95rem;
+  color: var(--muted);
+  text-align: center;
+}
+.site-footer a { color: var(--gold-bright); }
+
+.person { transition: transform 280ms; }
+.person:hover { transform: translateY(-4px) rotate(-1deg); box-shadow: 0 0 0 1px var(--gold), 0 14px 40px rgba(0,0,0,0.5); }
+.person.is-bumping { animation: tarot-shimmer 1.4s ease-out; }
+@keyframes tarot-shimmer {
+  0%, 100% { box-shadow: 0 0 0 1px var(--night), 0 8px 24px rgba(0,0,0,0.4); }
+  50%      { box-shadow: 0 0 0 2px var(--gold-bright), 0 0 40px rgba(244,207,87,0.6); }
+}
