@@ -112,7 +112,7 @@ For the custom domain: set `yourversionnumber.com` in the repo's Pages settings,
 
 ## Privacy
 
-Birthdays live in the URL and only in the URL. The site has no server, no database, and no birthday telemetry — visit counts go to a privacy-friendly analytics service (tinylytics) but the URL it would normally see is rewritten in `index.html` to drop the `?p=` and `?j=` query strings, so only the page path (`/` or `/work/`) is sent.
+Birthdays live in the URL and only in the URL. The site has no server, no database, and no birthday telemetry — visit counts go to a privacy-friendly analytics service (tinylytics), but both the page URL and the referrer it would normally see are rewritten in `index.html` down to origin + path. Analytics records which page was viewed (`/` or `/work/`) and which site the visitor arrived from; the `?p=` and `?j=` query strings never leave the browser.
 
 Birthdays in the URL are still visible to anyone you share the link with, and to your browser's history sync. Don't paste sensitive data here.
 

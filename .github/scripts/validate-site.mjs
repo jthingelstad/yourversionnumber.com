@@ -33,11 +33,18 @@ async function validateEdition({ htmlPath, scriptPath, themesDirectory, privateQ
 
   for (const required of [
     "tinylytics.app/collector/",
-    "searchParams.delete('url')",
-    "searchParams.delete('referrer')",
+    "sanitizeCollectorUrl",
+    "['url', 'referrer']",
+    "parsed.origin + parsed.pathname",
     privateQuery,
   ]) {
     if (!html.includes(required)) failures.push(`${htmlPath}: missing privacy guard ${required}`);
+  }
+
+  // Crawlers and no-JS visitors only ever see the static markup in index.html,
+  // so keep the indexable content from regressing back to an empty <main>.
+  for (const required of ['<h1 class="site-title">', "<noscript>", 'type="application/ld+json"']) {
+    if (!html.includes(required)) failures.push(`${htmlPath}: missing indexable content ${required}`);
   }
 }
 
