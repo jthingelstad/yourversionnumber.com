@@ -66,7 +66,7 @@ body {
 .site-title::before { content: "Subject: "; color: var(--muted); font-weight: 400; }
 .site-title::after { content: " (Auto-Reply)"; color: var(--muted); font-weight: 400; }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   background: var(--paper);
   border: 1px solid var(--border);
   border-radius: 0;
@@ -83,7 +83,7 @@ body {
   background-repeat: no-repeat;
   background-position: right 0.4rem center;
 }
-.about-btn:hover, .edit-btn:hover { background: var(--header); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { background: var(--header); }
 
 .intro {
   background: var(--paper);

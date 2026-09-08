@@ -46,7 +46,7 @@ body {
   vertical-align: 0.05em;
 }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   background: var(--paper);
   border: 2px solid var(--tomato);
   border-radius: 999px;
@@ -64,7 +64,7 @@ body {
   background-repeat: no-repeat;
   background-position: right 0.7rem center;
 }
-.about-btn:hover, .edit-btn:hover { background: var(--tomato); color: #fff; }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { background: var(--tomato); color: #fff; }
 
 .intro {
   color: var(--muted);

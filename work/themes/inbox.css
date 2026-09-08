@@ -58,7 +58,7 @@ body {
   margin-left: 0.4em;
 }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   background: var(--paper);
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -75,7 +75,7 @@ body {
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
 }
-.about-btn:hover, .edit-btn:hover { border-color: var(--link); color: var(--link); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { border-color: var(--link); color: var(--link); }
 
 .intro {
   border-bottom: 1px solid var(--border);

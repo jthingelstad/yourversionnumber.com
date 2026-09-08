@@ -318,6 +318,17 @@ function renderHeaderControls() {
   const wrap = document.createElement('div');
   wrap.className = 'header-controls';
 
+  // The way back out. An anchor rather than a button so middle-click and
+  // open-in-new-tab behave; themes pick it up via the .home-btn selector they
+  // already pair with .about-btn and .edit-btn.
+  const homeBtn = document.createElement('a');
+  homeBtn.className = 'home-btn';
+  homeBtn.href = '/';
+  homeBtn.textContent = 'Home';
+  homeBtn.title = 'Back to yourversionnumber.com';
+  homeBtn.setAttribute('data-tinylytics-event', 'home.click');
+  wrap.appendChild(homeBtn);
+
   const editBtn = document.createElement('button');
   editBtn.type = 'button';
   editBtn.className = 'edit-btn';

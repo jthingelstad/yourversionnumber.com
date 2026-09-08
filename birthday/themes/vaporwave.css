@@ -101,7 +101,7 @@ body::after {
   color: var(--yellow);
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   font-family: 'Orbitron', sans-serif;
   font-weight: 900;
   font-size: 0.85rem;
@@ -114,7 +114,7 @@ body::after {
   box-shadow: 4px 4px 0 var(--pink);
 }
 
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   color: var(--yellow);
   border-color: var(--yellow);
   transform: translate(-2px, -2px);

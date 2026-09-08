@@ -54,7 +54,7 @@ body {
   vertical-align: middle;
 }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -71,7 +71,7 @@ body {
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
 }
-.about-btn:hover, .edit-btn:hover { background: var(--border); color: var(--fg-bright); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { background: var(--border); color: var(--fg-bright); }
 
 .intro {
   margin: 0;

@@ -73,7 +73,7 @@ Hooks available for theme-side polish, with no JS cost when ignored:
 - `body[data-people-count="0|1|many"]` — style solo vs group views differently.
 - `body[data-birthday="true"]` — present when any person on the page has `patch === 0`.
 - `.person-name` — renders inside `.person` when a name is set. Themes can opt into styling it; falls back to a small muted treatment in `base.css`.
-- `.edit-btn` — header button, sits next to `.about-btn`. Theme files pair the two so the new button picks up the same look.
+- `.home-btn`, `.edit-btn`, `.about-btn` — the three header controls. Theme files style them as one set, usually with a grouped selector, so a new control picks up the same look. `.home-btn` is an anchor back to `/`; the others are buttons. CI fails if a theme styles `.about-btn` without `.home-btn`.
 
 A visitor with no `?theme=` in the URL sees the `birthday` theme — same as the og-image. Once a theme is explicitly chosen via the picker (or specified in the URL), it's written to the URL and that's what the bookmark holds. The work edition does the same with `earnings` as its default.
 

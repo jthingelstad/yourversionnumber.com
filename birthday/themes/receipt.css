@@ -87,7 +87,7 @@ body {
   gap: 0.4rem;
 }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: inherit;
   font-size: 0.7rem;
   text-transform: uppercase;

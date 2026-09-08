@@ -65,7 +65,7 @@ body {
   background-position: right 0.5rem center;
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   font-family: 'Bangers', cursive;
   font-size: 1.3rem;
   letter-spacing: 0.05em;
@@ -78,7 +78,7 @@ body {
   box-shadow: 4px 4px 0 var(--ink);
 }
 
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   background: var(--red);
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0 var(--ink);

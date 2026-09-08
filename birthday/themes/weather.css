@@ -44,7 +44,7 @@ body {
   font-size: 1em;
 }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   background: var(--card);

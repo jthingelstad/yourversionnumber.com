@@ -70,7 +70,7 @@ body {
   box-shadow: inset 0 1px 0 #fff, 0 2px 4px rgba(102, 120, 170, 0.3);
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   background: linear-gradient(180deg, var(--hot-pink) 0%, #cc1166 100%);
   color: #fff;
   border: 1px solid #aa1155;
@@ -82,7 +82,7 @@ body {
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 3px 6px rgba(255, 51, 153, 0.4);
 }
 
-.about-btn:hover, .edit-btn:hover { transform: translateY(-1px); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { transform: translateY(-1px); }
 
 .intro {
   background: rgba(255, 255, 255, 0.55);

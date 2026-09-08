@@ -49,7 +49,7 @@ body {
   vertical-align: 0.15em;
 }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   background: var(--paper);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -67,7 +67,7 @@ body {
   background-repeat: no-repeat;
   background-position: right 0.6rem center;
 }
-.about-btn:hover, .edit-btn:hover { border-color: var(--accent); color: var(--accent); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { border-color: var(--accent); color: var(--accent); }
 
 .intro {
   background: var(--paper);

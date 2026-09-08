@@ -75,7 +75,7 @@ body {
 }
 .theme-select:focus { outline: none; border-color: var(--fg); }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 0;
@@ -86,7 +86,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   border-color: var(--fg);
   color: #fff;
 }

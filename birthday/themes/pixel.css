@@ -44,7 +44,7 @@ body {
   line-height: 1.4;
 }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: 'Press Start 2P', monospace;
   font-size: 0.7rem;
   background: var(--mid-dark);
@@ -58,7 +58,7 @@ body {
 }
 .theme-select { appearance: none; padding-right: 1.6rem; }
 
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   transform: translate(1px, 1px);
   box-shadow: 2px 2px 0 var(--bg);
 }

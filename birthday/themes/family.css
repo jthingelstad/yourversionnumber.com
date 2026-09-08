@@ -61,7 +61,7 @@ body {
   border-color: var(--accent-2);
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   font-family: 'Caveat', cursive;
   font-size: 1.4rem;
   font-weight: 700;
@@ -73,7 +73,7 @@ body {
   box-shadow: var(--shadow);
 }
 
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   transform: scale(1.05);
 }
 

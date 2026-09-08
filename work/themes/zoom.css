@@ -59,7 +59,7 @@ body {
   font-size: 0.85em;
 }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: inherit;
   font-size: 0.85rem;
   background: var(--tile);

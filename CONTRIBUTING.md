@@ -63,7 +63,7 @@ Each theme is its own world. They don't share variables, they don't extend each 
 
 ## Work themes
 
-The `/work/` page has its own independent theme set in `work/themes/` and its own `THEMES` array in `work/assets/app.js`. Same recipe, same `{ name, label, kind, animate, blurb }` shape, same off-limits selectors (`.app-dialog*`, `.edit-row*`).
+The `/work/` page has its own independent theme set in `work/themes/` and its own `THEMES` array in `work/assets/app.js`. Same recipe, same `{ name, label, kind, animate, blurb }` shape, same off-limits selectors (`.app-dialog*`, `.edit-row*`), and the same three header controls to style together (`.home-btn`, `.edit-btn`, `.about-btn`).
 
 Extra hooks unique to work mode:
 

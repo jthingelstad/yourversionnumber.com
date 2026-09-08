@@ -82,7 +82,7 @@ body::before {
   backdrop-filter: blur(6px);
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   background: var(--coral);
   color: var(--shell);
   border: 0;
@@ -92,7 +92,7 @@ body::before {
   box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
 }
 
-.about-btn:hover, .edit-btn:hover { transform: translateY(-1px); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { transform: translateY(-1px); }
 
 .intro {
   color: var(--foam);

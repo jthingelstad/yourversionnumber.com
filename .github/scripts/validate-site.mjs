@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -93,6 +93,18 @@ for (const spinePath of ["index.html", "about/index.html", "themes/index.html", 
   const sizes = [...html.matchAll(/(\d+) (?:person|people) &middot;/g)].map((m) => Number(m[1]));
   for (const n of [1, 2, 3, 4, 5, 6, 7, 8]) {
     if (!sizes.includes(n)) failures.push(`examples/index.html: no example with ${n} people`);
+  }
+}
+
+// Themes style the header controls as a set. A theme that dresses .about-btn
+// but not .home-btn leaves the way out of the edition looking like a stray link.
+for (const themeFile of [
+  ...(await readdir(resolve(repoRoot, "birthday/themes"))).map((f) => `birthday/themes/${f}`),
+  ...(await readdir(resolve(repoRoot, "work/themes"))).map((f) => `work/themes/${f}`),
+]) {
+  const css = await readFile(resolve(repoRoot, themeFile), "utf8");
+  if (css.includes(".about-btn") && !css.includes(".home-btn")) {
+    failures.push(`${themeFile}: styles .about-btn but not .home-btn`);
   }
 }
 

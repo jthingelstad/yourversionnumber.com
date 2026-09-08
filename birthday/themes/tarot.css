@@ -58,7 +58,7 @@ body {
 .site-title::before { content: "✦ "; color: var(--gold); }
 .site-title::after  { content: " ✦"; color: var(--gold); }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: 'Cinzel', serif;
   font-style: normal;
   font-weight: 500;

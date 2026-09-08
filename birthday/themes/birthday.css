@@ -68,7 +68,7 @@ body {
   background-position: right 0.7rem center;
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   background: var(--party-yellow);
   color: var(--ink);
   border: 3px solid var(--ink);
@@ -79,7 +79,7 @@ body {
   box-shadow: 3px 3px 0 var(--party-purple);
 }
 
-.about-btn:hover, .edit-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--party-purple); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--party-purple); }
 
 .intro {
   font-size: 1.05rem;

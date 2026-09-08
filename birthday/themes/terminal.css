@@ -96,7 +96,7 @@ body::before {
   color: var(--fg);
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   font-family: inherit;
   font-size: 0.85rem;
   text-transform: lowercase;
@@ -109,7 +109,7 @@ body::before {
 
 .about-btn::before, .edit-btn::before { content: "./"; color: var(--dim); margin-right: 0.15em; }
 
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   background: rgba(0, 255, 102, 0.08);
   border-color: var(--fg);
 }

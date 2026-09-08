@@ -69,7 +69,7 @@ body {
 
 .site-title::before { content: "▶ "; color: var(--lcd-3); }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: 'VT323', monospace;
   font-size: 1rem;
   background: var(--lcd-1);
@@ -82,7 +82,7 @@ body {
 }
 .theme-select { appearance: none; padding-right: 1.4rem; cursor: pointer; }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   background: var(--button);
   color: var(--shell);
   border: 0;

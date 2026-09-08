@@ -102,7 +102,7 @@ body::before {
 
 .theme-select option { background: var(--void); color: var(--silver); }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   background: transparent;
   color: var(--magenta);
   border: 1px solid var(--magenta);
@@ -115,7 +115,7 @@ body::before {
   font-size: 0.8rem;
 }
 
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   background: var(--magenta);
   color: var(--space);
   box-shadow: 0 0 16px var(--magenta);

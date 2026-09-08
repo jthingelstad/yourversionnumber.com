@@ -66,7 +66,7 @@ body {
   background-position: right 0.7rem center;
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   background: var(--lavender);
   color: var(--ink);
   border: 0;
@@ -75,7 +75,7 @@ body {
   font-weight: 500;
 }
 
-.about-btn:hover, .edit-btn:hover { background: var(--pink); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { background: var(--pink); }
 
 .intro {
   font-family: 'DM Serif Display', serif;

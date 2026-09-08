@@ -69,7 +69,7 @@ body {
   background-position: right 0.4rem center;
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   background: #fff;
   border: 1px solid var(--grid);
   border-radius: 0;
@@ -78,7 +78,7 @@ body {
   font-size: 12px;
   color: var(--fg);
 }
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   background: var(--selection-light);
   border-color: var(--selection);
 }

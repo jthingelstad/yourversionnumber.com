@@ -48,7 +48,7 @@ body {
 }
 .site-title::before { content: "33⅓ "; color: var(--label); font-size: 0.7em; }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 1rem;
   letter-spacing: 0.1em;
@@ -60,7 +60,7 @@ body {
   text-transform: uppercase;
 }
 .theme-select { appearance: none; padding-right: 1.6rem; cursor: pointer; }
-.about-btn { background: var(--accent); color: var(--ivory); border-radius: 50%; padding: 0.4rem 0.6rem; }
+.home-btn, .about-btn { background: var(--accent); color: var(--ivory); border-radius: 50%; padding: 0.4rem 0.6rem; }
 
 .intro {
   background: rgba(255,248,237,0.08);

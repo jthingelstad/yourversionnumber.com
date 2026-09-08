@@ -102,7 +102,7 @@ body {
 }
 
 .theme-select,
-.about-btn,
+.home-btn, .about-btn, 
 .edit-btn {
   appearance: none;
   background: transparent;
@@ -126,7 +126,7 @@ body {
   background-position: right 0.1rem center;
 }
 
-.about-btn:hover, .edit-btn:hover, .theme-select:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover, .theme-select:hover {
   color: var(--vermillion);
   border-color: var(--vermillion);
 }
@@ -314,7 +314,7 @@ body[data-birthday="true"] .version::first-letter {
 /* ─── Reduced motion ─────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  .theme-select, .about-btn, .edit-btn,
+  .home-btn, .theme-select, .about-btn, .edit-btn, 
   .add-btn, .site-footer a {
     transition: none;
   }

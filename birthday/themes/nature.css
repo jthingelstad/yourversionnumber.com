@@ -72,7 +72,7 @@ body {
   background-position: right 0.6rem center;
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   background: var(--leaf-deep);
   color: var(--cream);
   border: 0;
@@ -83,7 +83,7 @@ body {
   font-size: 0.9rem;
 }
 
-.about-btn:hover, .edit-btn:hover { background: var(--leaf); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { background: var(--leaf); }
 
 .intro {
   font-family: 'Cormorant Garamond', serif;

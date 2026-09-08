@@ -118,7 +118,7 @@ body::after {
 }
 .site-title::before { content: "📎  "; }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   background: var(--paper);
   border: 1.5px solid var(--ink);
   border-radius: 4px;
@@ -137,7 +137,7 @@ body::after {
   background-repeat: no-repeat;
   background-position: right 0.55rem center;
 }
-.about-btn:hover, .edit-btn:hover { background: var(--note-yellow); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { background: var(--note-yellow); }
 
 .intro {
   background: var(--note-yellow);

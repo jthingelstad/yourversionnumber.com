@@ -46,7 +46,7 @@ body {
   letter-spacing: 0.01em;
 }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: 'Caveat', cursive;
   font-size: 1.15rem;
   background: var(--photo);

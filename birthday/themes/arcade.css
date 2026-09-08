@@ -87,7 +87,7 @@ body {
   background-position: right 0.4rem center;
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   font-family: 'Press Start 2P', monospace;
   font-size: 0.65rem;
   text-transform: uppercase;
@@ -99,7 +99,7 @@ body {
   box-shadow: 3px 3px 0 var(--p1);
 }
 
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   background: var(--p1);
   color: var(--coin);
   transform: translate(-1px, -1px);

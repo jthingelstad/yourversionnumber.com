@@ -57,7 +57,7 @@ body {
   transform: rotate(0.5deg);
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   background: #fff;
   border: 2px solid var(--fg);
   border-radius: 14px;
@@ -73,7 +73,7 @@ body {
   transform: rotate(0.6deg);
 }
 
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   background: var(--marker-blue);
   color: #fff;
   border-color: var(--marker-blue);

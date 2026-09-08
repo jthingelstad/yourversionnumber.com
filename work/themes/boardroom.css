@@ -65,7 +65,7 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -89,7 +89,7 @@ body {
   border: 0;
   font-weight: 600;
 }
-.about-btn:hover, .theme-select:hover { border-color: var(--grad-1); color: var(--grad-1); }
+.home-btn:hover, .about-btn:hover, .theme-select:hover { border-color: var(--grad-1); color: var(--grad-1); }
 
 .intro {
   color: var(--muted);

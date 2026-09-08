@@ -56,7 +56,7 @@ body {
   background-position: right 0.4rem center;
 }
 
-.about-btn, .edit-btn {
+.home-btn, .about-btn, .edit-btn {
   font-family: 'Archivo Black', sans-serif;
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -68,7 +68,7 @@ body {
   padding: 0.4rem 0.85rem;
 }
 
-.about-btn:hover, .edit-btn:hover {
+.home-btn:hover, .about-btn:hover, .edit-btn:hover {
   background: var(--fg);
   color: var(--bg);
 }

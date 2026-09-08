@@ -61,7 +61,7 @@ body::before {
 }
 .site-title::before { content: "Q2 BUSINESS REVIEW  ·  "; color: var(--accent); }
 
-.theme-select, .about-btn, .edit-btn {
+.home-btn, .theme-select, .about-btn, .edit-btn {
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 0;
@@ -81,7 +81,7 @@ body::before {
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
 }
-.about-btn:hover, .edit-btn:hover { color: var(--accent); border-color: var(--accent); }
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { color: var(--accent); border-color: var(--accent); }
 
 .intro {
   color: var(--muted);
