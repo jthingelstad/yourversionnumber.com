@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Examples — Your Version Number</title>
+<meta name="description" content="Eight live examples, from one person to eight: the Obamas, Radiohead, BTS, and the people who invented MAJOR.MINOR.PATCH.">
+<link rel="canonical" href="https://yourversionnumber.com/examples/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Your Version Number">
+<meta property="og:title" content="Examples — Your Version Number">
+<meta property="og:description" content="Eight live examples, from one person to eight: the Obamas, Radiohead, BTS, and the people who invented MAJOR.MINOR.PATCH.">
+<meta property="og:url" content="https://yourversionnumber.com/examples/">
+<meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Examples — Your Version Number">
+<meta name="twitter:description" content="Eight live examples, from one person to eight: the Obamas, Radiohead, BTS, and the people who invented MAJOR.MINOR.PATCH.">
+<meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Examples",
+  "url": "https://yourversionnumber.com/examples/",
+  "description": "Eight worked examples of Your Version Number, from one person up to eight, using public figures with well-documented birthdays."
+}
+</script>
+<script>
+// Privacy: tinylytics' embed sends window.location.href (the full URL, with any
+// ?p= or ?j= dates in the query string) and the full referrer to its collector.
+// sanitizeCollectorUrl reduces both to origin + path before the request fires:
+// analytics still records which page was viewed and where the visitor came
+// from, while the dates in the query string never leave the browser.
+(function () {
+  function pathOnly(value) {
+    try {
+      var parsed = new URL(value, location.origin);
+      return parsed.origin + parsed.pathname;
+    } catch (e) {
+      return '';
+    }
+  }
+  function sanitizeCollectorUrl(input) {
+    var u = new URL(input, location.origin);
+    ['url', 'referrer'].forEach(function (key) {
+      var raw = u.searchParams.get(key);
+      // An absent or empty referrer means "direct". Leave it alone rather than
+      // resolving '' against location and inventing a self-referral.
+      if (!raw) return;
+      var safe = pathOnly(raw);
+      if (safe) u.searchParams.set(key, safe);
+      else u.searchParams.delete(key);
+    });
+    return u.toString();
+  }
+  var origFetch = window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    try {
+      if (typeof input === 'string' && input.indexOf('tinylytics.app/collector/') !== -1) {
+        input = sanitizeCollectorUrl(input);
+      }
+    } catch (e) { /* leave fetch input as-is */ }
+    return origFetch(input, init);
+  };
+})();
+</script>
+<script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="wrap site-nav__inner">
+    <a class="site-nav__brand" href="/">Your Version Number</a>
+    <a href="/birthday/">Birthday</a>
+    <a href="/work/">Work</a>
+    <a href="/examples/" aria-current="page">Examples</a>
+    <a href="/themes/">Themes</a>
+    <a href="/about/">About</a>
+  </div>
+</nav>
+<main class="wrap">
+  <h1>Examples</h1>
+  <p class="lede">Eight groups, one to eight people, every one of them a real page you can open.</p>
+
+  <p>The point of putting everyone on a single page is the comparison: whose major version is about to roll over, who shares a birthday with whom, how far apart two people really are once you stop counting in years. Each example below is a live link &mdash; open one, edit the names, and it becomes yours.</p>
+
+  <ul class="examples">
+  <li class="example" id="berners-lee">
+    <div class="theme-card__preview" data-example-url="/birthday/?theme=zen&p=Tim+Berners-Lee%3A1955-06-08" data-example-title="Tim Berners-Lee" data-example-height="550"></div>
+    <div class="theme-card__body">
+      <h3><a href="/birthday/?theme=zen&p=Tim+Berners-Lee%3A1955-06-08">Tim Berners-Lee</a></h3>
+      <span class="theme-card__kind">1 person &middot; zen theme</span>
+      <p>One person, one number. He gave the web its addresses; this is his in three parts.</p>
+      <p class="example__roster">Tim Berners-Lee</p>
+    </div>
+  </li>
+  <li class="example" id="williams">
+    <div class="theme-card__preview" data-example-url="/birthday/?theme=polaroid&p=Venus+Williams%3A1980-06-17&p=Serena+Williams%3A1981-09-26" data-example-title="The Williams sisters" data-example-height="700"></div>
+    <div class="theme-card__body">
+      <h3><a href="/birthday/?theme=polaroid&p=Venus+Williams%3A1980-06-17&p=Serena+Williams%3A1981-09-26">The Williams sisters</a></h3>
+      <span class="theme-card__kind">2 people &middot; polaroid theme</span>
+      <p>Fifteen months apart, and you can read the gap straight off the minor version.</p>
+      <p class="example__roster">Venus Williams, Serena Williams</p>
+    </div>
+  </li>
+  <li class="example" id="potter">
+    <div class="theme-card__preview" data-example-url="/birthday/?theme=tarot&p=Rupert+Grint%3A1988-08-24&p=Daniel+Radcliffe%3A1989-07-23&p=Emma+Watson%3A1990-04-15" data-example-title="The Harry Potter three" data-example-height="850"></div>
+    <div class="theme-card__body">
+      <h3><a href="/birthday/?theme=tarot&p=Rupert+Grint%3A1988-08-24&p=Daniel+Radcliffe%3A1989-07-23&p=Emma+Watson%3A1990-04-15">The Harry Potter three</a></h3>
+      <span class="theme-card__kind">3 people &middot; tarot theme</span>
+      <p>Cast as eleven-year-olds in 2001. All three are well into their fourth major release now.</p>
+      <p class="example__roster">Rupert Grint, Daniel Radcliffe, Emma Watson</p>
+    </div>
+  </li>
+  <li class="example" id="obamas">
+    <div class="theme-card__preview" data-example-url="/birthday/?theme=family&p=Barack%3A1961-08-04&p=Michelle%3A1964-01-17&p=Malia%3A1998-07-04&p=Sasha%3A2001-06-10" data-example-title="The Obamas" data-example-height="1000"></div>
+    <div class="theme-card__body">
+      <h3><a href="/birthday/?theme=family&p=Barack%3A1961-08-04&p=Michelle%3A1964-01-17&p=Malia%3A1998-07-04&p=Sasha%3A2001-06-10">The Obamas</a></h3>
+      <span class="theme-card__kind">4 people &middot; family theme</span>
+      <p>What the site was built for: a household on one page, parents and children on the same scale.</p>
+      <p class="example__roster">Barack, Michelle, Malia, Sasha</p>
+    </div>
+  </li>
+  <li class="example" id="radiohead">
+    <div class="theme-card__preview" data-example-url="/birthday/?theme=galaxy&p=Philip+Selway%3A1967-05-23&p=Ed+O%E2%80%99Brien%3A1968-04-15&p=Thom+Yorke%3A1968-10-07&p=Colin+Greenwood%3A1969-06-26&p=Jonny+Greenwood%3A1971-11-05" data-example-title="Radiohead" data-example-height="1150"></div>
+    <div class="theme-card__body">
+      <h3><a href="/birthday/?theme=galaxy&p=Philip+Selway%3A1967-05-23&p=Ed+O%E2%80%99Brien%3A1968-04-15&p=Thom+Yorke%3A1968-10-07&p=Colin+Greenwood%3A1969-06-26&p=Jonny+Greenwood%3A1971-11-05">Radiohead</a></h3>
+      <span class="theme-card__kind">5 people &middot; galaxy theme</span>
+      <p>Same school, same band since 1985, and still inside a four-year spread.</p>
+      <p class="example__roster">Philip Selway, Ed O’Brien, Thom Yorke, Colin Greenwood, Jonny Greenwood</p>
+    </div>
+  </li>
+  <li class="example" id="avengers">
+    <div class="theme-card__preview" data-example-url="/birthday/?theme=comic&p=Robert+Downey+Jr.%3A1965-04-04&p=Mark+Ruffalo%3A1967-11-22&p=Jeremy+Renner%3A1971-01-07&p=Chris+Evans%3A1981-06-13&p=Chris+Hemsworth%3A1983-08-11&p=Scarlett+Johansson%3A1984-11-22" data-example-title="The original six" data-example-height="1150"></div>
+    <div class="theme-card__body">
+      <h3><a href="/birthday/?theme=comic&p=Robert+Downey+Jr.%3A1965-04-04&p=Mark+Ruffalo%3A1967-11-22&p=Jeremy+Renner%3A1971-01-07&p=Chris+Evans%3A1981-06-13&p=Chris+Hemsworth%3A1983-08-11&p=Scarlett+Johansson%3A1984-11-22">The original six</a></h3>
+      <span class="theme-card__kind">6 people &middot; comic theme</span>
+      <p>Two of them share a birthday seventeen years apart, so their patch numbers move in lockstep forever.</p>
+      <p class="example__roster">Robert Downey Jr., Mark Ruffalo, Jeremy Renner, Chris Evans, Chris Hemsworth, Scarlett Johansson</p>
+    </div>
+  </li>
+  <li class="example" id="bts">
+    <div class="theme-card__preview" data-example-url="/birthday/?theme=memphis&p=Jin%3A1992-12-04&p=Suga%3A1993-03-09&p=J-Hope%3A1994-02-18&p=RM%3A1994-09-12&p=Jimin%3A1995-10-13&p=V%3A1995-12-30&p=Jungkook%3A1997-09-01" data-example-title="BTS" data-example-height="1150"></div>
+    <div class="theme-card__body">
+      <h3><a href="/birthday/?theme=memphis&p=Jin%3A1992-12-04&p=Suga%3A1993-03-09&p=J-Hope%3A1994-02-18&p=RM%3A1994-09-12&p=Jimin%3A1995-10-13&p=V%3A1995-12-30&p=Jungkook%3A1997-09-01">BTS</a></h3>
+      <span class="theme-card__kind">7 people &middot; memphis theme</span>
+      <p>Seven people born inside five years. The minor versions bunch up; the patches scatter.</p>
+      <p class="example__roster">Jin, Suga, J-Hope, RM, Jimin, V, Jungkook</p>
+    </div>
+  </li>
+  <li class="example" id="languages">
+    <div class="theme-card__preview" data-example-url="/birthday/?theme=terminal&p=Bjarne+Stroustrup%3A1950-12-30&p=Larry+Wall%3A1954-09-27&p=James+Gosling%3A1955-05-19&p=Guido+van+Rossum%3A1956-01-31&p=Anders+Hejlsberg%3A1960-12-02&p=Brendan+Eich%3A1961-07-04&p=Yukihiro+Matsumoto%3A1965-04-14&p=Rasmus+Lerdorf%3A1968-11-22" data-example-title="Eight language creators" data-example-height="1150"></div>
+    <div class="theme-card__body">
+      <h3><a href="/birthday/?theme=terminal&p=Bjarne+Stroustrup%3A1950-12-30&p=Larry+Wall%3A1954-09-27&p=James+Gosling%3A1955-05-19&p=Guido+van+Rossum%3A1956-01-31&p=Anders+Hejlsberg%3A1960-12-02&p=Brendan+Eich%3A1961-07-04&p=Yukihiro+Matsumoto%3A1965-04-14&p=Rasmus+Lerdorf%3A1968-11-22">Eight language creators</a></h3>
+      <span class="theme-card__kind">8 people &middot; terminal theme</span>
+      <p>The people who gave us MAJOR.MINOR.PATCH in the first place, rendered in it.</p>
+      <p class="example__roster">Bjarne Stroustrup, Larry Wall, James Gosling, Guido van Rossum, Anders Hejlsberg, Brendan Eich, Yukihiro Matsumoto, Rasmus Lerdorf</p>
+    </div>
+  </li>
+  </ul>
+
+  <p>Every birthday here is public record and was checked against published sources. Want your own? <a href="/birthday/">Start an empty one</a> and add people as you go, or browse the <a href="/themes/">theme gallery</a> first.</p>
+</main>
+<script type="module" src="/assets/examples.js"></script>
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a> — new themes welcome via pull request. Nothing you type here is stored anywhere; see <a href="/about/">About</a>.</p>
+    <p><span id="hits-span" class="tinylytics_hits" data-path="/examples/">—</span> visits.</p>
+  </div>
+</footer>
+</body>
+</html>

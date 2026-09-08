@@ -64,7 +64,7 @@ await validateEdition({
 // Spine pages: neutral chrome, no theme manifest, but the same privacy shim
 // (kept inline on every page so it cannot half-load ahead of the embed) and the
 // shared nav that ties the site together.
-for (const spinePath of ["index.html", "about/index.html", "themes/index.html"]) {
+for (const spinePath of ["index.html", "about/index.html", "themes/index.html", "examples/index.html"]) {
   const html = await readFile(resolve(repoRoot, spinePath), "utf8");
   for (const required of [
     "tinylytics.app/collector/",
@@ -76,8 +76,23 @@ for (const spinePath of ["index.html", "about/index.html", "themes/index.html"])
   ]) {
     if (!html.includes(required)) failures.push(`${spinePath}: missing ${required}`);
   }
-  for (const dest of ["/birthday/", "/work/", "/themes/", "/about/"]) {
+  for (const dest of ["/birthday/", "/work/", "/examples/", "/themes/", "/about/"]) {
     if (!html.includes(`href="${dest}"`)) failures.push(`${spinePath}: no link to ${dest}`);
+  }
+}
+
+// The examples page carries its rosters and links in static HTML — the frames
+// are enhancement only. If that inverts, the page stops working without JS.
+{
+  const html = await readFile(resolve(repoRoot, "examples/index.html"), "utf8");
+  const slots = [...html.matchAll(/data-example-url="([^"]+)"/g)].map((m) => m[1]);
+  if (slots.length < 8) failures.push(`examples/index.html: only ${slots.length} examples`);
+  for (const href of slots) {
+    if (!html.includes(`<a href="${href}">`)) failures.push(`examples/index.html: ${href} has a preview but no static link`);
+  }
+  const sizes = [...html.matchAll(/(\d+) (?:person|people) &middot;/g)].map((m) => Number(m[1]));
+  for (const n of [1, 2, 3, 4, 5, 6, 7, 8]) {
+    if (!sizes.includes(n)) failures.push(`examples/index.html: no example with ${n} people`);
   }
 }
 

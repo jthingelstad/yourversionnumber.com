@@ -42,7 +42,7 @@ The two `app.js` files are deliberately parallel. Keep their logic in sync when 
 
 ## The spine
 
-`/`, `/about/` and `/themes/` are the unthemed layer. They share `assets/site.css`,
+`/`, `/about/`, `/examples/` and `/themes/` are the unthemed layer. They share `assets/site.css`,
 whose tokens are lifted from the `.app-dialog` rules in each edition's `base.css`
 so the two layers read as one system in light and dark. Site nav lives here and
 only here — putting it inside a themed edition would mean 42 stylesheets each
@@ -58,6 +58,25 @@ Two duplications in this layer are deliberate:
 - **Nav and footer markup are repeated across the three spine pages.** Removing
   that would take a build step, which convention 2 rules out; three copies of a
   rarely-touched nav is the smaller cost. Revisit if the spine outgrows ~6 pages.
+
+### The examples page uses real people
+
+`/examples/` links to eight rosters built from public figures' birthdays. Two
+rules, both load-bearing:
+
+- **Everyone on it must be living.** A version number that keeps incrementing
+  for someone who has died is the wrong artefact to publish. Dolly Parton was in
+  the first draft of this page; she died on 2026-08-25, two weeks before it was
+  written, which is exactly how this fails.
+- **Verify against sources, not memory.** Dates were checked on 2026-09-08.
+  Every birthday on the page was confirmed, and one (Rasmus Lerdorf) was wrong
+  from memory and corrected.
+
+That makes this the one page on the site that rots on its own. Re-check the
+roster periodically; when someone dies, replace the whole grouping rather than
+swapping a person, so the sizes 1-8 stay covered. `validate-site.mjs` enforces
+that every size from 1 to 8 is present and that each preview has a static link,
+but it cannot know whether anyone is still alive.
 
 The gallery does *not* hardcode theme cards. `assets/gallery.js` scrapes the
 `THEMES` array out of each edition's `app.js` at runtime, so adding a theme stays

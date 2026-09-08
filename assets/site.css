@@ -201,7 +201,7 @@ code {
 .theme-card__preview {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 1000 / 620;
+  aspect-ratio: 1000 / var(--preview-h, 620);
   background: var(--site-bg);
 }
 
@@ -210,7 +210,7 @@ code {
   top: 0;
   left: 0;
   width: 1000px;
-  height: 620px;
+  height: calc(var(--preview-h, 620) * 1px);
   border: 0;
   transform-origin: top left;
   transform: scale(var(--preview-scale, 0.32));
@@ -254,4 +254,35 @@ code {
   .edition:hover {
     transform: none;
   }
+}
+
+/* Examples ---------------------------------------------------------------- */
+
+.examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.example {
+  border: 1px solid var(--site-rule);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--site-surface);
+  scroll-margin-top: 1.5rem;
+}
+
+.example .theme-card__body {
+  border-top: 1px solid var(--site-rule);
+}
+
+.example__roster {
+  font-size: 0.85rem;
+  color: var(--site-muted);
+  border-top: 1px solid var(--site-rule);
+  padding-top: 0.6rem;
+  margin-bottom: 0;
 }

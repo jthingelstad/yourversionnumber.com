@@ -5,6 +5,8 @@
 // in, add one manifest entry. The gallery picks it up on the next load. This is
 // the same manifest-scraping trick themes-preview.html uses.
 
+import { scaleToFit } from '/assets/preview.js';
+
 const DEMO = {
   birthday: ['Ada:1979-04-12', 'Grace:1991-11-30', 'Linus:2015-06-08'],
   work: ['Engineer:2022-03-14', 'Designer:2024-09-02'],
@@ -31,21 +33,6 @@ async function fetchManifest(scriptPath) {
     });
   }
   return themes;
-}
-
-// The iframe is a fixed 1000px-wide viewport; the card is whatever the grid
-// gives it. Scale the frame by the ratio between them and keep it in step as
-// the layout reflows.
-const PREVIEW_WIDTH = 1000;
-
-function scaleToFit(preview) {
-  const apply = () => {
-    const width = preview.clientWidth;
-    if (width > 0) preview.style.setProperty('--preview-scale', width / PREVIEW_WIDTH);
-  };
-  if ('ResizeObserver' in window) new ResizeObserver(apply).observe(preview);
-  else window.addEventListener('resize', apply);
-  apply();
 }
 
 function previewUrl(edition, theme) {

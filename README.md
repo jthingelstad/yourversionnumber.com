@@ -4,13 +4,14 @@ A small static site that shows people's "version numbers" — their age expresse
 
 ## Structure
 
-Five pages. The three spine pages share one neutral stylesheet and are not themed; the two editions are single-page apps that 42 stylesheets fight over.
+Six pages. The three spine pages share one neutral stylesheet and are not themed; the two editions are single-page apps that 42 stylesheets fight over.
 
 | Path | What it is |
 | --- | --- |
 | `/` | Landing page. Explains the concept, links to everything else. |
 | `/birthday/` | Birthday edition. The original app. |
 | `/work/` | Work Edition™. |
+| `/examples/` | Eight worked examples, one to eight people. |
 | `/themes/` | Theme gallery — live previews of all 42 themes. |
 | `/about/` | The origin, the math, the privacy model, how to contribute. |
 
