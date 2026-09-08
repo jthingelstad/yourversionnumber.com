@@ -1,30 +1,44 @@
-/* Neutral site chrome.
+/* House style for the spine.
  *
- * The two editions are themed: 42 stylesheets own their own look, and site
- * navigation would fight every one of them. So the spine — landing, about,
- * theme gallery — lives in this second, unthemed layer instead. The tokens
- * below are lifted from the .app-dialog rules in each edition's base.css so
- * the chrome reads as one system, light and dark. */
+ * The two editions are dressed up 42 different ways; the spine is the one
+ * surface that can't be. That argued for keeping it unthemed, and the first
+ * pass read that as "neutral" — system sans, grey rules, rounded boxes. Wrong
+ * conclusion: unthemed should mean it has its own look, not that it has none.
+ *
+ * So this is the forty-third design, and the only one you can't swap out. The
+ * motif is the thing the site is about — a dotted three-part number, set in
+ * monospace with the separators picked out in accent. Section headings carry
+ * their own version tags via CSS counters. The palette is the birthday theme's
+ * warm cream and pink, so the front door looks related to what's behind it.
+ *
+ * Fonts are imported here rather than linked from four <head>s: one place to
+ * change, no per-page duplication. */
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap");
 
 :root {
-  --site-bg: #faf9f7;
-  --site-surface: #fff;
-  --site-fg: #111;
-  --site-muted: #666;
-  --site-rule: #e4e2de;
-  --site-code: #ececea;
-  --site-link: #2b6cb0;
+  --paper: #fdfaf3;
+  --surface: #fff;
+  --surface-sunk: #f6f1e6;
+  --ink: #191714;
+  --muted: #6d6459;
+  --rule: #e5dccb;
+  --accent: #d6336c;
+  --accent-2: #6d4aff;
+  --font-display: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --site-bg: #131315;
-    --site-surface: #1c1c1e;
-    --site-fg: #f2f2f2;
-    --site-muted: #aaa;
-    --site-rule: #2f2f33;
-    --site-code: #2a2a2d;
-    --site-link: #6ea8ff;
+    --paper: #14131a;
+    --surface: #1d1b25;
+    --surface-sunk: #232130;
+    --ink: #f4f1ea;
+    --muted: #a49bb0;
+    --rule: #322e40;
+    --accent: #ff6b9d;
+    --accent-2: #a78bfa;
   }
 }
 
@@ -36,108 +50,195 @@
 
 body {
   margin: 0;
-  background: var(--site-bg);
-  color: var(--site-fg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
 .wrap {
-  max-width: 46rem;
+  max-width: 52rem;
   margin: 0 auto;
-  padding: 0 1.25rem;
+  padding: 0 1.5rem;
 }
 
 /* Header ------------------------------------------------------------------ */
 
 .site-nav {
-  border-bottom: 1px solid var(--site-rule);
-  background: var(--site-surface);
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .site-nav__inner {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.5rem 1.25rem;
-  padding-top: 0.9rem;
-  padding-bottom: 0.9rem;
+  align-items: center;
+  gap: 0.35rem 1.4rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .site-nav__brand {
+  font-family: var(--font-mono);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: 0.9rem;
+  letter-spacing: -0.02em;
   text-decoration: none;
-  color: var(--site-fg);
+  color: var(--ink);
   margin-right: auto;
 }
 
-.site-nav a:not(.site-nav__brand) {
-  color: var(--site-muted);
-  text-decoration: none;
-  font-size: 0.95rem;
+.site-nav__brand::before {
+  content: "◆";
+  color: var(--accent);
+  margin-right: 0.5rem;
 }
 
-.site-nav a:not(.site-nav__brand):hover,
+.site-nav a:not(.site-nav__brand) {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.site-nav a:not(.site-nav__brand):hover {
+  color: var(--ink);
+  border-bottom-color: var(--rule);
+}
+
 .site-nav a[aria-current="page"] {
-  color: var(--site-fg);
+  color: var(--ink);
+  border-bottom-color: var(--accent);
 }
 
 /* Prose ------------------------------------------------------------------- */
 
 main.wrap {
-  padding-top: 2.5rem;
-  padding-bottom: 3rem;
+  padding-top: 3.5rem;
+  padding-bottom: 4rem;
+  counter-reset: section;
 }
 
 h1 {
-  font-size: clamp(1.9rem, 5vw, 2.6rem);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.75rem;
+  font-size: clamp(2.3rem, 6vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  margin: 0 0 1rem;
+  text-wrap: balance;
 }
 
+/* Each section announces itself with a version tag, counted in CSS so the
+ * numbering can never drift from the markup. */
 h2 {
-  font-size: 1.3rem;
-  letter-spacing: -0.01em;
-  margin: 2.25rem 0 0.6rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 3.5rem 0 0.75rem;
+}
+
+h2::before {
+  counter-increment: section;
+  content: counter(section) ".0.0";
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
 }
 
 h3 {
   font-size: 1.05rem;
-  margin: 0 0 0.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.25rem;
 }
 
 p {
-  margin: 0.85rem 0;
+  margin: 0.9rem 0;
+  max-width: 42rem;
 }
 
 .lede {
-  font-size: 1.15rem;
-  color: var(--site-muted);
-  margin-bottom: 1.75rem;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  text-wrap: balance;
 }
 
 a {
-  color: var(--site-link);
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--accent);
 }
 
 code {
-  background: var(--site-code);
-  padding: 0.05em 0.35em;
-  border-radius: 3px;
-  font-size: 0.9em;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
+  background: var(--surface-sunk);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+/* The version number, as a display object ---------------------------------- */
+
+.vnum {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.vnum .dot {
+  color: var(--accent);
+}
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.5rem;
+  padding: 1.5rem 0 0;
+  margin: 0 0 2.5rem;
+  border-top: 2px solid var(--ink);
+}
+
+.hero__vnum {
+  font-size: clamp(2.6rem, 8vw, 4.2rem);
+}
+
+.hero__caption {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+  max-width: 22rem;
 }
 
 /* Edition cards ----------------------------------------------------------- */
 
 .editions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.25rem;
   margin: 2rem 0;
   padding: 0;
   list-style: none;
@@ -145,64 +246,87 @@ code {
 
 .edition {
   display: block;
-  padding: 1.25rem;
-  background: var(--site-surface);
-  border: 1px solid var(--site-rule);
-  border-radius: 10px;
+  height: 100%;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
   text-decoration: none;
   color: inherit;
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
 .edition:hover {
-  border-color: var(--site-muted);
-  transform: translateY(-2px);
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  color: inherit;
 }
 
 .edition__version {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 1.9rem;
+  display: block;
+  font-family: var(--font-mono);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  display: block;
-  margin-bottom: 0.4rem;
+  font-size: 2.1rem;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.6rem;
+}
+
+.edition strong {
+  font-size: 1.05rem;
 }
 
 .edition p {
-  margin: 0.35rem 0 0;
-  color: var(--site-muted);
+  margin: 0.4rem 0 0;
+  color: var(--muted);
   font-size: 0.95rem;
+  max-width: none;
 }
 
-/* Theme gallery ----------------------------------------------------------- */
+/* Cards: theme gallery and examples ---------------------------------------- */
 
-.gallery {
+.gallery,
+.examples {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: 1.5rem;
-  margin: 1.5rem 0 0;
+  margin: 1.75rem 0 0;
   padding: 0;
   list-style: none;
 }
 
-.theme-card {
-  border: 1px solid var(--site-rule);
-  border-radius: 10px;
+.gallery {
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+}
+
+.examples {
+  grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+}
+
+.theme-card,
+.example {
+  border: 1px solid var(--rule);
+  border-radius: 14px;
   overflow: hidden;
-  background: var(--site-surface);
-  scroll-margin-top: 1.5rem;
+  background: var(--surface);
+  scroll-margin-top: 5rem;
+  transition: border-color 0.15s ease;
+}
+
+.theme-card:hover,
+.example:hover {
+  border-color: var(--accent);
 }
 
 /* Previews render the edition at desktop width and scale the whole frame down
  * to fit the card, so the version numbers stay visible. A card-width iframe
  * would show the mobile layout cropped to its header, which is all chrome and
- * no product. gallery.js sets --preview-scale from the measured card width. */
+ * no product. gallery.js and examples.js set --preview-scale from the measured
+ * card width; --preview-h is the frame's unscaled height. */
 .theme-card__preview {
   position: relative;
   overflow: hidden;
   aspect-ratio: 1000 / var(--preview-h, 620);
-  background: var(--site-bg);
+  background: var(--surface-sunk);
 }
 
 .theme-card__preview iframe {
@@ -217,72 +341,60 @@ code {
 }
 
 .theme-card__body {
-  padding: 0.9rem 1.1rem 1.1rem;
-  border-top: 1px solid var(--site-rule);
+  padding: 1rem 1.2rem 1.2rem;
+  border-top: 1px solid var(--rule);
 }
 
 .theme-card__body p {
-  margin: 0.3rem 0 0.6rem;
-  color: var(--site-muted);
-  font-size: 0.95rem;
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  max-width: none;
 }
 
 .theme-card__kind {
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--site-muted);
+  letter-spacing: 0.1em;
+  color: var(--accent-2);
+}
+
+.example__roster {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted);
+  border-top: 1px dashed var(--rule);
+  margin-top: 0.9rem !important;
+  padding-top: 0.7rem;
 }
 
 /* Footer ------------------------------------------------------------------ */
 
 .site-foot {
-  border-top: 1px solid var(--site-rule);
-  color: var(--site-muted);
+  border-top: 1px solid var(--rule);
+  background: var(--surface-sunk);
+  color: var(--muted);
   font-size: 0.9rem;
 }
 
 .site-foot__inner {
-  padding-top: 1.5rem;
-  padding-bottom: 2.5rem;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.site-foot p {
+  max-width: 40rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .edition {
+  .edition,
+  .theme-card,
+  .example {
     transition: none;
   }
   .edition:hover {
     transform: none;
   }
-}
-
-/* Examples ---------------------------------------------------------------- */
-
-.examples {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-  padding: 0;
-  list-style: none;
-}
-
-.example {
-  border: 1px solid var(--site-rule);
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--site-surface);
-  scroll-margin-top: 1.5rem;
-}
-
-.example .theme-card__body {
-  border-top: 1px solid var(--site-rule);
-}
-
-.example__roster {
-  font-size: 0.85rem;
-  color: var(--site-muted);
-  border-top: 1px solid var(--site-rule);
-  padding-top: 0.6rem;
-  margin-bottom: 0;
 }

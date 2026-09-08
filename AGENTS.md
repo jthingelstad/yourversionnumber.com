@@ -42,11 +42,30 @@ The two `app.js` files are deliberately parallel. Keep their logic in sync when 
 
 ## The spine
 
-`/`, `/about/`, `/examples/` and `/themes/` are the unthemed layer. They share `assets/site.css`,
-whose tokens are lifted from the `.app-dialog` rules in each edition's `base.css`
-so the two layers read as one system in light and dark. Site nav lives here and
-only here — putting it inside a themed edition would mean 42 stylesheets each
-deciding what the nav looks like.
+`/`, `/about/`, `/examples/` and `/themes/` are the unthemed layer, sharing
+`assets/site.css`. Site nav lives here and only here — putting it inside a themed
+edition would mean 42 stylesheets each deciding what the nav looks like.
+
+**Unthemed does not mean undesigned.** The first version of this layer used
+system fonts and grey rules on the theory that neutral chrome would not fight the
+42 themes. It read as bland next to them, and the contrast was jarring rather
+than calm. `site.css` is now the forty-third design — the one you cannot swap:
+
+- Space Grotesk for display and body, JetBrains Mono for anything numeric.
+  Imported once at the top of `site.css`, not linked from four `<head>`s.
+- Warm cream and pink, taken from the birthday theme, so the front door looks
+  related to what is behind it. Full dark counterpart.
+- The motif is the product: dotted three-part numbers in mono with the
+  separators in accent (`.vnum`, `.vnum .dot`). Section headings get their own
+  version tags from a CSS counter on `h2::before`, so the numbering cannot drift
+  from the markup.
+- The landing hero computes the site's own version number from its 2026-05-01
+  launch date (`assets/site.js`). It demonstrates the idea rather than
+  describing it, and stays true without maintenance.
+
+Keep new spine pages inside this system. If chrome needs to recede, it is
+because a theme preview sits next to it — that is what `--surface-sunk` and the
+card borders are for, not a reason to drain the colour out again.
 
 Two duplications in this layer are deliberate:
 
