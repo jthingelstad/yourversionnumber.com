@@ -49,9 +49,9 @@ async function validateEdition({ htmlPath, scriptPath, themesDirectory, privateQ
 }
 
 await validateEdition({
-  htmlPath: "index.html",
-  scriptPath: "assets/app.js",
-  themesDirectory: "themes",
+  htmlPath: "birthday/index.html",
+  scriptPath: "birthday/assets/app.js",
+  themesDirectory: "birthday/themes",
   privateQuery: "?p=",
 });
 await validateEdition({
@@ -60,6 +60,35 @@ await validateEdition({
   themesDirectory: "work/themes",
   privateQuery: "?j=",
 });
+
+// Spine pages: neutral chrome, no theme manifest, but the same privacy shim
+// (kept inline on every page so it cannot half-load ahead of the embed) and the
+// shared nav that ties the site together.
+for (const spinePath of ["index.html", "about/index.html", "themes/index.html"]) {
+  const html = await readFile(resolve(repoRoot, spinePath), "utf8");
+  for (const required of [
+    "tinylytics.app/collector/",
+    "sanitizeCollectorUrl",
+    "['url', 'referrer']",
+    'class="site-nav__brand"',
+    '<link rel="stylesheet" href="/assets/site.css">',
+    'type="application/ld+json"',
+  ]) {
+    if (!html.includes(required)) failures.push(`${spinePath}: missing ${required}`);
+  }
+  for (const dest of ["/birthday/", "/work/", "/themes/", "/about/"]) {
+    if (!html.includes(`href="${dest}"`)) failures.push(`${spinePath}: no link to ${dest}`);
+  }
+}
+
+// Every theme in both manifests needs gallery copy, or its card renders bare.
+for (const scriptPath of ["birthday/assets/app.js", "work/assets/app.js"]) {
+  const script = await readFile(resolve(repoRoot, scriptPath), "utf8");
+  const manifest = script.match(/const THEMES = \[([\s\S]*?)\n\];/)?.[1] ?? "";
+  const names = [...manifest.matchAll(/name:\s*'([^']+)'/g)].length;
+  const blurbs = [...manifest.matchAll(/blurb:\s*'/g)].length;
+  if (names !== blurbs) failures.push(`${scriptPath}: ${names} themes but ${blurbs} blurbs`);
+}
 
 if (failures.length > 0) {
   failures.forEach((failure) => console.error(failure));

@@ -1,29 +1,54 @@
 const THEMES = [
-  { name: 'dark',       label: 'Dark',       kind: 'dark',  animate: false },
-  { name: 'family',     label: 'Family',     kind: 'light', animate: false },
-  { name: 'pastel',     label: 'Pastel',     kind: 'light', animate: false },
-  { name: 'birthday',   label: 'Birthday',   kind: 'fun',   animate: false },
-  { name: 'nature',     label: 'Nature',     kind: 'light', animate: false },
-  { name: 'ocean',      label: 'Ocean',      kind: 'dark',  animate: false },
-  { name: 'galaxy',     label: 'Galaxy',     kind: 'dark',  animate: true  },
-  { name: 'zen',        label: 'Zen',        kind: 'light', animate: false },
-  { name: 'weather',    label: 'Weather',    kind: 'light', animate: false },
-  { name: 'polaroid',   label: 'Polaroid',   kind: 'light', animate: false },
-  { name: 'tarot',      label: 'Tarot',      kind: 'light', animate: false },
-  { name: 'newspaper',  label: 'Newspaper',  kind: 'light', animate: false },
-  { name: 'subway',     label: 'Subway',     kind: 'dark',  animate: false },
-  { name: 'receipt',    label: 'Receipt',    kind: 'light', animate: false },
-  { name: 'steampunk',  label: 'Steampunk',  kind: 'dark',  animate: false },
-  { name: 'brutalist',  label: 'Brutalist',  kind: 'light', animate: false },
-  { name: 'comic',      label: 'Comic',      kind: 'fun',   animate: false },
-  { name: 'memphis',    label: 'Memphis',    kind: 'fun',   animate: false },
-  { name: 'vinyl',      label: 'Vinyl',      kind: 'fun',   animate: true  },
-  { name: 'terminal',   label: 'Terminal',   kind: 'retro', animate: true  },
-  { name: 'arcade',     label: 'Arcade',     kind: 'retro', animate: true  },
-  { name: 'vaporwave',  label: 'Vaporwave',  kind: 'retro', animate: true  },
-  { name: 'y2k',        label: 'Y2K',        kind: 'retro', animate: true  },
-  { name: 'pixel',      label: 'Pixel',      kind: 'retro', animate: true  },
-  { name: 'gameboy',    label: 'Gameboy',    kind: 'retro', animate: true  },
+  { name: 'dark',       label: 'Dark',       kind: 'dark',  animate: false,
+    blurb: 'Minimalist dark mode, violet accents, nothing shouting. The one to pick when the number is the point.' },
+  { name: 'family',     label: 'Family',     kind: 'light', animate: false,
+    blurb: 'Warm cream and handwritten Caveat. Built for a page with the whole household on it.' },
+  { name: 'pastel',     label: 'Pastel',     kind: 'light', animate: false,
+    blurb: 'A soft gradient haze with pastel cards floating on top. Quiet and a little dreamy.' },
+  { name: 'birthday',   label: 'Birthday',   kind: 'fun',   animate: false,
+    blurb: 'Confetti, balloons and party-hat pink. The default, and unapologetic about it.' },
+  { name: 'nature',     label: 'Nature',     kind: 'light', animate: false,
+    blurb: 'Leaves scattered across linen, set in an earthy serif. Drifts gently in the background.' },
+  { name: 'ocean',      label: 'Ocean',      kind: 'dark',  animate: false,
+    blurb: 'Wavy gradients with a small shoreline wave rolling along the bottom.' },
+  { name: 'galaxy',     label: 'Galaxy',     kind: 'dark',  animate: true,
+    blurb: 'Deep-space gradient with neon numerals that glow like a distant signal.' },
+  { name: 'zen',        label: 'Zen',        kind: 'light', animate: false,
+    blurb: 'Quiet cream, generous space, one vermillion first-letter doing all the work.' },
+  { name: 'weather',    label: 'Weather',    kind: 'light', animate: false,
+    blurb: 'A sky-blue forecast card that gives every person their own sun or cloud.' },
+  { name: 'polaroid',   label: 'Polaroid',   kind: 'light', animate: false,
+    blurb: 'Instant photos taped to the page, each one tilted a degree or two off true.' },
+  { name: 'tarot',      label: 'Tarot',      kind: 'light', animate: false,
+    blurb: 'Purple and stars, with the Fool, the Priestess and the Empress dealt across the table.' },
+  { name: 'newspaper',  label: 'Newspaper',  kind: 'light', animate: false,
+    blurb: 'Broadsheet typography and section rules. Your age, above the fold.' },
+  { name: 'subway',     label: 'Subway',     kind: 'dark',  animate: false,
+    blurb: 'A black transit map where every person gets their own coloured route bullet.' },
+  { name: 'receipt',    label: 'Receipt',    kind: 'light', animate: false,
+    blurb: 'Thermal-printer monospace, QTY 1, thank you for your business.' },
+  { name: 'steampunk',  label: 'Steampunk',  kind: 'dark',  animate: false,
+    blurb: 'A sepia ledger of gears and cogs, as though age were an engineering concern.' },
+  { name: 'brutalist',  label: 'Brutalist',  kind: 'light', animate: false,
+    blurb: 'Yellow, red and black, type set far too large. Refuses to be tasteful.' },
+  { name: 'comic',      label: 'Comic',      kind: 'fun',   animate: false,
+    blurb: 'Comic panels with POW, ZAP and BOOM stickers slapped over the numbers.' },
+  { name: 'memphis',    label: 'Memphis',    kind: 'fun',   animate: false,
+    blurb: 'Eighties squiggles, triangles and dots in every direction at once.' },
+  { name: 'vinyl',      label: 'Vinyl',      kind: 'fun',   animate: true,
+    blurb: 'Records spinning at 33⅓, one per person, forever mid-side-A.' },
+  { name: 'terminal',   label: 'Terminal',   kind: 'retro', animate: true,
+    blurb: 'Green on black at a blinking prompt. Your age as command output.' },
+  { name: 'arcade',     label: 'Arcade',     kind: 'retro', animate: true,
+    blurb: 'A pixel-fonted CRT cabinet where your birthday is the hi-score table.' },
+  { name: 'vaporwave',  label: 'Vaporwave',  kind: 'retro', animate: true,
+    blurb: 'Pink and cyan grid running to a palm-tree sunset. Aesthetic.' },
+  { name: 'y2k',        label: 'Y2K',        kind: 'retro', animate: true,
+    blurb: 'Frosted glass, chrome and blur, straight out of a 2001 media player.' },
+  { name: 'pixel',      label: 'Pixel',      kind: 'retro', animate: true,
+    blurb: 'Eight-bit type on a dark green field. Small, sharp, nostalgic.' },
+  { name: 'gameboy',    label: 'Gameboy',    kind: 'retro', animate: true,
+    blurb: 'The DMG palette and a cartridge silhouette. Four shades of green is plenty.' },
 ];
 const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
@@ -627,8 +652,15 @@ setTimeout(() => trackEvent('theme.viewed', state.theme), 0);
 // First-visit nudge: pop the About dialog once so new visitors understand the
 // MAJOR.MINOR.PATCH framing. A single localStorage flag is the only persisted
 // state on the site — no PII, no birthdays, no theme/people memory.
+// The theme gallery embeds this page 42 times over. An auto-opening modal in
+// every frame would bury the previews it exists to show, so the nudge is for
+// top-level visits only.
+const isFramed = (() => {
+  try { return window.top !== window.self; } catch (_) { return true; }
+})();
+
 try {
-  if (!localStorage.getItem('yvn-about-seen')) {
+  if (!isFramed && !localStorage.getItem('yvn-about-seen')) {
     localStorage.setItem('yvn-about-seen', '1');
     // Wait for two animation frames so the page paints once before the modal
     // pops. requestAnimationFrame fires reliably even where short-delay

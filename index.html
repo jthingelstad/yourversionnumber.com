@@ -4,28 +4,43 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Your Version Number</title>
-<meta name="description" content="How old are you, in semver? MAJOR.MINOR.PATCH = decade · year-in-decade · days since your last birthday.">
+<meta name="description" content="How old are you, in semver? Your age as MAJOR.MINOR.PATCH — decade, year-in-decade, days since your last birthday.">
 <link rel="canonical" href="https://yourversionnumber.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Your Version Number">
 <meta property="og:title" content="Your Version Number">
-<meta property="og:description" content="How old are you, in semver? MAJOR.MINOR.PATCH = decade · year-in-decade · days since your last birthday.">
+<meta property="og:description" content="How old are you, in semver? Your age as MAJOR.MINOR.PATCH — decade, year-in-decade, days since your last birthday.">
 <meta property="og:url" content="https://yourversionnumber.com/">
-<meta property="og:image" content="https://yourversionnumber.com/og-image.png">
+<meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A version number — 3.6.0 — calculated from a birthday, surrounded by confetti.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Your Version Number">
-<meta name="twitter:description" content="How old are you, in semver? MAJOR.MINOR.PATCH = decade · year-in-decade · days since your last birthday.">
-<meta name="twitter:image" content="https://yourversionnumber.com/og-image.png">
-<meta name="theme-color" content="#fff8e7">
-<link rel="stylesheet" href="assets/base.css">
-<link id="theme-css" rel="stylesheet">
+<meta name="twitter:description" content="How old are you, in semver? Your age as MAJOR.MINOR.PATCH — decade, year-in-decade, days since your last birthday.">
+<meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<link rel="stylesheet" href="/assets/site.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Your Version Number",
+  "url": "https://yourversionnumber.com/",
+  "description": "Your age as a semantic version number. MAJOR.MINOR.PATCH = decade, year-in-decade, days since your last birthday.",
+  "author": {
+    "@type": "Person",
+    "name": "Jamie Thingelstad",
+    "url": "https://www.thingelstad.com"
+  },
+  "hasPart": [
+    { "@type": "WebApplication", "name": "Birthday Edition", "url": "https://yourversionnumber.com/birthday/", "applicationCategory": "UtilityApplication" },
+    { "@type": "WebApplication", "name": "Work Edition", "url": "https://yourversionnumber.com/work/", "applicationCategory": "UtilityApplication" }
+  ]
+}
+</script>
 <script>
 // Privacy: tinylytics' embed sends window.location.href (the full URL, with any
-// ?p= dates in the query string) and the full referrer to its collector.
+// ?p= or ?j= dates in the query string) and the full referrer to its collector.
 // sanitizeCollectorUrl reduces both to origin + path before the request fires:
 // analytics still records which page was viewed and where the visitor came
 // from, while the dates in the query string never leave the browser.
@@ -62,47 +77,51 @@
   };
 })();
 </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Your Version Number",
-  "url": "https://yourversionnumber.com/",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Any (web browser)",
-  "browserRequirements": "Requires JavaScript",
-  "isAccessibleForFree": true,
-  "description": "How old are you, in semver? MAJOR.MINOR.PATCH = decade, year-in-decade, days since your last birthday.",
-  "author": {
-    "@type": "Person",
-    "name": "Jamie Thingelstad",
-    "url": "https://www.thingelstad.com"
-  },
-  "sameAs": "https://github.com/jthingelstad/yourversionnumber.com"
-}
-</script>
 <script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
 </head>
 <body>
-<main id="app">
-  <!-- Static first paint. Gives crawlers and no-JS visitors real content; app.js
-       clears #app and re-renders the live version on load. -->
-  <header class="site-header">
-    <h1 class="site-title">Your Version Number</h1>
-  </header>
-  <p class="intro">A person’s version number is their age in <code>MAJOR.MINOR.PATCH</code> &mdash; decade, year-in-decade, days since their last birthday. Add a birthday to begin.</p>
-  <noscript>
-    <p class="intro">This page needs JavaScript to do the date math. All of it runs in your browser: there is no server and no database, and birthdays live only in the URL.</p>
-    <p class="intro">To work one out by hand: <code>MAJOR</code> is the decade of your age, <code>MINOR</code> is the year within that decade, and <code>PATCH</code> is the number of days since your last birthday. Someone aged 52 years and 113 days is <code>5.2.113</code>. The day you turn 53, you ship <code>5.3.0</code>.</p>
-    <p class="intro">A sibling page, <a href="/work/">Your Version Number: Work Edition</a>, applies the same idea to a job: years of tenure, quarter within the tenure year, and business days into that quarter.</p>
-  </noscript>
+<nav class="site-nav">
+  <div class="wrap site-nav__inner">
+    <a class="site-nav__brand" href="/" aria-current="page">Your Version Number</a>
+    <a href="/birthday/">Birthday</a>
+    <a href="/work/">Work</a>
+    <a href="/themes/">Themes</a>
+    <a href="/about/">About</a>
+  </div>
+</nav>
+<main class="wrap">
+  <h1>How old are you, in semver?</h1>
+  <p class="lede">Software gets a version number. People should too.</p>
+
+  <p>Software is versioned <code>MAJOR.MINOR.PATCH</code>. A major bump signals an incompatible change. Minor bumps add features but stay backwards-compatible. Patches are small fixes. People work the same way, so a person&rsquo;s version number is their age written the same way: <code>MAJOR</code> is your decade, <code>MINOR</code> is your age inside that decade, and <code>PATCH</code> is the days since your most recent birthday.</p>
+
+  <p>Someone who is 46 years old and 52 days past their birthday is on <code>4.6.52</code>. Tomorrow they ship <code>4.6.53</code>. On their birthday, <code>4.7.0</code>.</p>
+
+  <h2>Two editions</h2>
+  <ul class="editions">
+    <li><a class="edition" href="/birthday/">
+      <span class="edition__version">4.6.52</span>
+      <strong>Birthday Edition</strong>
+      <p>The original. Your age, from your birthday. Add as many people as you like &mdash; the whole family fits on one page.</p>
+    </a></li>
+    <li><a class="edition" href="/work/">
+      <span class="edition__version">3.2.40</span>
+      <strong>Work Edition&trade;</strong>
+      <p>The same idea, applied to a job: years of tenure, quarter within the tenure year, and business days into that quarter. Weekends don&rsquo;t tick.</p>
+    </a></li>
+  </ul>
+
+  <h2>The URL is the whole thing</h2>
+  <p>There is no account, no server, and no database. Everything you enter lives in the URL and nowhere else, which means a bookmark <em>is</em> your saved view, and sharing the link shares exactly what you see. It also means anyone with the link can read the dates in it, so don&rsquo;t put anything sensitive in there. More on how that works in <a href="/about/">About</a>.</p>
+
+  <h2>Forty-two themes</h2>
+  <p>Every view can be dressed up: a thermal receipt, a subway map, a spinning record, a Gameboy screen, a stock ticker, an out-of-office auto-reply. Browse them all in the <a href="/themes/">theme gallery</a>, or add your own &mdash; a theme is a single CSS file and a pull request.</p>
 </main>
-<!-- Static slots for Tinylytics widgets. They must exist in the DOM at script load
-     time because Tinylytics scans for them once and never re-scans. app.js relocates
-     them into the footer on each render. -->
-<div id="tly-slots" hidden>
-  <span id="hits-span" class="tinylytics_hits" data-path="/">&mdash;</span>
-</div>
-<script type="module" src="assets/app.js"></script>
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a> — new themes welcome via pull request. Nothing you type here is stored anywhere; see <a href="/about/">About</a>.</p>
+    <p><span id="hits-span" class="tinylytics_hits" data-path="/">—</span> visits.</p>
+  </div>
+</footer>
 </body>
 </html>

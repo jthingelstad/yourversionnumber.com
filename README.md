@@ -1,16 +1,30 @@
 # yourversionnumber.com
 
-A bookmarkable web page that shows people's "version numbers" — their age expressed as `MAJOR.MINOR.PATCH` (decade . year-in-decade . days since their last birthday). Inspired by [Jamie Thingelstad's 2018 post](https://www.thingelstad.com/2018/02/24/your-version-number.html).
+A small static site that shows people's "version numbers" — their age expressed as `MAJOR.MINOR.PATCH` (decade . year-in-decade . days since their last birthday). Inspired by [Jamie Thingelstad's 2018 post](https://www.thingelstad.com/2018/02/24/your-version-number.html).
+
+## Structure
+
+Five pages. The three spine pages share one neutral stylesheet and are not themed; the two editions are single-page apps that 42 stylesheets fight over.
+
+| Path | What it is |
+| --- | --- |
+| `/` | Landing page. Explains the concept, links to everything else. |
+| `/birthday/` | Birthday edition. The original app. |
+| `/work/` | Work Edition™. |
+| `/themes/` | Theme gallery — live previews of all 42 themes. |
+| `/about/` | The origin, the math, the privacy model, how to contribute. |
+
+The birthday edition lived at `/` until September 2026. Moving it to `/birthday/` freed the front door for a real landing page and broke every old `/?p=...` bookmark, which was a deliberate trade.
 
 ## URL format
 
 The URL is the source of truth. Bookmark a URL, get the same view back later.
 
 ```
-https://yourversionnumber.com/?theme=family&p=Jamie:1974-01-15&p=Sara:1976-03-20&p=:2008-09-04
+https://yourversionnumber.com/birthday/?theme=family&p=Jamie:1974-01-15&p=Sara:1976-03-20&p=:2008-09-04
 ```
 
-- `theme` — name of a stylesheet in `themes/`. Optional; when omitted, the page renders with the `birthday` theme so the first paint matches the og-image people see in link previews. The "🎲 Surprise me" option in the picker still rolls a random theme on demand.
+- `theme` — name of a stylesheet in `birthday/themes/`. Optional; when omitted, the page renders with the `birthday` theme so the first paint matches the og-image people see in link previews. The "🎲 Surprise me" option in the picker still rolls a random theme on demand.
 - `p` — repeatable. `Name:YYYY-MM-DD`, or just `YYYY-MM-DD` for an unnamed entry. (The old `p=:YYYY-MM-DD` form is still parsed, for old bookmarks.) Future dates are skipped with a console warning so the math never goes negative; malformed entries the same.
 
 ## Themes
@@ -45,12 +59,13 @@ Twenty-five ship for the birthday edition. Each is a standalone stylesheet in `t
 
 Themes paint the **display**: header, person rows, footer, empty-state CTA. They do not style the About or Edit dialogs — those are app chrome with a neutral look in `assets/base.css` that follows the OS light/dark preference. This keeps themes simple and the dialogs consistent on every theme.
 
-To add one: drop a new file at `themes/<name>.css`, add an entry to the `THEMES` array in `assets/app.js`, and reference it as `?theme=<name>`. Each entry has:
+To add one: drop a new file at `birthday/themes/<name>.css`, add an entry to the `THEMES` array in `birthday/assets/app.js`, and reference it as `?theme=<name>`. Each entry has:
 
 - `name` — filename (without `.css`).
 - `label` — human-readable name shown in the picker.
 - `kind` — `light`, `dark`, `fun`, or `retro`. Drives the `<optgroup>` it appears under.
 - `animate` — `true` to opt the theme into the count-up animation on initial render. Calmer themes should leave this `false`.
+- `blurb` — one sentence of gallery copy. `/themes/` builds its cards from this array at runtime, so a theme without a blurb renders bare; CI fails on the mismatch.
 
 Hooks available for theme-side polish, with no JS cost when ignored:
 
@@ -69,7 +84,7 @@ There's a sibling page at [`/work/`](https://yourversionnumber.com/work/) — _Y
 https://yourversionnumber.com/work/?theme=boardroom&j=Engineer:2024-01-15
 ```
 
-- `theme` — name of a stylesheet in `work/themes/`. Independent set from the root themes.
+- `theme` — name of a stylesheet in `work/themes/`. Independent set from the birthday themes.
 - `j` — repeatable. `Title:YYYY-MM-DD`, or just `YYYY-MM-DD` for a nameless entry.
 
 Seventeen ship for the work edition:

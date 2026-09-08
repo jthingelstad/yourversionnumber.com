@@ -1,0 +1,257 @@
+/* Neutral site chrome.
+ *
+ * The two editions are themed: 42 stylesheets own their own look, and site
+ * navigation would fight every one of them. So the spine — landing, about,
+ * theme gallery — lives in this second, unthemed layer instead. The tokens
+ * below are lifted from the .app-dialog rules in each edition's base.css so
+ * the chrome reads as one system, light and dark. */
+
+:root {
+  --site-bg: #faf9f7;
+  --site-surface: #fff;
+  --site-fg: #111;
+  --site-muted: #666;
+  --site-rule: #e4e2de;
+  --site-code: #ececea;
+  --site-link: #2b6cb0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --site-bg: #131315;
+    --site-surface: #1c1c1e;
+    --site-fg: #f2f2f2;
+    --site-muted: #aaa;
+    --site-rule: #2f2f33;
+    --site-code: #2a2a2d;
+    --site-link: #6ea8ff;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--site-bg);
+  color: var(--site-fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Header ------------------------------------------------------------------ */
+
+.site-nav {
+  border-bottom: 1px solid var(--site-rule);
+  background: var(--site-surface);
+}
+
+.site-nav__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.25rem;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+.site-nav__brand {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--site-fg);
+  margin-right: auto;
+}
+
+.site-nav a:not(.site-nav__brand) {
+  color: var(--site-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.site-nav a:not(.site-nav__brand):hover,
+.site-nav a[aria-current="page"] {
+  color: var(--site-fg);
+}
+
+/* Prose ------------------------------------------------------------------- */
+
+main.wrap {
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+  margin: 2.25rem 0 0.6rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+  margin: 0 0 0.3rem;
+}
+
+p {
+  margin: 0.85rem 0;
+}
+
+.lede {
+  font-size: 1.15rem;
+  color: var(--site-muted);
+  margin-bottom: 1.75rem;
+}
+
+a {
+  color: var(--site-link);
+}
+
+code {
+  background: var(--site-code);
+  padding: 0.05em 0.35em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Edition cards ----------------------------------------------------------- */
+
+.editions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.edition {
+  display: block;
+  padding: 1.25rem;
+  background: var(--site-surface);
+  border: 1px solid var(--site-rule);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.edition:hover {
+  border-color: var(--site-muted);
+  transform: translateY(-2px);
+}
+
+.edition__version {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 1.9rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.edition p {
+  margin: 0.35rem 0 0;
+  color: var(--site-muted);
+  font-size: 0.95rem;
+}
+
+/* Theme gallery ----------------------------------------------------------- */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.theme-card {
+  border: 1px solid var(--site-rule);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--site-surface);
+  scroll-margin-top: 1.5rem;
+}
+
+/* Previews render the edition at desktop width and scale the whole frame down
+ * to fit the card, so the version numbers stay visible. A card-width iframe
+ * would show the mobile layout cropped to its header, which is all chrome and
+ * no product. gallery.js sets --preview-scale from the measured card width. */
+.theme-card__preview {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1000 / 620;
+  background: var(--site-bg);
+}
+
+.theme-card__preview iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1000px;
+  height: 620px;
+  border: 0;
+  transform-origin: top left;
+  transform: scale(var(--preview-scale, 0.32));
+}
+
+.theme-card__body {
+  padding: 0.9rem 1.1rem 1.1rem;
+  border-top: 1px solid var(--site-rule);
+}
+
+.theme-card__body p {
+  margin: 0.3rem 0 0.6rem;
+  color: var(--site-muted);
+  font-size: 0.95rem;
+}
+
+.theme-card__kind {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--site-muted);
+}
+
+/* Footer ------------------------------------------------------------------ */
+
+.site-foot {
+  border-top: 1px solid var(--site-rule);
+  color: var(--site-muted);
+  font-size: 0.9rem;
+}
+
+.site-foot__inner {
+  padding-top: 1.5rem;
+  padding-bottom: 2.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edition {
+    transition: none;
+  }
+  .edition:hover {
+    transform: none;
+  }
+}

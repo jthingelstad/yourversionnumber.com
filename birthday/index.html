@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Version Number</title>
+<meta name="description" content="How old are you, in semver? MAJOR.MINOR.PATCH = decade · year-in-decade · days since your last birthday.">
+<link rel="canonical" href="https://yourversionnumber.com/birthday/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Your Version Number">
+<meta property="og:title" content="Your Version Number">
+<meta property="og:description" content="How old are you, in semver? MAJOR.MINOR.PATCH = decade · year-in-decade · days since your last birthday.">
+<meta property="og:url" content="https://yourversionnumber.com/birthday/">
+<meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A version number — 3.6.0 — calculated from a birthday, surrounded by confetti.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your Version Number">
+<meta name="twitter:description" content="How old are you, in semver? MAJOR.MINOR.PATCH = decade · year-in-decade · days since your last birthday.">
+<meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<meta name="theme-color" content="#fff8e7">
+<link rel="stylesheet" href="assets/base.css">
+<link id="theme-css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
+<script>
+// Privacy: tinylytics' embed sends window.location.href (the full URL, with any
+// ?p= dates in the query string) and the full referrer to its collector.
+// sanitizeCollectorUrl reduces both to origin + path before the request fires:
+// analytics still records which page was viewed and where the visitor came
+// from, while the dates in the query string never leave the browser.
+(function () {
+  function pathOnly(value) {
+    try {
+      var parsed = new URL(value, location.origin);
+      return parsed.origin + parsed.pathname;
+    } catch (e) {
+      return '';
+    }
+  }
+  function sanitizeCollectorUrl(input) {
+    var u = new URL(input, location.origin);
+    ['url', 'referrer'].forEach(function (key) {
+      var raw = u.searchParams.get(key);
+      // An absent or empty referrer means "direct". Leave it alone rather than
+      // resolving '' against location and inventing a self-referral.
+      if (!raw) return;
+      var safe = pathOnly(raw);
+      if (safe) u.searchParams.set(key, safe);
+      else u.searchParams.delete(key);
+    });
+    return u.toString();
+  }
+  var origFetch = window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    try {
+      if (typeof input === 'string' && input.indexOf('tinylytics.app/collector/') !== -1) {
+        input = sanitizeCollectorUrl(input);
+      }
+    } catch (e) { /* leave fetch input as-is */ }
+    return origFetch(input, init);
+  };
+})();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Your Version Number",
+  "url": "https://yourversionnumber.com/birthday/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any (web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "description": "How old are you, in semver? MAJOR.MINOR.PATCH = decade, year-in-decade, days since your last birthday.",
+  "author": {
+    "@type": "Person",
+    "name": "Jamie Thingelstad",
+    "url": "https://www.thingelstad.com"
+  },
+  "sameAs": "https://github.com/jthingelstad/yourversionnumber.com"
+}
+</script>
+<script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
+</head>
+<body>
+<main id="app">
+  <!-- Static first paint. Gives crawlers and no-JS visitors real content; app.js
+       clears #app and re-renders the live version on load. -->
+  <header class="site-header">
+    <h1 class="site-title">Your Version Number</h1>
+  </header>
+  <p class="intro">A person’s version number is their age in <code>MAJOR.MINOR.PATCH</code> &mdash; decade, year-in-decade, days since their last birthday. Add a birthday to begin.</p>
+  <noscript>
+    <p class="intro">This page needs JavaScript to do the date math. All of it runs in your browser: there is no server and no database, and birthdays live only in the URL.</p>
+    <p class="intro">To work one out by hand: <code>MAJOR</code> is the decade of your age, <code>MINOR</code> is the year within that decade, and <code>PATCH</code> is the number of days since your last birthday. Someone aged 52 years and 113 days is <code>5.2.113</code>. The day you turn 53, you ship <code>5.3.0</code>.</p>
+    <p class="intro">A sibling page, <a href="/work/">Your Version Number: Work Edition</a>, applies the same idea to a job: years of tenure, quarter within the tenure year, and business days into that quarter.</p>
+  </noscript>
+</main>
+<!-- Static slots for Tinylytics widgets. They must exist in the DOM at script load
+     time because Tinylytics scans for them once and never re-scans. app.js relocates
+     them into the footer on each render. -->
+<div id="tly-slots" hidden>
+  <span id="hits-span" class="tinylytics_hits" data-path="/birthday/">&mdash;</span>
+</div>
+<script type="module" src="assets/app.js"></script>
+</body>
+</html>

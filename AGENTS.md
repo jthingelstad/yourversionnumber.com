@@ -5,7 +5,7 @@ A bookmarkable static page that displays people's "version numbers" (`MAJOR.MINO
 ## What it is
 
 - Single-page static site, **two editions**:
-  - **Birthday edition** at `/` — `MAJOR.MINOR.PATCH` is decade / year-in-decade / days since last birthday. People in URL via `?p=Name:YYYY-MM-DD`.
+  - **Birthday edition** at `/birthday/` — `MAJOR.MINOR.PATCH` is decade / year-in-decade / days since last birthday. People in URL via `?p=Name:YYYY-MM-DD`. Lived at `/` until September 2026; old `/?p=...` bookmarks were deliberately allowed to break.
   - **Work edition** at `/work/` — `YEARS.QUARTERS.DAYS` (business days only). Roles in URL via `?j=Title:YYYY-MM-DD`.
 - **No build step**, no framework, no bundler.
 - Deployed via GitHub Pages from `main` / repo root.
@@ -14,11 +14,18 @@ A bookmarkable static page that displays people's "version numbers" (`MAJOR.MINO
 ## Layout
 
 ```
-index.html                 birthday edition shell
+index.html                 landing page — the front door, links to both editions
+about/index.html           concept, math, privacy model, contributing
+themes/index.html          theme gallery — live previews of all 42 themes
 assets/
-  app.js                   birthday behavior — parsing, render, dialogs, animation
-  base.css                 reset, layout, neutral dialog & theme-fx styles
-themes/<name>.css          one standalone stylesheet per birthday theme
+  site.css                 neutral site chrome shared by the three spine pages
+  gallery.js               builds gallery cards from each edition's THEMES manifest
+
+birthday/
+  index.html               birthday edition shell
+  assets/app.js            birthday behavior — parsing, render, dialogs, animation
+  assets/base.css          reset, layout, neutral dialog & theme-fx styles
+  themes/<name>.css        one standalone stylesheet per birthday theme
 
 work/
   index.html               work edition shell
@@ -32,6 +39,29 @@ CONTRIBUTING.md            theme contributor guide
 ```
 
 The two `app.js` files are deliberately parallel. Keep their logic in sync when a change makes sense for both editions.
+
+## The spine
+
+`/`, `/about/` and `/themes/` are the unthemed layer. They share `assets/site.css`,
+whose tokens are lifted from the `.app-dialog` rules in each edition's `base.css`
+so the two layers read as one system in light and dark. Site nav lives here and
+only here — putting it inside a themed edition would mean 42 stylesheets each
+deciding what the nav looks like.
+
+Two duplications in this layer are deliberate:
+
+- **The analytics privacy shim is inlined in all five HTML files.** It must run
+  before the tinylytics embed, and inline script cannot half-load. Moved to an
+  external file it could 404 while the embed still fires, leaking the dates in
+  the query string. Copies are cheaper than that failure mode. `validate-site.mjs`
+  checks every page still has it.
+- **Nav and footer markup are repeated across the three spine pages.** Removing
+  that would take a build step, which convention 2 rules out; three copies of a
+  rarely-touched nav is the smaller cost. Revisit if the spine outgrows ~6 pages.
+
+The gallery does *not* hardcode theme cards. `assets/gallery.js` scrapes the
+`THEMES` array out of each edition's `app.js` at runtime, so adding a theme stays
+a two-step job. That is why every theme entry needs a `blurb`.
 
 ## Core conventions (do not break these)
 

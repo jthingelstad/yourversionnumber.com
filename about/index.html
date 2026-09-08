@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Your Version Number</title>
+<meta name="description" content="How a person's version number is calculated, where the dates live (only in the URL), and how to contribute a theme.">
+<link rel="canonical" href="https://yourversionnumber.com/about/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Your Version Number">
+<meta property="og:title" content="About — Your Version Number">
+<meta property="og:description" content="How a person's version number is calculated, where the dates live (only in the URL), and how to contribute a theme.">
+<meta property="og:url" content="https://yourversionnumber.com/about/">
+<meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About — Your Version Number">
+<meta name="twitter:description" content="How a person's version number is calculated, where the dates live (only in the URL), and how to contribute a theme.">
+<meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Your Version Number",
+  "url": "https://yourversionnumber.com/about/",
+  "description": "How a person's version number is calculated, where the data lives, and how to contribute a theme."
+}
+</script>
+<script>
+// Privacy: tinylytics' embed sends window.location.href (the full URL, with any
+// ?p= or ?j= dates in the query string) and the full referrer to its collector.
+// sanitizeCollectorUrl reduces both to origin + path before the request fires:
+// analytics still records which page was viewed and where the visitor came
+// from, while the dates in the query string never leave the browser.
+(function () {
+  function pathOnly(value) {
+    try {
+      var parsed = new URL(value, location.origin);
+      return parsed.origin + parsed.pathname;
+    } catch (e) {
+      return '';
+    }
+  }
+  function sanitizeCollectorUrl(input) {
+    var u = new URL(input, location.origin);
+    ['url', 'referrer'].forEach(function (key) {
+      var raw = u.searchParams.get(key);
+      // An absent or empty referrer means "direct". Leave it alone rather than
+      // resolving '' against location and inventing a self-referral.
+      if (!raw) return;
+      var safe = pathOnly(raw);
+      if (safe) u.searchParams.set(key, safe);
+      else u.searchParams.delete(key);
+    });
+    return u.toString();
+  }
+  var origFetch = window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    try {
+      if (typeof input === 'string' && input.indexOf('tinylytics.app/collector/') !== -1) {
+        input = sanitizeCollectorUrl(input);
+      }
+    } catch (e) { /* leave fetch input as-is */ }
+    return origFetch(input, init);
+  };
+})();
+</script>
+<script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="wrap site-nav__inner">
+    <a class="site-nav__brand" href="/">Your Version Number</a>
+    <a href="/birthday/">Birthday</a>
+    <a href="/work/">Work</a>
+    <a href="/themes/">Themes</a>
+    <a href="/about/" aria-current="page">About</a>
+  </div>
+</nav>
+<main class="wrap">
+  <h1>About</h1>
+  <p class="lede">Where this came from, how the math works, and what happens to your data. (Nothing happens to your data.)</p>
+
+  <h2>Where it came from</h2>
+  <p>In February 2018 Jamie Thingelstad wrote a post called <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">&ldquo;Your Version Number&rdquo;</a>, borrowing an idea from his friend David Hussman: track your age the way software tracks releases. He was on <code>4.6.52</code> at the time. This site is that post, made clickable.</p>
+
+  <h2>The birthday math</h2>
+  <p>Take your age in whole years. <code>MAJOR</code> is that age divided by ten and rounded down &mdash; your decade. <code>MINOR</code> is the remainder &mdash; your year inside that decade. <code>PATCH</code> is the number of days since your most recent birthday.</p>
+  <p>So someone aged 52 years and 113 days is <code>5.2.113</code>. The day they turn 53, they ship <code>5.3.0</code> &mdash; a minor bump, backwards-compatible. At 60 it&rsquo;s <code>6.0.0</code>, a major release.</p>
+  <p>February 29 birthdays get March 1 as their anniversary in non-leap years. Dates in the future are skipped rather than counted backwards.</p>
+
+  <h2>The work math</h2>
+  <p>The <a href="/work/">Work Edition</a> anchors on a start date instead of a birthday. <code>YEARS</code> is completed years of tenure. <code>QUARTERS</code> is which quarter of your current tenure year you&rsquo;re in, counted in three-month steps from your start date rather than from January &mdash; start on February 10 and your Q1 begins May 10. <code>DAYS</code> counts business days into that quarter, so weekends don&rsquo;t move the number.</p>
+
+  <h2>Your dates stay yours</h2>
+  <p>This is a static site. There is no server to send anything to, no database, no account, and no cookie. Every birthday and start date lives in the URL in your address bar and nowhere else. Close the tab and it is gone; bookmark it and it comes back.</p>
+  <p>Visit counts go to <a href="https://tinylytics.app">Tinylytics</a>, a privacy-friendly analytics service. Before any of that leaves your browser, both the page URL and the referrer are trimmed down to origin and path, so the query string carrying your dates is never transmitted. The one thing kept in local storage is a single true/false flag recording whether you have seen this page before.</p>
+  <p>The flip side of putting everything in the URL: anyone you send a link to can read the dates in it, and so can your browser&rsquo;s history sync. It is a fine place for birthdays you&rsquo;d put on a card. It is not a place for anything sensitive.</p>
+
+  <h2>Themes</h2>
+  <p>There are 42 themes across the two editions, and the <a href="/themes/">gallery</a> shows all of them. Each one is a single standalone CSS file with no JavaScript &mdash; a deliberate restriction, because a theme that could run code could also read the birthdays in the URL and phone them home.</p>
+  <p>New themes are genuinely welcome. Add a stylesheet, add one entry to the theme list, open a pull request: <a href="https://github.com/jthingelstad/yourversionnumber.com/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> has the details.</p>
+</main>
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a> — new themes welcome via pull request. Nothing you type here is stored anywhere; see <a href="/about/">About</a>.</p>
+    <p><span id="hits-span" class="tinylytics_hits" data-path="/about/">—</span> visits.</p>
+  </div>
+</footer>
+</body>
+</html>

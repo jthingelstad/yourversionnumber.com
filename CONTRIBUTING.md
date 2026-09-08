@@ -4,13 +4,15 @@ Themes are the easiest way to contribute. Each one is a single CSS file. There's
 
 ## The recipe
 
-1. **Drop a file** at `themes/<your-name>.css`. Pick a short, lowercase, hyphenated name.
-2. **Register it** in `assets/app.js` — add an entry to the `THEMES` array near the top:
+1. **Drop a file** at `birthday/themes/<your-name>.css`. Pick a short, lowercase, hyphenated name.
+2. **Register it** in `birthday/assets/app.js` — add an entry to the `THEMES` array near the top:
    ```js
-   { name: 'your-name', label: 'Your Name', kind: 'light', animate: false },
+   { name: 'your-name', label: 'Your Name', kind: 'light', animate: false,
+     blurb: 'One sentence describing the look. Shown in the theme gallery.' },
    ```
    - `kind` is `light`, `dark`, `fun`, or `retro` — drives which `<optgroup>` it appears under in the picker.
    - `animate: true` opts the theme into the count-up animation on initial page load. Use it for vibrant themes; leave it `false` for calmer ones.
+   - `blurb` is one sentence of copy for the [theme gallery](https://yourversionnumber.com/themes/), which builds its cards from this array. CI fails if a theme has no blurb.
 3. **Open the page** with `npx live-server` and visit `http://localhost:8080/?theme=your-name&p=Jamie:1980-01-01` to see it.
 4. **Open a pull request**.
 
@@ -57,11 +59,11 @@ Each theme is its own world. They don't share variables, they don't extend each 
 - [ ] Footer is readable and the visit counter is visible.
 - [ ] Open Edit and About — the neutral dialogs should still look right against your theme's backdrop.
 - [ ] At narrow widths (~360px) nothing overflows or truncates.
-- [ ] You added the entry to `THEMES` in `assets/app.js` — without it, the picker doesn't list your theme and `?theme=your-name` will fall back to a random pick.
+- [ ] You added the entry to `THEMES` in `birthday/assets/app.js`, including a `blurb` — without it, the picker doesn't list your theme and `?theme=your-name` will fall back to a random pick.
 
 ## Work themes
 
-The `/work/` page has its own independent theme set in `work/themes/` and its own `THEMES` array in `work/assets/app.js`. Same recipe, same `{ name, label, kind, animate }` shape, same off-limits selectors (`.app-dialog*`, `.edit-row*`).
+The `/work/` page has its own independent theme set in `work/themes/` and its own `THEMES` array in `work/assets/app.js`. Same recipe, same `{ name, label, kind, animate, blurb }` shape, same off-limits selectors (`.app-dialog*`, `.edit-row*`).
 
 Extra hooks unique to work mode:
 

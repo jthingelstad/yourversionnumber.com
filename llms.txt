@@ -2,12 +2,15 @@
 
 > A bookmarkable web page that displays a person's "version number" — their age expressed as `MAJOR.MINOR.PATCH` (decade.year-in-decade.days since their last birthday). The URL is the source of truth: bookmark a URL to save the view. Inspired by [Jamie Thingelstad's 2018 post](https://www.thingelstad.com/2018/02/24/your-version-number.html) and Semantic Versioning.
 
-The site is a single-page static app served from GitHub Pages. No build step, no framework, vanilla JavaScript and CSS. Each "theme" is a standalone stylesheet contributors can add via pull request.
+The site is a small static site served from GitHub Pages: a landing page and two single-page editions. No build step, no framework, vanilla JavaScript and CSS. Each "theme" is a standalone stylesheet contributors can add via pull request.
 
 ## Pages
 
-- [Your Version Number](https://yourversionnumber.com/): birthday-based version number. URL state: `?theme=<name>&p=Name:YYYY-MM-DD` (the `p` parameter is repeatable; the name is optional).
-- [Your Version Number: Work Edition](https://yourversionnumber.com/work/): quarter-anchored version number for a job. `MAJOR` is years of tenure, `MINOR` is the quarter within the current tenure year (0–3, 3 calendar months apart from the anniversary), `PATCH` is business days into that quarter. URL state: `?theme=<name>&j=Title:YYYY-MM-DD`.
+- [Home](https://yourversionnumber.com/): landing page. Explains the concept and links to both editions, the theme gallery and the about page. No URL state.
+- [Birthday Edition](https://yourversionnumber.com/birthday/): birthday-based version number. URL state: `?theme=<name>&p=Name:YYYY-MM-DD` (the `p` parameter is repeatable; the name is optional). Moved here from `/` in September 2026; old `/?p=...` bookmarks no longer resolve.
+- [Work Edition](https://yourversionnumber.com/work/): quarter-anchored version number for a job. `MAJOR` is years of tenure, `MINOR` is the quarter within the current tenure year (0–3, 3 calendar months apart from the anniversary), `PATCH` is business days into that quarter. URL state: `?theme=<name>&j=Title:YYYY-MM-DD`.
+- [Theme gallery](https://yourversionnumber.com/themes/): live previews of all 42 themes across both editions, built from each edition's theme manifest at runtime.
+- [About](https://yourversionnumber.com/about/): the origin, the birthday and work math, the privacy model, and how to contribute a theme.
 
 ## Source
 

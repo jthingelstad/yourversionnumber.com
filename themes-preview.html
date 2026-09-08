@@ -252,7 +252,7 @@ let workThemes = [];
 async function init() {
   statusEl.textContent = 'fetching manifests…';
   [birthdayThemes, workThemes] = await Promise.all([
-    fetchManifest('assets/app.js'),
+    fetchManifest('birthday/assets/app.js'),
     fetchManifest('work/assets/app.js'),
   ]);
   document.getElementById('birthday-count').textContent = `${birthdayThemes.length} themes`;
@@ -267,9 +267,9 @@ function renderAll() {
   const wGrid = document.getElementById('work-grid');
   bGrid.innerHTML = '';
   wGrid.innerHTML = '';
-  for (const t of birthdayThemes) bGrid.appendChild(makeCard(t, '/', 'p', r.p));
+  for (const t of birthdayThemes) bGrid.appendChild(makeCard(t, '/birthday/', 'p', r.p));
   for (const t of workThemes)     wGrid.appendChild(makeCard(t, '/work/', 'j', r.j));
-  if (!birthdayThemes.length) bGrid.innerHTML = '<div class="empty">No birthday themes parsed from assets/app.js</div>';
+  if (!birthdayThemes.length) bGrid.innerHTML = '<div class="empty">No birthday themes parsed from birthday/assets/app.js</div>';
   if (!workThemes.length) wGrid.innerHTML = '<div class="empty">No work themes parsed from work/assets/app.js</div>';
 }
 

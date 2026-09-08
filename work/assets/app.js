@@ -1,21 +1,38 @@
 const THEMES = [
-  { name: 'boardroom',   label: 'Boardroom',   kind: 'dark',  animate: true  },
-  { name: 'slack',       label: 'Slack',       kind: 'dark',  animate: false },
-  { name: 'slidedeck',   label: 'Slide Deck',  kind: 'dark',  animate: false },
-  { name: 'earnings',    label: 'Earnings',    kind: 'dark',  animate: true  },
-  { name: 'github',      label: 'GitHub PR',   kind: 'dark',  animate: false },
-  { name: 'whiteboard',  label: 'Whiteboard',  kind: 'light', animate: false },
-  { name: 'inbox',       label: 'Inbox',       kind: 'light', animate: false },
-  { name: 'okr',         label: 'OKR',         kind: 'light', animate: true  },
-  { name: 'cubicle',     label: 'Cubicle',     kind: 'light', animate: false },
-  { name: 'kanban',      label: 'Kanban',      kind: 'light', animate: false },
-  { name: 'standup',     label: 'Standup',     kind: 'light', animate: false },
-  { name: 'invite',      label: 'Invite',      kind: 'light', animate: false },
-  { name: 'confluence',  label: 'Confluence',  kind: 'light', animate: false },
-  { name: 'zoom',        label: 'Zoom',        kind: 'light', animate: false },
-  { name: 'spreadsheet', label: 'Spreadsheet', kind: 'retro', animate: true  },
-  { name: 'pomodoro',    label: 'Pomodoro',    kind: 'fun',   animate: true  },
-  { name: 'ooo',         label: 'OOO',         kind: 'fun',   animate: false },
+  { name: 'boardroom',   label: 'Boardroom',   kind: 'dark',  animate: true,
+    blurb: 'A board-update slide with a KPI rail down the side. ARR, NPS, payback, tenure.' },
+  { name: 'slack',       label: 'Slack',       kind: 'dark',  animate: false,
+    blurb: 'A channel feed where your tenure is the message and the reactions are already in.' },
+  { name: 'slidedeck',   label: 'Slide Deck',  kind: 'dark',  animate: false,
+    blurb: 'A confidential business review slide, three bullets, no further context offered.' },
+  { name: 'earnings',    label: 'Earnings',    kind: 'dark',  animate: true,
+    blurb: 'A live ticker on a black trading screen. Your career, but as a stock.' },
+  { name: 'github',      label: 'GitHub PR',   kind: 'dark',  animate: false,
+    blurb: 'A pull request list, complete with avatars, labels and an Open pill.' },
+  { name: 'whiteboard',  label: 'Whiteboard',  kind: 'light', animate: false,
+    blurb: 'Sticky notes in primary colours, arranged by someone who ran out of wall.' },
+  { name: 'inbox',       label: 'Inbox',       kind: 'light', animate: false,
+    blurb: 'An inbox view where every role is an unread thread you cannot archive.' },
+  { name: 'okr',         label: 'OKR',         kind: 'light', animate: true,
+    blurb: 'A quarterly scorecard with a progress bar and an ON-TRACK pill. It is always on track.' },
+  { name: 'cubicle',     label: 'Cubicle',     kind: 'light', animate: false,
+    blurb: 'A manila-folder corporate newsletter, photocopied one too many times.' },
+  { name: 'kanban',      label: 'Kanban',      kind: 'light', animate: false,
+    blurb: 'Cards sitting in the In Progress column, where they have been for some years.' },
+  { name: 'standup',     label: 'Standup',     kind: 'light', animate: false,
+    blurb: 'Yesterday, today, blockers. The blocker is time.' },
+  { name: 'invite',      label: 'Invite',      kind: 'light', animate: false,
+    blurb: 'A calendar invite you have already accepted, recurring indefinitely.' },
+  { name: 'confluence',  label: 'Confluence',  kind: 'light', animate: false,
+    blurb: 'A wiki page with breadcrumbs, a comment count and no clear owner.' },
+  { name: 'zoom',        label: 'Zoom',        kind: 'light', animate: false,
+    blurb: 'Gallery view tiles, reactions floating up, everyone technically present.' },
+  { name: 'spreadsheet', label: 'Spreadsheet', kind: 'retro', animate: true,
+    blurb: 'A grid with row numbers, because eventually everything becomes a spreadsheet.' },
+  { name: 'pomodoro',    label: 'Pomodoro',    kind: 'fun',   animate: true,
+    blurb: 'A tomato timer mid Deep Work block. Please do not disturb.' },
+  { name: 'ooo',         label: 'OOO',         kind: 'fun',   animate: false,
+    blurb: 'An out-of-office auto-reply, signed by hand. Back never.' },
 ];
 const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
@@ -250,7 +267,7 @@ function render() {
 
   const crossLink = document.createElement('div');
   crossLink.className = 'site-cross-link';
-  crossLink.innerHTML = 'A wholly-owned subsidiary of <a href="/">Your Version Number</a> &mdash; the original birthday-powered semver.';
+  crossLink.innerHTML = 'A wholly-owned subsidiary of <a href="/birthday/">Your Version Number</a> &mdash; the original birthday-powered semver.';
   footer.appendChild(crossLink);
 
   const attribution = document.createElement('div');
@@ -432,7 +449,7 @@ function openAbout() {
           </ul>
           <p>Hired on 2024-01-15? Today you&rsquo;re shipping <code>2.1.15</code>. That&rsquo;s two years of impact, into the second quarter (0-indexed, because we&rsquo;re engineers), fifteen work-days deep. <strong>Ship it.</strong></p>
           <p class="app-dialog__privacy"><strong>Your dates stay yours.</strong> The URL is the only place this site keeps them &mdash; no server, no database, nothing collected anywhere. Bookmark a URL to lock it in; share it to brag.</p>
-          <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. For the birthday version, see <a href="/">Your Version Number</a>.</p>
+          <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. For the birthday version, see <a href="/birthday/">Your Version Number</a>.</p>
         </div>
       </article>
     `;
@@ -640,8 +657,15 @@ setTimeout(() => trackEvent('theme.viewed', state.theme), 0);
 
 // First-visit nudge: pop the About dialog once so new visitors understand the
 // YEARS.QUARTERS.DAYS framing. Single boolean in localStorage — no PII.
+// The theme gallery embeds this page 42 times over. An auto-opening modal in
+// every frame would bury the previews it exists to show, so the nudge is for
+// top-level visits only.
+const isFramed = (() => {
+  try { return window.top !== window.self; } catch (_) { return true; }
+})();
+
 try {
-  if (!localStorage.getItem('yvnw-about-seen')) {
+  if (!isFramed && !localStorage.getItem('yvnw-about-seen')) {
     localStorage.setItem('yvnw-about-seen', '1');
     requestAnimationFrame(() => requestAnimationFrame(openAbout));
   }
