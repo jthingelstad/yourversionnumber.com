@@ -5,3 +5,10 @@ node_modules/
 *.log
 .playwright-mcp/
 design_handoff_theme_refresh/
+
+# Local scratch probes used while building themes — never shipped.
+_t*.html
+_probe*.html
+_sheet_*.html
+_rcpt*.html
+_p1.html
