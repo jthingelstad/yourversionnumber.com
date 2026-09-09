@@ -18,7 +18,7 @@
 
 export const THEMES = [
   // — home: birthday —
-  { name: 'birthday',    label: 'Birthday',    home: 'birthday', animate: false, chime: null,      card: false,
+  { name: 'birthday',    label: 'Birthday',    home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Confetti, balloons and party-hat pink. The default, and unapologetic about it.' },
   { name: 'severe',      label: 'Severe',      home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'Minimalist dark mode, violet accents, nothing shouting. The one to pick when the number is the point.' },

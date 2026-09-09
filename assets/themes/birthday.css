@@ -17,8 +17,6 @@
 body {
   margin: 0;
   background:
-    /* confetti */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'><g><rect x='20' y='30' width='8' height='14' fill='%23ff6fa3' transform='rotate(20 24 37)'/><circle cx='80' cy='50' r='5' fill='%235fb3f7'/><rect x='150' y='40' width='6' height='12' fill='%23ffd54f' transform='rotate(-30 153 46)'/><circle cx='200' cy='80' r='4' fill='%23b66dff'/><rect x='40' y='100' width='10' height='6' fill='%236dd47e' transform='rotate(45 45 103)'/><circle cx='120' cy='130' r='5' fill='%23ff9450'/><rect x='180' y='150' width='8' height='14' fill='%23ff6fa3' transform='rotate(60 184 157)'/><circle cx='60' cy='170' r='4' fill='%23ffd54f'/><rect x='100' y='200' width='6' height='12' fill='%235fb3f7' transform='rotate(-15 103 206)'/><circle cx='160' cy='200' r='5' fill='%23b66dff'/><rect x='220' y='180' width='8' height='6' fill='%236dd47e' transform='rotate(30 224 183)'/></g></svg>"),
     linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
   background-attachment: fixed;
   color: var(--ink);
@@ -48,7 +46,14 @@ body {
 }
 
 .site-title::after {
-  content: " 🎂";
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-left: 0.35em;
+  border-radius: 50% 50% 4px 4px;
+  background: var(--party-purple);
+  box-shadow: 0 -0.28em 0 -0.16em var(--party-pink);
   font-family: -apple-system, sans-serif;
   -webkit-text-fill-color: initial;
 }
@@ -151,10 +156,9 @@ body {
 .version {
   font-family: 'Fredoka', sans-serif;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--party-pink), var(--party-purple));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--party-pink);
+  -webkit-text-stroke: 2px var(--ink);
+  paint-order: stroke fill;
   margin-bottom: 0.85rem;
   letter-spacing: -0.02em;
 }
@@ -173,8 +177,6 @@ body {
   box-shadow: 5px 5px 0 var(--party-yellow);
 }
 
-.add-btn::before { content: "🎉 "; }
-.add-btn::after { content: " 🎉"; }
 
 .add-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--party-yellow); }
 
@@ -246,4 +248,124 @@ body[data-birthday="true"] .theme-fx::after {
   30%  { transform: rotate(var(--row-tilt, 0deg)) scale(1.05); }
   60%  { transform: rotate(var(--row-tilt, 0deg)) scale(0.97); }
   100% { transform: rotate(var(--row-tilt, 0deg)) scale(1); }
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   Balloons part-inflated, filling as the days drop. --days-until drives the
+   size directly, so seven days out they are barely started and on the morning
+   they are full. */
+
+.countdown {
+  position: relative;
+  margin: 2rem auto 0;
+  padding: 3.75rem 1rem 0.9rem;
+  max-width: 22rem;
+  text-align: center;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  opacity: 1;
+}
+
+.countdown::before,
+.countdown::after {
+  content: "";
+  position: absolute;
+  top: 0.4rem;
+  border-radius: 50% 50% 48% 52% / 58% 58% 42% 42%;
+  /* 0.35 at seven days out, 1 on the day */
+  transform: scale(calc(1 - var(--days-until, 0) * 0.093));
+  transform-origin: 50% 100%;
+}
+
+.countdown::before {
+  left: calc(50% - 3.1rem);
+  width: 2.4rem;
+  height: 3rem;
+  background: var(--party-pink);
+  box-shadow: 0 0.15rem 0 -0.05rem rgba(0, 0, 0, 0.12) inset;
+}
+
+.countdown::after {
+  left: calc(50% + 0.7rem);
+  width: 2.4rem;
+  height: 3rem;
+  background: var(--party-blue);
+  box-shadow: 0 0.15rem 0 -0.05rem rgba(0, 0, 0, 0.12) inset;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   A gift tag on a drawn string. */
+
+.card-message {
+  position: relative;
+  max-width: 20rem;
+  margin: 3rem auto 0;
+  padding: 1.6rem 1.25rem 1.2rem;
+  background: #fffdf7;
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  transform: rotate(-2deg);
+  box-shadow: 6px 6px 0 var(--party-pink);
+}
+
+/* Punched hole, and the string running up out of frame to the balloons. */
+.card-message::before {
+  content: "";
+  position: absolute;
+  top: 0.7rem;
+  left: 50%;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-left: -0.35rem;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: transparent;
+}
+
+.card-message::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 2px;
+  height: 2.2rem;
+  background: var(--ink);
+  transform: rotate(6deg);
+  transform-origin: bottom center;
+}
+
+.card-recipient {
+  margin: 0.9rem 0 0.5rem;
+  text-align: center;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--party-purple);
+}
+
+.card-recipient::before { content: "To "; color: var(--ink); font-weight: 400; }
+
+.card-note {
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.card-from {
+  margin: 0.9rem 0 0;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--party-pink);
+}
+
+.card-from::before { content: "— "; color: var(--ink); font-weight: 400; }
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown::before,
+  .countdown::after { transition: none; }
 }

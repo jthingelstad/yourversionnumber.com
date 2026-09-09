@@ -156,7 +156,6 @@ const SYSTEM_FAMILIES = new Set([
 // Shrink these as phase 3 lands. Do not add to them.
 const FONT_IMPORT_BASELINE = new Set(["newspaper.css"]);
 const EMOJI_BASELINE = new Set([
-  "birthday.css",
   "progress.css", "slidedeck.css",
   "steampunk.css", "tarot.css", "unread.css",
 ]);
