@@ -24,7 +24,7 @@ export const THEMES = [
     blurb: 'Minimalist dark mode, violet accents, nothing shouting. The one to pick when the number is the point.' },
   { name: 'zen',         label: 'Zen',         home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'Quiet cream, generous space, one vermillion first-letter doing all the work.' },
-  { name: 'receipt',     label: 'Receipt',     home: 'birthday', animate: false, chime: 'tick',    card: false,
+  { name: 'receipt',     label: 'Receipt',     home: 'birthday', animate: false, chime: 'tick',    card: true,
     blurb: 'Thermal-printer monospace, QTY 1, thank you for your business.' },
   { name: 'newspaper',   label: 'Newspaper',   home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'Broadsheet typography and section rules. Your age, above the fold.' },

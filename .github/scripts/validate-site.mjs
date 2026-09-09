@@ -157,7 +157,7 @@ const SYSTEM_FAMILIES = new Set([
 const FONT_IMPORT_BASELINE = new Set(["newspaper.css", "terminal.css"]);
 const EMOJI_BASELINE = new Set([
   "birthday.css", "cubicle.css", "gameboy.css", "interchange.css", "ooo.css",
-  "polaroid.css", "progress.css", "receipt.css", "slidedeck.css",
+  "polaroid.css", "progress.css", "slidedeck.css",
   "steampunk.css", "tarot.css", "ticker.css", "unread.css",
 ]);
 

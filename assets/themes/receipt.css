@@ -42,6 +42,15 @@ body {
   position: relative;
 }
 
+/* Thermal paper fades from the tail. Sits above the roll, under the content. */
+#app::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 45%, rgba(249, 246, 238, 0.6) 100%);
+}
+
 .site-header {
   text-align: center;
   margin: 1rem 1.5rem 1rem;
@@ -62,7 +71,7 @@ body {
 }
 
 .site-title::before {
-  content: "★ ★ ★\A";
+  content: "* * *\A";
   display: block;
   white-space: pre;
   font-size: 0.85rem;
@@ -147,15 +156,26 @@ body {
 .version {
   font-family: 'Courier Prime', monospace;
   font-weight: 700;
-  font-size: 1.6rem;
+  --version-size: 1.6rem;
   color: var(--ink);
   letter-spacing: 0;
   margin-top: 0.3rem;
   display: flex;
-  justify-content: space-between;
+  /* The digits are separate boxes now. flex-end keeps them as one run and the
+     label is pushed away with auto margin; space-between would deal them out
+     across the whole width, one digit per column. */
+  justify-content: flex-end;
+  align-items: baseline;
   width: 100%;
 }
-.version::before { content: "QTY 1"; font-weight: 400; font-size: 0.7em; opacity: 0.6; align-self: center; }
+.version::before {
+  content: "QTY 1";
+  font-weight: 400;
+  font-size: 0.7em;
+  opacity: 0.6;
+  margin-right: auto;
+}
+[data-edition="work"] .version::before { content: "BILLED"; }
 
 .add-btn {
   display: block;
@@ -182,9 +202,162 @@ body {
 .site-footer::before { content: "THANK YOU FOR YOUR VERSION\A   PLEASE COME AGAIN\A"; display: block; white-space: pre; font-weight: 700; color: var(--ink); margin-bottom: 0.5em; }
 .site-footer a { color: var(--ink); }
 
+/* Anything over ~300 days has been sitting on the counter a while. No JS: the
+   opacity clamp is 0 below 300 and 1 above it, straight off --patch. */
+.person::after {
+  content: "REPRINT";
+  position: absolute;
+  top: 0.75rem;
+  right: 0;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--faded);
+  border: 1px solid var(--faded);
+  padding: 0.1em 0.35em;
+  opacity: clamp(0, calc(var(--patch, 0) - 300), 1);
+}
+
 .person.is-bumping { animation: receipt-print 0.9s steps(8, end); }
 @keyframes receipt-print {
   0%   { background: rgba(0,0,0,0.08); }
   100% { background: transparent; }
 }
-.person:hover { background: rgba(0,0,0,0.03); transition: background 150ms; }
+/* Carbon smudge: thermal ink lifts where a thumb has been. */
+.person:hover {
+  background:
+    radial-gradient(120px 40px at 22% 60%, rgba(0, 0, 0, 0.07), transparent 70%),
+    radial-gradient(90px 30px at 68% 40%, rgba(0, 0, 0, 0.05), transparent 70%),
+    rgba(0, 0, 0, 0.02);
+  transition: background 150ms;
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   A pending order, in a double rule. The exact wording comes from
+   body[data-countdown] rather than the core line, because CSS cannot put a
+   custom property into content: — this is what the attribute is for. */
+
+.countdown {
+  margin: 1rem 1.5rem;
+  padding: 0.7rem 0.5rem;
+  border: 3px double var(--ink);
+  text-align: center;
+  /* the core sentence is replaced wholesale by the two pseudo-elements */
+  font-size: 0;
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "PENDING";
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  color: var(--faded);
+}
+
+.countdown::after {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  content: "SHIPS SOON";
+}
+
+body[data-countdown="0"] .countdown::after { content: "SHIPS TODAY"; }
+body[data-countdown="1"] .countdown::after { content: "SHIPS IN 1 DAY"; }
+body[data-countdown="2"] .countdown::after { content: "SHIPS IN 2 DAYS"; }
+body[data-countdown="3"] .countdown::after { content: "SHIPS IN 3 DAYS"; }
+body[data-countdown="4"] .countdown::after { content: "SHIPS IN 4 DAYS"; }
+body[data-countdown="5"] .countdown::after { content: "SHIPS IN 5 DAYS"; }
+body[data-countdown="6"] .countdown::after { content: "SHIPS IN 6 DAYS"; }
+body[data-countdown="7"] .countdown::after { content: "SHIPS IN 7 DAYS"; }
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   The note prints as a line item. Dot leaders rather than a flex row, because
+   that is what a monospace till roll actually does. */
+
+.card-message {
+  margin: 1rem 1.5rem;
+  padding: 0.7rem 0;
+  border-top: 1px dashed var(--ink);
+  border-bottom: 1px dashed var(--ink);
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.card-message::before {
+  content: "1× BIRTHDAY WISH .............. 0.00";
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.card-message[data-occasion="work"]::before {
+  content: "1× YEAR OF SERVICE ............. 0.00";
+}
+
+.card-message::after {
+  content: "NO REFUNDS ON YEARS ELAPSED";
+  text-align: center;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--faded);
+}
+
+.card-recipient {
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  /* ::before is the first grid item; the heading has to come above it. */
+  order: -1;
+}
+
+.card-recipient::before {
+  content: "A CARD FOR ";
+  font-weight: 400;
+  color: var(--faded);
+}
+
+.card-note {
+  margin: 0;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--faded);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  /* 140 characters has to fit at 390px, so lay out for the maximum. */
+  overflow-wrap: break-word;
+}
+
+.card-note::before {
+  content: "> ";
+  color: var(--faded);
+}
+
+.card-from {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card-from::before {
+  content: "— ";
+  color: var(--faded);
+}
+
+/* The barcode is the sign-off. Bar widths vary — a perfectly even one reads as
+   texture rather than a barcode. */
+.card-from::after {
+  content: "";
+  display: block;
+  height: 14px;
+  margin-top: 0.7rem;
+  background: repeating-linear-gradient(90deg,
+    var(--ink) 0 2px, transparent 2px 4px, var(--ink) 4px 5px, transparent 5px 9px);
+}
