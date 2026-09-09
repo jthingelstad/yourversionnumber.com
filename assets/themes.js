@@ -44,7 +44,7 @@ export const THEMES = [
     blurb: 'The DMG palette and a cartridge silhouette. Four shades of green is plenty.' },
   { name: 'tarot',       label: 'Tarot',       home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Purple and stars, with the Fool, the Priestess and the Empress dealt across the table.' },
-  { name: 'steampunk',   label: 'Steampunk',   home: 'birthday', animate: false, chime: null,      card: false,
+  { name: 'steampunk',   label: 'Steampunk',   home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'A sepia ledger of gears and cogs, as though age were an engineering concern.' },
   { name: 'memphis',     label: 'Memphis',     home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Eighties squiggles, triangles and dots in every direction at once.' },
