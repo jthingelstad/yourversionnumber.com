@@ -183,8 +183,8 @@ body {
   font-family: inherit;
   font-weight: 700;
   letter-spacing: -0.02em;
-  font-size: clamp(2rem, 5vw, 3rem) !important;
-  line-height: 1.1 !important;
+  --version-size: clamp(2rem, 5vw, 3rem);
+  --version-leading: 1.1;
 }
 
 .add-btn {

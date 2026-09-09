@@ -127,11 +127,44 @@ input {
 }
 
 .version {
-  font-size: clamp(3.5rem, 10vw, 6.5rem);
+  /* Hook 1. Seven themes used to !important their way past a hard-coded clamp;
+     that was a missing hook, not seven sloppy authors. Themes set the custom
+     property instead. */
+  font-size: var(--version-size, clamp(3.5rem, 10vw, 6.5rem));
   font-weight: 800;
-  line-height: 1;
+  line-height: var(--version-leading, 1);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.03em;
+}
+
+/* Hook 4. The number is split one span per character so a theme can treat each
+   glyph as an object — a nixie tube, a split-flap, a bulb in a matrix. Core
+   gives .digit the minimum that makes that possible and .sep nothing at all;
+   the rest belongs to the theme. .version carries an aria-label so screen
+   readers announce one number rather than six fragments. */
+.digit {
+  display: inline-block;
+}
+
+/* Adjacent inline-blocks give the line breaker somewhere to break, which a
+   single text node never did — without this the number splits mid-value
+   ("4.7." / "150") in any theme narrow enough to wrap. Pseudo-elements opt
+   back out, because several themes put prose in them that must still wrap. */
+.version {
+  white-space: nowrap;
+}
+
+.version::before,
+.version::after {
+  white-space: normal;
+}
+
+/* Hook 6 fallback. Every theme should say something of its own when a date is
+   imminent; until one does, it still says it plainly. */
+.countdown {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  opacity: 0.75;
 }
 
 .app-dialog {

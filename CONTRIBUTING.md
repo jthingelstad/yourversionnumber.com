@@ -4,8 +4,8 @@ Themes are the easiest way to contribute. Each one is a single CSS file. There's
 
 ## The recipe
 
-1. **Drop a file** at `birthday/themes/<your-name>.css`. Pick a short, lowercase, hyphenated name.
-2. **Register it** in `birthday/assets/app.js` — add an entry to the `THEMES` array near the top:
+1. **Drop a file** at `assets/themes/<your-name>.css`. One file works in both editions. Pick a short, lowercase, hyphenated name.
+2. **Register it** in `assets/themes.js` — add an entry to the `THEMES` array near the top:
    ```js
    { name: 'your-name', label: 'Your Name', kind: 'light', animate: false,
      blurb: 'One sentence describing the look. Shown in the theme gallery.' },
@@ -59,11 +59,11 @@ Each theme is its own world. They don't share variables, they don't extend each 
 - [ ] Footer is readable and the visit counter is visible.
 - [ ] Open Edit and About — the neutral dialogs should still look right against your theme's backdrop.
 - [ ] At narrow widths (~360px) nothing overflows or truncates.
-- [ ] You added the entry to `THEMES` in `birthday/assets/app.js`, including a `blurb` — without it, the picker doesn't list your theme and `?theme=your-name` will fall back to a random pick.
+- [ ] You added the entry to `THEMES` in `assets/themes.js`, including a `blurb` — without it, the picker doesn't list your theme and `?theme=your-name` will fall back to a random pick.
 
 ## Work themes
 
-The `/work/` page has its own independent theme set in `work/themes/` and its own `THEMES` array in `work/assets/app.js`. Same recipe, same `{ name, label, kind, animate, blurb }` shape, same off-limits selectors (`.app-dialog*`, `.edit-row*`), and the same three header controls to style together (`.home-btn`, `.edit-btn`, `.about-btn`).
+Both editions load from `assets/themes/` and read `assets/themes.js`. There is no separate work theme set any more — branch on `[data-edition="work"]` where the wording differs. Same recipe, same `{ name, label, kind, animate, blurb }` shape, same off-limits selectors (`.app-dialog*`, `.edit-row*`), and the same three header controls to style together (`.home-btn`, `.edit-btn`, `.about-btn`).
 
 Extra hooks unique to work mode:
 
@@ -71,7 +71,7 @@ Extra hooks unique to work mode:
 - `body[data-quarter-start="true"]` — a role on the page just rolled over to a new quarter (PATCH = 0). Analogous to `data-birthday="true"` on the root site.
 - `body[data-tenure-anniversary="true"]` — a role's MAJOR just bumped (MINOR = 0 ∧ PATCH = 0). Always implies `data-quarter-start="true"`.
 
-Drop work themes at `work/themes/<name>.css`, register them in `work/assets/app.js`, and verify with `?theme=<name>&j=Engineer:2024-01-15`.
+Verify with `?theme=<name>&j=Engineer:2024-01-15`.
 
 ## Naming
 
@@ -80,3 +80,30 @@ Drop work themes at `work/themes/<name>.css`, register them in `work/assets/app.
 - Pick a `kind` that fits — when in doubt, look at the existing themes for which bucket your aesthetic belongs in.
 
 That's it. Have fun.
+
+
+## Core hooks
+
+Core computes, your theme opts in from CSS. No theme ever ships JavaScript.
+
+| Hook | One-line example |
+| --- | --- |
+| `data-edition` | `[data-edition="work"] .person::after { content: 'BILLABLE DAYS'; }` |
+| `--version-size` | `.version { --version-size: clamp(2rem, 5vw, 3rem); }` |
+| `--major` `--minor` `--patch` | `.badge::after { width: calc(var(--patch) * 1px); }` |
+| `--patch-pct` | `.bar { transform: scaleX(var(--patch-pct)); }` |
+| per-digit spans | `.digit { border: 1px solid; } .digit[data-d="0"] { opacity: .6; }` |
+| `data-weekday` `data-season` | `[data-season="autumn"] .theme-fx { --leaf: #c1751f; }` |
+| `--days-until` `data-countdown` | `[data-countdown] .version::after { content: 'SOON'; }` |
+
+`chime` is named in the manifest and played by core, never by a theme.
+
+## Pre-flight
+
+CI fails on all three of these:
+
+- **Every font you name must be in your `@import`.** Five themes used to render in fonts they never loaded.
+- **No emoji.** They render in whatever font the visitor's OS ships, which is why several themes looked like mockups of themselves. Draw it with `clip-path`, `box-shadow` or an inline SVG `data:` URI, or cut it.
+- **No `!important`.** After `--version-size` there is no reason for it, and its presence means a hook is missing — ask for the hook.
+
+Also check your theme at 390px, and confirm any motion is guarded by `prefers-reduced-motion`.

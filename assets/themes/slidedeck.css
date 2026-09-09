@@ -167,8 +167,8 @@ body::before {
   font-weight: 900;
   letter-spacing: -0.05em;
   color: var(--fg);
-  font-size: clamp(3rem, 9vw, 6rem) !important;
-  line-height: 0.95 !important;
+  --version-size: clamp(3rem, 9vw, 6rem);
+  --version-leading: 0.95;
   margin: 0;
   background: linear-gradient(180deg, var(--fg), var(--accent));
   -webkit-background-clip: text;

@@ -134,6 +134,71 @@ for (const page of ["index.html", "about/index.html", "themes/index.html", "exam
   }
 }
 
+// ── Phase 2 theme guards ────────────────────────────────────────────────────
+// Three defects the audit found, now mechanical. A and B carry a baseline of
+// the themes that already fail: the list only ever shrinks, so a new violation
+// is impossible while the phase-3 sweep works through the existing ones. Guard
+// C needs no baseline — nothing violates it any more.
+
+// Families a theme may name without importing: generics, and faces that ship
+// with an OS and are deliberately used as fallbacks.
+const SYSTEM_FAMILIES = new Set([
+  "serif", "sans-serif", "monospace", "cursive", "fantasy", "system-ui",
+  "ui-monospace", "ui-serif", "ui-sans-serif", "inherit", "initial", "unset",
+  "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Menlo", "Consolas",
+  "SF Mono", "SFMono-Regular", "Courier New", "Arial", "Helvetica",
+  "Helvetica Neue", "Georgia", "Times New Roman", "Impact", "Trebuchet MS",
+  "Lucida Console", "Chalkboard SE", "Comic Sans MS", "Apple Color Emoji",
+  "Atlassian Sans", "emoji",
+]);
+
+// Shrink these as phase 3 lands. Do not add to them.
+const FONT_IMPORT_BASELINE = new Set(["newspaper.css", "terminal.css"]);
+const EMOJI_BASELINE = new Set([
+  "birthday.css", "cubicle.css", "gameboy.css", "interchange.css", "ooo.css",
+  "polaroid.css", "progress.css", "receipt.css", "slidedeck.css",
+  "steampunk.css", "tarot.css", "ticker.css", "unread.css",
+]);
+
+const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{1F1E6}-\u{1F1FF}]/u;
+
+for (const file of (await readdir(resolve(repoRoot, "assets/themes"))).filter((f) => f.endsWith(".css"))) {
+  const css = await readFile(resolve(repoRoot, "assets/themes", file), "utf8");
+  const imports = [...css.matchAll(/@import\s+url\(([^)]*)\)/g)].map((m) => m[1]).join(" ");
+
+  // A — every named font is imported.
+  const named = new Set();
+  for (const m of css.matchAll(/font-family:\s*([^;}]+)/g)) {
+    for (const fam of m[1].split(",")) {
+      const name = fam.trim().replace(/^['"]|['"]$/g, "");
+      if (name && !name.startsWith("var(") && !SYSTEM_FAMILIES.has(name)) named.add(name);
+    }
+  }
+  const missing = [...named].filter((n) => !imports.replace(/%20/g, "+").includes(n.replace(/ /g, "+")));
+  if (missing.length && !FONT_IMPORT_BASELINE.has(file)) {
+    failures.push(`assets/themes/${file}: names ${missing.join(", ")} but never imports it`);
+  }
+  if (!missing.length && FONT_IMPORT_BASELINE.has(file)) {
+    failures.push(`assets/themes/${file}: now imports every font it names — drop it from FONT_IMPORT_BASELINE`);
+  }
+
+  // B — no emoji. They render in whatever font the visitor's OS ships, which
+  // is the single biggest reason the replica themes look like mockups.
+  const hasEmoji = EMOJI.test(css);
+  if (hasEmoji && !EMOJI_BASELINE.has(file)) {
+    failures.push(`assets/themes/${file}: emoji in theme CSS — draw it or cut it`);
+  }
+  if (!hasEmoji && EMOJI_BASELINE.has(file)) {
+    failures.push(`assets/themes/${file}: no emoji left — drop it from EMOJI_BASELINE`);
+  }
+
+  // C — no !important. After hook 1 there is no reason for it, and its presence
+  // is the clearest signal that a hook is missing.
+  if (css.includes("!important")) {
+    failures.push(`assets/themes/${file}: !important — use --version-size or ask for a hook`);
+  }
+}
+
 if (failures.length > 0) {
   failures.forEach((failure) => console.error(failure));
   process.exit(1);

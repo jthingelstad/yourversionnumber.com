@@ -1,4 +1,5 @@
 import { THEMES, orderForEdition } from '/assets/themes.js';
+import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime } from '/assets/core.js';
 
 const EDITION = 'work';
 const THEME_NAMES = THEMES.map(t => t.name);
@@ -138,7 +139,15 @@ function computeWorkVersion(startDate, today = new Date()) {
   }
 
   const patch = businessDaysBetween(quarterStart, todayMid);
-  return { major: tenureYears, minor, patch };
+
+  // The quarter this patch sits in, measured the same way the patch is — in
+  // business days — so --patch-pct is a real fraction of the quarter.
+  const nextQuarterStart = anniversaryDate(anniversaryYear, sm + (minor + 1) * 3, sd);
+  const cycleDays = Math.max(1, businessDaysBetween(quarterStart, nextQuarterStart));
+  const nextAnniversary = anniversaryDate(anniversaryYear + 1, sm, sd);
+  const daysUntil = Math.round((nextAnniversary - todayMid) / 86_400_000);
+
+  return { major: tenureYears, minor, patch, cycleDays, daysUntil };
 }
 
 // Counts business days (Mon–Fri) strictly after `start`, up to and including `end`.
@@ -176,6 +185,9 @@ function render() {
   let anyAnniversary = false;
   let anyPalindrome = false;
   let anyRoundDecade = false;
+  let soonest = null;
+  let soonestVersion = '';
+  let firstPct = null;
   for (const r of state.roles) {
     if (!DATE_RE.test(r.startDate) || !isRealDate(r.startDate) || isFutureDate(r.startDate)) continue;
     const v = computeWorkVersion(r.startDate);
@@ -185,7 +197,15 @@ function render() {
     const digits = `${v.major}${v.minor}${v.patch}`;
     if (digits.length > 1 && digits === digits.split('').reverse().join('')) anyPalindrome = true;
     if (v.major > 0 && v.major % 10 === 0 && v.minor === 0 && v.patch === 0) anyRoundDecade = true;
+    if (firstPct === null) firstPct = v.patch / v.cycleDays;
+    if (soonest === null || v.daysUntil < soonest) {
+      soonest = v.daysUntil;
+      soonestVersion = `${v.major + 1}.0.0`;
+    }
   }
+
+  if (firstPct === null) document.body.style.removeProperty('--patch-pct');
+  else document.body.style.setProperty('--patch-pct', firstPct.toFixed(4));
   setFlag('quarterStart', anyQuarterStart);
   setFlag('tenureAnniversary', anyAnniversary);
   setFlag('palindrome', anyPalindrome);
@@ -226,6 +246,8 @@ function render() {
     addBtn.addEventListener('click', () => openEdit({ addBlankRow: true }));
     app.appendChild(addBtn);
   }
+
+  applyCountdown(soonest, soonestVersion);
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
@@ -273,8 +295,8 @@ function renderRow(role, index) {
 
   const version = document.createElement('div');
   version.className = 'version';
-  updateVersionDisplay(version, role.startDate);
   row.appendChild(version);
+  updateVersionDisplay(version, role.startDate, row);
 
   return row;
 }
@@ -570,7 +592,7 @@ function countUp(el, version) {
   const shouldAnimate = themeMeta?.animate && isFirstRender && !reduceMotion;
 
   if (!shouldAnimate) {
-    el.textContent = formatVersion(version);
+    renderVersionDigits(el, formatVersion(version));
     return;
   }
 
@@ -586,20 +608,28 @@ function countUp(el, version) {
     const patch = Math.round(version.patch * k);
     el.textContent = `${major}.${minor}.${patch}`;
     if (t < 1) requestAnimationFrame(frame);
-    else el.textContent = formatVersion(version);
+    else renderVersionDigits(el, formatVersion(version));
   }
   requestAnimationFrame(frame);
 }
 
-function updateVersionDisplay(el, startDate) {
+function updateVersionDisplay(el, startDate, row) {
   if (!DATE_RE.test(startDate) || !isRealDate(startDate)) {
     el.textContent = '';
+    el.removeAttribute('aria-label');
     return;
   }
   const v = computeWorkVersion(startDate);
   if (!v) {
     el.textContent = '';
+    el.removeAttribute('aria-label');
     return;
+  }
+  if (row) {
+    row.style.setProperty('--major', String(v.major));
+    row.style.setProperty('--minor', String(v.minor));
+    row.style.setProperty('--patch', String(v.patch));
+    row.style.setProperty('--patch-pct', (v.patch / v.cycleDays).toFixed(4));
   }
   countUp(el, v);
   const yearWord = v.major === 1 ? 'year' : 'years';
@@ -613,7 +643,9 @@ function scheduleMidnightTick() {
   const now = new Date();
   const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 5);
   midnightTimer = setTimeout(() => {
+    applyEnvironment(EDITION);
     render();
+    playChime(THEME_BY_NAME[state.theme]?.chime);
     const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     if (!reduceMotion) {
       document.querySelectorAll('.person').forEach(row => {
@@ -624,6 +656,9 @@ function scheduleMidnightTick() {
     scheduleMidnightTick();
   }, next - now);
 }
+
+applyEnvironment(EDITION);
+watchForInteraction();
 
 const parsed = parseURL();
 state.theme = parsed.theme;

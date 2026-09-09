@@ -1,4 +1,5 @@
 import { THEMES, orderForEdition } from '/assets/themes.js';
+import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime } from '/assets/core.js';
 
 const EDITION = 'birthday';
 const THEME_NAMES = THEMES.map(t => t.name);
@@ -122,7 +123,12 @@ function computeVersion(birthday, today = new Date()) {
   const minor = age % 10;
   const patch = Math.round((todayMid - anniversary) / 86_400_000);
 
-  return { major, minor, patch, age };
+  // Dividing by *this person's* actual year length handles leap years for free.
+  const nextAnniversary = anniversaryDate(anniversaryYear + 1, bm, bd);
+  const cycleDays = Math.round((nextAnniversary - anniversary) / 86_400_000);
+  const daysUntil = Math.round((nextAnniversary - todayMid) / 86_400_000);
+
+  return { major, minor, patch, age, cycleDays, daysUntil };
 }
 
 // For Feb 29 birthdays in non-leap years, JS new Date(y, 1, 29) silently rolls
@@ -151,6 +157,9 @@ function render() {
   let anyPalindrome = false;
   let anyRoundDecade = false;
   let anyZero = false;
+  let soonest = null;
+  let soonestVersion = '';
+  let firstPct = null;
   for (const p of state.people) {
     if (!DATE_RE.test(p.birthday) || !isRealDate(p.birthday) || isFutureDate(p.birthday)) continue;
     const v = computeVersion(p.birthday);
@@ -159,11 +168,23 @@ function render() {
     if (digits.length > 1 && digits === digits.split('').reverse().join('')) anyPalindrome = true;
     if (v.major > 0 && v.minor === 0 && v.patch === 0) anyRoundDecade = true;
     if (v.major === 0 && v.minor === 0 && v.patch === 0) anyZero = true;
+    if (firstPct === null) firstPct = v.patch / v.cycleDays;
+    if (soonest === null || v.daysUntil < soonest) {
+      soonest = v.daysUntil;
+      // The release they are counting towards. Derive it from the next age, not
+      // by bumping minor — at 49 the next release is 5.0.0, not 4.10.0.
+      const nextAge = v.age + 1;
+      soonestVersion = `${Math.floor(nextAge / 10)}.${nextAge % 10}.0`;
+    }
   }
   setFlag('birthday', anyBirthday);
   setFlag('palindrome', anyPalindrome);
   setFlag('roundDecade', anyRoundDecade);
   setFlag('zero', anyZero);
+
+  // Hook 3 on body as well as each row, so page chrome can use it.
+  if (firstPct === null) document.body.style.removeProperty('--patch-pct');
+  else document.body.style.setProperty('--patch-pct', firstPct.toFixed(4));
 
   const header = document.createElement('header');
   header.className = 'site-header';
@@ -202,6 +223,8 @@ function render() {
     addBtn.addEventListener('click', () => openEdit({ addBlankRow: true }));
     app.appendChild(addBtn);
   }
+
+  applyCountdown(soonest, soonestVersion);
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
@@ -253,8 +276,8 @@ function renderRow(person, index) {
 
   const version = document.createElement('div');
   version.className = 'version';
-  updateVersionDisplay(version, person.birthday);
   row.appendChild(version);
+  updateVersionDisplay(version, person.birthday, row);
 
   return row;
 }
@@ -552,7 +575,7 @@ function countUp(el, version) {
   const shouldAnimate = themeMeta?.animate && isFirstRender && !reduceMotion;
 
   if (!shouldAnimate) {
-    el.textContent = formatVersion(version);
+    renderVersionDigits(el, formatVersion(version));
     return;
   }
 
@@ -568,17 +591,26 @@ function countUp(el, version) {
     const patch = Math.round(version.patch * k);
     el.textContent = `${major}.${minor}.${patch}`;
     if (t < 1) requestAnimationFrame(frame);
-    else el.textContent = formatVersion(version);
+    else renderVersionDigits(el, formatVersion(version));
   }
   requestAnimationFrame(frame);
 }
 
-function updateVersionDisplay(el, birthday) {
+function updateVersionDisplay(el, birthday, row) {
   if (!DATE_RE.test(birthday) || !isRealDate(birthday) || isFutureDate(birthday)) {
     el.textContent = '';
+    el.removeAttribute('aria-label');
     return;
   }
   const v = computeVersion(birthday);
+  if (row) {
+    // Unitless so CSS can calc() on them. Usable in calc(), not in content() —
+    // that is what the per-digit spans are for.
+    row.style.setProperty('--major', String(v.major));
+    row.style.setProperty('--minor', String(v.minor));
+    row.style.setProperty('--patch', String(v.patch));
+    row.style.setProperty('--patch-pct', (v.patch / v.cycleDays).toFixed(4));
+  }
   countUp(el, v);
   el.title = `${v.age} years old, ${v.patch} day${v.patch === 1 ? '' : 's'} since last birthday`;
 }
@@ -589,7 +621,9 @@ function scheduleMidnightTick() {
   const now = new Date();
   const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 5);
   midnightTimer = setTimeout(() => {
+    applyEnvironment(EDITION);
     render();
+    playChime(THEME_BY_NAME[state.theme]?.chime);
     // Flash every row so themes can opt into a "patch++" celebration without
     // tracking which row incremented (in practice, *every* row's patch ticks).
     const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -602,6 +636,9 @@ function scheduleMidnightTick() {
     scheduleMidnightTick();
   }, next - now);
 }
+
+applyEnvironment(EDITION);
+watchForInteraction();
 
 const parsed = parseURL();
 state.theme = parsed.theme;

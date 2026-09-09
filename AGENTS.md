@@ -21,17 +21,20 @@ assets/
   site.css                 neutral site chrome shared by the three spine pages
   gallery.js               builds gallery cards from each edition's THEMES manifest
 
+assets/
+  themes.js                the one theme manifest, imported by both editions
+  themes/<name>.css        one standalone stylesheet per theme, shared
+  core.js                  the seven core hooks + the chime synthesiser
+
 birthday/
   index.html               birthday edition shell
   assets/app.js            birthday behavior — parsing, render, dialogs, animation
   assets/base.css          reset, layout, neutral dialog & theme-fx styles
-  themes/<name>.css        one standalone stylesheet per birthday theme
 
 work/
   index.html               work edition shell
   assets/app.js            work behavior (deliberate near-duplicate of birthday)
   assets/base.css          same neutral chrome
-  themes/<name>.css        one standalone stylesheet per work theme
 
 themes-preview.html        dev tool: iframes every theme in both editions
 README.md                  user-facing docs
@@ -108,7 +111,7 @@ a two-step job. That is why every theme entry needs a `blurb`.
 3. **Themes are CSS-only.** No per-theme JS. When a theme idea can't be expressed in CSS, the answer is to add a *generic* hook in core `app.js` that all themes can opt into via CSS — that's how we got `.theme-fx`, `data-row-variant`, `--row-hue`, version-event flags, etc. Per-theme JS would create lifecycle/teardown bugs, cross-theme conflicts, review burden, and a real privacy risk: birthdays live in the URL and an accepted-but-malicious theme could beacon them. Don't open that door.
 4. **Themes paint display only.** Header, person rows, footer, empty-state CTA, and the `.theme-fx` decorative layer. They do **not** style the About or Edit dialogs — those are app chrome with a neutral OS-light/dark look in `base.css`. Selectors under `.app-dialog` are off-limits.
 5. **Person rows have no editing affordances.** No inline inputs, no click-to-edit. Editing is gated behind the header's Birthdays/Roles button (class `.edit-btn`) → `<dialog>`. Visual hover effects (tilt, scale, glow) are fine — the rule is no *editing* affordances on rows, not no animation.
-6. **Theme manifest at the top of each `app.js`.** Flat array. Each entry: `{ name, label, kind, animate }`. `kind` drives `<optgroup>` headers (`light|dark|fun|retro`). `animate: true` opts into count-up.
+6. **One theme manifest, `assets/themes.js`.** Both editions import it; neither carries its own copy. Each entry: `{ name, label, home, animate, chime, card, blurb }`. `home` is `'birthday' | 'work' | null` and controls **ordering only** — every theme is selectable in both editions, natives first in each picker. `kind` and `<optgroup>`s are retired; the picker is a flat list. `animate: true` opts into count-up; `chime` names a sound core plays on the midnight tick; `card: true` means the theme styles `.card-message` in its own voice.
 
 ## Themable hooks (for theme authors)
 
@@ -131,7 +134,16 @@ a two-step job. That is why every theme entry needs a `blurb`.
 - A `position: fixed; inset: 0; pointer-events: none; overflow: hidden` div appended on every render. Themes paint motion (falling leaves, drifting waves, confetti, scanlines, shooting stars, gear silhouettes, …) into `.theme-fx::before` and `.theme-fx::after`.
 - Empty by default; themes that don't use it leave it untouched.
 
-**Class hooks:** `.person`, `.person-name`, `.version`, `.site-header`, `.site-title`, `.intro`, `.add-btn`, `.about-btn`, `.edit-btn`, `.theme-select`, `.theme-picker`, `.site-footer`, `.site-cross-link`, `.site-attribution`, `.site-stats`.
+**Core hooks (phase 2 — core computes, themes opt in from CSS):**
+- `data-edition="birthday|work"` on `body`. Branch only where the *language* differs — a label, a unit, a joke that lands one way. If a theme needs a different structure per edition, the theme is wrong.
+- `--version-size` / `--version-leading` on `.version`. Set these instead of overriding the base clamp; `!important` in a theme now fails CI.
+- `--major`, `--minor`, `--patch` on each `.person` — unitless, so `calc()` works. Not usable in `content:`; that is what the digit spans are for.
+- `--patch-pct` (0–1) on each `.person` and on `body` from the first row. Birthday: patch ÷ that person's own year length, so leap years handle themselves. Work: patch ÷ business days in the quarter.
+- **Per-digit spans.** `.version` contains one `.digit` per character (`52` is two) with `data-d` carrying the value, and `.sep` for the dots. `.version` carries an `aria-label` with the whole number so screen readers announce one thing. `base.css` gives `.digit` only `display: inline-block`, and `.version` `white-space: nowrap` — without that the number breaks mid-value in narrow themes.
+- `data-weekday` (`sun`…`sat`) and `data-season` (`spring|summer|autumn|winter`) on `body`, from the visitor's local date.
+- `--days-until` and `data-countdown` on `body`, present **only** when the next date is within 7 days — so `body[data-countdown]` is a clean "is this imminent" selector. Every theme should say something of its own; `base.css` prints a plain `.countdown` line until one does.
+
+**Class hooks:** `.person`, `.person-name`, `.version`, `.digit`, `.sep`, `.countdown`, `.site-header`, `.site-title`, `.intro`, `.add-btn`, `.about-btn`, `.edit-btn`, `.theme-select`, `.theme-picker`, `.site-footer`, `.site-cross-link`, `.site-attribution`, `.site-stats`.
 
 **Off-limits** (app chrome, styled in `base.css`):
 - Anything matching `.app-dialog*`, `.edit-row*`, `.edit-list`, `.edit-add`.
@@ -140,6 +152,7 @@ a two-step job. That is why every theme entry needs a `blurb`.
 
 - **Count-up** runs only on initial page-load render. Gated by `THEMES[i].animate`, an `isFirstRender` flag, and `prefers-reduced-motion`.
 - **Midnight tick** re-renders at the day boundary; afterwards every `.person` gets `.is-bumping` for ~1.2 s. Skipped under `prefers-reduced-motion`.
+- **Chime** is named by the manifest and played by core — never by a theme, so no contributor ever ships audio. Synthesised with WebAudio oscillators: no files, no network, no assets. All four conditions must hold before it fires: (1) only on the midnight tick, never on load or theme switch; (2) only after the visitor has interacted with the page, since WebAudio refuses otherwise; (3) never under `prefers-reduced-motion`; (4) peak gain ≤ 0.15, because this fires on a page someone left open overnight.
 - **`.theme-fx` motion** must respect `prefers-reduced-motion`. `base.css` kills animations on `.theme-fx`, its pseudo-elements, and `.is-bumping` under that setting; theme-specific keyframes elsewhere should self-guard.
 
 ## Local development
