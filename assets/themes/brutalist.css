@@ -3,7 +3,7 @@
 :root {
   --bg: #ffff00;
   --fg: #000000;
-  --accent: #ff0000;
+  --accent: #e00000;
   --paper: #ffffff;
 }
 
@@ -108,7 +108,10 @@ body {
   border-bottom: 6px solid var(--fg);
 }
 
-.person:nth-child(even) {
+.person[data-row-variant="1"],
+.person[data-row-variant="3"],
+.person[data-row-variant="5"],
+.person[data-row-variant="7"] {
   background: var(--accent);
   color: var(--paper);
 }
@@ -116,7 +119,7 @@ body {
 .version {
   font-family: 'Archivo Black', sans-serif;
   font-weight: 900;
-  font-size: clamp(4rem, 14vw, 9rem);
+  --version-size: clamp(4rem, 14vw, 9rem);
   letter-spacing: -0.06em;
   line-height: 0.85;
   margin-bottom: 0.75rem;
@@ -161,4 +164,91 @@ body {
 @keyframes brut-shift {
   0%, 100% { transform: translate(0, 0); }
   50%      { transform: translate(-6px, -6px); }
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   The largest type on the page, because nothing here is de-emphasised. */
+
+.countdown {
+  margin: 0;
+  padding: 1.5rem 1.25rem;
+  background: var(--fg);
+  color: var(--bg);
+  border-top: 6px solid var(--fg);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0;
+  text-align: left;
+  opacity: 1;
+}
+
+.countdown::before {
+  display: block;
+  font-size: clamp(3.5rem, 16vw, 10rem);
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  content: "T MINUS";
+}
+
+.countdown::after {
+  display: block;
+  font-size: clamp(3.5rem, 16vw, 10rem);
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  color: var(--accent);
+  content: "SOON";
+}
+
+body[data-countdown="0"] .countdown::after { content: "ZERO"; }
+body[data-countdown="1"] .countdown::after { content: "1"; }
+body[data-countdown="2"] .countdown::after { content: "2"; }
+body[data-countdown="3"] .countdown::after { content: "3"; }
+body[data-countdown="4"] .countdown::after { content: "4"; }
+body[data-countdown="5"] .countdown::after { content: "5"; }
+body[data-countdown="6"] .countdown::after { content: "6"; }
+body[data-countdown="7"] .countdown::after { content: "7"; }
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   Same scale as everything else. The point is that the sender's words are not
+   the quiet part of the page. */
+
+.card-message {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--fg);
+  border: 6px solid var(--fg);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-recipient {
+  margin: 0;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 6px solid var(--fg);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(1.4rem, 6vw, 2.6rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.card-note {
+  margin: 0;
+  padding: 1.25rem;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(1.5rem, 5.5vw, 2.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.card-from {
+  margin: 0;
+  padding: 0.9rem 1.25rem;
+  background: var(--accent);
+  color: var(--paper);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(1.1rem, 4vw, 1.8rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
 }

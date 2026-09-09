@@ -34,7 +34,7 @@ export const THEMES = [
     blurb: 'Instant photos taped to the page, each one tilted a degree or two off true.' },
   { name: 'fridge',      label: 'Fridge Door', home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'Warm cream and handwritten Caveat. Built for a page with the whole household on it.' },
-  { name: 'brutalist',   label: 'Brutalist',   home: 'birthday', animate: false, chime: null,      card: false,
+  { name: 'brutalist',   label: 'Brutalist',   home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Yellow, red and black, type set far too large. Refuses to be tasteful.' },
   { name: 'interchange', label: 'Interchange', home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'A black transit map where every person gets their own coloured route bullet.' },
