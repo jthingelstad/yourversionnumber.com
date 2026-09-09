@@ -38,7 +38,7 @@ export const THEMES = [
     blurb: 'Yellow, red and black, type set far too large. Refuses to be tasteful.' },
   { name: 'interchange', label: 'Interchange', home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'A black transit map where every person gets their own coloured route bullet.' },
-  { name: 'terminal',    label: 'Terminal',    home: 'birthday', animate: true,  chime: null,      card: false,
+  { name: 'terminal',    label: 'Terminal',    home: 'birthday', animate: true,  chime: null,      card: true,
     blurb: 'Green on black at a blinking prompt. Your age as command output.' },
   { name: 'gameboy',     label: 'Gameboy',     home: 'birthday', animate: true,  chime: null,      card: false,
     blurb: 'The DMG palette and a cartridge silhouette. Four shades of green is plenty.' },

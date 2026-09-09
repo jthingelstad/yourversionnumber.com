@@ -11,7 +11,7 @@
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, "Courier New", monospace;
+  font-family: "SF Mono", Menlo, Consolas, "Courier New", monospace;
   font-size: 15px;
   line-height: 1.5;
   text-shadow: 0 0 2px rgba(0, 255, 102, 0.5);
@@ -236,4 +236,91 @@ body::before {
 }
 @keyframes scanline-drift {
   to { background-position-y: 200px; }
+}
+
+/* ── uptime ────────────────────────────────────────────────────────────────
+   Absorbs the job pixel and arcade were doing. A terminal that has been open
+   a while says so. */
+
+
+.people::after {
+  content: "$ uptime\00000A  up 4 decades, 2 users, load average: 0.04 0.09 0.11";
+  display: block;
+  white-space: pre-line;
+  margin-top: 1.5rem;
+  color: var(--dim, #0a7a3a);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   `at` is the right command: it runs a thing once, later. */
+
+.countdown {
+  margin: 1.25rem 0 0;
+  color: var(--fg);
+  font-size: 0.95rem;
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "$ at ";
+  opacity: 0.7;
+}
+
+.countdown::after {
+  content: "\00000Ajob 1 queued";
+  display: block;
+  white-space: pre-line;
+  opacity: 0.6;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   A wall broadcast. The terminal never boxes anything, so neither does this. */
+
+.card-message {
+  margin: 1.5rem 0 0;
+  color: var(--fg);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-from {
+  margin: 0;
+  order: -1;
+  opacity: 0.75;
+}
+
+.card-from::before { content: "Broadcast message from "; }
+.card-from::after { content: "@yvn (pts/0):"; }
+
+.card-recipient {
+  margin: 0.2rem 0 0.8rem;
+  opacity: 0.6;
+}
+
+.card-recipient::before { content: "to: "; }
+
+.card-note {
+  margin: 0;
+  color: var(--fg);
+}
+
+/* A fresh prompt with a blinking block cursor, because that is what you get
+   back after a broadcast lands. */
+.card-note::after {
+  content: "\00000A$ \25AE";
+  display: block;
+  white-space: pre-line;
+  animation: terminal-card-cursor 1.05s steps(2, end) infinite;
+}
+
+@keyframes terminal-card-cursor {
+  50% { opacity: 0.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-note::after { animation: none; }
 }
