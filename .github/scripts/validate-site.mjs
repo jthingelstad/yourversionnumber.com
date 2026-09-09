@@ -127,7 +127,8 @@ for (const themeFile of (await readdir(resolve(repoRoot, "assets/themes")))
 }
 
 // The UI stopped asking for contributions; keep it that way.
-for (const page of ["index.html", "about/index.html", "themes/index.html", "examples/index.html"]) {
+for (const page of ["index.html", "about/index.html", "themes/index.html", "examples/index.html",
+                    "birthday/assets/app.js", "work/assets/app.js"]) {
   const html = await readFile(resolve(repoRoot, page), "utf8");
   if (/pull request|CONTRIBUTING\.md|your theme here/i.test(html)) {
     failures.push(`${page}: contribution call-to-action is back`);

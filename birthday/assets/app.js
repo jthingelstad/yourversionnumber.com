@@ -236,7 +236,7 @@ function render() {
 
   const attribution = document.createElement('div');
   attribution.className = 'site-attribution';
-  attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a> &mdash; new themes welcome via pull request. Bookmark this URL to save what’s here, or ';
+  attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. Bookmark this URL to save what’s here, or ';
   attribution.appendChild(makeShareButton());
   attribution.appendChild(document.createTextNode('.'));
   footer.appendChild(attribution);
