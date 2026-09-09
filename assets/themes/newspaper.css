@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@500;700&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Inter:wght@500;700&family=Special+Elite&display=swap');
 
 :root {
   --paper: #f4f0e6;
@@ -129,10 +129,11 @@ body {
   padding: 1.25rem 0;
   width: 100%;
   position: relative;
+  transition: opacity 220ms;
 }
 
 .person::before {
-  content: "SECTION";
+  content: "NEWS";
   position: absolute;
   top: -0.75em;
   left: 50%;
@@ -194,7 +195,6 @@ body {
   font-style: normal;
 }
 
-.person { transition: opacity 220ms; }
 .person:hover { opacity: 0.85; }
 .person.is-bumping { animation: news-print 0.9s steps(6, end); }
 @keyframes news-print {
@@ -203,5 +203,129 @@ body {
   100% { filter: contrast(1) brightness(1); }
 }
 
-.site-title{letter-spacing:.02em;}
-.person{border-bottom:1px solid #c9c9c9;}
+
+/* ── Sections ──────────────────────────────────────────────────────────────
+   Every row said "SECTION". A broadsheet has sections. */
+
+.person[data-row-variant="0"]::before { content: "SPORTS"; }
+.person[data-row-variant="1"]::before { content: "OBITUARIES"; }
+.person[data-row-variant="2"]::before { content: "CLASSIFIEDS"; }
+.person[data-row-variant="3"]::before { content: "WEATHER"; }
+.person[data-row-variant="4"]::before { content: "ARTS"; }
+.person[data-row-variant="5"]::before { content: "BUSINESS"; }
+.person[data-row-variant="6"]::before { content: "LETTERS"; }
+.person[data-row-variant="7"]::before { content: "CROSSWORD"; }
+
+/* ── Dateline ──────────────────────────────────────────────────────────────
+   A paper knows what day it is (hook 5). */
+
+.site-header::after {
+  content: "LATE EDITION";
+  display: block;
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--rule, #2b2621);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--muted, #6b625a);
+}
+
+body[data-weekday="sun"] .site-header::after { content: "SUNDAY EDITION"; }
+body[data-weekday="mon"] .site-header::after { content: "MONDAY \00B7 LATE EDITION"; }
+body[data-weekday="tue"] .site-header::after { content: "TUESDAY \00B7 LATE EDITION"; }
+body[data-weekday="wed"] .site-header::after { content: "WEDNESDAY \00B7 LATE EDITION"; }
+body[data-weekday="thu"] .site-header::after { content: "THURSDAY \00B7 LATE EDITION"; }
+body[data-weekday="fri"] .site-header::after { content: "FRIDAY \00B7 WEEKEND SUPPLEMENT"; }
+body[data-weekday="sat"] .site-header::after { content: "SATURDAY \00B7 LATE EDITION"; }
+
+/* ── Two-column intro ──────────────────────────────────────────────────────
+   A broadsheet sets its standfirst in columns once there is room. */
+
+@media (min-width: 720px) {
+  .intro {
+    column-count: 2;
+    column-gap: 2rem;
+    column-rule: 1px solid var(--rule, #2b2621);
+    text-align: justify;
+    hyphens: auto;
+  }
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   Held the front page. */
+
+.countdown {
+  margin: 1.75rem 0 0;
+  padding: 0.75rem 1rem 0.85rem;
+  border: 3px double var(--ink, #17130f);
+  text-align: center;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1rem;
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "STOP PRESS";
+  display: block;
+  margin-bottom: 0.35rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   A letter to the editor. */
+
+.card-message {
+  margin: 1.75rem 0 0;
+  padding: 1.1rem 0 0;
+  border-top: 3px double var(--ink, #17130f);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-message::before {
+  content: "LETTERS TO THE EDITOR";
+  order: -2;
+  margin-bottom: 0.7rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-align: center;
+}
+
+.card-recipient {
+  order: -1;
+  margin: 0 0 0.5rem;
+  font-family: 'Old Standard TT', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.card-recipient::before { content: "SIR — on the occasion of "; font-size: 0.72rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.card-note {
+  margin: 0;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.card-from {
+  margin: 0.8rem 0 0;
+  font-family: 'Old Standard TT', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.card-from::before { content: "— "; }

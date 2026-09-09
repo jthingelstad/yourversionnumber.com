@@ -154,11 +154,11 @@ const SYSTEM_FAMILIES = new Set([
 ]);
 
 // Shrink these as phase 3 lands. Do not add to them.
-const FONT_IMPORT_BASELINE = new Set(["newspaper.css"]);
+const FONT_IMPORT_BASELINE = new Set([]);
 // Themes that already re-declare a selector. Shrink as each is rebuilt.
 const DUPLICATE_SELECTOR_BASELINE = new Set([
   "birthday.css", "brutalist.css", "cubicle.css", "memphis.css",
-  "newspaper.css", "ooo.css", "severe.css", "terminal.css",
+  "ooo.css", "severe.css", "terminal.css",
   "zen.css",
 ]);
 

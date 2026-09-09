@@ -26,7 +26,7 @@ export const THEMES = [
     blurb: 'Quiet cream, generous space, one vermillion first-letter doing all the work.' },
   { name: 'receipt',     label: 'Receipt',     home: 'birthday', animate: false, chime: 'tick',    card: true,
     blurb: 'Thermal-printer monospace, QTY 1, thank you for your business.' },
-  { name: 'newspaper',   label: 'Newspaper',   home: 'birthday', animate: false, chime: null,      card: false,
+  { name: 'newspaper',   label: 'Newspaper',   home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Broadsheet typography and section rules. Your age, above the fold.' },
   { name: 'vinyl',       label: 'Vinyl',       home: 'birthday', animate: true,  chime: 'crackle', card: true,
     blurb: 'Records spinning at 33⅓, one per person, forever mid-side-A.' },
