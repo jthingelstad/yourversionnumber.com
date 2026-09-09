@@ -1,0 +1,12 @@
+<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box}body{margin:0;background:#222;font:11px monospace;color:#bbb;
+display:grid;grid-template-columns:repeat(3,420px);gap:6px;padding:6px}
+span{display:block;padding:2px}iframe{width:420px;height:900px;border:0}
+</style></head><body>
+<div><span>gameboy sprites + rating badge</span><iframe src="/birthday/?theme=gameboy&p=Ada:1979-04-12&p=Grace:1991-11-30&p=Linus:2015-06-08&p=Hedy:1914-11-09"></iframe></div>
+<div><span>gameboy countdown XP bar (5d)</span><iframe src="/birthday/?theme=gameboy&p=Soon:1976-09-14"></iframe></div>
+<div><span>gameboy card dialogue</span><iframe id="c" src="/birthday/?theme=gameboy&p=Sara:1981-03-02"></iframe></div>
+<script>c.addEventListener('load',e=>{const d=e.target.contentDocument,a=d.getElementById('app');
+const b=d.createElement('div');b.className='card-message';b.dataset.occasion='birthday';
+b.innerHTML='<p class="card-recipient">Sara</p><p class="card-note">Four whole decades and still no breaking changes.</p><p class="card-from">Jamie</p>';
+a.insertBefore(b,a.querySelector('.site-footer'));});</script></body></html>

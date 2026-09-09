@@ -149,6 +149,7 @@ body {
 }
 
 .version {
+  position: relative;
   color: var(--up);
   font-family: inherit;
   font-weight: 700;
@@ -226,9 +227,6 @@ body[data-tenure-anniversary="true"] .version {
   opacity: 0.45;
 }
 
-.version {
-  position: relative;
-}
 
 .version::after {
   content: "";

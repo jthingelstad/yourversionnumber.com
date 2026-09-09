@@ -125,6 +125,10 @@ body::before {
   gap: 0.75rem;
   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
 }
+@media (max-width: 719px) {
+  .person { aspect-ratio: 3 / 4; min-height: 0; }
+}
+
 @media (min-width: 720px) {
   .person { aspect-ratio: 16 / 9; min-height: 0; }
 }
@@ -170,10 +174,6 @@ body::before {
   --version-size: clamp(3rem, 9vw, 6rem);
   --version-leading: 0.95;
   margin: 0;
-  background: linear-gradient(180deg, var(--fg), var(--accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 .version::after {
   content: "▸ Synergized cross-functional outcomes\A▸ Best-in-class velocity (YoY)\A▸ Robust pipeline of strategic initiatives";
@@ -282,7 +282,7 @@ body::before {
 }
 
 body[data-quarter-start="true"] .person::before {
-  content: "Q2 BUSINESS REVIEW  ·  CONFIDENTIAL  ·  🚀  NEW QUARTER, NEW ME";
+  content: "Q2 BUSINESS REVIEW  ·  CONFIDENTIAL  ·  NEW QUARTER, NEW ME";
   color: #34d399;
   border-bottom-color: #34d399;
 }
@@ -296,3 +296,110 @@ body[data-tenure-anniversary="true"] .person-name::after {
   font-weight: 700;
   font-size: 0.8em;
 }
+
+/* ── KPI rail ──────────────────────────────────────────────────────────────
+   Salvaged from boardroom, which is retired. The copy is the joke, so it is
+   kept intact; only the delivery changes — a rail along the foot of the slide
+   rather than a card of its own. */
+
+.version::before {
+  content: "ARR  $4.2M     BURN  $0.9M/mo     RUNWAY  18mo     HEADCOUNT  47";
+  display: block;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--muted, #6b7280);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.person[data-row-variant="1"] .version::before { content: "ARR  $7.1M     BURN  $1.1M/mo     RUNWAY  24mo     HEADCOUNT  62"; }
+.person[data-row-variant="2"] .version::before { content: "ARR  $2.4M     BURN  $0.6M/mo     RUNWAY  21mo     HEADCOUNT  29"; }
+.person[data-row-variant="3"] .version::before { content: "NPS  +18     CSAT  94%     CHURN  1.1%     EXPANSION  118%"; }
+.person[data-row-variant="4"] .version::before { content: "PAYBACK  <9mo     CAC  $11.4k     LTV  $92k     MAGIC NO.  1.3"; }
+.person[data-row-variant="5"] .version::before { content: "LOGO GROWTH  38%     PIPELINE  $14M     WIN RATE  31%"; }
+.person[data-row-variant="6"] .version::before { content: "NET RETENTION  110%     GROSS MARGIN  78%     RULE OF 40  46"; }
+.person[data-row-variant="7"] .version::before { content: "VELOCITY  4.2x YoY     ABOVE PLAN  14%     MoM  23%"; }
+
+/* Delta badge, top-right of the slide. Always up and to the right. */
+.person-name::after {
+  content: "\2191 23% MoM";
+  float: right;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  background: #e6f6ec;
+  color: #1c6b32;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.person[data-row-variant="1"] .person-name::after { content: "\2191 4.2x YoY"; }
+.person[data-row-variant="2"] .person-name::after { content: "\2191 14% above plan"; }
+.person[data-row-variant="3"] .person-name::after { content: "\2191 NPS +18"; }
+.person[data-row-variant="4"] .person-name::after { content: "\2191 ARR $4.2M"; }
+.person[data-row-variant="5"] .person-name::after { content: "\2191 38% logo growth"; }
+.person[data-row-variant="6"] .person-name::after { content: "\2191 payback < 9mo"; }
+.person[data-row-variant="7"] .person-name::after { content: "\2191 110% net retention"; }
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   An agenda item nobody will get to. */
+
+.countdown {
+  margin: 1.5rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border-left: 4px solid var(--accent, #d97706);
+  background: rgba(0, 0, 0, 0.03);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "NEXT SLIDE \00B7 ";
+  font-weight: 700;
+  color: var(--accent, #d97706);
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   The one slide with no bullets. */
+
+.card-message {
+  margin: 1.5rem 0 0;
+  padding: 2.5rem 2rem;
+  aspect-ratio: 16 / 9;
+  background: #fff;
+  border: 1px solid var(--rule, rgba(0, 0, 0, 0.15));
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-recipient {
+  margin: 0 0 0.9rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted, #6b7280);
+}
+
+.card-note {
+  margin: 0;
+  font-size: clamp(1.15rem, 3vw, 1.9rem);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+.card-from {
+  margin: 1.2rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted, #6b7280);
+}
+
+.card-from::before { content: "— "; }

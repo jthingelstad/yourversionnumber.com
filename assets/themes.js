@@ -58,7 +58,7 @@ export const THEMES = [
     blurb: 'A grid with row numbers, because eventually everything becomes a spreadsheet.' },
   { name: 'ticker',      label: 'Ticker',      home: 'work',     animate: true,  chime: 'tick',    card: true,
     blurb: 'A live ticker on a black trading screen. Your career, but as a stock.' },
-  { name: 'slidedeck',   label: 'Slide Deck',  home: 'work',     animate: false, chime: null,      card: false,
+  { name: 'slidedeck',   label: 'Slide Deck',  home: 'work',     animate: false, chime: null,      card: true,
     blurb: 'A confidential business review slide, three bullets, no further context offered.' },
   { name: 'unread',      label: 'Unread',      home: 'work',     animate: false, chime: null,      card: false,
     blurb: 'An inbox view where every role is an unread thread you cannot archive.' },

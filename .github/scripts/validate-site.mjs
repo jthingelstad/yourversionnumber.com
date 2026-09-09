@@ -155,8 +155,15 @@ const SYSTEM_FAMILIES = new Set([
 
 // Shrink these as phase 3 lands. Do not add to them.
 const FONT_IMPORT_BASELINE = new Set(["newspaper.css"]);
+// Themes that already re-declare a selector. Shrink as each is rebuilt.
+const DUPLICATE_SELECTOR_BASELINE = new Set([
+  "birthday.css", "brutalist.css", "cubicle.css", "memphis.css",
+  "newspaper.css", "ooo.css", "severe.css", "tarot.css", "terminal.css",
+  "zen.css",
+]);
+
 const EMOJI_BASELINE = new Set([
-  "progress.css", "slidedeck.css",
+  "progress.css",
   "steampunk.css", "tarot.css", "unread.css",
 ]);
 
@@ -197,6 +204,21 @@ for (const file of (await readdir(resolve(repoRoot, "assets/themes"))).filter((f
   // Four of these shipped in ooo alone. Six-digit escapes cannot do it.
   for (const m of css.matchAll(/\\A[0-9a-fA-F]/g)) {
     failures.push(`assets/themes/${file}: ${m[0]} is one escape, not a newline — write \\00000A`);
+  }
+
+  // E — the audit's "appended sediment": a selector declared twice in one file,
+  // where the second block silently overrides the first. Baselined like A and B.
+  if (!DUPLICATE_SELECTOR_BASELINE.has(file)) {
+    const seen = new Set();
+    const dupes = new Set();
+    for (const m of css.matchAll(/^([^\s@}/][^{]*)\{/gm)) {
+      const sel = m[1].trim().replace(/\s+/g, " ").replace(/,$/, "");
+      if (seen.has(sel)) dupes.add(sel);
+      seen.add(sel);
+    }
+    for (const sel of dupes) {
+      failures.push(`assets/themes/${file}: ${sel} is declared twice — merge it`);
+    }
   }
 
   // C — no !important. After hook 1 there is no reason for it, and its presence

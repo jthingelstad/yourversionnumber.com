@@ -110,6 +110,8 @@ body {
 .people {
   gap: 0;
   margin: 0;
+  counter-reset: row;
+  border-bottom: 1px solid var(--grid);
 }
 
 .person {
@@ -134,10 +136,6 @@ body {
   padding: 0.5rem 0;
 }
 
-.people {
-  counter-reset: row;
-  border-bottom: 1px solid var(--grid);
-}
 
 .person-name {
   grid-column: 2;

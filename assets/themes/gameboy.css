@@ -162,6 +162,7 @@ body {
 }
 
 .version {
+  position: relative;
   grid-area: version;
   font-family: 'VT323', monospace;
   font-weight: 400;
@@ -219,9 +220,6 @@ body {
    straight off --major with stacked opacity clamps — content: cannot branch on
    a number, so each band is its own box and only one is ever opaque. */
 
-.version {
-  position: relative;
-}
 
 .version::before,
 .version::after {
