@@ -127,10 +127,10 @@ body {
   position: relative;
 }
 
-.person:nth-child(4n+1) { box-shadow: 8px 8px 0 var(--pink); }
-.person:nth-child(4n+2) { box-shadow: 8px 8px 0 var(--teal); }
-.person:nth-child(4n+3) { box-shadow: 8px 8px 0 var(--yellow); }
-.person:nth-child(4n) { box-shadow: 8px 8px 0 var(--purple); }
+.person[data-row-variant="0"], .person[data-row-variant="4"] { box-shadow: 8px 8px 0 var(--pink); }
+.person[data-row-variant="1"], .person[data-row-variant="5"] { box-shadow: 8px 8px 0 var(--teal); }
+.person[data-row-variant="2"], .person[data-row-variant="6"] { box-shadow: 8px 8px 0 var(--yellow); }
+.person[data-row-variant="3"], .person[data-row-variant="7"] { box-shadow: 8px 8px 0 var(--purple); }
 
 .person::before {
   content: "";
@@ -144,13 +144,16 @@ body {
   border-radius: 50%;
 }
 
-.person:nth-child(2n)::before {
+.person[data-row-variant="1"]::before,
+.person[data-row-variant="3"]::before,
+.person[data-row-variant="5"]::before {
   background: var(--teal);
   border-radius: 0;
   transform: rotate(45deg);
 }
 
-.person:nth-child(3n)::before {
+.person[data-row-variant="2"]::before,
+.person[data-row-variant="6"]::before {
   background: var(--pink);
   border-radius: 0;
   width: 36px;
@@ -164,9 +167,14 @@ body {
   font-family: 'Bungee', cursive;
   font-weight: 400;
   letter-spacing: 0.02em;
-  color: var(--purple);
-  -webkit-text-stroke: 2px var(--black);
-  text-shadow: 5px 5px 0 var(--yellow);
+  color: #eef1f6;
+  -webkit-text-stroke: 2.5px var(--black);
+  paint-order: stroke fill;
+  text-shadow:
+    0 -2px 0 #ffffff,
+    0 2px 0 #8e97a6,
+    0 4px 0 #5c6472,
+    5px 5px 0 var(--yellow);
   margin-bottom: 0.85rem;
   line-height: 0.95;
 }
@@ -212,3 +220,109 @@ body {
   25%      { transform: rotate(calc(var(--row-tilt, 0deg) + 2deg)) translateX(2px); }
   75%      { transform: rotate(calc(var(--row-tilt, 0deg) - 2deg)) translateX(-2px); }
 }
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   One more squiggle for every day still to go. Eight are drawn and each is
+   revealed only while --days-until is at least that high, so the row genuinely
+   thins out as the date approaches. */
+
+.countdown {
+  margin: 2rem 0 0;
+  padding: 1rem 1.1rem 1.1rem;
+  background: var(--bg);
+  border: 3px solid var(--black);
+  box-shadow: 8px 8px 0 var(--teal);
+  font-family: 'Bungee', cursive;
+  font-size: 0.95rem;
+  color: var(--black);
+  opacity: 1;
+}
+
+.countdown::after {
+  content: "";
+  display: flex;
+  gap: 6px;
+  margin-top: 0.7rem;
+  height: 18px;
+  background-repeat: no-repeat;
+  background-size: 26px 18px;
+  background-image:
+    var(--squiggle), var(--squiggle), var(--squiggle), var(--squiggle),
+    var(--squiggle), var(--squiggle), var(--squiggle);
+  background-position:
+    0 0, 32px 0, 64px 0, 96px 0, 128px 0, 160px 0, 192px 0;
+  --squiggle: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='18' viewBox='0 0 26 18'><path d='M1 12 Q6 2 12 9 T25 6' fill='none' stroke='%23ff4f8b' stroke-width='3' stroke-linecap='round'/></svg>");
+}
+
+body[data-countdown="0"] .countdown::after,
+body[data-countdown="1"] .countdown::after { background-image: var(--squiggle); }
+body[data-countdown="2"] .countdown::after { background-image: var(--squiggle), var(--squiggle); }
+body[data-countdown="3"] .countdown::after { background-image: var(--squiggle), var(--squiggle), var(--squiggle); }
+body[data-countdown="4"] .countdown::after { background-image: var(--squiggle), var(--squiggle), var(--squiggle), var(--squiggle); }
+body[data-countdown="5"] .countdown::after { background-image: var(--squiggle), var(--squiggle), var(--squiggle), var(--squiggle), var(--squiggle); }
+body[data-countdown="6"] .countdown::after { background-image: var(--squiggle), var(--squiggle), var(--squiggle), var(--squiggle), var(--squiggle), var(--squiggle); }
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   A speech bubble with no radius anywhere and a tail cut, not curved. */
+
+.card-message {
+  position: relative;
+  max-width: 22rem;
+  margin: 2.5rem auto 1.5rem;
+  padding: 1.1rem 1.2rem 1.2rem;
+  background: #fff;
+  border: 3px solid var(--black);
+  box-shadow: 8px 8px 0 var(--purple);
+  transform: rotate(-2deg);
+}
+
+.card-message::after {
+  content: "";
+  position: absolute;
+  left: 2.2rem;
+  bottom: -22px;
+  width: 30px;
+  height: 22px;
+  background: var(--black);
+  clip-path: polygon(0 0, 100% 0, 18% 100%);
+}
+
+.card-message::before {
+  content: "";
+  position: absolute;
+  left: 2.45rem;
+  bottom: -16px;
+  width: 24px;
+  height: 17px;
+  background: #fff;
+  clip-path: polygon(0 0, 100% 0, 18% 100%);
+  z-index: 1;
+}
+
+.card-recipient {
+  margin: 0 0 0.5rem;
+  font-family: 'Bungee', cursive;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: var(--teal);
+}
+
+.card-note {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.45;
+  color: var(--black);
+}
+
+.card-from {
+  margin: 0.9rem 0 0;
+  padding-top: 0.7rem;
+  font-family: 'Bungee', cursive;
+  font-size: 0.85rem;
+  color: var(--pink);
+  /* squiggle rule, in the second accent */
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='7' viewBox='0 0 40 7'><path d='M1 5 Q6 1 11 4 T21 4 T31 4 T39 4' fill='none' stroke='%2300c2b8' stroke-width='2.5' stroke-linecap='round'/></svg>") repeat-x top left / 40px 7px;
+}
+
+.card-from::before { content: "— "; }

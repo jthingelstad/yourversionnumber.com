@@ -335,15 +335,19 @@ body[data-tenure-anniversary="true"] .person-name::after {
   font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.06em;
+  white-space: nowrap;
+  max-width: 45%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .person[data-row-variant="1"] .person-name::after { content: "\2191 4.2x YoY"; }
-.person[data-row-variant="2"] .person-name::after { content: "\2191 14% above plan"; }
+.person[data-row-variant="2"] .person-name::after { content: "\2191 14% vs plan"; }
 .person[data-row-variant="3"] .person-name::after { content: "\2191 NPS +18"; }
 .person[data-row-variant="4"] .person-name::after { content: "\2191 ARR $4.2M"; }
-.person[data-row-variant="5"] .person-name::after { content: "\2191 38% logo growth"; }
-.person[data-row-variant="6"] .person-name::after { content: "\2191 payback < 9mo"; }
-.person[data-row-variant="7"] .person-name::after { content: "\2191 110% net retention"; }
+.person[data-row-variant="5"] .person-name::after { content: "\2191 +38% logos"; }
+.person[data-row-variant="6"] .person-name::after { content: "\2191 payback 9mo"; }
+.person[data-row-variant="7"] .person-name::after { content: "\2191 NRR 110%"; }
 
 /* ── Countdown ─────────────────────────────────────────────────────────────
    An agenda item nobody will get to. */
