@@ -40,7 +40,7 @@ export const THEMES = [
     blurb: 'A black transit map where every person gets their own coloured route bullet.' },
   { name: 'terminal',    label: 'Terminal',    home: 'birthday', animate: true,  chime: null,      card: true,
     blurb: 'Green on black at a blinking prompt. Your age as command output.' },
-  { name: 'gameboy',     label: 'Gameboy',     home: 'birthday', animate: true,  chime: null,      card: false,
+  { name: 'gameboy',     label: 'Gameboy',     home: 'birthday', animate: true,  chime: null,      card: true,
     blurb: 'The DMG palette and a cartridge silhouette. Four shades of green is plenty.' },
   { name: 'tarot',       label: 'Tarot',       home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'Purple and stars, with the Fool, the Priestess and the Empress dealt across the table.' },

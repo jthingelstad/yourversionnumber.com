@@ -102,7 +102,7 @@ body {
 }
 
 .intro::before {
-  content: "★ PRESS START ";
+  content: "PRESS START ";
   font-weight: 700;
   color: var(--lcd-4);
 }
@@ -128,23 +128,28 @@ body {
   align-items: center;
 }
 
+/* Eight sprites, drawn at 8x8 with crispEdges so they stay pixels instead of
+   arriving as whatever dingbat the visitor's OS has. */
 .person::before {
   grid-area: icon;
   grid-row: span 2;
-  content: "♥";
-  font-size: 1.6rem;
-  color: var(--lcd-4);
+  content: "";
   width: 32px;
-  text-align: center;
+  height: 32px;
+  align-self: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+  image-rendering: pixelated;
 }
-.person[data-row-variant="0"]::before { content: "♥"; }
-.person[data-row-variant="1"]::before { content: "★"; }
-.person[data-row-variant="2"]::before { content: "♦"; }
-.person[data-row-variant="3"]::before { content: "♣"; }
-.person[data-row-variant="4"]::before { content: "✦"; }
-.person[data-row-variant="5"]::before { content: "♪"; }
-.person[data-row-variant="6"]::before { content: "✶"; }
-.person[data-row-variant="7"]::before { content: "✧"; }
+.person[data-row-variant="0"]::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect x='1' y='0' width='1' height='1' fill='%231a2010'/><rect x='2' y='0' width='1' height='1' fill='%231a2010'/><rect x='5' y='0' width='1' height='1' fill='%231a2010'/><rect x='6' y='0' width='1' height='1' fill='%231a2010'/><rect x='0' y='1' width='1' height='1' fill='%231a2010'/><rect x='1' y='1' width='1' height='1' fill='%231a2010'/><rect x='2' y='1' width='1' height='1' fill='%231a2010'/><rect x='3' y='1' width='1' height='1' fill='%231a2010'/><rect x='4' y='1' width='1' height='1' fill='%231a2010'/><rect x='5' y='1' width='1' height='1' fill='%231a2010'/><rect x='6' y='1' width='1' height='1' fill='%231a2010'/><rect x='7' y='1' width='1' height='1' fill='%231a2010'/><rect x='0' y='2' width='1' height='1' fill='%231a2010'/><rect x='1' y='2' width='1' height='1' fill='%231a2010'/><rect x='2' y='2' width='1' height='1' fill='%231a2010'/><rect x='3' y='2' width='1' height='1' fill='%231a2010'/><rect x='4' y='2' width='1' height='1' fill='%231a2010'/><rect x='5' y='2' width='1' height='1' fill='%231a2010'/><rect x='6' y='2' width='1' height='1' fill='%231a2010'/><rect x='7' y='2' width='1' height='1' fill='%231a2010'/><rect x='0' y='3' width='1' height='1' fill='%231a2010'/><rect x='1' y='3' width='1' height='1' fill='%231a2010'/><rect x='2' y='3' width='1' height='1' fill='%231a2010'/><rect x='3' y='3' width='1' height='1' fill='%231a2010'/><rect x='4' y='3' width='1' height='1' fill='%231a2010'/><rect x='5' y='3' width='1' height='1' fill='%231a2010'/><rect x='6' y='3' width='1' height='1' fill='%231a2010'/><rect x='7' y='3' width='1' height='1' fill='%231a2010'/><rect x='1' y='4' width='1' height='1' fill='%231a2010'/><rect x='2' y='4' width='1' height='1' fill='%231a2010'/><rect x='3' y='4' width='1' height='1' fill='%231a2010'/><rect x='4' y='4' width='1' height='1' fill='%231a2010'/><rect x='5' y='4' width='1' height='1' fill='%231a2010'/><rect x='6' y='4' width='1' height='1' fill='%231a2010'/><rect x='2' y='5' width='1' height='1' fill='%231a2010'/><rect x='3' y='5' width='1' height='1' fill='%231a2010'/><rect x='4' y='5' width='1' height='1' fill='%231a2010'/><rect x='5' y='5' width='1' height='1' fill='%231a2010'/><rect x='3' y='6' width='1' height='1' fill='%231a2010'/><rect x='4' y='6' width='1' height='1' fill='%231a2010'/></svg>"); }
+.person[data-row-variant="1"]::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect x='3' y='0' width='1' height='1' fill='%231a2010'/><rect x='4' y='0' width='1' height='1' fill='%231a2010'/><rect x='3' y='1' width='1' height='1' fill='%231a2010'/><rect x='4' y='1' width='1' height='1' fill='%231a2010'/><rect x='0' y='2' width='1' height='1' fill='%231a2010'/><rect x='1' y='2' width='1' height='1' fill='%231a2010'/><rect x='2' y='2' width='1' height='1' fill='%231a2010'/><rect x='3' y='2' width='1' height='1' fill='%231a2010'/><rect x='4' y='2' width='1' height='1' fill='%231a2010'/><rect x='5' y='2' width='1' height='1' fill='%231a2010'/><rect x='6' y='2' width='1' height='1' fill='%231a2010'/><rect x='7' y='2' width='1' height='1' fill='%231a2010'/><rect x='1' y='3' width='1' height='1' fill='%231a2010'/><rect x='2' y='3' width='1' height='1' fill='%231a2010'/><rect x='3' y='3' width='1' height='1' fill='%231a2010'/><rect x='4' y='3' width='1' height='1' fill='%231a2010'/><rect x='5' y='3' width='1' height='1' fill='%231a2010'/><rect x='6' y='3' width='1' height='1' fill='%231a2010'/><rect x='2' y='4' width='1' height='1' fill='%231a2010'/><rect x='3' y='4' width='1' height='1' fill='%231a2010'/><rect x='4' y='4' width='1' height='1' fill='%231a2010'/><rect x='5' y='4' width='1' height='1' fill='%231a2010'/><rect x='1' y='5' width='1' height='1' fill='%231a2010'/><rect x='2' y='5' width='1' height='1' fill='%231a2010'/><rect x='5' y='5' width='1' height='1' fill='%231a2010'/><rect x='6' y='5' width='1' height='1' fill='%231a2010'/><rect x='0' y='6' width='1' height='1' fill='%231a2010'/><rect x='1' y='6' width='1' height='1' fill='%231a2010'/><rect x='6' y='6' width='1' height='1' fill='%231a2010'/><rect x='7' y='6' width='1' height='1' fill='%231a2010'/></svg>"); }
+.person[data-row-variant="2"]::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect x='3' y='0' width='1' height='1' fill='%231a2010'/><rect x='4' y='0' width='1' height='1' fill='%231a2010'/><rect x='2' y='1' width='1' height='1' fill='%231a2010'/><rect x='3' y='1' width='1' height='1' fill='%231a2010'/><rect x='4' y='1' width='1' height='1' fill='%231a2010'/><rect x='5' y='1' width='1' height='1' fill='%231a2010'/><rect x='1' y='2' width='1' height='1' fill='%231a2010'/><rect x='2' y='2' width='1' height='1' fill='%231a2010'/><rect x='3' y='2' width='1' height='1' fill='%231a2010'/><rect x='4' y='2' width='1' height='1' fill='%231a2010'/><rect x='5' y='2' width='1' height='1' fill='%231a2010'/><rect x='6' y='2' width='1' height='1' fill='%231a2010'/><rect x='0' y='3' width='1' height='1' fill='%231a2010'/><rect x='1' y='3' width='1' height='1' fill='%231a2010'/><rect x='2' y='3' width='1' height='1' fill='%231a2010'/><rect x='3' y='3' width='1' height='1' fill='%231a2010'/><rect x='4' y='3' width='1' height='1' fill='%231a2010'/><rect x='5' y='3' width='1' height='1' fill='%231a2010'/><rect x='6' y='3' width='1' height='1' fill='%231a2010'/><rect x='7' y='3' width='1' height='1' fill='%231a2010'/><rect x='1' y='4' width='1' height='1' fill='%231a2010'/><rect x='2' y='4' width='1' height='1' fill='%231a2010'/><rect x='3' y='4' width='1' height='1' fill='%231a2010'/><rect x='4' y='4' width='1' height='1' fill='%231a2010'/><rect x='5' y='4' width='1' height='1' fill='%231a2010'/><rect x='6' y='4' width='1' height='1' fill='%231a2010'/><rect x='2' y='5' width='1' height='1' fill='%231a2010'/><rect x='3' y='5' width='1' height='1' fill='%231a2010'/><rect x='4' y='5' width='1' height='1' fill='%231a2010'/><rect x='5' y='5' width='1' height='1' fill='%231a2010'/><rect x='3' y='6' width='1' height='1' fill='%231a2010'/><rect x='4' y='6' width='1' height='1' fill='%231a2010'/></svg>"); }
+.person[data-row-variant="3"]::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect x='2' y='0' width='1' height='1' fill='%231a2010'/><rect x='3' y='0' width='1' height='1' fill='%231a2010'/><rect x='4' y='0' width='1' height='1' fill='%231a2010'/><rect x='5' y='0' width='1' height='1' fill='%231a2010'/><rect x='2' y='1' width='1' height='1' fill='%231a2010'/><rect x='3' y='1' width='1' height='1' fill='%231a2010'/><rect x='4' y='1' width='1' height='1' fill='%231a2010'/><rect x='5' y='1' width='1' height='1' fill='%231a2010'/><rect x='0' y='2' width='1' height='1' fill='%231a2010'/><rect x='1' y='2' width='1' height='1' fill='%231a2010'/><rect x='3' y='2' width='1' height='1' fill='%231a2010'/><rect x='4' y='2' width='1' height='1' fill='%231a2010'/><rect x='6' y='2' width='1' height='1' fill='%231a2010'/><rect x='7' y='2' width='1' height='1' fill='%231a2010'/><rect x='0' y='3' width='1' height='1' fill='%231a2010'/><rect x='1' y='3' width='1' height='1' fill='%231a2010'/><rect x='2' y='3' width='1' height='1' fill='%231a2010'/><rect x='3' y='3' width='1' height='1' fill='%231a2010'/><rect x='4' y='3' width='1' height='1' fill='%231a2010'/><rect x='5' y='3' width='1' height='1' fill='%231a2010'/><rect x='6' y='3' width='1' height='1' fill='%231a2010'/><rect x='7' y='3' width='1' height='1' fill='%231a2010'/><rect x='0' y='4' width='1' height='1' fill='%231a2010'/><rect x='1' y='4' width='1' height='1' fill='%231a2010'/><rect x='3' y='4' width='1' height='1' fill='%231a2010'/><rect x='4' y='4' width='1' height='1' fill='%231a2010'/><rect x='6' y='4' width='1' height='1' fill='%231a2010'/><rect x='7' y='4' width='1' height='1' fill='%231a2010'/><rect x='3' y='5' width='1' height='1' fill='%231a2010'/><rect x='4' y='5' width='1' height='1' fill='%231a2010'/><rect x='2' y='6' width='1' height='1' fill='%231a2010'/><rect x='3' y='6' width='1' height='1' fill='%231a2010'/><rect x='4' y='6' width='1' height='1' fill='%231a2010'/><rect x='5' y='6' width='1' height='1' fill='%231a2010'/></svg>"); }
+.person[data-row-variant="4"]::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect x='3' y='0' width='1' height='1' fill='%231a2010'/><rect x='2' y='1' width='1' height='1' fill='%231a2010'/><rect x='3' y='1' width='1' height='1' fill='%231a2010'/><rect x='4' y='1' width='1' height='1' fill='%231a2010'/><rect x='1' y='2' width='1' height='1' fill='%231a2010'/><rect x='2' y='2' width='1' height='1' fill='%231a2010'/><rect x='3' y='2' width='1' height='1' fill='%231a2010'/><rect x='4' y='2' width='1' height='1' fill='%231a2010'/><rect x='5' y='2' width='1' height='1' fill='%231a2010'/><rect x='0' y='3' width='1' height='1' fill='%231a2010'/><rect x='1' y='3' width='1' height='1' fill='%231a2010'/><rect x='2' y='3' width='1' height='1' fill='%231a2010'/><rect x='3' y='3' width='1' height='1' fill='%231a2010'/><rect x='4' y='3' width='1' height='1' fill='%231a2010'/><rect x='5' y='3' width='1' height='1' fill='%231a2010'/><rect x='6' y='3' width='1' height='1' fill='%231a2010'/><rect x='1' y='4' width='1' height='1' fill='%231a2010'/><rect x='2' y='4' width='1' height='1' fill='%231a2010'/><rect x='3' y='4' width='1' height='1' fill='%231a2010'/><rect x='4' y='4' width='1' height='1' fill='%231a2010'/><rect x='5' y='4' width='1' height='1' fill='%231a2010'/><rect x='2' y='5' width='1' height='1' fill='%231a2010'/><rect x='3' y='5' width='1' height='1' fill='%231a2010'/><rect x='4' y='5' width='1' height='1' fill='%231a2010'/><rect x='3' y='6' width='1' height='1' fill='%231a2010'/></svg>"); }
+.person[data-row-variant="5"]::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect x='3' y='0' width='1' height='1' fill='%231a2010'/><rect x='4' y='0' width='1' height='1' fill='%231a2010'/><rect x='5' y='0' width='1' height='1' fill='%231a2010'/><rect x='6' y='0' width='1' height='1' fill='%231a2010'/><rect x='3' y='1' width='1' height='1' fill='%231a2010'/><rect x='6' y='1' width='1' height='1' fill='%231a2010'/><rect x='3' y='2' width='1' height='1' fill='%231a2010'/><rect x='3' y='3' width='1' height='1' fill='%231a2010'/><rect x='1' y='4' width='1' height='1' fill='%231a2010'/><rect x='2' y='4' width='1' height='1' fill='%231a2010'/><rect x='3' y='4' width='1' height='1' fill='%231a2010'/><rect x='0' y='5' width='1' height='1' fill='%231a2010'/><rect x='1' y='5' width='1' height='1' fill='%231a2010'/><rect x='2' y='5' width='1' height='1' fill='%231a2010'/><rect x='3' y='5' width='1' height='1' fill='%231a2010'/><rect x='1' y='6' width='1' height='1' fill='%231a2010'/><rect x='2' y='6' width='1' height='1' fill='%231a2010'/></svg>"); }
+.person[data-row-variant="6"]::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect x='0' y='0' width='1' height='1' fill='%231a2010'/><rect x='3' y='0' width='1' height='1' fill='%231a2010'/><rect x='4' y='0' width='1' height='1' fill='%231a2010'/><rect x='7' y='0' width='1' height='1' fill='%231a2010'/><rect x='1' y='1' width='1' height='1' fill='%231a2010'/><rect x='2' y='1' width='1' height='1' fill='%231a2010'/><rect x='5' y='1' width='1' height='1' fill='%231a2010'/><rect x='6' y='1' width='1' height='1' fill='%231a2010'/><rect x='2' y='2' width='1' height='1' fill='%231a2010'/><rect x='3' y='2' width='1' height='1' fill='%231a2010'/><rect x='4' y='2' width='1' height='1' fill='%231a2010'/><rect x='5' y='2' width='1' height='1' fill='%231a2010'/><rect x='0' y='3' width='1' height='1' fill='%231a2010'/><rect x='1' y='3' width='1' height='1' fill='%231a2010'/><rect x='2' y='3' width='1' height='1' fill='%231a2010'/><rect x='3' y='3' width='1' height='1' fill='%231a2010'/><rect x='4' y='3' width='1' height='1' fill='%231a2010'/><rect x='5' y='3' width='1' height='1' fill='%231a2010'/><rect x='6' y='3' width='1' height='1' fill='%231a2010'/><rect x='7' y='3' width='1' height='1' fill='%231a2010'/><rect x='2' y='4' width='1' height='1' fill='%231a2010'/><rect x='3' y='4' width='1' height='1' fill='%231a2010'/><rect x='4' y='4' width='1' height='1' fill='%231a2010'/><rect x='5' y='4' width='1' height='1' fill='%231a2010'/><rect x='1' y='5' width='1' height='1' fill='%231a2010'/><rect x='2' y='5' width='1' height='1' fill='%231a2010'/><rect x='5' y='5' width='1' height='1' fill='%231a2010'/><rect x='6' y='5' width='1' height='1' fill='%231a2010'/><rect x='0' y='6' width='1' height='1' fill='%231a2010'/><rect x='3' y='6' width='1' height='1' fill='%231a2010'/><rect x='4' y='6' width='1' height='1' fill='%231a2010'/><rect x='7' y='6' width='1' height='1' fill='%231a2010'/></svg>"); }
+.person[data-row-variant="7"]::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect x='3' y='1' width='1' height='1' fill='%231a2010'/><rect x='4' y='1' width='1' height='1' fill='%231a2010'/><rect x='2' y='2' width='1' height='1' fill='%231a2010'/><rect x='3' y='2' width='1' height='1' fill='%231a2010'/><rect x='4' y='2' width='1' height='1' fill='%231a2010'/><rect x='5' y='2' width='1' height='1' fill='%231a2010'/><rect x='1' y='3' width='1' height='1' fill='%231a2010'/><rect x='2' y='3' width='1' height='1' fill='%231a2010'/><rect x='5' y='3' width='1' height='1' fill='%231a2010'/><rect x='6' y='3' width='1' height='1' fill='%231a2010'/><rect x='2' y='4' width='1' height='1' fill='%231a2010'/><rect x='3' y='4' width='1' height='1' fill='%231a2010'/><rect x='4' y='4' width='1' height='1' fill='%231a2010'/><rect x='5' y='4' width='1' height='1' fill='%231a2010'/><rect x='3' y='5' width='1' height='1' fill='%231a2010'/><rect x='4' y='5' width='1' height='1' fill='%231a2010'/></svg>"); }
 
 .person-name {
   grid-area: name;
@@ -208,3 +213,124 @@ body {
 }
 
 .person:hover { background: var(--lcd-2); transition: background 100ms; }
+
+/* ── Age rating ────────────────────────────────────────────────────────────
+   Salvaged from cartridge, which was cut. The decade is the rating band, read
+   straight off --major with stacked opacity clamps — content: cannot branch on
+   a number, so each band is its own box and only one is ever opaque. */
+
+.version {
+  position: relative;
+}
+
+.version::before,
+.version::after {
+  position: absolute;
+  right: 0;
+  top: -0.35rem;
+  padding: 0.1rem 0.35rem;
+  border: 2px solid var(--lcd-4);
+  font-size: 0.6rem;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  color: var(--lcd-4);
+}
+
+.version::before {
+  content: "E";
+  opacity: clamp(0, calc(3 - var(--major, 0)), 1);
+}
+
+.version::after {
+  content: "M";
+  opacity: clamp(0, calc(var(--major, 0) - 2), 1);
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   An XP bar filling toward the next level. --days-until drives the width, so
+   it is genuinely fuller at one day out than at six. */
+
+.countdown {
+  margin: 1.25rem 0 0;
+  padding: 0.6rem 0.75rem 0.75rem;
+  border: 3px solid var(--lcd-4);
+  background: var(--lcd-1);
+  color: var(--lcd-4);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "NEXT LEVEL";
+  display: block;
+  font-size: 0.7rem;
+  margin-bottom: 0.35rem;
+}
+
+.countdown::after {
+  content: "";
+  display: block;
+  height: 10px;
+  margin-top: 0.5rem;
+  border: 2px solid var(--lcd-4);
+  background:
+    linear-gradient(90deg, var(--lcd-3) 0 calc((7 - var(--days-until, 7)) / 7 * 100%), transparent 0);
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   A dialogue box, with the continue marker drawn rather than typed. */
+
+.card-message {
+  position: relative;
+  margin: 1.5rem 0 0;
+  padding: 0.9rem 1.6rem 1.1rem 0.9rem;
+  border: 3px solid var(--lcd-4);
+  background: var(--lcd-1);
+  color: var(--lcd-4);
+  box-shadow: inset 0 0 0 2px var(--lcd-1), inset 0 0 0 5px var(--lcd-4);
+}
+
+.card-recipient {
+  margin: 0 0 0.4rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+}
+
+.card-recipient::after { content: ":"; }
+
+.card-note {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.card-from {
+  margin: 0.7rem 0 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+}
+
+.card-from::before { content: "— "; }
+
+/* Blinking continue marker: a drawn triangle, not the ▼ character. */
+.card-message::after {
+  content: "";
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.7rem;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid var(--lcd-4);
+  animation: gameboy-continue 1s steps(2, end) infinite;
+}
+
+@keyframes gameboy-continue {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-message::after { animation: none; }
+}
