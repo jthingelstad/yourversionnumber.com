@@ -12,6 +12,9 @@
   --rule: rgba(88, 84, 76, 0.18);
   --sand-line: rgba(88, 84, 76, 0.07);
   --stone: rgba(88, 84, 76, 0.04);
+  /* Leaf colour shifts with the season (hook 5). Summer is the default. */
+  --leaf: #4a7c3a;
+  --leaf-2: #b8956a;
 }
 
 body {
@@ -31,6 +34,12 @@ body {
       transparent 34px,
       var(--sand-line) 34px,
       var(--sand-line) 35px
+    ),
+    /* paper grain */
+    repeating-linear-gradient(
+      0deg,
+      rgba(88, 84, 76, 0.035) 0 0.5px,
+      transparent 0.5px 2.5px
     ),
     var(--paper);
   background-attachment: fixed;
@@ -323,3 +332,129 @@ body[data-birthday="true"] .version::first-letter {
 /* Slow inhale/exhale on hover. */
 .person { transition: opacity 600ms ease-out, transform 600ms ease-out; }
 .person:hover { opacity: 0.85; transform: translateX(2px); }
+
+/* ── Falling leaves ────────────────────────────────────────────────────────
+   Absorbed from nature, which is retired. Two layers at different speeds and
+   scales, so a handful of glyphs reads as many particles. The SVGs are masks
+   rather than coloured images, which is what lets one custom property repaint
+   the whole fall when the season turns. */
+
+.theme-fx::before,
+.theme-fx::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 200vh;
+  top: -100vh;
+  mask-repeat: repeat;
+  -webkit-mask-repeat: repeat;
+  opacity: 0.26;
+}
+
+.theme-fx::before {
+  background-color: var(--leaf);
+  --leaf-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'><g fill='%23000'><path d='M40 80 Q55 50 80 60 Q90 90 65 100 Q50 95 40 80 Z' opacity='0.55'/><path d='M310 220 Q330 200 350 215 Q355 240 335 248 Q315 240 310 220 Z' opacity='0.45' transform='rotate(20 330 230)'/><path d='M120 360 Q140 340 160 355 Q165 380 145 388 Q125 380 120 360 Z' opacity='0.6' transform='rotate(-15 140 370)'/><path d='M260 480 Q280 460 300 475 Q305 500 285 508 Q265 500 260 480 Z' opacity='0.4' transform='rotate(35 280 490)'/><path d='M180 140 Q200 120 220 135 Q225 160 205 168 Q185 160 180 140 Z' opacity='0.5'/><path d='M70 540 Q90 520 110 535 Q115 560 95 568 Q75 560 70 540 Z' opacity='0.5' transform='rotate(-25 90 550)'/></g></svg>");
+  mask-image: var(--leaf-mask);
+  -webkit-mask-image: var(--leaf-mask);
+  mask-size: 620px 930px;
+  -webkit-mask-size: 620px 930px;
+  animation: zen-leaf-slow 24s linear infinite;
+}
+
+.theme-fx::after {
+  background-color: var(--leaf-2);
+  --leaf-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='700' viewBox='0 0 500 700'><g fill='%23000'><path d='M80 120 Q100 95 125 110 Q132 140 108 150 Q88 142 80 120 Z' opacity='0.5' transform='rotate(15 105 125)'/><path d='M390 280 Q410 260 430 275 Q435 300 415 308 Q395 300 390 280 Z' opacity='0.4'/><path d='M200 440 Q220 420 240 435 Q245 460 225 468 Q205 460 200 440 Z' opacity='0.55' transform='rotate(-30 220 450)'/><path d='M340 580 Q360 560 380 575 Q385 600 365 608 Q345 600 340 580 Z' opacity='0.45'/><path d='M50 320 Q70 300 90 315 Q95 340 75 348 Q55 340 50 320 Z' opacity='0.5' transform='rotate(40 70 330)'/></g></svg>");
+  mask-image: var(--leaf-mask);
+  -webkit-mask-image: var(--leaf-mask);
+  mask-size: 780px 1090px;
+  -webkit-mask-size: 780px 1090px;
+  animation: zen-leaf-fast 17s linear infinite;
+  animation-delay: -4s;
+}
+
+@keyframes zen-leaf-slow {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(40px, 100vh, 0); }
+}
+
+@keyframes zen-leaf-fast {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-30px, 100vh, 0); }
+}
+
+/* Hook 5. One property repaints the whole fall. */
+body[data-season="spring"] { --leaf: #7fb069; --leaf-2: #c8d6a8; }
+body[data-season="summer"] { --leaf: #4a7c3a; --leaf-2: #6f8062; }
+body[data-season="autumn"] { --leaf: #c1751f; --leaf-2: #b8956a; }
+body[data-season="winter"] { --leaf: #8a8f7d; --leaf-2: #a8ab9c; }
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   A third stone, set down in the sand and not yet raked around. */
+
+.countdown {
+  position: relative;
+  margin: 2.5rem auto 0;
+  max-width: 22rem;
+  padding-top: 3.25rem;
+  text-align: center;
+  font-family: 'Cormorant', serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  width: 2rem;
+  height: 1.5rem;
+  margin-left: -1rem;
+  border-radius: 52% 48% 46% 54% / 62% 58% 42% 38%;
+  background: var(--gray);
+  opacity: 0.5;
+  box-shadow: 0 2px 0 rgba(88, 84, 76, 0.12);
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   The note, at reading size, with room around it. Nothing competes. */
+
+.card-message {
+  margin: 3rem auto;
+  max-width: 26rem;
+  text-align: center;
+}
+
+.card-recipient {
+  margin: 0 0 1.75rem;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.card-note {
+  margin: 0;
+  font-family: 'Cormorant', serif;
+  font-weight: 300;
+  font-size: 1.35rem;
+  line-height: 1.75;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.card-from {
+  margin: 1.75rem auto 0;
+  padding-top: 1.25rem;
+  max-width: 8rem;
+  border-top: 1px solid var(--rule);
+  font-family: 'Cormorant', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-soft);
+}

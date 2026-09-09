@@ -1,0 +1,16 @@
+<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box}body{margin:0;background:#222;font:11px monospace;color:#bbb;
+display:grid;grid-template-columns:repeat(4,430px);gap:6px;padding:6px}
+span{display:block;padding:2px}iframe{width:430px;height:1150px;border:0}
+</style></head><body>
+<div><span>zen normal (autumn leaves)</span><iframe src="/birthday/?theme=zen&p=Ada:1979-04-12&p=Grace:1991-11-30"></iframe></div>
+<div><span>zen countdown (5 days)</span><iframe src="/birthday/?theme=zen&p=Soon:1976-09-14"></iframe></div>
+<div><span>zen card</span><iframe id="card" src="/birthday/?theme=zen&p=Sara:1981-03-02"></iframe></div>
+<div><span>zen winter (season forced)</span><iframe id="win" src="/birthday/?theme=zen&p=Ada:1979-04-12"></iframe></div>
+<script>
+card.addEventListener('load', e=>{const d=e.target.contentDocument,a=d.getElementById('app');
+ const b=d.createElement('div');b.className='card-message';b.dataset.occasion='birthday';
+ b.innerHTML='<p class="card-recipient">Sara</p><p class="card-note">Four whole decades and still no breaking changes. Happy birthday.</p><p class="card-from">Jamie</p>';
+ a.insertBefore(b,a.querySelector('.site-footer'));});
+win.addEventListener('load', e=>{e.target.contentDocument.body.dataset.season='winter';});
+</script></body></html>
