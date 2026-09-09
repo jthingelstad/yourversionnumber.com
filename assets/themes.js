@@ -52,7 +52,7 @@ export const THEMES = [
   // — home: work —
   { name: 'ooo',         label: 'OOO',         home: 'work',     animate: false, chime: null,      card: true,
     blurb: 'An out-of-office auto-reply, signed by hand. Back never.' },
-  { name: 'cubicle',     label: 'Cubicle',     home: 'work',     animate: false, chime: null,      card: false,
+  { name: 'cubicle',     label: 'Cubicle',     home: 'work',     animate: false, chime: null,      card: true,
     blurb: 'A manila-folder corporate newsletter, photocopied one too many times.' },
   { name: 'spreadsheet', label: 'Spreadsheet', home: 'work',     animate: true,  chime: null,      card: false,
     blurb: 'A grid with row numbers, because eventually everything becomes a spreadsheet.' },

@@ -116,7 +116,19 @@ body::after {
   margin: 0;
   color: var(--ink);
 }
-.site-title::before { content: "📎  "; }
+/* Paperclip, drawn: two nested rounded outlines, tipped like a real one. */
+.site-title::before {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.95em;
+  margin-right: 0.5em;
+  vertical-align: -0.12em;
+  border: 2px solid var(--muted);
+  border-radius: 0.3em;
+  border-bottom-color: transparent;
+  transform: rotate(-14deg);
+}
 
 .home-btn, .theme-select, .about-btn, .edit-btn {
   background: var(--paper);
@@ -151,8 +163,10 @@ body::after {
   box-shadow: 4px 5px 12px var(--paper-shadow);
 }
 .intro::before {
-  content: "📌  Hang in there!";
+  content: "Hang in there!";
   display: block;
+  padding-left: 1.15rem;
+  background: radial-gradient(circle at 0.38rem 0.52em, #ff7b7b 0 0.16rem, var(--pin-red) 0.17rem 0.28rem, transparent 0.3rem);
   font-size: 0.78rem;
   font-weight: 700;
   color: var(--pin-red);
@@ -244,16 +258,16 @@ body::after {
   padding-top: 0.6rem;
   border-top: 1px dashed rgba(0, 0, 0, 0.15);
   text-align: right;
-  content: "Have you seen my stapler?";
+  content: "Circling back on the cover sheets.";
 }
-.person[data-row-variant="0"]::after { content: "Have you seen my stapler?"; }
-.person[data-row-variant="1"]::after { content: "Mmmkay, that'd be great."; }
-.person[data-row-variant="2"]::after { content: "Going to need you to come in Saturday."; }
-.person[data-row-variant="3"]::after { content: "PC LOAD LETTER."; }
-.person[data-row-variant="4"]::after { content: "Did anyone tell HR about the new TPS cover sheet?"; }
-.person[data-row-variant="5"]::after { content: "I believe you have my stapler."; }
-.person[data-row-variant="6"]::after { content: "We're putting the cover sheets on the TPS reports."; }
-.person[data-row-variant="7"]::after { content: "Sounds like somebody's got a case of the Mondays."; }
+.person[data-row-variant="0"]::after { content: "Circling back on the cover sheets."; }
+.person[data-row-variant="1"]::after { content: "Adding a quick sync to your Friday."; }
+.person[data-row-variant="2"]::after { content: "The printer knows what it did."; }
+.person[data-row-variant="3"]::after { content: "Per my last note."; }
+.person[data-row-variant="4"]::after { content: "Just bumping this up your inbox."; }
+.person[data-row-variant="5"]::after { content: "Do you have a minute? It's not a minute."; }
+.person[data-row-variant="6"]::after { content: "I've cc'd everyone."; }
+.person[data-row-variant="7"]::after { content: "Let's take this offline."; }
 
 .add-btn {
   display: inline-block;
@@ -302,7 +316,7 @@ body::after {
 
 body[data-quarter-start="true"] .person { outline: 2px dashed var(--pin-red); outline-offset: -8px; }
 body[data-tenure-anniversary="true"] .person::after {
-  content: "🎂  Cake in the breakroom! 🎂";
+  content: "Cake in the breakroom (again)";
   font-style: normal;
   color: var(--pin-red);
   font-weight: 700;
@@ -322,3 +336,112 @@ body[data-tenure-anniversary="true"] .person::after {
   .person, .person:hover { transition: none; transform: rotate(var(--row-tilt, 0deg)); }
   .person.is-bumping { animation: none; }
 }
+
+/* ── Corkboard ─────────────────────────────────────────────────────────────
+   Absorbs whiteboard, which is retired. A strip of cork below the notes, with
+   a dry marker smudge that never quite wiped off. */
+
+.people::after {
+  content: "";
+  display: block;
+  height: 4.5rem;
+  margin: 1.75rem 0 0;
+  border: 6px solid #6f5637;
+  border-radius: 3px;
+  background:
+    /* the smudge: two soft strokes, wiped and not gone */
+    linear-gradient(102deg, transparent 18%, rgba(40, 60, 130, 0.16) 22%, transparent 38%),
+    linear-gradient(96deg, transparent 46%, rgba(40, 60, 130, 0.1) 52%, transparent 66%),
+    /* cork grain */
+    radial-gradient(circle at 12% 30%, rgba(120, 88, 48, 0.5) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 38% 68%, rgba(120, 88, 48, 0.42) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 63% 22%, rgba(120, 88, 48, 0.46) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 84% 60%, rgba(120, 88, 48, 0.4) 0 2px, transparent 2.5px),
+    #c49a63;
+  background-size: auto, auto, 34px 34px, 41px 41px, 29px 29px, 47px 47px, auto;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   Someone has already put a note about it on the board. */
+
+.countdown {
+  position: relative;
+  max-width: 20rem;
+  margin: 1.75rem auto 0;
+  padding: 1.1rem 1rem 0.9rem;
+  background: var(--note-blue);
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+  transform: rotate(-1.4deg);
+  box-shadow: 4px 5px 12px var(--paper-shadow);
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffd778, var(--pin-yellow));
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.45), inset 0 -2px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   A sticky note, pinned. */
+
+.card-message {
+  position: relative;
+  max-width: 22rem;
+  margin: 2rem auto 0;
+  padding: 1.5rem 1.25rem 1.1rem;
+  background: var(--note-yellow);
+  color: var(--ink);
+  transform: rotate(1.1deg);
+  box-shadow: 5px 6px 14px var(--paper-shadow);
+}
+
+.card-message::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff7b7b, var(--pin-red));
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.45), inset 0 -2px 2px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.card-recipient {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.card-recipient::before { content: "For the attention of "; font-weight: 400; }
+
+.card-note {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.card-from {
+  margin: 0.8rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.card-from::before { content: "— "; }
