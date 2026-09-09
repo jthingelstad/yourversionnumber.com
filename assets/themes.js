@@ -36,7 +36,7 @@ export const THEMES = [
     blurb: 'Warm cream and handwritten Caveat. Built for a page with the whole household on it.' },
   { name: 'brutalist',   label: 'Brutalist',   home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Yellow, red and black, type set far too large. Refuses to be tasteful.' },
-  { name: 'interchange', label: 'Interchange', home: 'birthday', animate: false, chime: null,      card: false,
+  { name: 'interchange', label: 'Interchange', home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'A black transit map where every person gets their own coloured route bullet.' },
   { name: 'terminal',    label: 'Terminal',    home: 'birthday', animate: true,  chime: null,      card: true,
     blurb: 'Green on black at a blinking prompt. Your age as command output.' },
