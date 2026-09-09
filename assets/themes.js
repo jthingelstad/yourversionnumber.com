@@ -30,7 +30,7 @@ export const THEMES = [
     blurb: 'Broadsheet typography and section rules. Your age, above the fold.' },
   { name: 'vinyl',       label: 'Vinyl',       home: 'birthday', animate: true,  chime: 'crackle', card: true,
     blurb: 'Records spinning at 33⅓, one per person, forever mid-side-A.' },
-  { name: 'polaroid',    label: 'Polaroid',    home: 'birthday', animate: false, chime: null,      card: false,
+  { name: 'polaroid',    label: 'Polaroid',    home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Instant photos taped to the page, each one tilted a degree or two off true.' },
   { name: 'fridge',      label: 'Fridge Door', home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'Warm cream and handwritten Caveat. Built for a page with the whole household on it.' },

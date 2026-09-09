@@ -184,7 +184,18 @@ body {
   font-weight: 600;
 }
 
-.add-btn::before { content: "📸 "; }
+/* Shutter, drawn: a lens ring rather than a camera emoji. */
+.add-btn::before {
+  content: "";
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  margin-right: 0.5em;
+  vertical-align: -0.04em;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.55);
+}
 
 .site-footer {
   margin-top: 4rem;
@@ -202,4 +213,132 @@ body {
   0%, 100% { transform: rotate(var(--row-tilt, 0deg)); }
   25%      { transform: rotate(calc(var(--row-tilt, 0deg) + 3deg)); }
   75%      { transform: rotate(calc(var(--row-tilt, 0deg) - 3deg)); }
+}
+
+/* ── Pressed flowers ───────────────────────────────────────────────────────
+   Salvaged from pastel, which is retired. Three of the eight rows get one
+   tucked into the white border, the way a pressed flower ends up in an album.
+   Both pseudo-elements on .person are already spoken for — tape and photo —
+   so these ride as an extra background layer on the card itself. */
+
+.person[data-row-variant="1"],
+.person[data-row-variant="4"],
+.person[data-row-variant="6"] {
+  background-repeat: no-repeat;
+  background-position: right 0.9rem bottom 1rem;
+  background-size: 24px 24px;
+}
+
+.person[data-row-variant="1"] {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='4' fill='%23f7c8d6'/><circle cx='16' cy='6' r='5' fill='%23f7c8d6'/><circle cx='26' cy='16' r='5' fill='%23f7c8d6'/><circle cx='16' cy='26' r='5' fill='%23f7c8d6'/><circle cx='6' cy='16' r='5' fill='%23f7c8d6'/><circle cx='16' cy='16' r='3' fill='%23fcd9b6'/></svg>");
+}
+
+.person[data-row-variant="4"] {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='5' fill='%23d4c5e8'/><circle cx='16' cy='6' r='4' fill='%23d4c5e8'/><circle cx='25' cy='12' r='4' fill='%23d4c5e8'/><circle cx='25' cy='20' r='4' fill='%23d4c5e8'/><circle cx='16' cy='26' r='4' fill='%23d4c5e8'/><circle cx='7' cy='20' r='4' fill='%23d4c5e8'/><circle cx='7' cy='12' r='4' fill='%23d4c5e8'/></svg>");
+}
+
+.person[data-row-variant="6"] {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 4 C20 12, 28 12, 24 20 C20 28, 12 28, 8 20 C4 12, 12 12, 16 4 Z' fill='%237eb88f'/></svg>");
+}
+
+/* ── Developing ────────────────────────────────────────────────────────────
+   On the midnight tick the photo comes up out of white, the way one does. */
+
+.person.is-bumping::after {
+  animation: polaroid-develop 1.2s ease-out;
+}
+
+@keyframes polaroid-develop {
+  0%   { filter: contrast(0.12) brightness(2); opacity: 0.3; }
+  55%  { filter: contrast(0.6) brightness(1.25); opacity: 0.85; }
+  100% { filter: none; opacity: 1; }
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   The best countdown in the set: the photo has not finished developing, and it
+   resolves a little more each day. --days-until drives the chemistry directly,
+   so there is nothing to step through and no JavaScript involved. */
+
+body[data-countdown] .person::after {
+  filter:
+    grayscale(calc(var(--days-until, 0) / 7))
+    contrast(calc(1 - var(--days-until, 0) * 0.085))
+    brightness(calc(1 + var(--days-until, 0) * 0.055));
+  transition: filter 600ms ease;
+}
+
+.countdown {
+  margin: 1.5rem auto 0;
+  max-width: 20rem;
+  text-align: center;
+  font-family: 'Caveat', cursive;
+  font-size: 1.15rem;
+  color: var(--ink);
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "still developing — ";
+  opacity: 0.6;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   Written in the white border under the photo, which is the only place anyone
+   has ever written on a polaroid. */
+
+.card-message {
+  max-width: 20rem;
+  margin: 2rem auto 0;
+  padding: 1rem 1rem 1.6rem;
+  background: var(--photo);
+  border-radius: 2px;
+  box-shadow: 5px 7px 18px rgba(0, 0, 0, 0.22);
+  transform: rotate(-1.2deg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* The photo itself, above the writing. */
+.card-message::before {
+  content: "";
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  order: -1;
+  margin-bottom: 0.9rem;
+  background: radial-gradient(circle at 32% 28%, hsl(38 55% 78%), hsl(18 45% 58%) 62%, hsl(348 35% 38%) 100%);
+}
+
+.card-recipient {
+  margin: 0;
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.card-note {
+  margin: 0.2rem 0 0;
+  font-family: 'Caveat', cursive;
+  font-weight: 400;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.card-from {
+  margin: 0.5rem 0 0;
+  font-family: 'Caveat', cursive;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+  opacity: 0.72;
+}
+
+.card-from::before { content: "— "; }
+
+@media (prefers-reduced-motion: reduce) {
+  .person.is-bumping::after { animation: none; }
+  body[data-countdown] .person::after { transition: none; }
 }
