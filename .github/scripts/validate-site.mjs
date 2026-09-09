@@ -158,7 +158,7 @@ const FONT_IMPORT_BASELINE = new Set(["newspaper.css"]);
 const EMOJI_BASELINE = new Set([
   "birthday.css",
   "progress.css", "slidedeck.css",
-  "steampunk.css", "tarot.css", "ticker.css", "unread.css",
+  "steampunk.css", "tarot.css", "unread.css",
 ]);
 
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{1F1E6}-\u{1F1FF}]/u;

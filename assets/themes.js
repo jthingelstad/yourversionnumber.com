@@ -56,7 +56,7 @@ export const THEMES = [
     blurb: 'A manila-folder corporate newsletter, photocopied one too many times.' },
   { name: 'spreadsheet', label: 'Spreadsheet', home: 'work',     animate: true,  chime: null,      card: true,
     blurb: 'A grid with row numbers, because eventually everything becomes a spreadsheet.' },
-  { name: 'ticker',      label: 'Ticker',      home: 'work',     animate: true,  chime: 'tick',    card: false,
+  { name: 'ticker',      label: 'Ticker',      home: 'work',     animate: true,  chime: 'tick',    card: true,
     blurb: 'A live ticker on a black trading screen. Your career, but as a stock.' },
   { name: 'slidedeck',   label: 'Slide Deck',  home: 'work',     animate: false, chime: null,      card: false,
     blurb: 'A confidential business review slide, three bullets, no further context offered.' },
