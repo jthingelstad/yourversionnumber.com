@@ -55,8 +55,26 @@ body {
   font-style: normal;
 }
 
-.site-title::before { content: "✦ "; color: var(--gold); }
-.site-title::after  { content: " ✦"; color: var(--gold); }
+/* Four-point star, drawn — the glyphs were arriving in whatever font the
+   visitor's OS ships. */
+.site-title::before {
+  content: "";
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  margin-right: 0.45em;
+  background: var(--gold);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+}
+.site-title::after {
+  content: "";
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  margin-left: 0.45em;
+  background: var(--gold);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+}
 
 .home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: 'Cinzel', serif;
@@ -83,8 +101,26 @@ body {
   margin-right: auto;
 }
 
-.intro::before { content: "✧ "; color: var(--gold); }
-.intro::after  { content: " ✧"; color: var(--gold); }
+.intro::before {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-right: 0.4em;
+  background: var(--gold);
+  opacity: 0.7;
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+}
+.intro::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-left: 0.45em;
+  background: var(--gold);
+  opacity: 0.7;
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+}
 
 .intro code {
   font-family: 'Cormorant Garamond', serif;
@@ -110,7 +146,13 @@ body {
   width: 100%;
   position: relative;
   text-align: center;
-  box-shadow: 0 0 0 1px var(--night), 0 8px 24px rgba(0,0,0,0.4);
+  /* Gilt edge: a hairline of gold, a dark mount, a second hairline. */
+  box-shadow:
+    0 0 0 1px var(--gold),
+    0 0 0 4px #241c42,
+    0 0 0 5px rgba(198, 167, 95, 0.4),
+    0 8px 18px rgba(8, 7, 16, 0.55);
+  transition: transform 280ms;
   background-image:
     radial-gradient(circle at top left, transparent 0 12px, var(--parchment) 13px),
     radial-gradient(circle at top right, transparent 0 12px, var(--parchment) 13px),
@@ -123,6 +165,7 @@ body {
 }
 
 /* Roman numeral header per variant */
+
 .person::before {
   content: "0";
   position: absolute;
@@ -208,7 +251,6 @@ body {
 }
 .site-footer a { color: var(--gold-bright); }
 
-.person { transition: transform 280ms; }
 .person:hover { transform: translateY(-4px) rotate(-1deg); box-shadow: 0 0 0 1px var(--gold), 0 14px 40px rgba(0,0,0,0.5); }
 .person.is-bumping { animation: tarot-shimmer 1.4s ease-out; }
 @keyframes tarot-shimmer {
@@ -216,6 +258,161 @@ body {
   50%      { box-shadow: 0 0 0 2px var(--gold-bright), 0 0 40px rgba(244,207,87,0.6); }
 }
 
-.person{box-shadow:0 0 0 1px rgba(198,167,95,.5),0 16px 28px rgba(8,7,16,.35);}
-.person::before{content:'✦';position:absolute;left:1rem;top:.8rem;color:#c6a75f;opacity:.75;}
-.theme-fx::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 20%,rgba(198,167,95,.12),transparent 40%),radial-gradient(circle at 85% 75%,rgba(130,90,220,.14),transparent 35%);}
+
+/* ── Starfield ─────────────────────────────────────────────────────────────
+   Absorbs galaxy, which is retired. Two parallax layers of pinpricks; the far
+   one barely drifts. */
+
+.theme-fx::before,
+.theme-fx::after {
+  content: "";
+  position: absolute;
+  inset: -10vh -5vw;
+  height: 200vh;
+  pointer-events: none;
+}
+
+.theme-fx::before {
+  background-image:
+    radial-gradient(1.4px 1.4px at 12% 8%, rgba(255, 252, 240, 0.9), transparent),
+    radial-gradient(1.1px 1.1px at 38% 22%, rgba(255, 252, 240, 0.7), transparent),
+    radial-gradient(1.6px 1.6px at 63% 12%, rgba(255, 252, 240, 0.85), transparent),
+    radial-gradient(1.2px 1.2px at 84% 30%, rgba(255, 252, 240, 0.75), transparent),
+    radial-gradient(1.3px 1.3px at 22% 46%, rgba(255, 252, 240, 0.8), transparent),
+    radial-gradient(1.1px 1.1px at 71% 58%, rgba(255, 252, 240, 0.65), transparent);
+  background-size: 100% 50%;
+  animation: tarot-drift 90s linear infinite;
+}
+
+.theme-fx::after {
+  background-image:
+    radial-gradient(2px 2px at 28% 16%, rgba(198, 167, 95, 0.55), transparent),
+    radial-gradient(1.8px 1.8px at 76% 40%, rgba(198, 167, 95, 0.45), transparent),
+    radial-gradient(2.2px 2.2px at 48% 68%, rgba(198, 167, 95, 0.5), transparent),
+    radial-gradient(circle at 15% 20%, rgba(198, 167, 95, 0.1), transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(130, 90, 220, 0.12), transparent 35%);
+  background-size: 100% 50%, 100% 50%, 100% 50%, auto, auto;
+  animation: tarot-drift 140s linear infinite reverse;
+}
+
+@keyframes tarot-drift {
+  to { transform: translate3d(0, -50vh, 0); }
+}
+
+/* ── Reversed ──────────────────────────────────────────────────────────────
+   A palindrome number reads the same both ways up, so the card is dealt
+   reversed. First use of data-palindrome anywhere in the set. */
+
+body[data-palindrome="true"] .person::before {
+  transform: rotate(180deg);
+  transform-origin: center;
+  display: inline-block;
+}
+
+body[data-palindrome="true"] .person::after {
+  content: "· REVERSED";
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+  opacity: 0.8;
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   The card has not been turned over yet. */
+
+.countdown {
+  position: relative;
+  margin: 2rem auto 0;
+  max-width: 20rem;
+  padding: 5.5rem 1rem 1rem;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--parchment, #f0e6d2);
+  opacity: 1;
+}
+
+/* Card back: a gilt lattice, face-down. */
+.countdown::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 3.4rem;
+  height: 5rem;
+  margin-left: -1.7rem;
+  border-radius: 3px;
+  border: 1px solid rgba(198, 167, 95, 0.55);
+  background:
+    repeating-linear-gradient(45deg, rgba(198, 167, 95, 0.22) 0 2px, transparent 2px 7px),
+    repeating-linear-gradient(-45deg, rgba(198, 167, 95, 0.22) 0 2px, transparent 2px 7px),
+    linear-gradient(170deg, #241c42, #17102b);
+  box-shadow: 0 6px 16px rgba(8, 7, 16, 0.55);
+}
+
+/* On the day it turns over. */
+body[data-countdown="0"] .countdown::before {
+  background: linear-gradient(170deg, #2a1f4a, #150f26);
+  box-shadow: 0 0 0 1px #c6a75f, 0 6px 18px rgba(8, 7, 16, 0.6);
+  animation: tarot-turn 900ms ease-out;
+}
+
+@keyframes tarot-turn {
+  0%   { transform: rotateY(180deg); }
+  100% { transform: rotateY(0); }
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   The reading, in italic, below the arcana name. */
+
+.card-message {
+  max-width: 22rem;
+  margin: 2.5rem auto 0;
+  padding: 1.5rem 1.4rem 1.6rem;
+  border-radius: 4px;
+  background: linear-gradient(170deg, #241c42, #17102b);
+  box-shadow:
+    0 0 0 1px #c6a75f,
+    0 0 0 4px #241c42,
+    0 0 0 5px rgba(198, 167, 95, 0.4),
+    0 8px 18px rgba(8, 7, 16, 0.55);
+  text-align: center;
+}
+
+.card-recipient {
+  margin: 0 0 0.9rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.card-note {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #f0e6d2;
+}
+
+.card-from {
+  margin: 1.2rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(198, 167, 95, 0.35);
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 210, 0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-fx::before,
+  .theme-fx::after { animation: none; }
+  body[data-countdown="0"] .countdown::before { animation: none; }
+}

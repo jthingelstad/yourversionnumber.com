@@ -158,13 +158,13 @@ const FONT_IMPORT_BASELINE = new Set(["newspaper.css"]);
 // Themes that already re-declare a selector. Shrink as each is rebuilt.
 const DUPLICATE_SELECTOR_BASELINE = new Set([
   "birthday.css", "brutalist.css", "cubicle.css", "memphis.css",
-  "newspaper.css", "ooo.css", "severe.css", "tarot.css", "terminal.css",
+  "newspaper.css", "ooo.css", "severe.css", "terminal.css",
   "zen.css",
 ]);
 
 const EMOJI_BASELINE = new Set([
   "progress.css",
-  "steampunk.css", "tarot.css", "unread.css",
+  "steampunk.css", "unread.css",
 ]);
 
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{1F1E6}-\u{1F1FF}]/u;

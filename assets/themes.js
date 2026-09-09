@@ -42,7 +42,7 @@ export const THEMES = [
     blurb: 'Green on black at a blinking prompt. Your age as command output.' },
   { name: 'gameboy',     label: 'Gameboy',     home: 'birthday', animate: true,  chime: null,      card: true,
     blurb: 'The DMG palette and a cartridge silhouette. Four shades of green is plenty.' },
-  { name: 'tarot',       label: 'Tarot',       home: 'birthday', animate: false, chime: null,      card: false,
+  { name: 'tarot',       label: 'Tarot',       home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Purple and stars, with the Fool, the Priestess and the Empress dealt across the table.' },
   { name: 'steampunk',   label: 'Steampunk',   home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'A sepia ledger of gears and cogs, as though age were an engineering concern.' },
