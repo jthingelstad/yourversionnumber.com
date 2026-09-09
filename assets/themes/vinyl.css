@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;600&family=Inter:wght@400;700&display=swap');
 
 :root {
   --felt: #4a1f1f;
@@ -106,8 +106,11 @@ body {
   border-radius: 50%;
   transform: translate(-50%, -50%);
   background:
+    /* spindle hole, moved here so ::after is free for the tonearm */
+    radial-gradient(circle at 50% 50%, var(--felt-2) 0 7%, transparent 7.5%),
     radial-gradient(circle at 50% 50%, var(--label) 0 90%, var(--label-2) 92% 100%);
   box-shadow: inset 0 0 0 4px var(--label-2);
+  z-index: 1;
 }
 .person[data-row-variant="1"]::before { background: radial-gradient(circle, #b22222 0 90%, #6e1414 92% 100%); }
 .person[data-row-variant="2"]::before { background: radial-gradient(circle, #1a4a8a 0 90%, #0e2a55 92% 100%); }
@@ -117,19 +120,30 @@ body {
 .person[data-row-variant="6"]::before { background: radial-gradient(circle, #d97757 0 90%, #8e4a2f 92% 100%); }
 .person[data-row-variant="7"]::before { background: radial-gradient(circle, #2a2a2a 0 90%, #0d0d0d 92% 100%); }
 
-/* Center hole */
+/* Tonearm. It pivots at the outer edge and the needle end swings inward as
+   --patch-pct climbs, so the arm tracks toward the centre across the year —
+   which is exactly what a record does as a side plays out. */
 .person::after {
   content: "";
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 4%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--felt-2);
-  box-shadow: 0 0 0 2px rgba(0,0,0,0.6);
+  top: 17%;
+  right: 7%;
+  width: 37%;
+  height: 5px;
+  border-radius: 3px;
+  transform-origin: 100% 50%;
+  transform: rotate(calc(-22deg - var(--patch-pct, 0) * 26deg));
+  background: linear-gradient(180deg, #e6e6e6, #8f8f8f);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   z-index: 3;
+  transition: transform 400ms ease;
+}
+
+
+/* Countdown: the arm lifts off the record and waits. */
+body[data-countdown] .person::after {
+  transform: rotate(-8deg) translate(0, -55%);
+  filter: drop-shadow(0 6px 5px rgba(0, 0, 0, 0.55));
 }
 
 /* Names + versions sit on the label — upper half for the name, lower half
@@ -186,8 +200,29 @@ body {
    — and the midnight tick still gets its skip wiggle below. */
 .person:hover { animation: vinyl-spin 4s linear infinite; }
 
+/* The label rides the spin, so its contents turn with it and the name and
+   number become unreadable. Counter-rotate them at the same rate. These two
+   are centred with a translate, which a bare rotate() keyframe would throw
+   away — so the counter keyframes carry the translate through. */
+.person:hover .person-name,
+.person:hover .person-name-fallback,
+.person:hover .version { animation: vinyl-counter 4s linear infinite; }
+
 @keyframes vinyl-spin {
   to { transform: rotate(360deg); }
+}
+
+@keyframes vinyl-counter {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person:hover,
+  .person:hover .person-name,
+  .person:hover .person-name-fallback,
+  .person:hover .version { animation: none; }
+  .person::after { transition: none; }
 }
 
 .add-btn {
@@ -222,3 +257,107 @@ body {
   60%  { transform: scale(0.98) translateX(2px); }
   100% { transform: scale(1); }
 }
+
+/* ── Tape counter ──────────────────────────────────────────────────────────
+   Salvaged in spirit from cassette, which was cut. A mechanical four-digit
+   counter on the label, one per pressing. */
+
+.version::after {
+  content: "0000";
+  display: block;
+  margin-top: 0.25em;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.42em;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  opacity: 0.6;
+}
+
+.person[data-row-variant="0"] .version::after { content: "0142"; }
+.person[data-row-variant="1"] .version::after { content: "0873"; }
+.person[data-row-variant="2"] .version::after { content: "0219"; }
+.person[data-row-variant="3"] .version::after { content: "1104"; }
+.person[data-row-variant="4"] .version::after { content: "0640"; }
+.person[data-row-variant="5"] .version::after { content: "0387"; }
+.person[data-row-variant="6"] .version::after { content: "0955"; }
+.person[data-row-variant="7"] .version::after { content: "0026"; }
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   The arm has lifted (above); this says why. */
+
+.countdown {
+  margin: 2rem auto 0;
+  max-width: 26rem;
+  text-align: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--label);
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "ARM UP · ";
+  color: var(--accent);
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   The B-side label, written on by hand the way a mixtape gets written on. */
+
+.card-message {
+  position: relative;
+  width: min(15.5rem, 78vw);
+  aspect-ratio: 1;
+  margin: 2.5rem auto;
+  padding: 2.5rem 2rem 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 50%, var(--felt-2) 0 3.5%, transparent 4%),
+    radial-gradient(circle at 50% 50%, var(--label) 0 96%, var(--label-2) 97% 100%);
+  box-shadow: inset 0 0 0 5px var(--label-2), 0 14px 34px rgba(0, 0, 0, 0.5);
+  color: #23180e;
+}
+
+.card-message::before {
+  content: "SIDE B";
+  position: absolute;
+  top: 14%;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.32em;
+  opacity: 0.55;
+}
+
+.card-recipient {
+  margin: 0 0 0.4rem;
+  font-family: 'Caveat', cursive;
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.card-note {
+  margin: 0;
+  font-family: 'Caveat', cursive;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.3;
+  max-width: 10.5rem;
+  text-wrap: pretty;
+}
+
+.card-from {
+  margin: 0.6rem 0 0;
+  font-family: 'Caveat', cursive;
+  font-weight: 600;
+  font-size: 1rem;
+  opacity: 0.75;
+}
+
+.card-from::before { content: "— "; }

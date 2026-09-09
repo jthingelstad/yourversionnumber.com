@@ -28,7 +28,7 @@ export const THEMES = [
     blurb: 'Thermal-printer monospace, QTY 1, thank you for your business.' },
   { name: 'newspaper',   label: 'Newspaper',   home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'Broadsheet typography and section rules. Your age, above the fold.' },
-  { name: 'vinyl',       label: 'Vinyl',       home: 'birthday', animate: true,  chime: 'crackle', card: false,
+  { name: 'vinyl',       label: 'Vinyl',       home: 'birthday', animate: true,  chime: 'crackle', card: true,
     blurb: 'Records spinning at 33⅓, one per person, forever mid-side-A.' },
   { name: 'polaroid',    label: 'Polaroid',    home: 'birthday', animate: false, chime: null,      card: false,
     blurb: 'Instant photos taped to the page, each one tilted a degree or two off true.' },
