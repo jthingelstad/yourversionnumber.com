@@ -50,7 +50,7 @@ export const THEMES = [
     blurb: 'Eighties squiggles, triangles and dots in every direction at once.' },
 
   // — home: work —
-  { name: 'ooo',         label: 'OOO',         home: 'work',     animate: false, chime: null,      card: false,
+  { name: 'ooo',         label: 'OOO',         home: 'work',     animate: false, chime: null,      card: true,
     blurb: 'An out-of-office auto-reply, signed by hand. Back never.' },
   { name: 'cubicle',     label: 'Cubicle',     home: 'work',     animate: false, chime: null,      card: false,
     blurb: 'A manila-folder corporate newsletter, photocopied one too many times.' },

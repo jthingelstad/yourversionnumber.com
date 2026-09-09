@@ -97,13 +97,13 @@ body {
 }
 .intro::before {
   content: "Hi,\A\AI'm currently out of the office returning ";
-  white-space: pre;
+  white-space: pre-line;
   display: block;
   margin-bottom: 0;
 }
 .intro::after {
-  content: "\A\AFor anything urgent, please loop in literally anyone else. I will respond to your version number when I return.\A\A— The team";
-  white-space: pre;
+  content: "\00000A\00000AFor anything urgent, please loop in literally anyone else. I will respond to your version number when I return.\A\A— The team";
+  white-space: pre-line;
   display: block;
   color: var(--muted);
 }
@@ -186,9 +186,9 @@ body {
 .person[data-row-variant="2"]::after { content: "Hi there,\AOut touching grass. Will respond when (if) I return.\A\A— sent from a hammock"; }
 .person[data-row-variant="3"]::after { content: "Hello,\AOn parental leave through Q3. Please contact my backup for anything time-sensitive.\A\A— see you in the fall"; }
 .person[data-row-variant="4"]::after { content: "Hi,\AOn sabbatical. I will not see this email. See you in Q4.\A\A— gone climbing"; }
-.person[data-row-variant="5"]::after { content: "Hello,\AAt a wedding this weekend with patchy reception. Try Slack first. I will respond Monday.\A\A— RSVP yes 🥂"; }
-.person[data-row-variant="6"]::after { content: "Hey —\ABackpacking through the mountains. Cell service is pretend. Will reply in two weeks.\A\A— sent from a summit"; }
-.person[data-row-variant="7"]::after { content: "Hi,\AOut for a long weekend. Back Monday morning bright-eyed and bushy-tailed.\A\A— logging off 🌴"; }
+.person[data-row-variant="5"]::after { content: "Hello,\00000AAt a wedding this weekend with patchy reception. Try Slack first. I will respond Monday.\A\A— RSVP yes"; }
+.person[data-row-variant="6"]::after { content: "Hey —\00000ABackpacking through the mountains. Cell service is pretend. Will reply in two weeks.\A\A— sent from a summit"; }
+.person[data-row-variant="7"]::after { content: "Hi,\AOut for a long weekend. Back Monday morning bright-eyed and bushy-tailed.\A\A— logging off, indefinitely"; }
 
 .add-btn {
   display: inline-block;
@@ -221,13 +221,18 @@ body {
 .site-footer a { color: var(--link); font-weight: 700; text-decoration: underline; }
 
 body[data-quarter-start="true"] .person { border-left-color: var(--green); }
+/* The marker is drawn, so it renders the same on every machine rather than in
+   whatever emoji font the visitor happens to ship. */
 body[data-tenure-anniversary="true"] .person::before {
-  content: "🍾  Out for the celebration";
+  content: "Out for the celebration";
   display: block;
   color: var(--green);
   font-weight: 700;
   font-size: 0.78rem;
   margin-bottom: 0.4rem;
+  padding-left: 1.1rem;
+  background:
+    radial-gradient(circle at 0.35rem 0.5em, var(--green) 0 0.22rem, transparent 0.24rem);
 }
 
 /* Drifting palm leaves + lazy ocean swell. */
@@ -269,4 +274,87 @@ body[data-tenure-anniversary="true"] .person::before {
   0%, 100% { transform: rotate(0); }
   25%      { transform: rotate(0.8deg); }
   75%      { transform: rotate(-0.8deg); }
+}
+
+/* ── Edition ───────────────────────────────────────────────────────────────
+   The reply reason differs. An out-of-office for a birthday is funnier than
+   one for a work anniversary, which is why this theme is selectable in both. */
+
+[data-edition="birthday"] .intro::before {
+  content: "Hi,\A\AI'm currently away being one year older, returning ";
+}
+
+[data-edition="birthday"] .intro::after {
+  content: "\00000A\00000AFor anything urgent, please loop in literally anyone else. I will respond to your version number when I have finished having a birthday.\A\A— The team";
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   The one thing an auto-reply is actually for: saying when you are back. */
+
+.countdown {
+  margin: 1.25rem 0 0;
+  padding: 0.75rem 0.9rem;
+  border-left: 3px solid var(--green);
+  background: rgba(0, 0, 0, 0.03);
+  font-size: 0.82rem;
+  color: var(--fg);
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "Automatic reply: ";
+  color: var(--muted);
+}
+
+.countdown::after {
+  content: "\A\A— set to expire on my return";
+  white-space: pre-line;
+  display: block;
+  color: var(--muted);
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   The note arrives as a forwarded message, because that is how a note reaches
+   you through someone's auto-reply. */
+
+.card-message {
+  margin: 1.5rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-message::before {
+  content: "---------- Forwarded message ----------";
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+  order: -2;
+}
+
+.card-recipient {
+  margin: 0 0 0.15rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.card-recipient::before { content: "To: "; }
+
+.card-from {
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  order: -1;
+}
+
+.card-from::before { content: "From: "; }
+
+.card-note {
+  margin: 0;
+  color: var(--fg);
 }

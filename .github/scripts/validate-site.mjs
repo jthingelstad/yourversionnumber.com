@@ -156,7 +156,7 @@ const SYSTEM_FAMILIES = new Set([
 // Shrink these as phase 3 lands. Do not add to them.
 const FONT_IMPORT_BASELINE = new Set(["newspaper.css", "terminal.css"]);
 const EMOJI_BASELINE = new Set([
-  "birthday.css", "cubicle.css", "gameboy.css", "interchange.css", "ooo.css",
+  "birthday.css", "cubicle.css", "gameboy.css", "interchange.css",
   "polaroid.css", "progress.css", "slidedeck.css",
   "steampunk.css", "tarot.css", "ticker.css", "unread.css",
 ]);
@@ -191,6 +191,13 @@ for (const file of (await readdir(resolve(repoRoot, "assets/themes"))).filter((f
   }
   if (!hasEmoji && EMOJI_BASELINE.has(file)) {
     failures.push(`assets/themes/${file}: no emoji left — drop it from EMOJI_BASELINE`);
+  }
+
+  // D — a newline escape that swallows the next character. "\\AB" is U+00AB,
+  // not newline + B, because \\A is only one hex digit and CSS keeps reading.
+  // Four of these shipped in ooo alone. Six-digit escapes cannot do it.
+  for (const m of css.matchAll(/\\A[0-9a-fA-F]/g)) {
+    failures.push(`assets/themes/${file}: ${m[0]} is one escape, not a newline — write \\00000A`);
   }
 
   // C — no !important. After hook 1 there is no reason for it, and its presence
