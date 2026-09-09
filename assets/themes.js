@@ -54,7 +54,7 @@ export const THEMES = [
     blurb: 'An out-of-office auto-reply, signed by hand. Back never.' },
   { name: 'cubicle',     label: 'Cubicle',     home: 'work',     animate: false, chime: null,      card: true,
     blurb: 'A manila-folder corporate newsletter, photocopied one too many times.' },
-  { name: 'spreadsheet', label: 'Spreadsheet', home: 'work',     animate: true,  chime: null,      card: false,
+  { name: 'spreadsheet', label: 'Spreadsheet', home: 'work',     animate: true,  chime: null,      card: true,
     blurb: 'A grid with row numbers, because eventually everything becomes a spreadsheet.' },
   { name: 'ticker',      label: 'Ticker',      home: 'work',     animate: true,  chime: 'tick',    card: false,
     blurb: 'A live ticker on a black trading screen. Your career, but as a stock.' },

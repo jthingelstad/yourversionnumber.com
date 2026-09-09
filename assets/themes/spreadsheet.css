@@ -156,14 +156,15 @@ body {
   grid-column: 2;
   font-family: inherit;
   font-weight: 700;
-  font-size: clamp(2.5rem, 7vw, 4.5rem);
-  line-height: 1.1;
+  --version-size: clamp(2.5rem, 7vw, 4.5rem);
+  --version-leading: 1.1;
   letter-spacing: -0.02em;
   color: var(--selection);
   padding: 0.5rem 0.75rem 0.7rem;
   background: #fff;
   outline: 2px solid var(--selection);
   outline-offset: -4px;
+  position: relative;
 }
 
 .add-btn {
@@ -209,3 +210,134 @@ body[data-tenure-anniversary="true"] .version {
   background: #fff5b1;
   outline-color: #d4a93c;
 }
+
+/* ── Status pill ───────────────────────────────────────────────────────────
+   Salvaged from okr, whose bar was hard-coded to 100%. This one is real:
+   both pills sit in the same place and --patch-pct fades between them at the
+   three-quarter mark. content: cannot branch on a number, so two boxes do it.
+   The emoji dots okr used are drawn here. */
+
+.version::before,
+.version::after {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.6rem;
+  padding: 0.16rem 0.55rem 0.16rem 1.25rem;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+}
+
+.version::before {
+  content: "ON TRACK";
+  background: #e4f5e6;
+  color: #1c6b32;
+  background-image: radial-gradient(circle at 0.62rem 50%, #2f9e4f 0 0.2rem, transparent 0.22rem);
+  opacity: clamp(0, calc(1 - (var(--patch-pct, 0) - 0.75) * 20), 1);
+}
+
+.version::after {
+  content: "AT RISK";
+  background: #fdeaea;
+  color: #96201f;
+  background-image: radial-gradient(circle at 0.62rem 50%, #cc3a34 0 0.2rem, transparent 0.22rem);
+  opacity: clamp(0, calc((var(--patch-pct, 0) - 0.75) * 20), 1);
+}
+
+/* ── Formula bar ───────────────────────────────────────────────────────────
+   The arithmetic, shown. A spreadsheet's whole promise is that you can see
+   how the number was reached. */
+
+.people::before {
+  content: "fx   =DATEDIF(START, TODAY, \0000022Y\000022) & \000022.\000022 & QUARTER & \000022.\000022 & NETWORKDAYS(QSTART, TODAY)";
+  display: block;
+  padding: 0.35rem 0.75rem;
+  border-bottom: 1px solid var(--grid);
+  background: var(--formula-bg);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+[data-edition="birthday"] .people::before {
+  content: "fx   =INT(AGE/10) & \000022.\000022 & MOD(AGE,10) & \000022.\000022 & (TODAY - LAST_BIRTHDAY)";
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   A cell comment: the little red corner flag, and the note it belongs to. */
+
+.countdown {
+  position: relative;
+  margin: 0;
+  padding: 0.55rem 0.75rem 0.55rem 1rem;
+  border-bottom: 1px solid var(--grid);
+  background: #fffbe6;
+  color: var(--fg, #1f2429);
+  font-size: 12px;
+  opacity: 1;
+}
+
+.countdown::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 9px solid #cc3a34;
+  border-left: 9px solid transparent;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   A cell comment popup, hanging off the sheet with its own flag. */
+
+.card-message {
+  position: relative;
+  max-width: 20rem;
+  margin: 1.5rem 0 0 auto;
+  padding: 0.6rem 0.75rem 0.7rem;
+  background: #fffbe6;
+  border: 1px solid #b8b092;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.card-message::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 10px solid #cc3a34;
+  border-left: 10px solid transparent;
+}
+
+.card-recipient {
+  margin: 0 0 0.3rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.card-recipient::after { content: ":"; }
+
+.card-note {
+  margin: 0;
+  color: #1f2429;
+}
+
+.card-from {
+  margin: 0.5rem 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.card-from::before { content: "— "; }
