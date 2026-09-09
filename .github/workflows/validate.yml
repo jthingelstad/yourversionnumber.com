@@ -18,6 +18,6 @@ jobs:
         with:
           node-version: "24"
       - name: Check JavaScript syntax
-        run: node --check birthday/assets/app.js && node --check work/assets/app.js && node --check assets/gallery.js
+        run: node --check birthday/assets/app.js && node --check work/assets/app.js && node --check assets/themes.js && node --check assets/gallery.js && node --check assets/site.js && node --check assets/examples.js && node --check assets/preview.js
       - name: Validate site assets and privacy guards
         run: node .github/scripts/validate-site.mjs

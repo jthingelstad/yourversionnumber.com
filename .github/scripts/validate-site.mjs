@@ -6,21 +6,8 @@ import { fileURLToPath } from "node:url";
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const failures = [];
 
-async function validateEdition({ htmlPath, scriptPath, themesDirectory, privateQuery }) {
+async function validateEdition({ htmlPath, privateQuery }) {
   const html = await readFile(resolve(repoRoot, htmlPath), "utf8");
-  const script = await readFile(resolve(repoRoot, scriptPath), "utf8");
-  const manifest = script.match(/const THEMES = \[([\s\S]*?)\n\];/)?.[1] ?? "";
-  const themeNames = [...manifest.matchAll(/name:\s*['"]([^'"]+)['"]/g)].map(
-    (match) => match[1],
-  );
-
-  if (themeNames.length === 0) {
-    failures.push(`${scriptPath}: could not read the theme manifest`);
-  }
-  for (const theme of themeNames) {
-    const stylesheet = resolve(repoRoot, themesDirectory, `${theme}.css`);
-    if (!existsSync(stylesheet)) failures.push(`${scriptPath}: missing ${themesDirectory}/${theme}.css`);
-  }
 
   for (const match of html.matchAll(/(?:href|src)=["']([^"']+)["']/g)) {
     const reference = match[1].split(/[?#]/, 1)[0];
@@ -48,18 +35,42 @@ async function validateEdition({ htmlPath, scriptPath, themesDirectory, privateQ
   }
 }
 
-await validateEdition({
-  htmlPath: "birthday/index.html",
-  scriptPath: "birthday/assets/app.js",
-  themesDirectory: "birthday/themes",
-  privateQuery: "?p=",
-});
-await validateEdition({
-  htmlPath: "work/index.html",
-  scriptPath: "work/assets/app.js",
-  themesDirectory: "work/themes",
-  privateQuery: "?j=",
-});
+await validateEdition({ htmlPath: "birthday/index.html", privateQuery: "?p=" });
+await validateEdition({ htmlPath: "work/index.html", privateQuery: "?j=" });
+
+// One manifest, one theme folder, both editions reading the same array.
+// A manifest entry without a stylesheet ships a picker option that 404s; a
+// stylesheet without an entry is a file nobody can reach.
+{
+  const manifestSrc = await readFile(resolve(repoRoot, "assets/themes.js"), "utf8");
+  const entries = [...manifestSrc.matchAll(/\{\s*name:\s*'([^']+)'[\s\S]*?\n\s*blurb:/g)].map((m) => m[1]);
+  if (entries.length === 0) failures.push("assets/themes.js: could not read the manifest");
+
+  const files = (await readdir(resolve(repoRoot, "assets/themes")))
+    .filter((f) => f.endsWith(".css"))
+    .map((f) => f.replace(/\.css$/, ""));
+
+  for (const name of entries) {
+    if (!files.includes(name)) failures.push(`assets/themes.js: ${name} has no assets/themes/${name}.css`);
+  }
+  for (const file of files) {
+    if (!entries.includes(file)) failures.push(`assets/themes/${file}.css: not in the manifest, unreachable`);
+  }
+
+  // `kind` was only ever there to build optgroups; the picker is flat now.
+  if (/\bkind:/.test(manifestSrc)) failures.push("assets/themes.js: `kind` is retired, use `home`");
+  for (const m of manifestSrc.matchAll(/name:\s*'([^']+)'[\s\S]*?home:\s*(null|'([^']*)')/g)) {
+    const home = m[3] ?? null;
+    if (home !== null && home !== "birthday" && home !== "work") {
+      failures.push(`assets/themes.js: ${m[1]} has home '${home}', expected birthday | work | null`);
+    }
+  }
+
+  // Nothing may reach into a per-edition theme folder any more.
+  for (const stale of ["birthday/themes", "work/themes"]) {
+    if (existsSync(resolve(repoRoot, stale))) failures.push(`${stale}/ still exists; themes live in assets/themes/`);
+  }
+}
 
 // Spine pages: neutral chrome, no theme manifest, but the same privacy shim
 // (kept inline on every page so it cannot half-load ahead of the embed) and the
@@ -98,23 +109,29 @@ for (const spinePath of ["index.html", "about/index.html", "themes/index.html", 
 
 // Themes style the header controls as a set. A theme that dresses .about-btn
 // but not .home-btn leaves the way out of the edition looking like a stray link.
-for (const themeFile of [
-  ...(await readdir(resolve(repoRoot, "birthday/themes"))).map((f) => `birthday/themes/${f}`),
-  ...(await readdir(resolve(repoRoot, "work/themes"))).map((f) => `work/themes/${f}`),
-]) {
+for (const themeFile of (await readdir(resolve(repoRoot, "assets/themes")))
+  .filter((f) => f.endsWith(".css"))
+  .map((f) => `assets/themes/${f}`)) {
   const css = await readFile(resolve(repoRoot, themeFile), "utf8");
   if (css.includes(".about-btn") && !css.includes(".home-btn")) {
     failures.push(`${themeFile}: styles .about-btn but not .home-btn`);
   }
 }
 
-// Every theme in both manifests needs gallery copy, or its card renders bare.
-for (const scriptPath of ["birthday/assets/app.js", "work/assets/app.js"]) {
-  const script = await readFile(resolve(repoRoot, scriptPath), "utf8");
-  const manifest = script.match(/const THEMES = \[([\s\S]*?)\n\];/)?.[1] ?? "";
-  const names = [...manifest.matchAll(/name:\s*'([^']+)'/g)].length;
-  const blurbs = [...manifest.matchAll(/blurb:\s*'/g)].length;
-  if (names !== blurbs) failures.push(`${scriptPath}: ${names} themes but ${blurbs} blurbs`);
+// Every theme needs gallery copy, or its card renders bare.
+{
+  const manifestSrc = await readFile(resolve(repoRoot, "assets/themes.js"), "utf8");
+  const names = [...manifestSrc.matchAll(/name:\s*'([^']+)'/g)].length;
+  const blurbs = [...manifestSrc.matchAll(/blurb:\s*'/g)].length;
+  if (names !== blurbs) failures.push(`assets/themes.js: ${names} themes but ${blurbs} blurbs`);
+}
+
+// The UI stopped asking for contributions; keep it that way.
+for (const page of ["index.html", "about/index.html", "themes/index.html", "examples/index.html"]) {
+  const html = await readFile(resolve(repoRoot, page), "utf8");
+  if (/pull request|CONTRIBUTING\.md|your theme here/i.test(html)) {
+    failures.push(`${page}: contribution call-to-action is back`);
+  }
 }
 
 if (failures.length > 0) {
@@ -122,4 +139,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("Validated both editions, theme assets, local references, and analytics privacy guards.");
+console.log(`Validated both editions, the shared manifest, theme assets, local references, and analytics privacy guards.`);

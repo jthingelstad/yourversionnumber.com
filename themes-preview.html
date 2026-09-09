@@ -202,11 +202,11 @@ async function fetchManifest(jsPath) {
     const txt = await fetch(jsPath, { cache: 'no-cache' }).then(r => r.text());
     const m = txt.match(/const THEMES\s*=\s*\[([\s\S]*?)\];/);
     if (!m) return [];
-    const re = /\{\s*name:\s*'([^']+)'[^}]*?label:\s*'([^']+)'[^}]*?kind:\s*'([^']+)'[^}]*?animate:\s*(true|false)[^}]*?\}/g;
+    const re = /\{\s*name:\s*'([^']+)'[\s\S]*?label:\s*'([^']+)'[\s\S]*?home:\s*(?:'([^']+)'|null)[\s\S]*?animate:\s*(true|false)[\s\S]*?\}/g;
     const out = [];
     let match;
     while ((match = re.exec(m[1])) !== null) {
-      out.push({ name: match[1], label: match[2], kind: match[3], animate: match[4] === 'true' });
+      out.push({ name: match[1], label: match[2], home: match[3] || null, animate: match[4] === 'true' });
     }
     return out;
   } catch (e) {
@@ -252,8 +252,8 @@ let workThemes = [];
 async function init() {
   statusEl.textContent = 'fetching manifests…';
   [birthdayThemes, workThemes] = await Promise.all([
-    fetchManifest('birthday/assets/app.js'),
-    fetchManifest('work/assets/app.js'),
+    fetchManifest('assets/themes.js'),
+    fetchManifest('assets/themes.js'),
   ]);
   document.getElementById('birthday-count').textContent = `${birthdayThemes.length} themes`;
   document.getElementById('work-count').textContent = `${workThemes.length} themes`;
@@ -269,8 +269,8 @@ function renderAll() {
   wGrid.innerHTML = '';
   for (const t of birthdayThemes) bGrid.appendChild(makeCard(t, '/birthday/', 'p', r.p));
   for (const t of workThemes)     wGrid.appendChild(makeCard(t, '/work/', 'j', r.j));
-  if (!birthdayThemes.length) bGrid.innerHTML = '<div class="empty">No birthday themes parsed from birthday/assets/app.js</div>';
-  if (!workThemes.length) wGrid.innerHTML = '<div class="empty">No work themes parsed from work/assets/app.js</div>';
+  if (!birthdayThemes.length) bGrid.innerHTML = '<div class="empty">No themes parsed from assets/themes.js</div>';
+  if (!workThemes.length) wGrid.innerHTML = '<div class="empty">No themes parsed from assets/themes.js</div>';
 }
 
 rosterSel.addEventListener('change', renderAll);

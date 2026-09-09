@@ -4,3 +4,4 @@ node_modules/
 .idea/
 *.log
 .playwright-mcp/
+design_handoff_theme_refresh/

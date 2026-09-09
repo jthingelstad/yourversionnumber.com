@@ -1,43 +1,8 @@
-const THEMES = [
-  { name: 'boardroom',   label: 'Boardroom',   kind: 'dark',  animate: true,
-    blurb: 'A board-update slide with a KPI rail down the side. ARR, NPS, payback, tenure.' },
-  { name: 'slack',       label: 'Slack',       kind: 'dark',  animate: false,
-    blurb: 'A channel feed where your tenure is the message and the reactions are already in.' },
-  { name: 'slidedeck',   label: 'Slide Deck',  kind: 'dark',  animate: false,
-    blurb: 'A confidential business review slide, three bullets, no further context offered.' },
-  { name: 'earnings',    label: 'Earnings',    kind: 'dark',  animate: true,
-    blurb: 'A live ticker on a black trading screen. Your career, but as a stock.' },
-  { name: 'github',      label: 'GitHub PR',   kind: 'dark',  animate: false,
-    blurb: 'A pull request list, complete with avatars, labels and an Open pill.' },
-  { name: 'whiteboard',  label: 'Whiteboard',  kind: 'light', animate: false,
-    blurb: 'Sticky notes in primary colours, arranged by someone who ran out of wall.' },
-  { name: 'inbox',       label: 'Inbox',       kind: 'light', animate: false,
-    blurb: 'An inbox view where every role is an unread thread you cannot archive.' },
-  { name: 'okr',         label: 'OKR',         kind: 'light', animate: true,
-    blurb: 'A quarterly scorecard with a progress bar and an ON-TRACK pill. It is always on track.' },
-  { name: 'cubicle',     label: 'Cubicle',     kind: 'light', animate: false,
-    blurb: 'A manila-folder corporate newsletter, photocopied one too many times.' },
-  { name: 'kanban',      label: 'Kanban',      kind: 'light', animate: false,
-    blurb: 'Cards sitting in the In Progress column, where they have been for some years.' },
-  { name: 'standup',     label: 'Standup',     kind: 'light', animate: false,
-    blurb: 'Yesterday, today, blockers. The blocker is time.' },
-  { name: 'invite',      label: 'Invite',      kind: 'light', animate: false,
-    blurb: 'A calendar invite you have already accepted, recurring indefinitely.' },
-  { name: 'confluence',  label: 'Confluence',  kind: 'light', animate: false,
-    blurb: 'A wiki page with breadcrumbs, a comment count and no clear owner.' },
-  { name: 'zoom',        label: 'Zoom',        kind: 'light', animate: false,
-    blurb: 'Gallery view tiles, reactions floating up, everyone technically present.' },
-  { name: 'spreadsheet', label: 'Spreadsheet', kind: 'retro', animate: true,
-    blurb: 'A grid with row numbers, because eventually everything becomes a spreadsheet.' },
-  { name: 'pomodoro',    label: 'Pomodoro',    kind: 'fun',   animate: true,
-    blurb: 'A tomato timer mid Deep Work block. Please do not disturb.' },
-  { name: 'ooo',         label: 'OOO',         kind: 'fun',   animate: false,
-    blurb: 'An out-of-office auto-reply, signed by hand. Back never.' },
-];
+import { THEMES, orderForEdition } from '/assets/themes.js';
+
+const EDITION = 'work';
 const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
-const THEME_KINDS = ['light', 'dark', 'fun', 'retro'];
-const KIND_LABELS = { light: 'Light', dark: 'Dark', fun: 'Fun', retro: 'Retro' };
 const RANDOM_THEME = '__random__';
 
 function pickRandomTheme(except) {
@@ -130,7 +95,7 @@ function writeURL() {
 }
 
 function applyTheme(theme) {
-  document.getElementById('theme-css').href = `themes/${theme}.css`;
+  document.getElementById('theme-css').href = `/assets/themes/${theme}.css`;
   document.documentElement.dataset.theme = theme;
 }
 
@@ -365,19 +330,23 @@ function renderThemeSelector() {
   randomOpt.textContent = '🎲 Surprise me';
   select.appendChild(randomOpt);
 
-  for (const kind of THEME_KINDS) {
-    const inKind = THEMES.filter(t => t.kind === kind);
-    if (!inKind.length) continue;
-    const group = document.createElement('optgroup');
-    group.label = KIND_LABELS[kind];
-    for (const t of inKind) {
-      const opt = document.createElement('option');
-      opt.value = t.name;
-      opt.textContent = t.label;
-      if (t.name === state.theme) opt.selected = true;
-      group.appendChild(opt);
-    }
-    select.appendChild(group);
+  // Flat list, no optgroups: this edition's natives first, a rule, then the
+  // rest. Every theme is selectable in both editions now — `home` only orders.
+  const { native, rest } = orderForEdition(EDITION);
+  const addOption = (t) => {
+    const opt = document.createElement('option');
+    opt.value = t.name;
+    opt.textContent = t.label;
+    if (t.name === state.theme) opt.selected = true;
+    select.appendChild(opt);
+  };
+  native.forEach(addOption);
+  if (rest.length) {
+    const rule = document.createElement('option');
+    rule.disabled = true;
+    rule.textContent = '\u2500'.repeat(10);
+    select.appendChild(rule);
+    rest.forEach(addOption);
   }
 
   select.addEventListener('change', () => {

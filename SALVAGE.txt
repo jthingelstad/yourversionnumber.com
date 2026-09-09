@@ -1,0 +1,474 @@
+# Salvage scratch — techniques lifted from the 20 themes phase 1 deletes.
+#
+# Extracted 2026-09-09, before deletion, per 01-restructure.md and refs/Cut List.html.
+# Not valid CSS as a whole: these are excerpts with their original line numbers,
+# to be adapted into the destination theme in phase 3/4. Delete this file when
+# every transplant below has landed.
+
+==============================================================================
+FROM birthday/themes/pastel.css   →   polaroid
+WHY  Three drawn flower glyphs → eight data-row-variant ornaments
+==============================================================================
+--- lines 47-53 ---
+}
+
+.site-title::after {
+  content: " ❀";
+  color: var(--pink);
+  font-style: normal;
+}
+
+--- lines 113-119 ---
+  position: relative;
+}
+
+.person::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+
+--- lines 123-133 ---
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='4' fill='%23f7c8d6'/><circle cx='16' cy='6' r='5' fill='%23f7c8d6'/><circle cx='26' cy='16' r='5' fill='%23f7c8d6'/><circle cx='16' cy='26' r='5' fill='%23f7c8d6'/><circle cx='6' cy='16' r='5' fill='%23f7c8d6'/><circle cx='16' cy='16' r='3' fill='%23fcd9b6'/></svg>") no-repeat center / contain;
+}
+
+.person:nth-child(2n)::before {
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 4 C20 12, 28 12, 24 20 C20 28, 12 28, 8 20 C4 12, 12 12, 16 4 Z' fill='%237eb88f'/></svg>") no-repeat center / contain;
+}
+
+.person:nth-child(3n)::before {
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='5' fill='%23d4c5e8'/><circle cx='16' cy='6' r='4' fill='%23d4c5e8'/><circle cx='25' cy='12' r='4' fill='%23d4c5e8'/><circle cx='25' cy='20' r='4' fill='%23d4c5e8'/><circle cx='16' cy='26' r='4' fill='%23d4c5e8'/><circle cx='7' cy='20' r='4' fill='%23d4c5e8'/><circle cx='7' cy='12' r='4' fill='%23d4c5e8'/></svg>") no-repeat center / contain;
+}
+
+
+==============================================================================
+FROM birthday/themes/nature.css   →   zen
+WHY  Two-layer leaf fall + seasonal palette (drive from data-season)
+==============================================================================
+--- lines 3-10 ---
+:root {
+  --bark: #3d2f1f;
+  --moss: #6b8e4e;
+  --leaf: #4a7c3a;
+  --leaf-deep: #2d5429;
+  --cream: #f6f1e3;
+  --paper: #fbf7ec;
+  --earth: #8b6f47;
+
+--- lines 43-49 ---
+  
+  font-size: 2.75rem;
+  margin: 0;
+  color: var(--leaf-deep);
+  letter-spacing: 0.01em;
+}
+
+
+--- lines 73-79 ---
+}
+
+.home-btn, .about-btn, .edit-btn {
+  background: var(--leaf-deep);
+  color: var(--cream);
+  border: 0;
+  border-radius: 4px;
+
+--- lines 83-89 ---
+  font-size: 0.9rem;
+}
+
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { background: var(--leaf); }
+
+.intro {
+  font-family: 'Cormorant Garamond', serif;
+
+--- lines 138-145 ---
+   backgrounds on the theme-fx ::before/::after, each animating translateY at
+   a different speed; the SVGs themselves contain multiple leaf glyphs so we
+   get many particles from two layers. */
+.theme-fx::before,
+.theme-fx::after {
+  content: "";
+  position: absolute;
+  left: 0;
+
+--- lines 149-173 ---
+  background-repeat: repeat;
+  opacity: 0.5;
+}
+.theme-fx::before {
+  top: -100vh;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'><g fill='%234a7c3a'><path d='M40 80 Q55 50 80 60 Q90 90 65 100 Q50 95 40 80 Z' opacity='0.55'/><path d='M310 220 Q330 200 350 215 Q355 240 335 248 Q315 240 310 220 Z' opacity='0.45' transform='rotate(20 330 230)'/><path d='M120 360 Q140 340 160 355 Q165 380 145 388 Q125 380 120 360 Z' opacity='0.6' transform='rotate(-15 140 370)'/><path d='M260 480 Q280 460 300 475 Q305 500 285 508 Q265 500 260 480 Z' opacity='0.4' transform='rotate(35 280 490)'/><path d='M180 140 Q200 120 220 135 Q225 160 205 168 Q185 160 180 140 Z' opacity='0.5'/><path d='M70 540 Q90 520 110 535 Q115 560 95 568 Q75 560 70 540 Z' opacity='0.5' transform='rotate(-25 90 550)'/></g></svg>");
+  background-size: 400px 600px;
+  animation: leaf-fall-slow 24s linear infinite;
+}
+.theme-fx::after {
+  top: -100vh;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='700' viewBox='0 0 500 700'><g fill='%23d4a847'><path d='M80 120 Q100 95 125 110 Q132 140 108 150 Q88 142 80 120 Z' opacity='0.5' transform='rotate(15 105 125)'/><path d='M390 280 Q410 260 430 275 Q435 300 415 308 Q395 300 390 280 Z' opacity='0.4'/><path d='M200 440 Q220 420 240 435 Q245 460 225 468 Q205 460 200 440 Z' opacity='0.55' transform='rotate(-30 220 450)'/><path d='M340 580 Q360 560 380 575 Q385 600 365 608 Q345 600 340 580 Z' opacity='0.45'/><path d='M50 320 Q70 300 90 315 Q95 340 75 348 Q55 340 50 320 Z' opacity='0.5' transform='rotate(40 70 330)'/></g></svg>");
+  background-size: 500px 700px;
+  animation: leaf-fall-fast 17s linear infinite;
+  animation-delay: -4s;
+}
+
+@keyframes leaf-fall-slow {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(40px, 100vh, 0); }
+}
+@keyframes leaf-fall-fast {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-30px, 100vh, 0); }
+}
+
+--- lines 176-182 ---
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--leaf-deep);
+  margin-bottom: 0.85rem;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+
+--- lines 186-192 ---
+  display: block;
+  margin: 0 auto;
+  background: var(--paper);
+  color: var(--leaf-deep);
+  border: 1px dashed var(--moss);
+  border-radius: 4px;
+  padding: 0.7rem 1.75rem;
+
+--- lines 199-205 ---
+.add-btn::before { content: "✦ "; color: var(--sun); }
+
+.add-btn:hover {
+  background: var(--leaf-deep);
+  color: var(--cream);
+  border-style: solid;
+}
+
+--- lines 213-217 ---
+  font-style: italic;
+}
+
+.site-footer a { color: var(--leaf-deep); font-weight: 600; font-style: normal; }
+
+
+==============================================================================
+FROM birthday/themes/y2k.css   →   memphis
+WHY  Chrome-bevel numerals: -webkit-text-stroke + light gradient
+==============================================================================
+--- lines 4-12 ---
+  --bg-1: #c4e4ff;
+  --bg-2: #e8c8ff;
+  --bg-3: #ffd4e8;
+  --chrome-1: #f0f5fa;
+  --chrome-2: #aabbcc;
+  --chrome-3: #6678aa;
+  --silver: #d8e0eb;
+  --hot-pink: #ff3399;
+  --acid-green: #aaff44;
+
+--- lines 43-62 ---
+  font-weight: 400;
+  font-size: 2.5rem;
+  margin: 0;
+  background: linear-gradient(180deg, var(--chrome-1) 0%, var(--chrome-2) 50%, var(--chrome-3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--chrome-3);
+  letter-spacing: 0.03em;
+  filter: drop-shadow(2px 2px 0 var(--hot-pink));
+}
+
+.theme-select {
+  appearance: none;
+  background: linear-gradient(180deg, var(--chrome-1), var(--silver));
+  color: var(--ink);
+  border: 1px solid var(--chrome-3);
+  border-radius: 999px;
+  padding: 0.4rem 2rem 0.4rem 1rem;
+  font-family: 'Rubik', sans-serif;
+
+--- lines 64-70 ---
+  cursor: pointer;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%236678aa' stroke-width='1.5' fill='none'/></svg>"),
+    linear-gradient(180deg, var(--chrome-1), var(--silver));
+  background-repeat: no-repeat, no-repeat;
+  background-position: right 0.7rem center, 0 0;
+  box-shadow: inset 0 1px 0 #fff, 0 2px 4px rgba(102, 120, 170, 0.3);
+
+--- lines 140-150 ---
+.version {
+  font-family: 'Audiowide', cursive;
+  font-weight: 400;
+  background: linear-gradient(180deg, var(--chrome-1) 0%, var(--chrome-2) 45%, var(--chrome-3) 50%, var(--chrome-2) 55%, var(--chrome-1) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--chrome-3);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.85rem;
+  filter: drop-shadow(2px 3px 0 var(--hot-pink));
+
+==============================================================================
+FROM birthday/themes/arcade.css   →   jumbotron
+WHY  P1/P2 HI-SCORE via CSS counters
+==============================================================================
+--- lines 145-152 ---
+}
+
+.person::before {
+  content: "P" counter(player) " HI-SCORE";
+  counter-increment: player;
+  position: absolute;
+  top: -0.85rem;
+  left: 0.75rem;
+
+--- lines 158-164 ---
+}
+
+.people {
+  counter-reset: player;
+}
+
+.version {
+
+==============================================================================
+FROM birthday/themes/weather.css   →   ALL themes
+WHY  The per-row variant technique itself (emoji get redrawn)
+==============================================================================
+--- lines 106-119 ---
+  font-size: 3.5rem;
+  line-height: 1;
+}
+.person[data-row-variant="0"]::after { content: "☀️"; }
+.person[data-row-variant="1"]::after { content: "⛅"; }
+.person[data-row-variant="2"]::after { content: "☁️"; }
+.person[data-row-variant="3"]::after { content: "🌦️"; }
+.person[data-row-variant="4"]::after { content: "🌧️"; }
+.person[data-row-variant="5"]::after { content: "⛈️"; }
+.person[data-row-variant="6"]::after { content: "🌤️"; }
+.person[data-row-variant="7"]::after { content: "🌫️"; }
+
+/* Birthday → always sunny */
+body[data-birthday="true"] .person::after { content: "☀️"; animation: sun-spin 12s linear infinite; }
+
+==============================================================================
+FROM work/themes/github.css   →   unread
+WHY  Avatar discs coloured from --row-hue
+==============================================================================
+--- lines 129-138 ---
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: hsl(var(--row-hue, 200) 50% 60%);
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 50%),
+    linear-gradient(135deg, hsl(var(--row-hue, 200) 60% 55%), hsl(calc(var(--row-hue, 200) + 40) 50% 45%));
+  border: 1px solid var(--border);
+}
+
+
+==============================================================================
+FROM work/themes/invite.css   →   unread
+WHY  NOTE: the Cut List's 'FREQ=DAILY;UNTIL=FOREVER' is NEW copy, not in this file.
+#      Nearest real material = the eight meeting-slot strings below.
+==============================================================================
+--- lines 141-154 ---
+  font-weight: 400;
+  color: var(--muted);
+}
+.person[data-row-variant="0"] .person-name::after { content: "Mon · 9:00 – 9:30 AM"; }
+.person[data-row-variant="1"] .person-name::after { content: "Tue · 10:30 – 11:00 AM"; }
+.person[data-row-variant="2"] .person-name::after { content: "Wed · 1:00 – 1:30 PM"; }
+.person[data-row-variant="3"] .person-name::after { content: "Thu · 2:30 – 3:00 PM"; }
+.person[data-row-variant="4"] .person-name::after { content: "Fri · 4:00 – 4:30 PM"; }
+.person[data-row-variant="5"] .person-name::after { content: "Mon · 11:00 – 11:30 AM"; }
+.person[data-row-variant="6"] .person-name::after { content: "Wed · 3:00 – 3:30 PM"; }
+.person[data-row-variant="7"] .person-name::after { content: "Fri · 9:30 – 10:00 AM"; }
+
+.version {
+  font-family: 'Roboto Mono', monospace;
+
+--- lines 162-168 ---
+
+/* Accepted badge */
+.person::after {
+  content: "✓ Accepted";
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1.25rem;
+
+==============================================================================
+FROM work/themes/confluence.css   →   unread
+WHY  NOTE: 'Owner: unassigned / Last reviewed: never' is NEW copy, not in this file.
+#      Nearest real material = the eight per-row metadata lines below.
+==============================================================================
+--- lines 48-54 ---
+  letter-spacing: -0.005em;
+}
+.site-title::before {
+  content: "PROJECT > Tenure > Versioning Doc — ";
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+
+--- lines 144-157 ---
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.person[data-row-variant="0"]::after { content: "Last edited 2 hours ago · 🏷 q3, planning, doc · 💬 4 comments"; }
+.person[data-row-variant="1"]::after { content: "Last edited yesterday · 🏷 onboarding, runbook · 💬 11 comments"; }
+.person[data-row-variant="2"]::after { content: "Last edited Aug 12 · 🏷 architecture, decision-record · 💬 7 comments"; }
+.person[data-row-variant="3"]::after { content: "Last edited 30m ago · 🏷 retro, action-items · 💬 2 comments"; }
+.person[data-row-variant="4"]::after { content: "Last edited last week · 🏷 roadmap, kickoff · 💬 18 comments"; }
+.person[data-row-variant="5"]::after { content: "Last edited 4 days ago · 🏷 design, spec · 💬 9 comments"; }
+.person[data-row-variant="6"]::after { content: "Last edited Jun 03 · 🏷 incident, postmortem · 💬 14 comments"; }
+.person[data-row-variant="7"]::after { content: "Last edited 1h ago · 🏷 docs, faq · 💬 6 comments"; }
+
+body[data-quarter-start="true"] .version { background: #e3fcef; border-color: #79f2c0; color: #006644; }
+body[data-tenure-anniversary="true"] .version { background: #fff0b3; border-color: var(--warning-edge); color: #974f0c; }
+
+==============================================================================
+FROM work/themes/boardroom.css   →   slidedeck
+WHY  Eight KPI rails + delta badges (the copy is the joke)
+==============================================================================
+--- lines 138-144 ---
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "label  delta"
+    "metric metric"
+    "sub    sub";
+  gap: 0.5rem 1rem;
+
+--- lines 178-186 ---
+  margin: 0;
+}
+
+/* Top-right delta badge — varies per row */
+.person::after {
+  grid-area: delta;
+  display: inline-flex;
+  align-items: center;
+  align-self: start;
+
+--- lines 199-208 ---
+.person[data-row-variant="0"]::after { content: "↑ 23% MoM"; }
+.person[data-row-variant="1"]::after { content: "↑ 4.2x YoY"; }
+.person[data-row-variant="2"]::after { content: "↑ 14% above plan"; }
+.person[data-row-variant="3"]::after { content: "↑ NPS +18"; }
+.person[data-row-variant="4"]::after { content: "↑ ARR · $4.2M"; }
+.person[data-row-variant="5"]::after { content: "↑ 38% logo growth"; }
+.person[data-row-variant="6"]::after { content: "↑ payback < 9mo"; }
+.person[data-row-variant="7"]::after { content: "↑ 110% net retention"; }
+
+.version::after {
+
+--- lines 219-233 ---
+  -webkit-text-fill-color: var(--muted);
+  background: none;
+  white-space: pre-line;
+  content: "ARR  $4.2M    BURN  $0.9M/mo    RUNWAY  18mo    HEADCOUNT  47";
+}
+.person[data-row-variant="0"] .version::after { content: "ARR  $4.2M    BURN  $0.9M/mo    RUNWAY  18mo    HEADCOUNT  47"; }
+.person[data-row-variant="1"] .version::after { content: "ARR  $7.1M    BURN  $1.1M/mo    RUNWAY  24mo    HEADCOUNT  62"; }
+.person[data-row-variant="2"] .version::after { content: "ARR  $2.4M    BURN  $0.6M/mo    RUNWAY  21mo    HEADCOUNT  29"; }
+.person[data-row-variant="3"] .version::after { content: "PIPELINE  $14M    WIN RATE  31%    CAC  $4.1k    LTV  $48k"; }
+.person[data-row-variant="4"] .version::after { content: "MRR  $360k    GROSS MARGIN  78%    QUOTA ATTAIN  118%"; }
+.person[data-row-variant="5"] .version::after { content: "DAU/MAU  0.42    7-DAY RETENTION  68%    NPS  62"; }
+.person[data-row-variant="6"] .version::after { content: "ARR  $11.3M    BURN MULTIPLE  0.8    RULE OF 40  72"; }
+.person[data-row-variant="7"] .version::after { content: "PAID LOGOS  214    NRR  112%    GROSS RETENTION  94%"; }
+
+.add-btn {
+
+==============================================================================
+FROM work/themes/okr.css   →   spreadsheet
+WHY  ON TRACK / AT RISK pill, to be driven by real --patch-pct
+==============================================================================
+--- lines 141-147 ---
+
+.person::before {
+  grid-area: status;
+  content: "🟢 ON TRACK";
+  background: var(--on-track-bg);
+  color: var(--on-track);
+  border-radius: 999px;
+
+==============================================================================
+FROM work/themes/pomodoro.css   →   progress
+WHY  Eight session asides → ticket card comments
+==============================================================================
+--- lines 126-139 ---
+  content: "FOCUS SESSION  ·  ";
+  color: var(--tomato);
+}
+.person[data-row-variant="0"] .person-name::before { content: "FOCUS SESSION  ·  "; color: var(--tomato); }
+.person[data-row-variant="1"] .person-name::before { content: "DEEP WORK  ·  "; color: var(--tomato); }
+.person[data-row-variant="2"] .person-name::before { content: "MAKER MODE  ·  "; color: var(--tomato); }
+.person[data-row-variant="3"] .person-name::before { content: "HEADS DOWN  ·  "; color: var(--tomato); }
+.person[data-row-variant="4"] .person-name::before { content: "SHORT BREAK  ·  "; color: var(--break); }
+.person[data-row-variant="5"] .person-name::before { content: "FOCUS SESSION  ·  "; color: var(--tomato); }
+.person[data-row-variant="6"] .person-name::before { content: "DEEP WORK  ·  "; color: var(--tomato); }
+.person[data-row-variant="7"] .person-name::before { content: "LONG BREAK  ·  "; color: var(--break); }
+
+/* Big timer-face version display */
+.version {
+
+--- lines 163-176 ---
+  letter-spacing: 0.03em;
+  -webkit-text-fill-color: var(--muted);
+}
+.person[data-row-variant="0"] .version::after { content: "🍅  🍅  🍅  ⚪   ·   Pomodoro 3 of 4   ·   next break in 12 min"; }
+.person[data-row-variant="1"] .version::after { content: "🍅  🍅  ⚪  ⚪   ·   Pomodoro 2 of 4   ·   stay off Slack"; }
+.person[data-row-variant="2"] .version::after { content: "🍅  ⚪  ⚪  ⚪   ·   Pomodoro 1 of 4   ·   warming up"; }
+.person[data-row-variant="3"] .version::after { content: "🍅  🍅  🍅  🍅   ·   long break unlocked  ·   stretch"; }
+.person[data-row-variant="4"] .version::after { content: "☕  short break  ·   look out a window  ·   5 min on the clock"; color: var(--break); -webkit-text-fill-color: var(--break); }
+.person[data-row-variant="5"] .version::after { content: "🍅  🍅  ⚪  ⚪   ·   Pomodoro 2 of 4   ·   inbox can wait"; }
+.person[data-row-variant="6"] .version::after { content: "🍅  🍅  🍅  ⚪   ·   Pomodoro 3 of 4   ·   no notifications"; }
+.person[data-row-variant="7"] .version::after { content: "🛋  long break  ·   step away from the desk  ·   15 min"; color: var(--break); -webkit-text-fill-color: var(--break); }
+
+/* "(don't check Slack)" shipping with the timer */
+.person::after {
+
+--- lines 181-194 ---
+  font-style: italic;
+  content: "(silence your phone)";
+}
+.person[data-row-variant="0"]::after { content: "(silence your phone)"; }
+.person[data-row-variant="1"]::after { content: "(close the chat tab)"; }
+.person[data-row-variant="2"]::after { content: "(no email until the bell)"; }
+.person[data-row-variant="3"]::after { content: "(do not stand up)"; }
+.person[data-row-variant="4"]::after { content: "(walk it off)"; }
+.person[data-row-variant="5"]::after { content: "(headphones on)"; }
+.person[data-row-variant="6"]::after { content: "(stay in flow)"; }
+.person[data-row-variant="7"]::after { content: "(go outside, look at trees)"; }
+
+.add-btn {
+  display: inline-block;
+
+==============================================================================
+FROM work/themes/standup.css   →   ALL themes
+WHY  white-space:pre-line multi-line pseudo-element trick
+==============================================================================
+--- lines 157-163 ---
+  font-size: 0.85rem;
+  color: var(--ink);
+  line-height: 1.55;
+  white-space: pre-line;
+  content: "✅  Yesterday: shipped review feedback\A 🚧  Today: pairing on the rollout\A 🚦  Blockers: none";
+}
+.person[data-row-variant="0"]::after { content: "✅  Yesterday: shipped review feedback\A 🚧  Today: pairing on the rollout\A 🚦  Blockers: none"; }
+
+
+==============================================================================
+AUTHORED IN THE HANDOFF — no source file to lift from
+==============================================================================
+refs/Cut List.html lists these as "salvage" but neither string exists in the
+retired stylesheets. They are new copy to write into unread in phase 3:
+
+  invite     →  FREQ=DAILY;UNTIL=FOREVER            (unread's footer)
+  confluence →  Owner: unassigned · Last reviewed: never   (metadata line)
+
+Deleting invite.css and confluence.css therefore loses nothing on these two.

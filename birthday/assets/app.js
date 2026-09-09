@@ -1,59 +1,8 @@
-const THEMES = [
-  { name: 'dark',       label: 'Dark',       kind: 'dark',  animate: false,
-    blurb: 'Minimalist dark mode, violet accents, nothing shouting. The one to pick when the number is the point.' },
-  { name: 'family',     label: 'Family',     kind: 'light', animate: false,
-    blurb: 'Warm cream and handwritten Caveat. Built for a page with the whole household on it.' },
-  { name: 'pastel',     label: 'Pastel',     kind: 'light', animate: false,
-    blurb: 'A soft gradient haze with pastel cards floating on top. Quiet and a little dreamy.' },
-  { name: 'birthday',   label: 'Birthday',   kind: 'fun',   animate: false,
-    blurb: 'Confetti, balloons and party-hat pink. The default, and unapologetic about it.' },
-  { name: 'nature',     label: 'Nature',     kind: 'light', animate: false,
-    blurb: 'Leaves scattered across linen, set in an earthy serif. Drifts gently in the background.' },
-  { name: 'ocean',      label: 'Ocean',      kind: 'dark',  animate: false,
-    blurb: 'Wavy gradients with a small shoreline wave rolling along the bottom.' },
-  { name: 'galaxy',     label: 'Galaxy',     kind: 'dark',  animate: true,
-    blurb: 'Deep-space gradient with neon numerals that glow like a distant signal.' },
-  { name: 'zen',        label: 'Zen',        kind: 'light', animate: false,
-    blurb: 'Quiet cream, generous space, one vermillion first-letter doing all the work.' },
-  { name: 'weather',    label: 'Weather',    kind: 'light', animate: false,
-    blurb: 'A sky-blue forecast card that gives every person their own sun or cloud.' },
-  { name: 'polaroid',   label: 'Polaroid',   kind: 'light', animate: false,
-    blurb: 'Instant photos taped to the page, each one tilted a degree or two off true.' },
-  { name: 'tarot',      label: 'Tarot',      kind: 'light', animate: false,
-    blurb: 'Purple and stars, with the Fool, the Priestess and the Empress dealt across the table.' },
-  { name: 'newspaper',  label: 'Newspaper',  kind: 'light', animate: false,
-    blurb: 'Broadsheet typography and section rules. Your age, above the fold.' },
-  { name: 'subway',     label: 'Subway',     kind: 'dark',  animate: false,
-    blurb: 'A black transit map where every person gets their own coloured route bullet.' },
-  { name: 'receipt',    label: 'Receipt',    kind: 'light', animate: false,
-    blurb: 'Thermal-printer monospace, QTY 1, thank you for your business.' },
-  { name: 'steampunk',  label: 'Steampunk',  kind: 'dark',  animate: false,
-    blurb: 'A sepia ledger of gears and cogs, as though age were an engineering concern.' },
-  { name: 'brutalist',  label: 'Brutalist',  kind: 'light', animate: false,
-    blurb: 'Yellow, red and black, type set far too large. Refuses to be tasteful.' },
-  { name: 'comic',      label: 'Comic',      kind: 'fun',   animate: false,
-    blurb: 'Comic panels with POW, ZAP and BOOM stickers slapped over the numbers.' },
-  { name: 'memphis',    label: 'Memphis',    kind: 'fun',   animate: false,
-    blurb: 'Eighties squiggles, triangles and dots in every direction at once.' },
-  { name: 'vinyl',      label: 'Vinyl',      kind: 'fun',   animate: true,
-    blurb: 'Records spinning at 33⅓, one per person, forever mid-side-A.' },
-  { name: 'terminal',   label: 'Terminal',   kind: 'retro', animate: true,
-    blurb: 'Green on black at a blinking prompt. Your age as command output.' },
-  { name: 'arcade',     label: 'Arcade',     kind: 'retro', animate: true,
-    blurb: 'A pixel-fonted CRT cabinet where your birthday is the hi-score table.' },
-  { name: 'vaporwave',  label: 'Vaporwave',  kind: 'retro', animate: true,
-    blurb: 'Pink and cyan grid running to a palm-tree sunset. Aesthetic.' },
-  { name: 'y2k',        label: 'Y2K',        kind: 'retro', animate: true,
-    blurb: 'Frosted glass, chrome and blur, straight out of a 2001 media player.' },
-  { name: 'pixel',      label: 'Pixel',      kind: 'retro', animate: true,
-    blurb: 'Eight-bit type on a dark green field. Small, sharp, nostalgic.' },
-  { name: 'gameboy',    label: 'Gameboy',    kind: 'retro', animate: true,
-    blurb: 'The DMG palette and a cartridge silhouette. Four shades of green is plenty.' },
-];
+import { THEMES, orderForEdition } from '/assets/themes.js';
+
+const EDITION = 'birthday';
 const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
-const THEME_KINDS = ['light', 'dark', 'fun', 'retro'];
-const KIND_LABELS = { light: 'Light', dark: 'Dark', fun: 'Fun', retro: 'Retro' };
 const RANDOM_THEME = '__random__';
 
 function pickRandomTheme(except) {
@@ -153,7 +102,7 @@ function writeURL() {
 }
 
 function applyTheme(theme) {
-  document.getElementById('theme-css').href = `themes/${theme}.css`;
+  document.getElementById('theme-css').href = `/assets/themes/${theme}.css`;
   document.documentElement.dataset.theme = theme;
 }
 
@@ -361,17 +310,23 @@ function renderThemeSelector() {
   randomOpt.textContent = '🎲 Surprise me';
   select.appendChild(randomOpt);
 
-  for (const kind of THEME_KINDS) {
-    const group = document.createElement('optgroup');
-    group.label = KIND_LABELS[kind];
-    for (const t of THEMES.filter(t => t.kind === kind)) {
-      const opt = document.createElement('option');
-      opt.value = t.name;
-      opt.textContent = t.label;
-      if (t.name === state.theme) opt.selected = true;
-      group.appendChild(opt);
-    }
-    select.appendChild(group);
+  // Flat list, no optgroups: this edition's natives first, a rule, then the
+  // rest. Every theme is selectable in both editions now — `home` only orders.
+  const { native, rest } = orderForEdition(EDITION);
+  const addOption = (t) => {
+    const opt = document.createElement('option');
+    opt.value = t.name;
+    opt.textContent = t.label;
+    if (t.name === state.theme) opt.selected = true;
+    select.appendChild(opt);
+  };
+  native.forEach(addOption);
+  if (rest.length) {
+    const rule = document.createElement('option');
+    rule.disabled = true;
+    rule.textContent = '\u2500'.repeat(10);
+    select.appendChild(rule);
+    rest.forEach(addOption);
   }
 
   select.addEventListener('change', () => {
