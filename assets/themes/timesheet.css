@@ -1,0 +1,370 @@
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Special+Elite&display=swap');
+
+/* Timesheet.
+ *
+ * A punch card on green-bar fanfold. PATCH is billable days, and the totals at
+ * the foot never reconcile — there is a VARIANCE of exactly one day, always.
+ * That is the joke and it must not be fixed.
+ *
+ * Spec in 04-themes-new.md §6. */
+
+:root {
+  --desk: #8f9186;
+  --paper: #f4f5ec;
+  --bar: #dfe9d8;
+  --ink: #2c2f26;
+  --faded: #6d7166;
+  --stamp: #5b3fa0;
+  --thread: #a8322d;
+  /* Row pitch. The fanfold gradient and the row height come from this one
+     property, so every printed line lands on a bar rather than drifting off it. */
+  --pitch: 2.6rem;
+}
+
+body {
+  margin: 0;
+  background: var(--desk);
+  color: var(--ink);
+  font-family: 'Cutive Mono', monospace;
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  position: relative;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2rem 3rem 3rem;
+  background:
+    /* tractor-feed holes down both edges */
+    radial-gradient(circle at 1.1rem 0, transparent 0 5px, var(--paper) 5.5px) 0 0 / 100% var(--pitch) repeat-y,
+    radial-gradient(circle at calc(100% - 1.1rem) 0, transparent 0 5px, var(--paper) 5.5px) 0 0 / 100% var(--pitch) repeat-y,
+    var(--paper);
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.28);
+}
+
+/* The margins the holes sit in, ruled off from the printed area. */
+#app::before {
+  content: "";
+  position: absolute;
+  inset: 0 2.2rem;
+  border-left: 1px dashed rgba(44, 47, 38, 0.28);
+  border-right: 1px dashed rgba(44, 47, 38, 0.28);
+  pointer-events: none;
+}
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.site-title {
+  margin: 0;
+  font-family: 'Cutive Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.site-title::after {
+  content: "  ·  PERIOD ENDING TODAY";
+  color: var(--faded);
+  font-size: 0.75rem;
+}
+
+.header-controls { gap: 0.4rem; }
+
+.home-btn, .about-btn, .edit-btn, .theme-select {
+  font-family: 'Cutive Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  appearance: none;
+}
+
+.intro {
+  margin: 0.75rem 0 1rem;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.intro code { font-family: inherit; background: var(--bar); padding: 0 0.25em; }
+
+/* ── The sheet ─────────────────────────────────────────────────────────────
+   Alternating green bars at the row pitch, so the print lands on the bar. */
+
+.people {
+  display: block;
+  margin: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--bar) 0 var(--pitch),
+    transparent var(--pitch) calc(var(--pitch) * 2));
+  border-top: 1px solid rgba(44, 47, 38, 0.35);
+  border-bottom: 1px solid rgba(44, 47, 38, 0.35);
+}
+
+.person {
+  position: relative;
+  display: grid;
+  grid-template-columns: 10ch minmax(0, 1fr) 9ch;
+  align-items: baseline;
+  gap: 0 1ch;
+  width: 100%;
+  height: var(--pitch);
+  padding: 0 0.75rem;
+  font-size: 0.88rem;
+  border: 0;
+  background: none;
+}
+
+/* Job code. */
+.person::before {
+  content: "JOB-0000";
+  color: var(--faded);
+  letter-spacing: 0.04em;
+}
+
+.person[data-row-variant="0"]::before { content: "JOB-0142"; }
+.person[data-row-variant="1"]::before { content: "JOB-0873"; }
+.person[data-row-variant="2"]::before { content: "JOB-0219"; }
+.person[data-row-variant="3"]::before { content: "JOB-1104"; }
+.person[data-row-variant="4"]::before { content: "JOB-0640"; }
+.person[data-row-variant="5"]::before { content: "JOB-0387"; }
+.person[data-row-variant="6"]::before { content: "JOB-0955"; }
+.person[data-row-variant="7"]::before { content: "JOB-0026"; }
+
+.person-name {
+  display: block;
+  margin: 0;
+  font-family: 'Cutive Mono', monospace;
+  font-size: 0.88rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  opacity: 1;
+  /* Dotted leader out to the figure. A run of literal dots in the text node
+     pushed the name out of a clipped grid cell; a flexed rule fills whatever
+     space is left instead, so the name is never truncated. */
+  display: flex;
+  align-items: baseline;
+  gap: 0.75ch;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.person-name::after {
+  content: "";
+  flex: 1;
+  align-self: center;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--faded) 0 1px, transparent 1px 4px);
+}
+
+.version {
+  --version-size: 0.95rem;
+  grid-column: 3;
+  font-family: 'Cutive Mono', monospace;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-align: right;
+  color: var(--ink);
+}
+
+/* ── The stamp ─────────────────────────────────────────────────────────────
+   Off-register, overlapping the figure. Which one it is comes from
+   --patch-pct: content cannot branch on a number, so all three are drawn in
+   the same place and only one is ever opaque. */
+
+.person .stamp,
+.person::after,
+.version::before,
+.version::after {
+  position: absolute;
+  right: 5.5rem;
+  top: 50%;
+  font-family: 'Special Elite', 'Courier New', monospace;
+  font-size: 0.86rem;
+  letter-spacing: 0.16em;
+  color: var(--stamp);
+  border: 2px solid var(--stamp);
+  padding: 0.05em 0.35em;
+  transform: translateY(-52%) rotate(-6deg);
+  pointer-events: none;
+}
+
+.person::after {
+  content: "APPROVED";
+  opacity: clamp(0, calc(min((var(--patch-pct, 0.5) - 0.05) * 40, (0.95 - var(--patch-pct, 0.5)) * 40)), 1);
+}
+
+.version::before {
+  content: "CLOCKED IN";
+  opacity: clamp(0, calc((0.05 - var(--patch-pct, 0.5)) * 40), 1);
+}
+
+.version::after {
+  content: "PENDING";
+  opacity: clamp(0, calc((var(--patch-pct, 0.5) - 0.95) * 40), 1);
+}
+
+[data-edition="birthday"] .person::after { content: "FILED"; }
+[data-edition="birthday"] .version::before { content: "BORN"; }
+
+/* The stamp lands on the tick. */
+.person.is-bumping::after {
+  animation: timesheet-stamp 120ms ease-out;
+}
+
+@keyframes timesheet-stamp {
+  0% { transform: translateY(-52%) rotate(-14deg) scale(1.35); }
+  100% { transform: translateY(-52%) rotate(-6deg) scale(1); }
+}
+
+.add-btn {
+  margin: 1rem 0 0;
+  font-family: 'Cutive Mono', monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+
+/* ── Totals ────────────────────────────────────────────────────────────────
+   One day out. Deliberately. */
+
+.site-footer {
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid var(--ink);
+  font-size: 0.78rem;
+  color: var(--faded);
+  line-height: 1.9;
+}
+
+.site-footer::before {
+  content: "TOTAL BILLABLE .......... 251.00\00000ATOTAL RECORDED .......... 250.00\00000AVARIANCE ................   1.00";
+  display: block;
+  white-space: pre-line;
+  margin-bottom: 0.75rem;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+
+.site-footer a { color: var(--ink); }
+
+/* Friday has a note about it, in red thread. */
+body[data-weekday="fri"] .site-footer::after {
+  content: "SUBMIT BY 5PM";
+  display: block;
+  margin-top: 0.6rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--thread);
+  color: var(--thread);
+  font-family: 'Special Elite', monospace;
+  letter-spacing: 0.14em;
+  width: fit-content;
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   Red thread, like everything overdue on a paper form. */
+
+.countdown {
+  margin: 1rem 0 0;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--thread);
+  color: var(--thread);
+  font-family: 'Special Elite', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  width: fit-content;
+  opacity: 1;
+}
+
+.countdown::before { content: "DUE IN "; }
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   Typed into the notes field at the foot, with a stamp across it. */
+
+.card-message {
+  position: relative;
+  margin: 1.25rem 0 0;
+  padding: 0.9rem 1rem 1.1rem;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-message::before {
+  content: "NOTES";
+  order: -2;
+  margin-bottom: 0.5rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  color: var(--faded);
+}
+
+.card-message::after {
+  content: "RECEIVED";
+  position: absolute;
+  right: 1rem;
+  bottom: 0.6rem;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.86rem;
+  letter-spacing: 0.16em;
+  color: var(--stamp);
+  border: 2px solid var(--stamp);
+  padding: 0.05em 0.35em;
+  transform: rotate(-7deg);
+  opacity: 0.75;
+}
+
+.card-recipient {
+  order: -1;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--faded);
+}
+
+.card-recipient::before { content: "RE: "; }
+
+.card-note { margin: 0; color: var(--ink); }
+
+.card-from {
+  margin: 0.7rem 0 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faded);
+}
+
+.card-from::before { content: "SIGNED "; }
+
+@media (prefers-reduced-motion: reduce) {
+  .person.is-bumping::after { animation: none; }
+}

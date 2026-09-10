@@ -67,6 +67,8 @@ export const THEMES = [
     blurb: 'An inbox view where every role is an unread thread you cannot archive.' },
   { name: 'progress',    label: 'In Progress', home: 'work',     animate: false, chime: null,      card: true,
     blurb: 'Cards sitting in the In Progress column, where they have been for some years.' },
+  { name: 'timesheet',   label: 'Timesheet',   home: 'work',     animate: false, chime: null,      card: true,
+    blurb: 'Green-bar fanfold, an off-register stamp, and totals that are always one day out.' },
 ];
 
 // Natives first, then everything else, each group keeping manifest order.
