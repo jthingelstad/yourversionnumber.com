@@ -7,9 +7,7 @@ node_modules/
 design_handoff_theme_refresh/
 
 # Local scratch probes used while building themes — never shipped.
-_t*.html
-_probe*.html
-_sheet_*.html
-_rcpt*.html
-_p1.html
+# Any underscore-prefixed HTML at the root is a throwaway render harness.
+# The earlier list was per-name and kept letting new ones through.
+_*.html
 DNS-CUTOVER.md
