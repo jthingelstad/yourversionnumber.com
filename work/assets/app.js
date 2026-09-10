@@ -262,7 +262,10 @@ function render() {
 
   const attribution = document.createElement('div');
   attribution.className = 'site-attribution';
-  attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. Bookmark this URL to lock in your value proposition, or ';
+  attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. ';
+  attribution.appendChild(document.createTextNode(CARD
+    ? 'Keep this link to return to the saved card, or '
+    : 'Bookmark this URL to return to this view, or '));
   attribution.appendChild(makeShareButton());
   attribution.appendChild(document.createTextNode('.'));
   footer.appendChild(attribution);
@@ -465,8 +468,8 @@ function openAbout() {
             <li><strong>MINOR</strong> &mdash; quarter (0&ndash;3). Three calendar months from your start date &mdash; if you started Feb 10, Q1 begins May 10. The unit of all things scheduled, planned, and reviewed.</li>
             <li><strong>PATCH</strong> &mdash; business days into the quarter. Weekends do not tick, because real work doesn&rsquo;t happen on weekends. <em>You&rsquo;re welcome.</em></li>
           </ul>
-          <p>Hired on 2024-01-15? Today you&rsquo;re shipping <code>2.1.15</code>. That&rsquo;s two years of impact, into the second quarter (0-indexed, because we&rsquo;re engineers), fifteen work-days deep. <strong>Ship it.</strong></p>
-          <p class="app-dialog__privacy"><strong>Your dates stay yours.</strong> The URL is the only place this site keeps them &mdash; no server, no database, nothing collected anywhere. Bookmark a URL to lock it in; share it to brag.</p>
+          <p>A version of <code>2.1.15</code> means two completed years, the second quarter of that tenure year (0-indexed, because we&rsquo;re engineers), and fifteen weekdays into that quarter. Public holidays count as weekdays; there is no holiday calendar. <strong>Ship it.</strong></p>
+          <p class="app-dialog__privacy"><strong>Views live in URLs; cards are saved.</strong> This work view reads its names, dates, and theme from the URL. Bookmark it to return to the view. Creating a card saves its contents on our server and gives you a shareable link. Anyone with either kind of link can read what it shares. <a href="/about/">Storage, sharing, and analytics details</a>.</p>
           <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. For the birthday version, see <a href="/birthday/">Your Version Number</a>.</p>
         </div>
       </article>

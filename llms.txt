@@ -1,8 +1,8 @@
 # Your Version Number
 
-> A bookmarkable web page that displays a person's "version number" — their age expressed as `MAJOR.MINOR.PATCH` (decade.year-in-decade.days since their last birthday). The URL is the source of truth: bookmark a URL to save the view. Inspired by [Jamie Thingelstad's 2018 post](https://www.thingelstad.com/2018/02/24/your-version-number.html) and Semantic Versioning.
+> A bookmarkable web page that displays a person's "version number" — their age expressed as `MAJOR.MINOR.PATCH` (decade.year-in-decade.days since their last birthday). Ordinary birthday and work views keep their settings in the URL. Creating a card saves its contents on the server behind a short shareable link. Inspired by [Jamie Thingelstad's 2018 post](https://www.thingelstad.com/2018/02/24/your-version-number.html) and Semantic Versioning.
 
-The site is a small static site served from GitHub Pages: a landing page and two single-page editions. No build step, no framework, vanilla JavaScript and CSS. Each "theme" is a standalone stylesheet contributors can add via pull request.
+The production site is served by Amazon S3 and CloudFront. Ordinary editions are static pages; saved cards use Lambda, API Gateway, and DynamoDB. No build step, no framework, vanilla JavaScript and CSS. Each "theme" is a standalone stylesheet contributors can add via pull request.
 
 ## Pages
 
@@ -12,8 +12,8 @@ The site is a small static site served from GitHub Pages: a landing page and two
 - [Examples](https://yourversionnumber.com/examples/): eight worked examples, one to eight people, using public figures with well-documented birthdays. Each links into the birthday edition with the roster in the URL.
 - [Theme gallery](https://yourversionnumber.com/themes/): live previews of all 28 themes, every one selectable in both editions. Enter a date and each preview renders your own number.
 - [About](https://yourversionnumber.com/about/): the origin, the birthday and work arithmetic, and exactly what a card stores.
-- [Send a card](https://yourversionnumber.com/card/new/): compose a card — a name, a date, a note and a theme. The card is a live page: it counts down before the day and keeps climbing after it.
-- Card pages live at `/c/<code>`, carry a `noindex` header, and expire 400 days after they are made.
+- [Send a card](https://yourversionnumber.com/card/new/): preview a draft, then save the recipient name, birthday or work start date, occasion, theme, note, and sender name by pressing Create the card. Numbers use the viewer's local date; a countdown appears in the final seven days before the next occasion.
+- Card pages live at `/c/<code>` and ask search engines not to index them. Records are marked for expiry after 400 days; automatic deletion may occur later. Anyone with the link can read and forward the card.
 
 ## Source
 
@@ -23,4 +23,8 @@ The site is a small static site served from GitHub Pages: a landing page and two
 
 ## Privacy
 
-Birthdays and start dates live entirely in the URL — they are visible to anyone who has the link and to browser history sync. The site does no server-side storage. Do not paste sensitive data into the URL.
+Ordinary birthday and work links contain their names, dates, and theme. Editing these views does not create a saved card record. Card links instead look up server-side records containing recipient name, date, occasion, theme, note, sender name, link code, creation date, and expiry time. Cards cannot be edited after creation.
+
+Anyone with an ordinary link can read its dates; anyone with a card link can read the saved card. Links can be forwarded or retained in browser history and sync. Cached previews and copies may outlast the card record. Use information you are comfortable sharing.
+
+Outside card pages, Tinylytics receives visit counts and interaction events. Query strings and fragments are removed from the page URL and referrer fields of analytics requests. Card pages do not load the analytics embed. Each edition stores one local flag to remember whether its intro has been shown; names, dates, themes, and card drafts are not saved in local storage.

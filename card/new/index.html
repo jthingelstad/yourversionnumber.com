@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Send a card — Your Version Number</title>
-<meta name="description" content="Send someone their own version number with a note on it, days before their birthday, so they watch it roll over.">
+<meta name="description" content="Create a birthday or work-anniversary card with a personal note and a live version number. Save it and share its link.">
 <link rel="canonical" href="https://yourversionnumber.com/card/new/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Your Version Number">
 <meta property="og:title" content="Send a card — Your Version Number">
-<meta property="og:description" content="Send someone their own version number with a note on it, days before their birthday, so they watch it roll over.">
+<meta property="og:description" content="Create a birthday or work-anniversary card with a personal note and a live version number. Save it and share its link.">
 <meta property="og:url" content="https://yourversionnumber.com/card/new/">
 <meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Send a card — Your Version Number">
-<meta name="twitter:description" content="Send someone their own version number with a note on it, days before their birthday, so they watch it roll over.">
+<meta name="twitter:description" content="Create a birthday or work-anniversary card with a personal note and a live version number. Save it and share its link.">
 <meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
 <link rel="stylesheet" href="/assets/site.css?v=2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
@@ -86,7 +86,7 @@
 </nav>
 <main class="wrap">
   <h1>Send someone their number</h1>
-  <p class="lede">Three fields and a theme. Send it a few days early &mdash; it counts down, then rolls over on the morning itself.</p>
+  <p class="lede">Choose a birthday or work start date, pick a theme, and add a signed note. The card&rsquo;s number updates using the viewer&rsquo;s local date.</p>
 
   <form id="compose" class="hero__grid" autocomplete="off">
     <div class="hero__main">
@@ -96,7 +96,7 @@
           <label class="dateline" style="margin:0 0 0.75rem">Their name
             <input type="text" id="c-name" maxlength="40" placeholder="Sara" required style="font-family:var(--font-body)">
           </label>
-          <label class="dateline" style="margin:0 0 0.75rem">Their date
+          <label class="dateline" style="margin:0 0 0.75rem">Birthday or work start date
             <input type="date" id="c-date" required>
           </label>
           <label class="dateline" style="margin:0">
@@ -131,8 +131,9 @@
       <div class="field field--dark"><span class="field__label">Link</span><span class="field__value" id="c-url">—</span></div>
       <div class="field" style="display:block">
         <div id="c-preview" class="rack__screen" style="max-width:none;margin-bottom:.75rem;aspect-ratio:1000/630"></div>
+        <p style="margin:0 0 .75rem;font-size:.85rem">Creating a card saves these details on our server. Anyone with its link can read them. Records are marked for expiry after 400 days. <a href="/about/">Storage and sharing details</a>.</p>
         <button class="btn btn--primary" type="submit" id="c-submit" style="width:100%">Create the card</button>
-        <p id="c-status" role="status" style="margin:.6rem 0 0;font:400 11px/1.6 var(--font-mono);color:var(--ink-3)">Send it now &mdash; it&rsquo;ll be counting down when they open it.</p>
+        <p id="c-status" role="status" style="margin:.6rem 0 0;font:400 11px/1.6 var(--font-mono);color:var(--ink-3)">A countdown appears in the final seven days before the next birthday or work anniversary.</p>
       </div>
     </div>
   </form>
@@ -144,6 +145,6 @@
   </div>
 </footer>
 <script type="module" src="/assets/site.js?v=2"></script>
-<script type="module" src="/assets/compose.js?v=3"></script>
+<script type="module" src="/assets/compose.js?v=4"></script>
 </body>
 </html>

@@ -239,7 +239,10 @@ function render() {
 
   const attribution = document.createElement('div');
   attribution.className = 'site-attribution';
-  attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. Bookmark this URL to save what’s here, or ';
+  attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. ';
+  attribution.appendChild(document.createTextNode(CARD
+    ? 'Keep this link to return to the saved card, or '
+    : 'Bookmark this URL to return to this view, or '));
   attribution.appendChild(makeShareButton());
   attribution.appendChild(document.createTextNode('.'));
   footer.appendChild(attribution);
@@ -449,7 +452,7 @@ function openAbout() {
             <li><strong>PATCH</strong> &mdash; days since your most recent birthday. Daily refinements.</li>
           </ul>
           <p>Someone who is 46 years old and 52 days past their birthday is on <code>4.6.52</code>.</p>
-          <p class="app-dialog__privacy"><strong>Your birthdays stay yours.</strong> The URL is the only place this site keeps them &mdash; no server, no database, nothing collected anywhere. Bookmark a URL to save the view; share it to share the view.</p>
+          <p class="app-dialog__privacy"><strong>Views live in URLs; cards are saved.</strong> This birthday view reads its names, dates, and theme from the URL. Bookmark it to return to the view. Creating a card saves its contents on our server and gives you a shareable link. Anyone with either kind of link can read what it shares. <a href="/about/">Storage, sharing, and analytics details</a>.</p>
           <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. Now available in a thrilling new flavor &mdash; <a href="/work/">Your Version Number: Work Edition</a>™.</p>
         </div>
       </article>

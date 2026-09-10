@@ -1,6 +1,6 @@
 // The card composer.
 //
-// Three fields and a theme. The preview is the real card page, so what the
+// A recipient, date, theme, note, and sender. The preview is the real card page, so what the
 // sender sees is what arrives — there is no second implementation of anything.
 
 import { THEMES, orderForEdition } from '/assets/themes.js';
@@ -91,7 +91,7 @@ function refresh() {
     <link id="theme-css" rel="stylesheet" href="/assets/themes/${card.theme}.css">
     <script id="card-data" type="application/json">${key.replace(/</g, '\\u003c')}</script>
     </head><body data-og><main id="app"></main>
-    <script type="module" src="/${edition}/assets/app.js?v=5"></script></body></html>`;
+    <script type="module" src="/${edition}/assets/app.js?v=6"></script></body></html>`;
 }
 
 for (const el of [els.name, els.date, els.note, els.from]) el.addEventListener('input', refresh);
@@ -123,7 +123,7 @@ form.addEventListener('submit', async (event) => {
     const a = document.createElement('a');
     a.href = link;
     a.textContent = link;
-    els.status.append('Ready — ', a, '. Send it now; it will be counting down when they open it.');
+    els.status.append('Ready — ', a, '. Share this link to let someone open the saved card.');
     try { await navigator.clipboard.writeText(link); } catch (_) { /* clipboard is a nicety */ }
   } catch (err) {
     els.status.textContent = err.message;

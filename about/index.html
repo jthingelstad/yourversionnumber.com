@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About — Your Version Number</title>
-<meta name="description" content="How a version number is calculated, what a card stores, and why entering a date stores nothing at all.">
+<meta name="description" content="How version numbers work, what ordinary links contain, and what creating a card saves on our server.">
 <link rel="canonical" href="https://yourversionnumber.com/about/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Your Version Number">
 <meta property="og:title" content="About — Your Version Number">
-<meta property="og:description" content="How a version number is calculated, what a card stores, and why entering a date stores nothing at all.">
+<meta property="og:description" content="How version numbers work, what ordinary links contain, and what creating a card saves on our server.">
 <meta property="og:url" content="https://yourversionnumber.com/about/">
 <meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="About — Your Version Number">
-<meta name="twitter:description" content="How a version number is calculated, what a card stores, and why entering a date stores nothing at all.">
+<meta name="twitter:description" content="How version numbers work, what ordinary links contain, and what creating a card saves on our server.">
 <meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
 <link rel="stylesheet" href="/assets/site.css?v=2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
@@ -86,7 +86,7 @@
 </nav>
 <main class="wrap">
   <h1>About</h1>
-  <p class="lede">Where this came from, how the arithmetic works, and exactly what is stored. (Almost nothing.)</p>
+  <p class="lede">Where this came from, how the arithmetic works, and what links and cards keep.</p>
 
   <div class="panel">
     <div class="panel__label"><span>Origin</span></div>
@@ -108,21 +108,24 @@
   <p>The day they turn 53 they ship <code>5.3.0</code> &mdash; a minor bump, backwards-compatible. At 60 it is <code>6.0.0</code>, a major release. February 29 birthdays get March 1 in non-leap years, and future dates are skipped rather than counted backwards.</p>
 
   <h2>The work arithmetic</h2>
-  <p>The <a href="/work/">Work Edition</a> anchors on a start date. <code>YEARS</code> is completed years of tenure. <code>QUARTERS</code> is which quarter of the current tenure year you are in, counted in three-month steps from the start date rather than from January &mdash; start on February 10 and Q1 begins May 10. <code>DAYS</code> counts business days, so weekends do not move it.</p>
+  <p>The <a href="/work/">Work Edition</a> anchors on a start date. <code>YEARS</code> is completed years of tenure. <code>QUARTERS</code> is which quarter of the current tenure year you are in, counted in three-month steps from the start date rather than from January &mdash; start on February 10 and Q1 begins May 10. <code>DAYS</code> counts Monday through Friday after the quarter starts; there is no holiday calendar. A quarter starts at zero. If an anniversary or quarter date falls beyond the end of a month, it rolls into the following month: three months after January 31 is May 1. Dates and daily updates use the viewer&rsquo;s local calendar.</p>
 
-  <h2>What a card stores</h2>
+  <h2>Ordinary views and saved cards</h2>
+  <p>On <code>/birthday/</code> and <code>/work/</code>, the names, dates, and selected theme are read from the URL. Editing these views does not create a saved card record. Bookmark the URL to return to the same people or roles; their numbers are calculated again from the viewer&rsquo;s local date.</p>
   <div class="panel">
-    <div class="panel__label"><span>Stored per card</span><span class="panel__live">400 DAYS</span></div>
+    <div class="panel__label"><span>Stored per card</span><span class="panel__live">EXPIRY SET TO 400 DAYS</span></div>
     <div class="panel__body">
-      <p>Sending a card is the only thing on this site that writes anything down. A card record holds a name, a date, your note, and the name you signed it with. Nothing else: no email address, no account, no IP address, and no analytics on the card page at all. Every record expires automatically 400 days after it is made.</p>
-      <p><strong>Entering a date on either edition stores nothing.</strong> That flow has no server behind it and never has &mdash; the dates live in your address bar and nowhere else.</p>
-      <p>Cards carry a <code>noindex</code> header, so they never enter search. A card cannot be edited after it is sent, which keeps the record trivial and the link trustworthy.</p>
+      <p><strong>Creating a card saves it on our server.</strong> Its record contains the recipient&rsquo;s name, birthday or work start date, occasion, theme, note, sender name, link code, creation date, and expiry time. The card record does not include an email address, account, or IP address.</p>
+      <p>The composer keeps your draft in the page until you press <strong>Create the card</strong>. That button saves the record and returns a link such as <code>/c/abc234</code>. The link looks up the saved card; its contents are not encoded in the URL. Cards cannot be edited after creation.</p>
+      <p>Records are marked for expiry 400 days after creation. Automatic deletion may happen later, so this is not an exact cutoff for access. Copies and cached link previews can remain after the record is removed.</p>
+      <p>Card pages do not load our analytics script. They ask search engines not to index them using <code>noindex</code>; that is not access control. Anyone with the link can read the card and forward it to someone else.</p>
     </div>
   </div>
 
-  <h2>Your dates stay yours</h2>
-  <p>Visit counts go to <a href="https://tinylytics.app">Tinylytics</a>. Before anything leaves your browser, both the page URL and the referrer are trimmed to origin and path, so the query string carrying your dates is never transmitted. One boolean in local storage records whether you have seen the intro.</p>
-  <p>The flip side of putting everything in the URL: anyone you send a link to can read the dates in it, and so can your browser&rsquo;s history sync. Fine for birthdays you would put on a card. Not a place for anything sensitive.</p>
+  <h2>Sharing and analytics</h2>
+  <p>Ordinary view links expose the names and dates in their URL. Card links give access to the saved card, including its date and note. Neither kind of link requires a login. Links can appear in browser history, bookmarks, and history sync, and anyone you share with can pass them on. Use information you are comfortable sharing.</p>
+  <p>Outside card pages, <a href="https://tinylytics.app">Tinylytics</a> receives visit counts and interactions such as theme selections and link copies. The analytics requests have the query string and fragment removed from their page URL and referrer fields, excluding the names and dates in ordinary view links. This filtering applies to analytics; it does not make a shared URL private.</p>
+  <p>Each edition keeps one local-storage flag to remember whether its intro has been shown. Names, dates, themes, and card drafts are not saved in local storage.</p>
 
   <h2>Themes</h2>
   <p>Twenty-eight themes, each one a single standalone stylesheet with no JavaScript &mdash; a deliberate restriction, because a theme that could run code could also read the dates in the URL and send them somewhere. Anything a theme needs comes from seven generic hooks in the core. Browse them in the <a href="/themes/">gallery</a>, or see them <a href="/examples/">carrying real people</a>.</p>
