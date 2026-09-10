@@ -73,6 +73,8 @@ export const THEMES = [
     blurb: 'A perforated pass with a barcode down the stub, set in the typeface drawn for cockpits.' },
   { name: 'nixie',       label: 'Nixie',       home: null,       animate: false, chime: 'tick',    card: true,
     blurb: 'Six glass tubes on walnut, with the unlit numerals still ghosting behind the lit ones.' },
+  { name: 'jumbotron',   label: 'Jumbotron',   home: null,       animate: false, chime: 'buzzer',  card: true,
+    blurb: 'A bulb-matrix scoreboard where the unlit lamps between the lit ones are the whole point.' },
 ];
 
 // Natives first, then everything else, each group keeping manifest order.
