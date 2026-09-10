@@ -76,7 +76,10 @@ body {
 /* ── Nav ───────────────────────────────────────────────────────────────────*/
 
 .site-nav {
-  height: 48px;
+  /* Not a fixed height: between the 640px breakpoint and about 735px the
+     one-line nav did not fit and the whole page scrolled sideways. Wrapping is
+     allowed at every width now, so there is no band where it can overflow. */
+  min-height: 48px;
   background: var(--plate);
   color: var(--plate-ink);
 }
@@ -84,8 +87,9 @@ body {
 .site-nav__inner {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1.25rem;
-  height: 48px;
+  min-height: 48px;
 }
 
 .site-nav__brand {
@@ -100,6 +104,7 @@ body {
   color: var(--plate-ink);
   text-decoration: none;
   margin-right: auto;
+  align-self: stretch;
 }
 
 .site-nav__brand::before {
@@ -154,12 +159,37 @@ body {
   .site-nav__led { animation: none; }
 }
 
-@media (max-width: 640px) {
-  .site-nav a:not(.site-nav__brand):not(.site-nav__status) { display: none; }
-  .site-nav__menu { display: inline-block !important; }
-}
+@media (max-width: 767px) {
+  /* Every one of these links used to be display:none below 640px, and the rule
+     that revealed them again pointed at a .site-nav__menu that was never built
+     in any page -- so on a phone the nav was the wordmark and nothing else, and
+     Birthday, Work, Cards, Examples, Themes and About were all unreachable from
+     it. They wrap onto a second row now: no disclosure state, nothing to
+     script, nothing that can fail to open. */
+  .site-nav__inner {
+    column-gap: 0.7rem;
+    row-gap: 0;
+    padding-top: 0.4rem;
+    padding-bottom: 0.45rem;
+  }
 
-.site-nav__menu { display: none; }
+  .site-nav__brand { order: 0; min-height: 28px; }
+  .site-nav__status { order: 1; }
+
+  /* A full-width item of no height, which cannot share the first row and so
+     pushes the links onto their own. */
+  .site-nav__inner::after {
+    content: "";
+    order: 2;
+    flex: 1 0 100%;
+  }
+
+  .site-nav a:not(.site-nav__brand) {
+    order: 3;
+    font-size: 11px;
+    line-height: 2.5;
+  }
+}
 
 /* ── Prose ─────────────────────────────────────────────────────────────────*/
 
@@ -254,6 +284,12 @@ code { font-family: var(--font-mono); font-size: .88em; background: var(--panel-
 .btn:hover { border-color: var(--signal); color: var(--signal-ink); }
 .btn--primary:hover { background: var(--ink); color: var(--panel); box-shadow: inset 0 -3px 0 var(--signal); }
 .btn:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+/* Links had no author focus style at all, so keyboard users got whatever the
+   browser drew -- including over the dark nav plate, where the default ring is
+   least dependable. One signal colour everywhere. */
+a:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.site-nav a:focus-visible { outline-color: var(--signal); outline-offset: -2px; }
 
 /* ── Landing hero ──────────────────────────────────────────────────────────*/
 
@@ -423,6 +459,12 @@ code { font-family: var(--font-mono); font-size: .88em; background: var(--panel-
 
 .rack__actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.2rem; }
 .rack__actions .btn { padding: 0.5rem 0.9rem; min-height: 36px; font-size: 11px; }
+/* The compact rack button is a mouse affordance. On touch it goes back to the
+   44px floor -- 36px is under the 24px AA minimum's comfortable margin and
+   these are the primary way into a theme. */
+@media (pointer: coarse) {
+  .rack__actions .btn { min-height: 44px; }
+}
 
 .rack__roster {
   margin: 0;

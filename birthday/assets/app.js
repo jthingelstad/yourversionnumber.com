@@ -600,7 +600,10 @@ function countUp(el, version) {
   const ease = t => 1 - Math.pow(1 - t, 3);
 
   function frame(now) {
-    const t = Math.min(1, (now - start) / duration);
+    // Clamped at both ends. Capping only the top let a frame whose timestamp
+    // predates `start` produce a negative t, and the easing turns that into a
+    // negative patch — "0.0.-1" on screen.
+    const t = Math.max(0, Math.min(1, (now - start) / duration));
     const k = ease(t);
     const major = Math.round(version.major * k);
     const minor = Math.round(version.minor * k);
