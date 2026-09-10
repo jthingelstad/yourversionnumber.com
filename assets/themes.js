@@ -71,6 +71,8 @@ export const THEMES = [
     blurb: 'Green-bar fanfold, an off-register stamp, and totals that are always one day out.' },
   { name: 'boardingpass', label: 'Boarding Pass', home: null,     animate: false, chime: null,      card: true,
     blurb: 'A perforated pass with a barcode down the stub, set in the typeface drawn for cockpits.' },
+  { name: 'nixie',       label: 'Nixie',       home: null,       animate: false, chime: 'tick',    card: true,
+    blurb: 'Six glass tubes on walnut, with the unlit numerals still ghosting behind the lit ones.' },
 ];
 
 // Natives first, then everything else, each group keeping manifest order.

@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Archivo:wght@400;600&display=swap');
+
+/* Nixie.
+ *
+ * Six glass tubes on a walnut plinth. The detail that makes it the theme is the
+ * ghost cathode: every tube has the whole stack of unlit numerals sitting
+ * behind the lit one, which is why a real nixie glows the way it does. Skipping
+ * it would leave a font with a shadow on it.
+ *
+ * Spec in 04-themes-new.md §1. */
+
+:root {
+  --base: #151310;
+  --walnut: #3a2a1c;
+  --walnut-2: #2a1e14;
+  --steel: #8d8a83;
+  --glass: rgba(210, 225, 240, 0.06);
+  --glow: #ff8a2b;
+  --glow-core: #ffd9a8;
+  --unlit: rgba(255, 138, 43, 0.11);
+  --ink: #e8e2d8;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse 70% 46% at 50% 26%, rgba(255, 138, 43, 0.13), transparent 70%),
+    var(--base);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+#app { max-width: 44rem; margin: 0 auto; padding: 2.5rem 1.25rem 3.5rem; }
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.site-title {
+  margin: 0;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(232, 226, 216, 0.72);
+}
+
+.header-controls { gap: 0.5rem; }
+
+/* Knurled brass: vertical ridges and an inset shadow. */
+.home-btn, .about-btn, .edit-btn, .theme-select {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f0dcbc;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.28) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #8a6a35, #5c451f);
+  border: 1px solid #3d2d13;
+  border-radius: 2px;
+  padding: 0.35rem 0.7rem;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  appearance: none;
+}
+
+.intro {
+  margin: 0 0 2rem;
+  color: rgba(232, 226, 216, 0.82);
+  font-size: 0.95rem;
+}
+
+.intro code { font-family: 'Share Tech Mono', monospace; color: var(--glow-core); background: none; }
+
+/* ── The plinth ────────────────────────────────────────────────────────────
+   Each row is a bank of tubes standing on walnut. */
+
+.people { display: block; margin: 0; }
+
+.person {
+  width: 100%;
+  margin: 0 0 1.75rem;
+  padding: 1.75rem 1.25rem 1.1rem;
+  background: linear-gradient(180deg, var(--walnut), var(--walnut-2));
+  border: 1px solid #4a3626;
+  border-radius: 3px;
+  /* specular top edge */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), 0 10px 24px rgba(0, 0, 0, 0.5);
+}
+
+.person-name {
+  display: block;
+  margin: 0 0 1rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(232, 226, 216, 0.6);
+  opacity: 1;
+}
+
+[data-edition="work"] .person-name::before {
+  content: "TENURE  ";
+  color: rgba(232, 226, 216, 0.4);
+}
+
+.version {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  font-size: var(--version-size, 2rem);
+}
+
+/* Each digit is a tube. */
+.version .digit {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 1.6em;
+  height: 2.6em;
+  border-radius: 44% 44% 12% 12%;
+  background:
+    linear-gradient(100deg, rgba(210, 225, 240, 0.13), rgba(210, 225, 240, 0.03) 40%),
+    /* wire mesh, both axes */
+    repeating-linear-gradient(0deg, rgba(210, 225, 240, 0.08) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgba(210, 225, 240, 0.08) 0 1px, transparent 1px 4px);
+  box-shadow: inset 0 0 0 1px rgba(210, 225, 240, 0.16);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--glow-core);
+  text-shadow:
+    0 0 4px var(--glow),
+    0 0 14px rgba(255, 138, 43, 0.7),
+    0 0 30px rgba(255, 138, 43, 0.35);
+  animation: nixie-warm 700ms ease-out backwards;
+  animation-delay: calc(var(--row-index, 0) * 60ms);
+}
+
+/* Ghost cathodes: the unlit stack behind the lit numeral. This detail is the
+   theme — without it the tube is just a glowing font. */
+.version .digit::after {
+  content: "8";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--unlit);
+  text-shadow: none;
+  z-index: -1;
+}
+
+/* Nixie banks always have one tired tube. */
+.version .digit:nth-of-type(3) { filter: brightness(0.86); }
+
+.version .sep {
+  align-self: flex-end;
+  width: 6px;
+  height: 6px;
+  margin-bottom: 0.55em;
+  border-radius: 50%;
+  background: var(--glow);
+  box-shadow: 0 0 6px var(--glow);
+  font-size: 0;
+}
+
+@keyframes nixie-warm {
+  0% { color: var(--unlit); text-shadow: none; }
+  55% { color: var(--glow-core); text-shadow: 0 0 4px var(--glow); }
+  70% { color: var(--unlit); text-shadow: none; }
+  100% { color: var(--glow-core); }
+}
+
+/* A small VU meter on the plinth, reading the year (or the quarter at work). */
+.version::after {
+  content: "";
+  align-self: center;
+  width: 64px;
+  height: 6px;
+  margin-left: auto;
+  border: 1px solid rgba(141, 138, 131, 0.5);
+  border-radius: 2px;
+  /* VU meter: reads the year, or the quarter in the work edition. */
+  background: linear-gradient(90deg, var(--glow) 0 calc(var(--patch-pct, 0) * 100%), transparent 0);
+}
+
+.add-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f0dcbc;
+  background: linear-gradient(180deg, #8a6a35, #5c451f);
+  border: 1px solid #3d2d13;
+  border-radius: 2px;
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+}
+
+.site-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(232, 226, 216, 0.12);
+  font-size: 0.82rem;
+  color: rgba(232, 226, 216, 0.55);
+  line-height: 1.9;
+}
+
+.site-footer a { color: var(--glow-core); }
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   A second, dimmer bank of tubes. */
+
+.countdown {
+  margin: 1.5rem 0 0;
+  padding: 0.9rem 1.1rem;
+  background: linear-gradient(180deg, var(--walnut), var(--walnut-2));
+  border: 1px solid #4a3626;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 217, 168, 0.72);
+  text-shadow: 0 0 5px rgba(255, 138, 43, 0.6);
+  opacity: 1;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   Engraved on a brass plate, screwed to the plinth. */
+
+.card-message {
+  margin: 1.75rem 0 0;
+  padding: 0.9rem;
+  background: linear-gradient(180deg, var(--walnut), var(--walnut-2));
+  border: 1px solid #4a3626;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+
+.card-recipient,
+.card-note,
+.card-from {
+  margin: 0;
+  padding: 0 0.8rem;
+}
+
+.card-recipient {
+  padding-top: 0.7rem;
+  border: 1px solid rgba(200, 178, 115, 0.4);
+  border-bottom: 0;
+  background: linear-gradient(180deg, rgba(200, 178, 115, 0.16), rgba(200, 178, 115, 0.08));
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(232, 211, 168, 0.75);
+}
+
+.card-note {
+  padding-top: 0.35rem;
+  border-left: 1px solid rgba(200, 178, 115, 0.4);
+  border-right: 1px solid rgba(200, 178, 115, 0.4);
+  background: linear-gradient(180deg, rgba(200, 178, 115, 0.12), rgba(200, 178, 115, 0.05));
+  font-family: 'Archivo', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #e8d3a8;
+}
+
+.card-from {
+  padding-bottom: 0.7rem;
+  border: 1px solid rgba(200, 178, 115, 0.4);
+  border-top: 0;
+  background: linear-gradient(180deg, rgba(200, 178, 115, 0.05), rgba(200, 178, 115, 0.02));
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(232, 211, 168, 0.65);
+}
+
+.card-from::before { content: "— "; }
+
+@media (prefers-reduced-motion: reduce) {
+  .version .digit { animation: none; }
+}
