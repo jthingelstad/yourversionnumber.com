@@ -75,6 +75,8 @@ export const THEMES = [
     blurb: 'Six glass tubes on walnut, with the unlit numerals still ghosting behind the lit ones.' },
   { name: 'jumbotron',   label: 'Jumbotron',   home: null,       animate: false, chime: 'buzzer',  card: true,
     blurb: 'A bulb-matrix scoreboard where the unlit lamps between the lit ones are the whole point.' },
+  { name: 'departures',  label: 'Departures',  home: null,       animate: false, chime: 'tick',    card: true,
+    blurb: 'A split-flap board where the status is derived from the date, and the flaps really flip.' },
 ];
 
 // Natives first, then everything else, each group keeping manifest order.

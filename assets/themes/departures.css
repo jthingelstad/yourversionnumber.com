@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500&display=swap');
+
+/* Departures.
+ *
+ * A split-flap board. The name is the destination, the version is the gate, and
+ * the status is derived from how close the date is — never decorative.
+ *
+ * The flap flip on the midnight tick is the theme's entire reason to exist:
+ * two stacked halves, hinged at the middle, the lower one rotating away while
+ * the upper one holds. Everything else here is in service of that.
+ *
+ * Spec in 04-themes-new.md §2. */
+
+:root {
+  --board: #12130f;
+  --flap: #1e201b;
+  --flap-edge: #0a0b08;
+  --ink: #f2f3ee;
+  --amber: #ffb020;
+  --green: #6ad18c;
+  --rule: #2a2c26;
+}
+
+body {
+  margin: 0;
+  background: var(--board);
+  color: var(--ink);
+  font-family: 'Barlow', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app { max-width: 50rem; margin: 0 auto; padding: 1.5rem 1rem 3.5rem; }
+
+/* ── Top rail ──────────────────────────────────────────────────────────────*/
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 0.9rem;
+  background: var(--flap);
+  border-bottom: 2px solid var(--flap-edge);
+}
+
+.site-title {
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.site-title::before { content: "DEPARTURES  ·  "; color: rgba(242, 243, 238, 0.5); }
+
+body[data-weekday="sun"] .site-title::after { content: "  ·  SUN"; }
+body[data-weekday="mon"] .site-title::after { content: "  ·  MON"; }
+body[data-weekday="tue"] .site-title::after { content: "  ·  TUE"; }
+body[data-weekday="wed"] .site-title::after { content: "  ·  WED"; }
+body[data-weekday="thu"] .site-title::after { content: "  ·  THU"; }
+body[data-weekday="fri"] .site-title::after { content: "  ·  FRI"; }
+body[data-weekday="sat"] .site-title::after { content: "  ·  SAT"; }
+.site-title::after { color: rgba(242, 243, 238, 0.45); font-weight: 500; }
+
+.header-controls { gap: 0.4rem; }
+
+.home-btn, .about-btn, .edit-btn, .theme-select {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--flap-edge);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+  appearance: none;
+}
+
+.intro {
+  margin: 1rem 0.9rem 1.25rem;
+  color: rgba(242, 243, 238, 0.8);
+}
+
+.intro code { font-family: 'Barlow Condensed', sans-serif; color: var(--amber); background: none; }
+
+/* ── Board rows ────────────────────────────────────────────────────────────
+   destination · gate · status. Fixed height, hairline rules, no radius. */
+
+.people { display: block; margin: 0; }
+
+.person {
+  display: grid;
+  position: relative;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0 1.25rem;
+  width: 100%;
+  min-height: 3.4rem;
+  padding: 0.5rem 9.5rem 0.5rem 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+}
+
+.person-name {
+  display: block;
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 1;
+  /* truncate into a blank flap rather than an ellipsis */
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.version {
+  display: flex;
+  gap: 2px;
+  font-size: var(--version-size, 1.5rem);
+}
+
+/* Each character is a flap, with a hard hinge across the middle. */
+.version .digit,
+.version .sep {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.15em;
+  padding: 0.18em 0.1em;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  background: linear-gradient(#262820 0 49.5%, #0d0e0b 50%, #1e201b 50.5%);
+  box-shadow: inset 0 0 0 1px var(--flap-edge);
+}
+
+/* The flip. Fires on the midnight tick. */
+.person.is-bumping .version .digit {
+  animation: departures-flap 180ms ease-in;
+  animation-delay: calc(var(--row-index, 0) * 40ms);
+  transform-origin: center bottom;
+}
+
+@keyframes departures-flap {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(-88deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+/* Status, derived — never decorative. Three boxes, one opaque at a time. */
+.person::after,
+.person-name::after,
+.version::after {
+  position: absolute;
+  right: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.person::after {
+  content: "ON TIME";
+  color: var(--green);
+  opacity: clamp(0, calc(min((var(--patch-pct, 0.5) - 0.02) * 60, (0.98 - var(--patch-pct, 0.5)) * 60)), 1);
+}
+
+.person-name::after {
+  content: "NOW BOARDING";
+  color: var(--amber);
+  opacity: clamp(0, calc((0.02 - var(--patch-pct, 0.5)) * 60), 1);
+  animation: departures-blink 1.4s steps(2, end) infinite;
+}
+
+.version::after {
+  content: "FINAL CALL";
+  color: var(--amber);
+  opacity: clamp(0, calc((var(--patch-pct, 0.5) - 0.98) * 60), 1);
+}
+
+@keyframes departures-blink { 50% { color: rgba(255, 176, 32, 0.4); } }
+
+body[data-birthday="true"] .person::after { content: "DEPARTED"; color: rgba(242, 243, 238, 0.5); }
+
+[data-edition="work"] .person::after { content: "SCHEDULED"; }
+[data-edition="work"] .person-name::after { content: "BOARDING"; }
+[data-edition="work"] .version::after { content: "DELAYED"; }
+body[data-quarter-start="true"] .person::after { content: "NOW BOARDING"; color: var(--amber); }
+
+.add-btn {
+  margin: 1.25rem 0.9rem 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--board);
+  background: var(--amber);
+  border: 0;
+  border-radius: 0;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+}
+
+.site-footer {
+  margin: 2rem 0.9rem 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.82rem;
+  color: rgba(242, 243, 238, 0.55);
+  line-height: 1.9;
+}
+
+.site-footer a { color: var(--amber); }
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   The best in the set: the status column simply says it. */
+
+.countdown {
+  margin: 0;
+  padding: 0.9rem;
+  background: var(--flap);
+  border-bottom: 1px solid var(--rule);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  opacity: 1;
+}
+
+.countdown::before { content: "BOARDING IN "; color: rgba(242, 243, 238, 0.5); }
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   An announcement row across the full width of the board. */
+
+.card-message {
+  margin: 1.25rem 0 0;
+  padding: 0.9rem;
+  background: var(--flap);
+  border-top: 2px solid var(--flap-edge);
+  border-bottom: 2px solid var(--flap-edge);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-message::before {
+  content: "ANNOUNCEMENT";
+  order: -2;
+  margin-bottom: 0.5rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  color: rgba(242, 243, 238, 0.45);
+}
+
+.card-recipient {
+  order: -1;
+  margin: 0 0 0.4rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.card-note {
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.card-from {
+  margin: 0.7rem 0 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(242, 243, 238, 0.55);
+}
+
+.card-from::before { content: "— "; }
+
+@media (prefers-reduced-motion: reduce) {
+  .person.is-bumping .version .digit { animation: none; }
+  .person-name::after { animation: none; }
+}
