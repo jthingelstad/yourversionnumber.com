@@ -62,7 +62,7 @@ export const THEMES = [
     blurb: 'A confidential business review slide, three bullets, no further context offered.' },
   { name: 'unread',      label: 'Unread',      home: 'work',     animate: false, chime: null,      card: true,
     blurb: 'An inbox view where every role is an unread thread you cannot archive.' },
-  { name: 'progress',    label: 'In Progress', home: 'work',     animate: false, chime: null,      card: false,
+  { name: 'progress',    label: 'In Progress', home: 'work',     animate: false, chime: null,      card: true,
     blurb: 'Cards sitting in the In Progress column, where they have been for some years.' },
 ];
 
