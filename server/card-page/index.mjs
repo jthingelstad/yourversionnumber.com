@@ -49,7 +49,7 @@ function page({ code, card, today }) {
 <meta name="twitter:title" content="${title}">
 <meta name="twitter:description" content="${description}">
 <meta name="twitter:image" content="${image}">
-<link rel="stylesheet" href="${base}assets/base.css?v=3">
+<link rel="stylesheet" href="${base}assets/base.css?v=4">
 <link id="theme-css" rel="stylesheet" href="/assets/themes/${theme}.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
 <script id="card-data" type="application/json">${JSON.stringify({
@@ -59,7 +59,7 @@ function page({ code, card, today }) {
 </head>
 <body>
 <main id="app"></main>
-<script type="module" src="${base}assets/app.js?v=3"></script>
+<script type="module" src="${base}assets/app.js?v=4"></script>
 </body>
 </html>
 `;

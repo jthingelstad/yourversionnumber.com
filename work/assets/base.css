@@ -159,6 +159,42 @@ input {
   white-space: normal;
 }
 
+/* A card page has exactly one person and nothing to configure. */
+body[data-card] .add-btn,
+body[data-card] .theme-picker,
+body[data-card] .edit-btn {
+  display: none;
+}
+
+/* Card block default. Every theme styles this in its own voice, but a plain,
+   correct fallback means a half-finished theme still reads. */
+.card-message {
+  margin-top: 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  max-width: 34rem;
+}
+
+.card-recipient {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.card-note {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+.card-from {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
 /* Hook 6 fallback. Every theme should say something of its own when a date is
    imminent; until one does, it still says it plainly. */
 .countdown {

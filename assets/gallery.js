@@ -1,77 +1,74 @@
-// Theme gallery.
+// Theme gallery — a menu, not a directory.
 //
-// Reads the shared manifest directly — it used to scrape the THEMES array out
-// of each edition's app.js with a positional regex, which broke the moment the
-// entry shape changed. There is one manifest now and this imports it.
-//
-// Every theme works in both editions, so the page is one list rather than two.
-// Each card previews the theme in its home edition, which is the framing it was
-// designed for. Phase 6 replaces this page with rack rows showing the visitor's
-// own number.
+// The page's job is helping someone find the theme they want, which is why
+// every preview shows the visitor's own number rather than sample data. That
+// is only affordable because the set was cut to 28; it should not grow back.
 
 import { THEMES } from '/assets/themes.js';
-import { scaleToFit } from '/assets/preview.js';
-
-const DEMO = {
-  birthday: { base: '/birthday/', param: 'p', people: ['Ada:1979-04-12', 'Grace:1991-11-30', 'Linus:2015-06-08'] },
-  work: { base: '/work/', param: 'j', people: ['Engineer:2022-03-14', 'Designer:2024-09-02'] },
-};
-
-function previewUrl(theme) {
-  const demo = DEMO[theme.home] || DEMO.birthday;
-  const params = new URLSearchParams();
-  params.set('theme', theme.name);
-  for (const person of demo.people) params.append(demo.param, person);
-  return demo.base + '?' + params.toString();
-}
-
-function makeCard(theme) {
-  const href = previewUrl(theme);
-  const item = document.createElement('li');
-  item.className = 'theme-card';
-  item.id = theme.name;
-
-  const preview = document.createElement('div');
-  preview.className = 'theme-card__preview';
-
-  const frame = document.createElement('iframe');
-  frame.loading = 'lazy';
-  frame.src = href;
-  frame.title = `${theme.label} theme preview`;
-  // Duplicates the link beneath it; keep it out of the tab order so keyboard
-  // users aren't walked through every nested document.
-  frame.setAttribute('tabindex', '-1');
-  frame.setAttribute('scrolling', 'no');
-  preview.appendChild(frame);
-  scaleToFit(preview);
-  item.appendChild(preview);
-
-  const body = document.createElement('div');
-  body.className = 'theme-card__body';
-
-  const heading = document.createElement('h3');
-  const link = document.createElement('a');
-  link.href = href;
-  link.textContent = theme.label;
-  heading.appendChild(link);
-  body.appendChild(heading);
-
-  const home = document.createElement('span');
-  home.className = 'theme-card__kind';
-  home.textContent = theme.home ? `${theme.home} edition` : 'both editions';
-  body.appendChild(home);
-
-  const blurb = document.createElement('p');
-  blurb.textContent = theme.blurb;
-  body.appendChild(blurb);
-
-  item.appendChild(body);
-  return item;
-}
+import { mountPreview } from '/assets/preview.js';
 
 const list = document.getElementById('gallery');
-const count = document.getElementById('theme-count');
-if (count) count.textContent = `${THEMES.length} of them.`;
-const frag = document.createDocumentFragment();
-for (const theme of THEMES) frag.appendChild(makeCard(theme));
-list.appendChild(frag);
+const dateInput = document.getElementById('gallery-date');
+const readout = document.getElementById('gallery-readout');
+
+function version(dateStr, today = new Date()) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const midnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  let year = midnight.getFullYear();
+  let anniversary = new Date(year, m - 1, d);
+  if (midnight < anniversary) { year -= 1; anniversary = new Date(year, m - 1, d); }
+  const age = year - y;
+  return `${Math.floor(age / 10)}.${age % 10}.${Math.round((midnight - anniversary) / 86_400_000)}`;
+}
+
+function previewUrl(theme, date) {
+  const params = new URLSearchParams();
+  params.set('theme', theme.name);
+  params.append('p', `You:${date}`);
+  return '/birthday/?' + params.toString();
+}
+
+function row(theme, index, date) {
+  const href = previewUrl(theme, date);
+  const li = document.createElement('li');
+  li.className = 'rack__row';
+  li.id = theme.name;
+
+  const screen = document.createElement('div');
+  screen.className = 'rack__screen';
+  li.appendChild(screen);
+  mountPreview(screen, href, `${theme.label} theme preview`);
+
+  const plate = document.createElement('div');
+  plate.className = 'rack__plate';
+  plate.innerHTML =
+    `<div class="rack__head">
+       <i class="rack__led"></i>
+       <h3 class="rack__name"></h3>
+       <span class="rack__unit">UNIT ${String(index + 1).padStart(2, '0')}</span>
+     </div>
+     <p class="rack__blurb"></p>
+     <div class="rack__chips">
+       <span class="chip">${theme.home ? theme.home + ' edition' : 'both editions'}</span>
+       <span class="chip">${theme.chime ? theme.chime : 'silent'}</span>
+     </div>
+     <div class="rack__actions">
+       <a class="btn btn--primary" href="${href}">Wear this</a>
+       <a class="btn btn--secondary" href="/assets/themes/${theme.name}.css">View source</a>
+     </div>`;
+  plate.querySelector('.rack__name').textContent = theme.label;
+  plate.querySelector('.rack__blurb').textContent = theme.blurb;
+  li.appendChild(plate);
+  return li;
+}
+
+function render() {
+  const date = dateInput?.value || '1979-04-12';
+  if (readout) readout.textContent = `reads as ${version(date)}`;
+  const frag = document.createDocumentFragment();
+  THEMES.forEach((theme, i) => frag.appendChild(row(theme, i, date)));
+  list.replaceChildren(frag);
+}
+
+dateInput?.addEventListener('change', render);
+render();

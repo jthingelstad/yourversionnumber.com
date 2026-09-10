@@ -1,5 +1,5 @@
 import { THEMES, orderForEdition } from '/assets/themes.js';
-import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime } from '/assets/core.js';
+import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage } from '/assets/core.js';
 
 const EDITION = 'work';
 const THEME_NAMES = THEMES.map(t => t.name);
@@ -217,7 +217,8 @@ function render() {
   title.className = 'site-title';
   title.innerHTML = 'Your Version Number: <span class="edition">Work Edition</span><sup class="tm">™</sup>';
   header.appendChild(title);
-  header.appendChild(renderHeaderControls());
+  if (!CARD) header.appendChild(renderHeaderControls());
+  else header.appendChild(renderHomeOnly());
   app.appendChild(header);
 
   if (state.roles.length === 0) {
@@ -246,6 +247,8 @@ function render() {
     addBtn.addEventListener('click', () => openEdit({ addBlankRow: true }));
     app.appendChild(addBtn);
   }
+
+  if (CARD) app.appendChild(renderCardMessage(CARD));
 
   applyCountdown(soonest, soonestVersion);
 
@@ -299,6 +302,19 @@ function renderRow(role, index) {
   updateVersionDisplay(version, role.startDate, row);
 
   return row;
+}
+
+// On a card there is nothing to configure, so the header keeps only the way out.
+function renderHomeOnly() {
+  const wrap = document.createElement('div');
+  wrap.className = 'header-controls';
+  const homeBtn = document.createElement('a');
+  homeBtn.className = 'home-btn';
+  homeBtn.href = '/';
+  homeBtn.textContent = 'Home';
+  homeBtn.title = 'Back to yourversionnumber.com';
+  wrap.appendChild(homeBtn);
+  return wrap;
 }
 
 function renderHeaderControls() {
@@ -660,10 +676,18 @@ function scheduleMidnightTick() {
 applyEnvironment(EDITION);
 watchForInteraction();
 
+// A card page carries its record in a script tag rather than the URL. When one
+// is present the page shows exactly that person and hides everything that
+// would let you change it.
+const CARD = readCardData();
+if (CARD) document.body.dataset.card = '';
+
 const parsed = parseURL();
-state.theme = parsed.theme;
-state.themeIsExplicit = parsed.themeIsExplicit;
-state.roles = parsed.roles;
+state.theme = CARD?.theme || parsed.theme;
+state.themeIsExplicit = CARD ? true : parsed.themeIsExplicit;
+state.roles = CARD
+  ? [{ name: CARD.name, startDate: CARD.date }]
+  : parsed.roles;
 applyTheme(state.theme);
 render();
 isFirstRender = false;

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Send a card — Your Version Number</title>
+<meta name="description" content="Send someone their own version number with a note on it, days before their birthday, so they watch it roll over.">
+<link rel="canonical" href="https://yourversionnumber.com/card/new/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Your Version Number">
+<meta property="og:title" content="Send a card — Your Version Number">
+<meta property="og:description" content="Send someone their own version number with a note on it, days before their birthday, so they watch it roll over.">
+<meta property="og:url" content="https://yourversionnumber.com/card/new/">
+<meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Send a card — Your Version Number">
+<meta name="twitter:description" content="Send someone their own version number with a note on it, days before their birthday, so they watch it roll over.">
+<meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<link rel="stylesheet" href="/assets/site.css?v=2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Send a card",
+  "url": "https://yourversionnumber.com/card/new/",
+  "description": "Compose a version-number card."
+}
+</script>
+
+<script>
+// Privacy: tinylytics' embed sends window.location.href (the full URL, with any
+// ?p= or ?j= dates in the query string) and the full referrer to its collector.
+// sanitizeCollectorUrl reduces both to origin + path before the request fires:
+// analytics still records which page was viewed and where the visitor came
+// from, while the dates in the query string never leave the browser.
+(function () {
+  function pathOnly(value) {
+    try {
+      var parsed = new URL(value, location.origin);
+      return parsed.origin + parsed.pathname;
+    } catch (e) {
+      return '';
+    }
+  }
+  function sanitizeCollectorUrl(input) {
+    var u = new URL(input, location.origin);
+    ['url', 'referrer'].forEach(function (key) {
+      var raw = u.searchParams.get(key);
+      // An absent or empty referrer means "direct". Leave it alone rather than
+      // resolving '' against location and inventing a self-referral.
+      if (!raw) return;
+      var safe = pathOnly(raw);
+      if (safe) u.searchParams.set(key, safe);
+      else u.searchParams.delete(key);
+    });
+    return u.toString();
+  }
+  var origFetch = window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    try {
+      if (typeof input === 'string' && input.indexOf('tinylytics.app/collector/') !== -1) {
+        input = sanitizeCollectorUrl(input);
+      }
+    } catch (e) { /* leave fetch input as-is */ }
+    return origFetch(input, init);
+  };
+})();
+</script>
+<script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="wrap site-nav__inner">
+    <a class="site-nav__brand" href="/">yourversionnumber.com</a>
+    <a href="/birthday/">Birthday</a>
+    <a href="/work/">Work</a>
+    <a href="/card/new/" aria-current="page">Cards</a>
+    <a href="/examples/">Examples</a>
+    <a href="/themes/">Themes</a>
+    <a href="/about/">About</a>
+    <span class="site-nav__status"><i class="site-nav__led"></i><span id="site-vnum" data-since="2026-05-01">0.0.0</span></span>
+  </div>
+</nav>
+<main class="wrap">
+  <h1>Send someone their number</h1>
+  <p class="lede">Three fields and a theme. Send it a few days early &mdash; it counts down, then rolls over on the morning itself.</p>
+
+  <form id="compose" class="hero__grid" autocomplete="off">
+    <div class="hero__main">
+      <div class="panel" style="margin-bottom:1rem">
+        <div class="panel__label"><span>Step 1 — who it&rsquo;s for</span></div>
+        <div class="panel__body">
+          <label class="dateline" style="margin:0 0 0.75rem">Their name
+            <input type="text" id="c-name" maxlength="40" placeholder="Sara" required style="font-family:var(--font-body)">
+          </label>
+          <label class="dateline" style="margin:0 0 0.75rem">Their date
+            <input type="date" id="c-date" required max="2026-12-31">
+          </label>
+          <label class="dateline" style="margin:0">
+            <input type="checkbox" id="c-work" style="min-height:0;width:auto">
+            It&rsquo;s a work anniversary
+          </label>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:1rem">
+        <div class="panel__label"><span>Step 2 — pick a theme</span><span id="c-count" class="panel__live"></span></div>
+        <div class="panel__body">
+          <label class="dateline" style="margin:0">Theme
+            <select id="c-theme" style="font:400 14px/1 var(--font-mono);padding:.6rem;min-height:44px;background:var(--panel);color:var(--ink);border:1px solid var(--edge-strong);border-radius:0"></select>
+          </label>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel__label"><span>Step 3 — your note</span><span id="c-left" class="panel__live">140</span></div>
+        <div class="panel__body">
+          <textarea id="c-note" maxlength="140" rows="3" required placeholder="Four whole decades and still no breaking changes." style="width:100%;font:400 15px/1.5 var(--font-body);padding:.7rem;background:var(--panel);color:var(--ink);border:1px solid var(--edge-strong);border-radius:0"></textarea>
+          <label class="dateline" style="margin:.75rem 0 0">From
+            <input type="text" id="c-from" maxlength="40" placeholder="Jamie" required style="font-family:var(--font-body)">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__fields" style="align-content:start">
+      <div class="field"><span class="field__label">Reads as</span><span class="field__value" id="c-reads">—</span></div>
+      <div class="field field--dark"><span class="field__label">Link</span><span class="field__value" id="c-url">—</span></div>
+      <div class="field" style="display:block">
+        <div class="rack__screen" style="max-width:none;margin-bottom:.75rem"><iframe id="c-preview" title="Card preview" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe></div>
+        <button class="btn btn--primary" type="submit" id="c-submit" style="width:100%">Create the card</button>
+        <p id="c-status" style="margin:.6rem 0 0;font:400 11px/1.6 var(--font-mono);color:var(--ink-3)">Send it now &mdash; it&rsquo;ll be counting down when they open it.</p>
+      </div>
+    </div>
+  </form>
+</main>
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>.</p>
+    <p><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/card/new/">&mdash;</span> visits</p>
+  </div>
+</footer>
+<script type="module" src="/assets/site.js?v=2"></script>
+<script type="module" src="/assets/compose.js?v=2"></script>
+</body>
+</html>

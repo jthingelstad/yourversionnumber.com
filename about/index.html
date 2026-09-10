@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About — Your Version Number</title>
-<meta name="description" content="How a person's version number is calculated, where the dates live (only in the URL), and how to contribute a theme.">
+<meta name="description" content="How a version number is calculated, what a card stores, and why entering a date stores nothing at all.">
 <link rel="canonical" href="https://yourversionnumber.com/about/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Your Version Number">
 <meta property="og:title" content="About — Your Version Number">
-<meta property="og:description" content="How a person's version number is calculated, where the dates live (only in the URL), and how to contribute a theme.">
+<meta property="og:description" content="How a version number is calculated, what a card stores, and why entering a date stores nothing at all.">
 <meta property="og:url" content="https://yourversionnumber.com/about/">
 <meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="About — Your Version Number">
-<meta name="twitter:description" content="How a person's version number is calculated, where the dates live (only in the URL), and how to contribute a theme.">
+<meta name="twitter:description" content="How a version number is calculated, what a card stores, and why entering a date stores nothing at all.">
 <meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css?v=2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -26,9 +26,10 @@
   "@type": "AboutPage",
   "name": "About Your Version Number",
   "url": "https://yourversionnumber.com/about/",
-  "description": "How a person's version number is calculated, where the data lives, and how to contribute a theme."
+  "description": "The arithmetic, the privacy model, and what a card keeps."
 }
 </script>
+
 <script>
 // Privacy: tinylytics' embed sends window.location.href (the full URL, with any
 // ?p= or ?j= dates in the query string) and the full referrer to its collector.
@@ -73,42 +74,66 @@
 <body>
 <nav class="site-nav">
   <div class="wrap site-nav__inner">
-    <a class="site-nav__brand" href="/">Your Version Number</a>
+    <a class="site-nav__brand" href="/">yourversionnumber.com</a>
     <a href="/birthday/">Birthday</a>
     <a href="/work/">Work</a>
+    <a href="/card/new/">Cards</a>
     <a href="/examples/">Examples</a>
     <a href="/themes/">Themes</a>
     <a href="/about/" aria-current="page">About</a>
+    <span class="site-nav__status"><i class="site-nav__led"></i><span id="site-vnum" data-since="2026-05-01">0.0.0</span></span>
   </div>
 </nav>
 <main class="wrap">
   <h1>About</h1>
-  <p class="lede">Where this came from, how the math works, and what happens to your data. (Nothing happens to your data.)</p>
+  <p class="lede">Where this came from, how the arithmetic works, and exactly what is stored. (Almost nothing.)</p>
 
-  <h2>Where it came from</h2>
-  <p>In February 2018 Jamie Thingelstad wrote a post called <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">&ldquo;Your Version Number&rdquo;</a>, borrowing an idea from his friend David Hussman: track your age the way software tracks releases. He was on <code>4.6.52</code> at the time. This site is that post, made clickable.</p>
+  <div class="panel">
+    <div class="panel__label"><span>Origin</span></div>
+    <div class="panel__body">
+      <p>In February 2018 Jamie Thingelstad wrote <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">&ldquo;Your Version Number&rdquo;</a>, borrowing an idea from his friend David Hussman: track your age the way software tracks releases. He was on <code>4.6.52</code> at the time. This site is that post, made clickable.</p>
+    </div>
+  </div>
 
-  <h2>The birthday math</h2>
-  <p>Take your age in whole years. <code>MAJOR</code> is that age divided by ten and rounded down &mdash; your decade. <code>MINOR</code> is the remainder &mdash; your year inside that decade. <code>PATCH</code> is the number of days since your most recent birthday.</p>
-  <p>So someone aged 52 years and 113 days is <code>5.2.113</code>. The day they turn 53, they ship <code>5.3.0</code> &mdash; a minor bump, backwards-compatible. At 60 it&rsquo;s <code>6.0.0</code>, a major release.</p>
-  <p>February 29 birthdays get March 1 as their anniversary in non-leap years. Dates in the future are skipped rather than counted backwards.</p>
+  <h2>The birthday arithmetic</h2>
+  <div class="panel">
+    <div class="panel__label"><span>Worked example</span></div>
+    <div class="hero__fields">
+      <div class="field"><span class="field__label">Major &middot; decade</span><span class="field__value">age &divide; 10, rounded down</span></div>
+      <div class="field"><span class="field__label">Minor &middot; year in</span><span class="field__value">the remainder</span></div>
+      <div class="field"><span class="field__label">Patch &middot; days since</span><span class="field__value">days since last birthday</span></div>
+      <div class="field field--dark"><span class="field__label">52 years, 113 days</span><span class="field__value">5.2.113</span></div>
+    </div>
+  </div>
+  <p>The day they turn 53 they ship <code>5.3.0</code> &mdash; a minor bump, backwards-compatible. At 60 it is <code>6.0.0</code>, a major release. February 29 birthdays get March 1 in non-leap years, and future dates are skipped rather than counted backwards.</p>
 
-  <h2>The work math</h2>
-  <p>The <a href="/work/">Work Edition</a> anchors on a start date instead of a birthday. <code>YEARS</code> is completed years of tenure. <code>QUARTERS</code> is which quarter of your current tenure year you&rsquo;re in, counted in three-month steps from your start date rather than from January &mdash; start on February 10 and your Q1 begins May 10. <code>DAYS</code> counts business days into that quarter, so weekends don&rsquo;t move the number.</p>
+  <h2>The work arithmetic</h2>
+  <p>The <a href="/work/">Work Edition</a> anchors on a start date. <code>YEARS</code> is completed years of tenure. <code>QUARTERS</code> is which quarter of the current tenure year you are in, counted in three-month steps from the start date rather than from January &mdash; start on February 10 and Q1 begins May 10. <code>DAYS</code> counts business days, so weekends do not move it.</p>
+
+  <h2>What a card stores</h2>
+  <div class="panel">
+    <div class="panel__label"><span>Stored per card</span><span class="panel__live">400 DAYS</span></div>
+    <div class="panel__body">
+      <p>Sending a card is the only thing on this site that writes anything down. A card record holds a name, a date, your note, and the name you signed it with. Nothing else: no email address, no account, no IP address, and no analytics on the card page at all. Every record expires automatically 400 days after it is made.</p>
+      <p><strong>Entering a date on either edition stores nothing.</strong> That flow has no server behind it and never has &mdash; the dates live in your address bar and nowhere else.</p>
+      <p>Cards carry a <code>noindex</code> header, so they never enter search. A card cannot be edited after it is sent, which keeps the record trivial and the link trustworthy.</p>
+    </div>
+  </div>
 
   <h2>Your dates stay yours</h2>
-  <p>This is a static site. There is no server to send anything to, no database, no account, and no cookie. Every birthday and start date lives in the URL in your address bar and nowhere else. Close the tab and it is gone; bookmark it and it comes back.</p>
-  <p>Visit counts go to <a href="https://tinylytics.app">Tinylytics</a>, a privacy-friendly analytics service. Before any of that leaves your browser, both the page URL and the referrer are trimmed down to origin and path, so the query string carrying your dates is never transmitted. The one thing kept in local storage is a single true/false flag recording whether you have seen this page before.</p>
-  <p>The flip side of putting everything in the URL: anyone you send a link to can read the dates in it, and so can your browser&rsquo;s history sync. It is a fine place for birthdays you&rsquo;d put on a card. It is not a place for anything sensitive.</p>
+  <p>Visit counts go to <a href="https://tinylytics.app">Tinylytics</a>. Before anything leaves your browser, both the page URL and the referrer are trimmed to origin and path, so the query string carrying your dates is never transmitted. One boolean in local storage records whether you have seen the intro.</p>
+  <p>The flip side of putting everything in the URL: anyone you send a link to can read the dates in it, and so can your browser&rsquo;s history sync. Fine for birthdays you would put on a card. Not a place for anything sensitive.</p>
 
   <h2>Themes</h2>
-  <p>Every theme works in both editions, and the <a href="/themes/">gallery</a> shows all of them. Each one is a single standalone CSS file with no JavaScript &mdash; a deliberate restriction, because a theme that could run code could also read the birthdays in the URL and phone them home.</p>
+  <p>Twenty-eight themes, each one a single standalone stylesheet with no JavaScript &mdash; a deliberate restriction, because a theme that could run code could also read the dates in the URL and send them somewhere. Anything a theme needs comes from seven generic hooks in the core. Browse them in the <a href="/themes/">gallery</a>, or see them <a href="/examples/">carrying real people</a>.</p>
 </main>
 <footer class="site-foot">
   <div class="wrap site-foot__inner">
-    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. Nothing you type here is stored anywhere; see <a href="/about/">About</a>.</p>
-    <p><span id="hits-span" class="tinylytics_hits" data-path="/about/">—</span> visits.</p>
+    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>.</p>
+    <p><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/about/">&mdash;</span> visits</p>
   </div>
 </footer>
+<script type="module" src="/assets/site.js?v=2"></script>
+
 </body>
 </html>

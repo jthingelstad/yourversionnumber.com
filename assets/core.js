@@ -141,3 +141,43 @@ export function playChime(kind) {
     source.stop(now + 0.4);
   }
 }
+
+// — Card mode ——————————————————————————————————————————————————————————————
+
+// The card page is the real edition with one person on it and nothing to
+// configure. card-page.λ writes the record into a JSON script tag rather than
+// the URL, because a card's contents are not the visitor's to edit.
+export function readCardData() {
+  const el = document.getElementById('card-data');
+  if (!el) return null;
+  try {
+    const card = JSON.parse(el.textContent);
+    return card && card.name && card.date ? card : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+// The same three elements in every theme. base.css gives them a plain default
+// so a theme that ignores them still reads correctly.
+export function renderCardMessage(card) {
+  const box = document.createElement('div');
+  box.className = 'card-message';
+  box.dataset.occasion = card.occasion === 'work' ? 'work' : 'birthday';
+
+  const recipient = document.createElement('p');
+  recipient.className = 'card-recipient';
+  recipient.textContent = card.name;
+
+  const note = document.createElement('p');
+  note.className = 'card-note';
+  // textContent, never innerHTML — the note is someone else's free text.
+  note.textContent = card.note;
+
+  const from = document.createElement('p');
+  from.className = 'card-from';
+  from.textContent = card.from;
+
+  box.append(recipient, note, from);
+  return box;
+}

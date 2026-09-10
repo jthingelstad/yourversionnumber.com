@@ -75,19 +75,21 @@ await validateEdition({ htmlPath: "work/index.html", privateQuery: "?j=" });
 // Spine pages: neutral chrome, no theme manifest, but the same privacy shim
 // (kept inline on every page so it cannot half-load ahead of the embed) and the
 // shared nav that ties the site together.
-for (const spinePath of ["index.html", "about/index.html", "themes/index.html", "examples/index.html"]) {
+for (const spinePath of ["index.html", "about/index.html", "themes/index.html",
+                         "examples/index.html", "card/new/index.html"]) {
   const html = await readFile(resolve(repoRoot, spinePath), "utf8");
   for (const required of [
     "tinylytics.app/collector/",
     "sanitizeCollectorUrl",
     "['url', 'referrer']",
     'class="site-nav__brand"',
-    '<link rel="stylesheet" href="/assets/site.css">',
+    // version-busted, so match the href without its query string
+    'href="/assets/site.css',
     'type="application/ld+json"',
   ]) {
     if (!html.includes(required)) failures.push(`${spinePath}: missing ${required}`);
   }
-  for (const dest of ["/birthday/", "/work/", "/examples/", "/themes/", "/about/"]) {
+  for (const dest of ["/birthday/", "/work/", "/examples/", "/themes/", "/about/", "/card/new/"]) {
     if (!html.includes(`href="${dest}"`)) failures.push(`${spinePath}: no link to ${dest}`);
   }
 }
@@ -101,7 +103,7 @@ for (const spinePath of ["index.html", "about/index.html", "themes/index.html", 
   for (const href of slots) {
     if (!html.includes(`<a href="${href}">`)) failures.push(`examples/index.html: ${href} has a preview but no static link`);
   }
-  const sizes = [...html.matchAll(/(\d+) (?:person|people) &middot;/g)].map((m) => Number(m[1]));
+  const sizes = [...html.matchAll(/<span class="chip">(\d+) (?:person|people)<\/span>/g)].map((m) => Number(m[1]));
   for (const n of [1, 2, 3, 4, 5, 6, 7, 8]) {
     if (!sizes.includes(n)) failures.push(`examples/index.html: no example with ${n} people`);
   }

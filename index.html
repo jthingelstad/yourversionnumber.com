@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Your Version Number">
 <meta name="twitter:description" content="How old are you, in semver? Your age as MAJOR.MINOR.PATCH — decade, year-in-decade, days since your last birthday.">
 <meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css?v=2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -26,18 +26,29 @@
   "@type": "WebSite",
   "name": "Your Version Number",
   "url": "https://yourversionnumber.com/",
-  "description": "Your age as a semantic version number. MAJOR.MINOR.PATCH = decade, year-in-decade, days since your last birthday.",
+  "description": "Your age as a semantic version number.",
   "author": {
     "@type": "Person",
     "name": "Jamie Thingelstad",
     "url": "https://www.thingelstad.com"
   },
   "hasPart": [
-    { "@type": "WebApplication", "name": "Birthday Edition", "url": "https://yourversionnumber.com/birthday/", "applicationCategory": "UtilityApplication" },
-    { "@type": "WebApplication", "name": "Work Edition", "url": "https://yourversionnumber.com/work/", "applicationCategory": "UtilityApplication" }
+    {
+      "@type": "WebApplication",
+      "name": "Birthday Edition",
+      "url": "https://yourversionnumber.com/birthday/",
+      "applicationCategory": "UtilityApplication"
+    },
+    {
+      "@type": "WebApplication",
+      "name": "Work Edition",
+      "url": "https://yourversionnumber.com/work/",
+      "applicationCategory": "UtilityApplication"
+    }
   ]
 }
 </script>
+
 <script>
 // Privacy: tinylytics' embed sends window.location.href (the full URL, with any
 // ?p= or ?j= dates in the query string) and the full referrer to its collector.
@@ -82,53 +93,71 @@
 <body>
 <nav class="site-nav">
   <div class="wrap site-nav__inner">
-    <a class="site-nav__brand" href="/" aria-current="page">Your Version Number</a>
+    <a class="site-nav__brand" href="/" aria-current="page">yourversionnumber.com</a>
     <a href="/birthday/">Birthday</a>
     <a href="/work/">Work</a>
+    <a href="/card/new/">Cards</a>
     <a href="/examples/">Examples</a>
     <a href="/themes/">Themes</a>
     <a href="/about/">About</a>
+    <span class="site-nav__status"><i class="site-nav__led"></i><span id="site-vnum" data-since="2026-05-01">0.0.0</span></span>
   </div>
 </nav>
 <main class="wrap">
   <h1>How old are you, in semver?</h1>
   <p class="lede">Software gets a version number. People should too.</p>
 
-  <div class="hero">
-    <span class="vnum hero__vnum" id="site-vnum" data-since="2026-05-01">0<span class="dot">.</span>0<span class="dot">.</span>&hellip;</span>
-    <p class="hero__caption">This site has one too. yourversionnumber.com shipped on 2026-05-01, which puts it comfortably pre-1.0.</p>
+  <div class="panel">
+    <div class="panel__label"><span>Unit 01 — human version readout</span><span class="panel__live">&#9679; LIVE</span></div>
+    <div class="hero__grid">
+      <div class="hero__main">
+        <p class="hero__kicker">This site, in its own notation</p>
+        <p class="hero__vnum" id="site-hero-vnum">0.0.0</p>
+        <p class="hero__lede">A person&rsquo;s version number is their age written the way software is: <code>MAJOR</code> is your decade, <code>MINOR</code> is your year inside it, <code>PATCH</code> is the days since your last birthday.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="/birthday/">Read your number</a>
+          <a class="btn btn--secondary" href="/card/new/">Send someone theirs</a>
+        </div>
+      </div>
+      <div class="hero__fields">
+        <div class="field"><span class="field__label">Major &middot; decade</span><span class="field__value">4</span></div>
+        <div class="field"><span class="field__label">Minor &middot; year in</span><span class="field__value">6</span></div>
+        <div class="field"><span class="field__label">Patch &middot; days since</span><span class="field__value">52</span></div>
+        <div class="field field--dark"><span class="field__label">Next patch</span><span class="field__value">00:00</span></div>
+      </div>
+    </div>
   </div>
-
-  <p>Software is versioned <code>MAJOR.MINOR.PATCH</code>. A major bump signals an incompatible change. Minor bumps add features but stay backwards-compatible. Patches are small fixes. People work the same way, so a person&rsquo;s version number is their age written the same way: <code>MAJOR</code> is your decade, <code>MINOR</code> is your age inside that decade, and <code>PATCH</code> is the days since your most recent birthday.</p>
-
-  <p>Someone who is 46 years old and 52 days past their birthday is on <code>4.6.52</code>. Tomorrow they ship <code>4.6.53</code>. On their birthday, <code>4.7.0</code>.</p>
 
   <h2>Two editions</h2>
   <ul class="editions">
     <li><a class="edition" href="/birthday/">
-      <span class="edition__version">4.6.52</span>
-      <strong>Birthday Edition</strong>
-      <p>The original. Your age, from your birthday. Add as many people as you like &mdash; the whole family fits on one page.</p>
+      <span class="edition__head">Birthday Edition <span class="edition__slot">SLOT A</span></span>
+      <span class="edition__body"><p>Your age, from your birthday. Add as many people as you like &mdash; the whole household fits on one page.</p></span>
+      <span class="edition__foot"><span>/birthday/</span><span>4.6.52</span></span>
     </a></li>
     <li><a class="edition" href="/work/">
-      <span class="edition__version">3.2.40</span>
-      <strong>Work Edition&trade;</strong>
-      <p>The same idea, applied to a job: years of tenure, quarter within the tenure year, and business days into that quarter. Weekends don&rsquo;t tick.</p>
+      <span class="edition__head">Work Edition&trade; <span class="edition__slot">SLOT B</span></span>
+      <span class="edition__body"><p>Years of tenure, quarter within the tenure year, business days into that quarter. Weekends don&rsquo;t tick.</p></span>
+      <span class="edition__foot"><span>/work/</span><span>3.2.40</span></span>
     </a></li>
   </ul>
 
-  <h2>The URL is the whole thing</h2>
-  <p>There is no account, no server, and no database. Everything you enter lives in the URL and nowhere else, which means a bookmark <em>is</em> your saved view, and sharing the link shares exactly what you see. It also means anyone with the link can read the dates in it, so don&rsquo;t put anything sensitive in there. More on how that works in <a href="/about/">About</a>.</p>
+  <h2>Send someone their number</h2>
+  <p>Put a note on it and send it a few days early: the card counts down, rolls over on the morning itself, and keeps climbing afterwards. <a href="/card/new/">Make one</a> &mdash; no account, and the link lasts 400 days.</p>
 
-  <h2>Every number, in costume</h2>
-  <p>Every view can be dressed up: a thermal receipt, a transit diagram, a spinning record, a Gameboy screen, a stock ticker, an out-of-office auto-reply. Browse them all in the <a href="/themes/">theme gallery</a>.</p>
+  <h2>The URL is the whole thing</h2>
+  <p>Entering a date stores nothing at all. Everything you type lives in the URL and nowhere else, which means a bookmark <em>is</em> your saved view. Cards are the one exception, and <a href="/about/">About</a> says exactly what they keep.</p>
+
+  <h2>Twenty-eight themes</h2>
+  <p>Every view can be dressed up: a thermal receipt, a split-flap board, a nixie tube bank, a fridge door, a stock ticker, an out-of-office reply. All twenty-eight work in both editions &mdash; browse the <a href="/themes/">gallery</a> or see them <a href="/examples/">carrying real people</a>.</p>
 </main>
-<script type="module" src="/assets/site.js"></script>
 <footer class="site-foot">
   <div class="wrap site-foot__inner">
-    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. Nothing you type here is stored anywhere; see <a href="/about/">About</a>.</p>
-    <p><span id="hits-span" class="tinylytics_hits" data-path="/">—</span> visits.</p>
+    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>.</p>
+    <p><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/">&mdash;</span> visits</p>
   </div>
 </footer>
+<script type="module" src="/assets/site.js?v=2"></script>
+
 </body>
 </html>

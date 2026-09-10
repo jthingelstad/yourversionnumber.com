@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Theme gallery — Your Version Number</title>
-<meta name="description" content="Every theme previewed live: receipts, transit diagrams, spinning records, stock tickers and more.">
+<meta name="description" content="Twenty-eight themes previewed live, all of them working in both editions.">
 <link rel="canonical" href="https://yourversionnumber.com/themes/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Your Version Number">
 <meta property="og:title" content="Theme gallery — Your Version Number">
-<meta property="og:description" content="Every theme previewed live: receipts, transit diagrams, spinning records, stock tickers and more.">
+<meta property="og:description" content="Twenty-eight themes previewed live, all of them working in both editions.">
 <meta property="og:url" content="https://yourversionnumber.com/themes/">
 <meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Theme gallery — Your Version Number">
-<meta name="twitter:description" content="Every theme previewed live: receipts, transit diagrams, spinning records, stock tickers and more.">
+<meta name="twitter:description" content="Twenty-eight themes previewed live, all of them working in both editions.">
 <meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css?v=2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -26,9 +26,10 @@
   "@type": "CollectionPage",
   "name": "Theme gallery",
   "url": "https://yourversionnumber.com/themes/",
-  "description": "Every theme for Your Version Number, previewed live and selectable in both editions."
+  "description": "All twenty-eight themes, previewed live with your own number."
 }
 </script>
+
 <script>
 // Privacy: tinylytics' embed sends window.location.href (the full URL, with any
 // ?p= or ?j= dates in the query string) and the full referrer to its collector.
@@ -73,32 +74,40 @@
 <body>
 <nav class="site-nav">
   <div class="wrap site-nav__inner">
-    <a class="site-nav__brand" href="/">Your Version Number</a>
+    <a class="site-nav__brand" href="/">yourversionnumber.com</a>
     <a href="/birthday/">Birthday</a>
     <a href="/work/">Work</a>
+    <a href="/card/new/">Cards</a>
     <a href="/examples/">Examples</a>
     <a href="/themes/" aria-current="page">Themes</a>
     <a href="/about/">About</a>
+    <span class="site-nav__status"><i class="site-nav__led"></i><span id="site-vnum" data-since="2026-05-01">0.0.0</span></span>
   </div>
 </nav>
 <main class="wrap">
   <h1>Theme gallery</h1>
-  <p class="lede">Every theme, in both editions. <span id="theme-count"></span></p>
+  <p class="lede">Twenty-eight ways to render the same three numbers. All of them work in both editions.</p>
+  <p>Enter a date and every preview below shows <em>your</em> number, not a sample. Pick one and it becomes part of your URL, so a bookmark keeps it.</p>
 
-  <p>Every preview below is the real page, running live, with a sample roster in it. Pick one and it becomes part of your URL, so a bookmark keeps the theme along with everything else.</p>
+  <label class="dateline">
+    Your date
+    <input type="date" id="gallery-date" value="1979-04-12" max="2026-12-31">
+    <span id="gallery-readout"></span>
+  </label>
 
-  <ul class="gallery" id="gallery"></ul>
+  <ul class="rack" id="gallery"></ul>
 
   <noscript>
-    <p>The live previews need JavaScript. Without it, you can still browse the themes by name: append <code>?theme=terminal</code> (or any other name) to <a href="/birthday/">the birthday edition</a> or <a href="/work/">the work edition</a>.</p>
+    <p>The live previews need JavaScript. Without it you can still reach any theme by name: append <code>?theme=receipt</code> (or any other) to <a href="/birthday/">the birthday edition</a> or <a href="/work/">the work edition</a>.</p>
   </noscript>
 </main>
-<script type="module" src="/assets/gallery.js"></script>
 <footer class="site-foot">
   <div class="wrap site-foot__inner">
-    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. Nothing you type here is stored anywhere; see <a href="/about/">About</a>.</p>
-    <p><span id="hits-span" class="tinylytics_hits" data-path="/themes/">—</span> visits.</p>
+    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>.</p>
+    <p><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/themes/">&mdash;</span> visits</p>
   </div>
 </footer>
+<script type="module" src="/assets/site.js?v=2"></script>
+<script type="module" src="/assets/gallery.js?v=2"></script>
 </body>
 </html>
