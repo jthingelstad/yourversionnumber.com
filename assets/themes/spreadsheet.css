@@ -233,7 +233,7 @@ body[data-tenure-anniversary="true"] .version {
   background: #e4f5e6;
   color: #1c6b32;
   background-image: radial-gradient(circle at 0.62rem 50%, #2f9e4f 0 0.2rem, transparent 0.22rem);
-  opacity: clamp(0, calc(1 - (var(--patch-pct, 0) - 0.75) * 20), 1);
+  opacity: clamp(0, calc(1 - (var(--patch-pct, 0) - 0.75) * 100), 1);
 }
 
 .version::after {
@@ -241,7 +241,7 @@ body[data-tenure-anniversary="true"] .version {
   background: #fdeaea;
   color: #96201f;
   background-image: radial-gradient(circle at 0.62rem 50%, #cc3a34 0 0.2rem, transparent 0.22rem);
-  opacity: clamp(0, calc((var(--patch-pct, 0) - 0.75) * 20), 1);
+  opacity: clamp(0, calc((var(--patch-pct, 0) - 0.75) * 100), 1);
 }
 
 /* ── Formula bar ───────────────────────────────────────────────────────────
