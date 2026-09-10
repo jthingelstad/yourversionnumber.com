@@ -19,7 +19,7 @@
   --card: #fbfaf6;
   --card-edge: #e4e0d6;
   --ink: #161a1d;
-  --faded: #6d7378;
+  --faded: #51575e;  /* #6d7378 was 3.3:1 for 10.9px chrome on the apron gradient */
   --airline: #12395c;
   --airline-2: #1c6ba8;
   --stub: #f2efe6;

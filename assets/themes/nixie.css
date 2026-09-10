@@ -66,7 +66,7 @@ body {
   color: #f0dcbc;
   background:
     repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.28) 0 1px, transparent 1px 3px),
-    linear-gradient(180deg, #8a6a35, #5c451f);
+    linear-gradient(180deg, #7a5c2c, #5c451f);  /* #8a6a35 top stop was 3.74:1 */
   border: 1px solid #3d2d13;
   border-radius: 2px;
   padding: 0.35rem 0.7rem;
@@ -295,4 +295,16 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .version .digit { animation: none; }
+}
+
+/* Six tubes at full size plus the plinth meter overrun a 390px screen. Shrink
+   the glass rather than letting the bank hang off the edge. */
+@media (max-width: 480px) {
+  .version {
+    font-size: var(--version-size, 1.45rem);
+    gap: 3px;
+  }
+  .version .digit { width: 1.5em; height: 2.4em; }
+  .version::after { width: 40px; }
+  .person { padding-left: 0.9rem; padding-right: 0.9rem; }
 }

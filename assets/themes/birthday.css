@@ -39,10 +39,23 @@ body {
   font-weight: 400;
   font-size: 3rem;
   margin: 0;
-  background: linear-gradient(90deg, var(--party-pink), var(--party-purple), var(--party-blue));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  /* The rainbow is the point, but a masthead must never depend on a paint
+     trick to be legible. Real colour first; the gradient only replaces it
+     where clipping to text actually works, and forced-colors takes it back. */
+  color: var(--party-purple);
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .site-title {
+    background: linear-gradient(90deg, var(--party-pink), var(--party-purple), var(--party-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@media (forced-colors: active) {
+  .site-title { background: none; color: CanvasText; }
 }
 
 .site-title::after {

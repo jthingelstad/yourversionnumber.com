@@ -14,7 +14,10 @@
   --ground: #0b0b0c;
   --ink: #f4f4f2;
   --rule: #1c1c1e;
-  --quiet: rgba(244, 244, 242, 0.38);
+  /* The drawing specifies .38. That measures 3.30:1 on #0b0b0c, and the
+     ground rules require 4.5:1 for text under 12px — which is all of this
+     theme's chrome. .50 clears it at 4.94:1 and is still unmistakably quiet. */
+  --quiet: rgba(244, 244, 242, 0.50);
 }
 
 body {

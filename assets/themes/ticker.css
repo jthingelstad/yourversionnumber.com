@@ -2,7 +2,7 @@
   --bg: #000000;
   --panel: #0a0a0a;
   --fg: #ff8800;
-  --fg-dim: #b85f00;
+  --fg-dim: #c96b05;  /* #b85f00 measured 4.41:1 on the row ground */
   --muted: #6a4a1f;
   --up: #00ff66;
   --down: #ff3344;
@@ -73,7 +73,13 @@ body {
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
 }
-.theme-select:focus { outline: none; border-color: var(--fg); }
+.theme-select:focus-visible {
+  /* Was outline: none with only a border tint, which on black is close to no
+     signal at all. The ring uses the theme's own amber. */
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+  border-color: var(--fg);
+}
 
 .home-btn, .about-btn, .edit-btn {
   background: var(--panel);

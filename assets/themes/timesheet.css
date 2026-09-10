@@ -12,7 +12,7 @@
   --desk: #8f9186;
   --paper: #f4f5ec;
   --bar: #dfe9d8;
-  --ink: #2c2f26;
+  --ink: #242720;  /* #2c2f26 was 4.26:1 for 11.5px chrome on --desk */
   --faded: #6d7166;
   --stamp: #5b3fa0;
   --thread: #a8322d;
