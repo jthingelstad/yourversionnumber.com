@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=B612:wght@400;700&family=B612+Mono&display=swap');
+
+/* Boarding pass.
+ *
+ * B612 was drawn for cockpit displays, which is the right provenance for a
+ * theme about being told where to sit.
+ *
+ * One deviation from the spec worth recording: it asks for the seat to be
+ * "--major and --minor concatenated" and the group to be a zero-padded --patch.
+ * CSS cannot interpolate a custom property into content: — that is exactly why
+ * hook 4 exists, and hook 4 yields digits, not arithmetic. So the version
+ * itself is the sequence number, printed large, and the seat and group are
+ * deterministic per person off data-row-variant. The number is still what the
+ * pass is about; it is just in the field that can actually render it.
+ *
+ * Spec in 04-themes-new.md §5. */
+
+:root {
+  --card: #fbfaf6;
+  --card-edge: #e4e0d6;
+  --ink: #161a1d;
+  --faded: #6d7378;
+  --airline: #12395c;
+  --airline-2: #1c6ba8;
+  --stub: #f2efe6;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #dfe3e6, #cbd2d7);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'B612', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app { max-width: 46rem; margin: 0 auto; padding: 2rem 1.25rem 3.5rem; }
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.site-title {
+  margin: 0;
+  font-family: 'B612', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--airline);
+}
+
+.header-controls { gap: 0.4rem; }
+
+.home-btn, .about-btn, .edit-btn, .theme-select {
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--card);
+  color: var(--airline);
+  border: 1px solid var(--card-edge);
+  border-radius: 2px;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  appearance: none;
+}
+
+.intro {
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.1rem;
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: 3px;
+  font-size: 0.92rem;
+}
+
+.intro code { font-family: 'B612 Mono', monospace; background: var(--stub); padding: 0 0.25em; }
+
+/* ── The pass ──────────────────────────────────────────────────────────────
+   Main panel and stub, with a real perforation between them: dashes down the
+   line, and a semicircular notch bitten out of the top and bottom edges. */
+
+.people { display: block; margin: 0; }
+
+.person {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  width: 100%;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  border-radius: 3px;
+  background:
+    radial-gradient(circle at calc(100% - 96px) 0, transparent 0 7px, var(--stub) 7.5px) no-repeat right top / 96px 50%,
+    radial-gradient(circle at calc(100% - 96px) 100%, transparent 0 7px, var(--stub) 7.5px) no-repeat right bottom / 96px 50%,
+    var(--card);
+  border: 1px solid var(--card-edge);
+  overflow: hidden;
+  transition: transform 180ms ease;
+}
+
+.person:hover { transform: translateY(-2px); }
+
+/* Header band across the main panel. */
+.person::before {
+  content: "YV   FLIGHT YVN";
+  grid-column: 1;
+  padding: 0.45rem 0.9rem;
+  background: var(--airline);
+  color: #fff;
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+}
+
+body[data-birthday="true"] .person::before {
+  content: "YV   FLIGHT YVN   ·   PRIORITY";
+  background: linear-gradient(90deg, var(--airline), #b8912f 65%, #e6cf8a);
+}
+
+body[data-tenure-anniversary="true"] .person::before {
+  content: "YV   FLIGHT YVN   ·   UPGRADE CONFIRMED";
+  background: linear-gradient(90deg, var(--airline), var(--airline-2));
+}
+
+/* Perforation. */
+.person::after {
+  content: "";
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  border-left: 3px dashed var(--card-edge);
+  /* barcode down the stub, varied widths so it reads as a barcode and not a
+     texture */
+  background: repeating-linear-gradient(180deg,
+    var(--ink) 0 3px, transparent 3px 6px,
+    var(--ink) 6px 7px, transparent 7px 11px,
+    var(--ink) 11px 14px, transparent 14px 16px,
+    var(--ink) 16px 17px, transparent 17px 22px);
+  background-position: center;
+  background-size: 34px 100%;
+  background-repeat: no-repeat;
+}
+
+.person-name {
+  grid-column: 1;
+  margin: 0;
+  padding: 0.7rem 0.9rem 0;
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 1;
+}
+
+.person-name::before {
+  content: "PASSENGER";
+  display: block;
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  color: var(--faded);
+  margin-bottom: 0.15rem;
+}
+
+.version {
+  grid-column: 1;
+  --version-size: clamp(1.8rem, 6vw, 2.6rem);
+  padding: 0.35rem 0.9rem 0.9rem;
+  font-family: 'B612', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.version::before {
+  content: "SEQ";
+  display: block;
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.56rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  color: var(--faded);
+  margin-bottom: 0.1rem;
+}
+
+/* Field grid under the number: seat, group, gate, boards. */
+.version::after {
+  content: "SEAT 12A     GROUP 3     GATE —     BOARDS ON TIME";
+  display: block;
+  margin-top: 0.7rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--card-edge);
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--faded);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.person[data-row-variant="1"] .version::after { content: "SEAT 21B     GROUP 1     GATE —     BOARDS ON TIME"; }
+.person[data-row-variant="2"] .version::after { content: "SEAT 07C     GROUP 4     GATE —     BOARDS ON TIME"; }
+.person[data-row-variant="3"] .version::after { content: "SEAT 33D     GROUP 2     GATE —     BOARDS ON TIME"; }
+.person[data-row-variant="4"] .version::after { content: "SEAT 18E     GROUP 5     GATE —     BOARDS ON TIME"; }
+.person[data-row-variant="5"] .version::after { content: "SEAT 44F     GROUP 3     GATE —     BOARDS ON TIME"; }
+.person[data-row-variant="6"] .version::after { content: "SEAT 02A     GROUP 1     GATE —     BOARDS ON TIME"; }
+.person[data-row-variant="7"] .version::after { content: "SEAT 29B     GROUP 6     GATE —     BOARDS ON TIME"; }
+
+/* Work upgrades the cabin by tenure. Only one band is ever opaque. */
+[data-edition="work"] .person-name::after {
+  content: "ECONOMY";
+  display: inline-block;
+  margin-left: 0.6rem;
+  padding: 0.05rem 0.35rem;
+  border: 1px solid var(--airline-2);
+  color: var(--airline-2);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+}
+
+[data-edition="work"] .person[style*="--major:1"] .person-name::after,
+[data-edition="work"] .person[style*="--major:2"] .person-name::after { content: "PREMIUM"; }
+[data-edition="work"] .person[style*="--major:3"] .person-name::after,
+[data-edition="work"] .person[style*="--major:4"] .person-name::after { content: "BUSINESS"; }
+[data-edition="work"] .person[style*="--major:5"] .person-name::after,
+[data-edition="work"] .person[style*="--major:6"] .person-name::after,
+[data-edition="work"] .person[style*="--major:7"] .person-name::after { content: "FIRST"; }
+
+.add-btn {
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: var(--airline);
+  color: #fff;
+  border: 0;
+  border-radius: 2px;
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+}
+
+.site-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--card-edge);
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--faded);
+  line-height: 1.9;
+}
+
+.site-footer a { color: var(--airline); }
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   The boards field finally has something to say, and the gate resolves. */
+
+.countdown {
+  margin: 1.25rem 0 0;
+  padding: 0.6rem 0.9rem;
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-left: 4px solid var(--airline-2);
+  border-radius: 2px;
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 1;
+}
+
+.countdown::before { content: "BOARDS IN "; color: var(--faded); }
+body[data-countdown="0"] .countdown::after { content: "   ·   GATE 4"; color: var(--airline-2); }
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   Printed on the reverse of the stub, sideways, as a gate agent's remark. */
+
+.card-message {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 56px;
+  margin: 1.5rem 0 0;
+  border: 1px solid var(--card-edge);
+  border-radius: 3px;
+  background: var(--card);
+  overflow: hidden;
+}
+
+.card-message::after {
+  content: "GATE REMARK";
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  display: grid;
+  place-items: center;
+  background: var(--stub);
+  border-left: 3px dashed var(--card-edge);
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.24em;
+  color: var(--faded);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.card-recipient {
+  grid-column: 1;
+  margin: 0;
+  padding: 0.8rem 0.9rem 0;
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--faded);
+}
+
+.card-recipient::before { content: "PASSENGER "; }
+
+.card-note {
+  grid-column: 1;
+  margin: 0;
+  padding: 0.35rem 0.9rem 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.card-from {
+  grid-column: 1;
+  margin: 0;
+  padding: 0.6rem 0.9rem 0.9rem;
+  font-family: 'B612 Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faded);
+}
+
+.card-from::before { content: "ISSUED BY "; }
+
+/* On a phone the stub goes underneath, with the perforation turned. */
+@media (max-width: 480px) {
+  .person {
+    grid-template-columns: minmax(0, 1fr);
+    background: var(--card);
+  }
+  .person::after {
+    grid-column: 1;
+    grid-row: auto;
+    height: 44px;
+    border-left: 0;
+    border-top: 3px dashed var(--card-edge);
+    background-size: 100% 34px;
+    background: repeating-linear-gradient(90deg,
+      var(--ink) 0 3px, transparent 3px 6px,
+      var(--ink) 6px 7px, transparent 7px 11px,
+      var(--ink) 11px 14px, transparent 14px 16px,
+      var(--ink) 16px 17px, transparent 17px 22px);
+  }
+  .card-message { grid-template-columns: minmax(0, 1fr); }
+  .card-message::after { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person { transition: none; }
+  .person:hover { transform: none; }
+}

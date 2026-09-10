@@ -69,6 +69,8 @@ export const THEMES = [
     blurb: 'Cards sitting in the In Progress column, where they have been for some years.' },
   { name: 'timesheet',   label: 'Timesheet',   home: 'work',     animate: false, chime: null,      card: true,
     blurb: 'Green-bar fanfold, an off-register stamp, and totals that are always one day out.' },
+  { name: 'boardingpass', label: 'Boarding Pass', home: null,     animate: false, chime: null,      card: true,
+    blurb: 'A perforated pass with a barcode down the stub, set in the typeface drawn for cockpits.' },
 ];
 
 // Natives first, then everything else, each group keeping manifest order.
