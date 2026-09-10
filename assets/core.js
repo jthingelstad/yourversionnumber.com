@@ -181,3 +181,8 @@ export function renderCardMessage(card) {
   box.append(recipient, note, from);
   return box;
 }
+
+// Date inputs use the visitor's calendar day, just like the version clocks.
+export function localDateString(date = new Date()) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}

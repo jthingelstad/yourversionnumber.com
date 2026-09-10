@@ -8,7 +8,11 @@
 
 export const PREVIEW_WIDTH = 1000;
 
+const scaledScreens = new WeakSet();
+
 export function scaleToFit(screen) {
+  if (scaledScreens.has(screen)) return;
+  scaledScreens.add(screen);
   const apply = () => {
     const width = screen.clientWidth;
     if (width > 0) screen.style.setProperty('--preview-scale', width / PREVIEW_WIDTH);
@@ -44,6 +48,10 @@ const nearViewport = 'IntersectionObserver' in window
 // Every preview on the spine is one of these: a screen in a bezel, with the
 // frame the only chrome it gets.
 export function mountPreview(screen, src, title) {
+  for (const previous of screen.querySelectorAll('iframe')) {
+    nearViewport?.unobserve(previous);
+    deferred.delete(previous);
+  }
   const frame = document.createElement('iframe');
   frame.loading = 'lazy';
   frame.title = title;

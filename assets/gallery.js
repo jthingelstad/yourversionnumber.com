@@ -6,10 +6,12 @@
 
 import { THEMES } from '/assets/themes.js';
 import { mountPreview } from '/assets/preview.js';
+import { localDateString } from '/assets/core.js?v=2';
 
 const list = document.getElementById('gallery');
 const dateInput = document.getElementById('gallery-date');
 const readout = document.getElementById('gallery-readout');
+if (dateInput) dateInput.max = localDateString();
 
 function version(dateStr, today = new Date()) {
   const [y, m, d] = dateStr.split('-').map(Number);
@@ -63,6 +65,11 @@ function row(theme, index, date) {
 }
 
 function render() {
+  if (dateInput?.value && !dateInput.validity.valid) {
+    readout.textContent = 'Choose a birthday on or before today.';
+    list.replaceChildren();
+    return;
+  }
   const date = dateInput?.value || '1979-04-12';
   if (readout) readout.textContent = `reads as ${version(date)}`;
   const frag = document.createDocumentFragment();

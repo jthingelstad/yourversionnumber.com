@@ -1,5 +1,5 @@
 import { THEMES, orderForEdition } from '/assets/themes.js';
-import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage } from '/assets/core.js';
+import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage, localDateString } from '/assets/core.js?v=2';
 
 const EDITION = 'work';
 const THEME_NAMES = THEMES.map(t => t.name);
@@ -49,7 +49,7 @@ function parseURL() {
   }
   const roles = [];
   for (const value of params.getAll('j')) {
-    const idx = value.indexOf(':');
+    const idx = value.lastIndexOf(':');
     const title = idx === -1 ? '' : value.slice(0, idx);
     const startDate = idx === -1 ? value : value.slice(idx + 1);
     if (!DATE_RE.test(startDate) || !isRealDate(startDate)) {
@@ -501,7 +501,7 @@ function openEdit({ addBlankRow = false } = {}) {
     attachBackdropClose(dialog);
     list = dialog.querySelector('.edit-list');
     dialog.querySelector('.edit-add').addEventListener('click', () => {
-      const today = new Date().toISOString().slice(0, 10);
+      const today = localDateString();
       state.roles.push({ title: '', startDate: today });
       writeURL();
       render();
@@ -514,7 +514,7 @@ function openEdit({ addBlankRow = false } = {}) {
 
   list.innerHTML = '';
   if (addBlankRow && state.roles.length === 0) {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = localDateString();
     state.roles.push({ title: '', startDate: today });
     writeURL();
     render();
@@ -544,7 +544,7 @@ function appendEditRow(list, focusName) {
   const dateInput = document.createElement('input');
   dateInput.type = 'date';
   dateInput.className = 'edit-row__date';
-  dateInput.max = new Date().toISOString().slice(0, 10);
+  dateInput.max = localDateString();
   dateInput.setAttribute('aria-label', 'Start date');
 
   list.appendChild(row);

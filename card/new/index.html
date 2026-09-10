@@ -97,7 +97,7 @@
             <input type="text" id="c-name" maxlength="40" placeholder="Sara" required style="font-family:var(--font-body)">
           </label>
           <label class="dateline" style="margin:0 0 0.75rem">Their date
-            <input type="date" id="c-date" required max="2026-12-31">
+            <input type="date" id="c-date" required>
           </label>
           <label class="dateline" style="margin:0">
             <input type="checkbox" id="c-work" style="min-height:0;width:auto">
@@ -118,7 +118,7 @@
       <div class="panel">
         <div class="panel__label"><span>Step 3 — your note</span><span id="c-left" class="panel__live">140</span></div>
         <div class="panel__body">
-          <textarea id="c-note" maxlength="140" rows="3" required placeholder="Four whole decades and still no breaking changes." style="width:100%;font:400 15px/1.5 var(--font-body);padding:.7rem;background:var(--panel);color:var(--ink);border:1px solid var(--edge-strong);border-radius:0"></textarea>
+          <textarea aria-label="Your note" id="c-note" maxlength="140" rows="3" required placeholder="Four whole decades and still no breaking changes." style="width:100%;font:400 15px/1.5 var(--font-body);padding:.7rem;background:var(--panel);color:var(--ink);border:1px solid var(--edge-strong);border-radius:0"></textarea>
           <label class="dateline" style="margin:.75rem 0 0">From
             <input type="text" id="c-from" maxlength="40" placeholder="Jamie" required style="font-family:var(--font-body)">
           </label>
@@ -130,9 +130,9 @@
       <div class="field"><span class="field__label">Reads as</span><span class="field__value" id="c-reads">—</span></div>
       <div class="field field--dark"><span class="field__label">Link</span><span class="field__value" id="c-url">—</span></div>
       <div class="field" style="display:block">
-        <div class="rack__screen" style="max-width:none;margin-bottom:.75rem"><iframe id="c-preview" title="Card preview" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe></div>
+        <div id="c-preview" class="rack__screen" style="max-width:none;margin-bottom:.75rem;aspect-ratio:1000/630"></div>
         <button class="btn btn--primary" type="submit" id="c-submit" style="width:100%">Create the card</button>
-        <p id="c-status" style="margin:.6rem 0 0;font:400 11px/1.6 var(--font-mono);color:var(--ink-3)">Send it now &mdash; it&rsquo;ll be counting down when they open it.</p>
+        <p id="c-status" role="status" style="margin:.6rem 0 0;font:400 11px/1.6 var(--font-mono);color:var(--ink-3)">Send it now &mdash; it&rsquo;ll be counting down when they open it.</p>
       </div>
     </div>
   </form>
@@ -144,6 +144,6 @@
   </div>
 </footer>
 <script type="module" src="/assets/site.js?v=2"></script>
-<script type="module" src="/assets/compose.js?v=2"></script>
+<script type="module" src="/assets/compose.js?v=3"></script>
 </body>
 </html>

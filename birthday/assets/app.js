@@ -1,5 +1,5 @@
 import { THEMES, orderForEdition } from '/assets/themes.js';
-import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage } from '/assets/core.js';
+import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage, localDateString } from '/assets/core.js?v=2';
 
 const EDITION = 'birthday';
 const THEME_NAMES = THEMES.map(t => t.name);
@@ -53,7 +53,7 @@ function parseURL() {
   }
   const people = [];
   for (const value of params.getAll('p')) {
-    const idx = value.indexOf(':');
+    const idx = value.lastIndexOf(':');
     const name = idx === -1 ? '' : value.slice(0, idx);
     const birthday = idx === -1 ? value : value.slice(idx + 1);
     if (!DATE_RE.test(birthday) || !isRealDate(birthday)) {
@@ -484,7 +484,7 @@ function openEdit({ addBlankRow = false } = {}) {
     attachBackdropClose(dialog);
     list = dialog.querySelector('.edit-list');
     dialog.querySelector('.edit-add').addEventListener('click', () => {
-      const today = new Date().toISOString().slice(0, 10);
+      const today = localDateString();
       state.people.push({ name: '', birthday: today });
       writeURL();
       render();
@@ -497,7 +497,7 @@ function openEdit({ addBlankRow = false } = {}) {
 
   list.innerHTML = '';
   if (addBlankRow && state.people.length === 0) {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = localDateString();
     state.people.push({ name: '', birthday: today });
     writeURL();
     render();
@@ -527,7 +527,7 @@ function appendEditRow(list, focusName) {
   const dateInput = document.createElement('input');
   dateInput.type = 'date';
   dateInput.className = 'edit-row__date';
-  dateInput.max = new Date().toISOString().slice(0, 10);
+  dateInput.max = localDateString();
   dateInput.setAttribute('aria-label', 'Birthday');
 
   list.appendChild(row); // append before reading state by index

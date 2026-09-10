@@ -149,18 +149,19 @@
   </section>
 </main>
 <script type="module">
+import { localDateString } from "/assets/core.js?v=2";
 // Today is fixed at preview time so the rosters' triggers are stable.
 // Defaults are tuned so:
 //   - Bob (birthday edition) is on patch=0 today.
 //   - "Senior Engineer" (work) is on tenure-anniversary AND quarter-start today.
 //   - "Manager" (work) is on quarter-start (3 months in).
-const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+const today = localDateString(); // YYYY-MM-DD
 
 function isoMinus(years, months = 0) {
   const d = new Date();
   d.setFullYear(d.getFullYear() - years);
   d.setMonth(d.getMonth() - months);
-  return d.toISOString().slice(0, 10);
+  return localDateString(d);
 }
 
 const ROSTERS = {
@@ -234,7 +235,7 @@ function makeCard(theme, base, kind, items) {
     <iframe loading="lazy"></iframe>
   `;
   card.querySelector('.card-name').textContent = theme.label;
-  card.querySelector('.card-meta').textContent = ` · ${theme.kind}${theme.animate ? ' · animate' : ''}`;
+  card.querySelector('.card-meta').textContent = ` · ${theme.home || 'both editions'}${theme.animate ? ' · animate' : ''}`;
   const a = card.querySelector('a');
   a.href = href;
   a.textContent = 'open ↗';

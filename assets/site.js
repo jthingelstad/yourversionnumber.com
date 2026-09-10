@@ -31,6 +31,12 @@ for (const id of ['site-vnum', 'site-hero-vnum']) {
   if (el) el.textContent = text;
 }
 
+// The explanatory fields describe the same live number as the hero.
+for (const part of ['major', 'minor', 'patch']) {
+  const el = document.getElementById(`site-${part}`);
+  if (el) el.textContent = v[part];
+}
+
 const since = document.getElementById('days-since');
 if (since) {
   const days = Math.round((Date.now() - Date.parse(LAUNCH + 'T00:00:00')) / 86_400_000);
