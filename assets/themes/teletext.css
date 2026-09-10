@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+
+/* Teletext.
+ *
+ * Each person is a page and the version is the page you turn to. One font,
+ * because teletext had exactly one. Seven flat colours, never blended: no
+ * gradients, no radius, no shadow, no opacity, no anti-aliased softness. That
+ * discipline is the theme — the moment anything here gets a soft edge it stops
+ * being teletext and starts being a poster about teletext.
+ *
+ * Spec in 04-themes-new.md §3, drawn in refs/New Themes.html. */
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --yellow: #ff0;
+  --cyan: #0ff;
+  --green: #0f0;
+  --magenta: #f0f;
+  --red: #f00;
+  --blue: #00f;
+  /* 40 columns of a fixed grid; the cell derives from the version size. */
+  --cols: 40;
+  --cell-w: calc(100% / var(--cols));
+}
+
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Silkscreen', monospace;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.75;
+  min-height: 100vh;
+  -webkit-font-smoothing: none;
+}
+
+#app {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+/* ── Header row ────────────────────────────────────────────────────────────
+   Page number, service name, the day, and a time that is always slightly
+   wrong — which is the most accurate detail in the whole theme. */
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.site-title {
+  margin: 0;
+  font-family: 'Silkscreen', monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.site-title::before {
+  content: "P143  ";
+  color: var(--cyan);
+}
+
+[data-edition="work"] .site-title::before { content: "P200  "; }
+
+.site-title::after {
+  content: "  MON 20:41";
+  color: var(--green);
+}
+
+body[data-weekday="sun"] .site-title::after { content: "  SUN 20:41"; }
+body[data-weekday="mon"] .site-title::after { content: "  MON 20:41"; }
+body[data-weekday="tue"] .site-title::after { content: "  TUE 20:41"; }
+body[data-weekday="wed"] .site-title::after { content: "  WED 20:41"; }
+body[data-weekday="thu"] .site-title::after { content: "  THU 20:41"; }
+body[data-weekday="fri"] .site-title::after { content: "  FRI 20:41"; }
+body[data-weekday="sat"] .site-title::after { content: "  SAT 20:41"; }
+
+.header-controls { gap: 0.5rem; }
+
+.home-btn, .about-btn, .edit-btn, .theme-select {
+  font-family: 'Silkscreen', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  background: var(--blue);
+  color: var(--white);
+  border: 0;
+  border-radius: 0;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  appearance: none;
+}
+
+.theme-select { padding-right: 1.4rem; }
+
+.home-btn:hover, .about-btn:hover, .edit-btn:hover { background: var(--cyan); color: var(--black); }
+
+.intro {
+  margin: 0 0 1.5rem;
+  color: var(--white);
+  font-size: 0.9rem;
+  line-height: 1.9;
+}
+
+.intro::before { content: ">>> "; color: var(--green); }
+.intro code { font-family: inherit; color: var(--yellow); background: none; }
+
+/* ── Rows ──────────────────────────────────────────────────────────────────
+   Name in cyan, version double-height in yellow, mosaic bar beneath. */
+
+.people { display: block; margin: 0; }
+
+.person {
+  width: 100%;
+  padding: 0 0 1.25rem;
+  margin: 0 0 1.25rem;
+  border: 0;
+  background: none;
+  /* Reveal, top to bottom, 40ms apart. The only motion in the file. */
+  animation: teletext-reveal 1ms steps(1, end) backwards;
+  animation-delay: calc(var(--row-index, 0) * 40ms);
+}
+
+@keyframes teletext-reveal {
+  from { visibility: hidden; }
+  to { visibility: visible; }
+}
+
+.person-name {
+  display: block;
+  margin: 0 0 0.35rem;
+  font-family: 'Silkscreen', monospace;
+  font-weight: 400;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: var(--cyan);
+  opacity: 1;
+}
+
+/* Double height, the way the real thing did it: scaleY(2) from the top, in a
+   wrapper twice the inner line box so the glyphs are not sliced. */
+.version {
+  display: block;
+  height: 2.4em;
+  overflow: hidden;
+  font-size: var(--version-size, 1.6rem);
+}
+
+.version .digit,
+.version .sep {
+  display: inline-block;
+  font-family: 'Silkscreen', monospace;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--yellow);
+  transform: scaleY(2);
+  transform-origin: top;
+}
+
+/* Mosaic bar, in this row's colour. Blocks, not a gradient. */
+.person::after {
+  content: "";
+  display: block;
+  align-self: stretch;
+  height: 14px;
+  margin-top: 0.5rem;
+  background: repeating-linear-gradient(90deg, var(--mosaic, #f0f) 0 16px, transparent 16px 32px);
+}
+
+.person[data-row-variant="0"] { --mosaic: var(--magenta); }
+.person[data-row-variant="1"] { --mosaic: var(--green); }
+.person[data-row-variant="2"] { --mosaic: var(--cyan); }
+.person[data-row-variant="3"] { --mosaic: var(--red); }
+.person[data-row-variant="4"] { --mosaic: var(--yellow); }
+.person[data-row-variant="5"] { --mosaic: var(--blue); }
+.person[data-row-variant="6"] { --mosaic: var(--white); }
+.person[data-row-variant="7"] { --mosaic: var(--magenta); }
+
+.add-btn {
+  font-family: 'Silkscreen', monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  background: var(--green);
+  color: var(--black);
+  border: 0;
+  border-radius: 0;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+/* ── Fastext ───────────────────────────────────────────────────────────────
+   The four coloured buttons along the bottom. */
+
+.site-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  color: var(--white);
+  font-size: 0.8rem;
+  line-height: 1.9;
+}
+
+.site-footer a { color: var(--cyan); }
+
+.site-footer::before {
+  content: "INDEX          BIRTHDAY        WORK           ABOUT";
+  display: block;
+  margin-bottom: 1rem;
+  padding: 0.35rem 0;
+  white-space: pre;
+  overflow-x: auto;
+  font-size: 0.75rem;
+  background:
+    linear-gradient(90deg,
+      var(--red) 0 25%, var(--green) 25% 50%,
+      var(--yellow) 50% 75%, var(--cyan) 75% 100%);
+  color: var(--black);
+  text-align: left;
+  text-indent: 0.5rem;
+}
+
+/* Work gets a share-price ticker row instead of the index line. */
+[data-edition="work"] .site-footer::after {
+  content: "YVN 4.1 +0.3   ACME 12.4 -1.1   NODE 7.7 +2.0   ZENITH 3.3 +0.1";
+  display: block;
+  margin-top: 1rem;
+  padding: 0.3rem 0.5rem;
+  white-space: nowrap;
+  overflow-x: auto;
+  font-size: 0.72rem;
+  background: var(--blue);
+  color: var(--yellow);
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   Green info line, and a magenta bar losing a block a day. */
+
+.countdown {
+  margin: 1.5rem 0 0;
+  color: var(--green);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
+.countdown::before { content: ">>> "; }
+
+.countdown::after {
+  content: "";
+  display: block;
+  height: 14px;
+  margin-top: 0.5rem;
+  /* seven blocks, one lost per day */
+  width: calc((7 - var(--days-until, 7)) / 7 * 100%);
+  min-width: 16px;
+  background: repeating-linear-gradient(90deg, var(--magenta) 0 16px, transparent 16px 32px);
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   An info paragraph, sender in yellow. */
+
+.card-message {
+  margin: 1.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  line-height: 1.9;
+}
+
+.card-recipient {
+  order: -1;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.card-recipient::before { content: "FOR "; color: var(--white); }
+
+.card-note {
+  margin: 0;
+  color: var(--green);
+  text-transform: uppercase;
+}
+
+.card-note::before { content: ">>> "; }
+
+.card-from {
+  margin: 0.75rem 0 0;
+  color: var(--yellow);
+  text-transform: uppercase;
+}
+
+.card-from::before { content: "    — "; white-space: pre; }
+
+/* 32 columns on a phone rather than smaller glyphs. */
+@media (max-width: 480px) {
+  :root { --cols: 32; }
+  body { font-size: 13px; }
+  .version { font-size: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .person { animation: none; }
+}

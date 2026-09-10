@@ -49,6 +49,9 @@ export const THEMES = [
   { name: 'memphis',     label: 'Memphis',     home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Eighties squiggles, triangles and dots in every direction at once.' },
 
+  { name: 'teletext',    label: 'Teletext',    home: null,       animate: false, chime: null,      card: true,
+    blurb: 'Six flat colours, one font, no gradients anywhere. Each person is a page you turn to.' },
+
   // — home: work —
   { name: 'ooo',         label: 'OOO',         home: 'work',     animate: false, chime: null,      card: true,
     blurb: 'An out-of-office auto-reply, signed by hand. Back never.' },
