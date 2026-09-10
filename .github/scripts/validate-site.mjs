@@ -164,7 +164,6 @@ const DUPLICATE_SELECTOR_BASELINE = new Set([
 
 const EMOJI_BASELINE = new Set([
   "progress.css",
-  "unread.css",
 ]);
 
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{1F1E6}-\u{1F1FF}]/u;

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap');
+
 :root {
   --bg: #f6f8fa;
   --paper: #ffffff;
@@ -17,7 +19,7 @@
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-family: 'Public Sans', system-ui, sans-serif;
   font-size: 14px;
   line-height: 1.5;
   min-height: 100vh;
@@ -49,7 +51,19 @@ body {
   margin: 0;
   color: var(--fg);
 }
-.site-title::before { content: "📥  "; }
+/* Inbox tray, drawn. */
+.site-title::before {
+  content: "";
+  display: inline-block;
+  width: 0.85em;
+  height: 0.62em;
+  margin-right: 0.5em;
+  vertical-align: -0.04em;
+  border: 2px solid currentColor;
+  border-top: 0;
+  border-radius: 0 0 3px 3px;
+  box-shadow: inset 0 3px 0 -2px currentColor;
+}
 .site-title::after {
   content: " — 1 unread";
   color: var(--muted);
@@ -86,7 +100,7 @@ body {
   background: var(--unread-tint);
 }
 .intro::before {
-  content: "📌  Pinned: ";
+  content: "Pinned: ";
   color: var(--fg);
   font-weight: 600;
 }
@@ -125,7 +139,9 @@ body {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--avatar1);
+  /* Salvaged from github: the disc takes its colour from the row hash, so it
+     always matches the address on the same row. */
+  background: hsl(var(--row-hue, 210) 46% 46%);
   color: #fff;
   font-weight: 600;
   font-size: 12px;
@@ -133,10 +149,6 @@ body {
   align-items: center;
   justify-content: center;
 }
-.person:nth-child(2)::before { background: var(--avatar2); content: "HR"; }
-.person:nth-child(3)::before { background: var(--avatar3); content: "PM"; }
-.person:nth-child(4)::before { background: var(--avatar4); content: "VP"; }
-.person:nth-child(5)::before { background: var(--avatar5); content: "EX"; }
 
 .person-name {
   grid-area: name;
@@ -213,7 +225,19 @@ body {
   font-weight: 600;
   font-size: 13px;
 }
-.add-btn::before { content: "✉  "; }
+/* Envelope, drawn. */
+.add-btn::before {
+  content: "";
+  display: inline-block;
+  width: 0.9em;
+  height: 0.66em;
+  margin-right: 0.5em;
+  vertical-align: -0.04em;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+  background: linear-gradient(135deg, transparent 46%, currentColor 46% 52%, transparent 52%),
+              linear-gradient(-135deg, transparent 46%, currentColor 46% 52%, transparent 52%);
+}
 .add-btn:hover { background: #0860ca; }
 
 .site-footer {
@@ -229,10 +253,143 @@ body {
 
 body[data-quarter-start="true"] .person { background: rgba(251, 189, 46, 0.12); }
 body[data-quarter-start="true"] .person::after {
-  content: "🚩 Flagged";
+  content: "Flagged";
   color: var(--warn);
   font-weight: 600;
 }
 body[data-tenure-anniversary="true"] .person-name::before {
-  content: "🎉  ";
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-right: 0.4em;
+  border-radius: 50%;
+  background: var(--warn);
+}
+
+/* ── Avatar initials ───────────────────────────────────────────────────────
+   Keyed off the same hash as the addresses, so a person's initials and their
+   address always belong to the same person. */
+
+.person[data-row-variant="0"]::before { content: "JT"; }
+.person[data-row-variant="1"]::before { content: "HR"; }
+.person[data-row-variant="2"]::before { content: "PM"; }
+.person[data-row-variant="3"]::before { content: "VP"; }
+.person[data-row-variant="4"]::before { content: "EX"; }
+.person[data-row-variant="5"]::before { content: "OM"; }
+.person[data-row-variant="6"]::before { content: "IT"; }
+.person[data-row-variant="7"]::before { content: "FA"; }
+
+/* ── Metadata ──────────────────────────────────────────────────────────────
+   Salvaged in spirit from confluence, whose only good line was admitting that
+   nobody owns the document and nobody has read it. */
+
+.version::after {
+  content: "Owner: unassigned \00B7 Last reviewed: never";
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--muted, #6b7280);
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────────
+   Salvaged from invite: the recurrence rule nobody set an end date on. */
+
+.site-footer::after {
+  content: "FREQ=DAILY;UNTIL=FOREVER";
+  display: block;
+  margin-top: 0.9rem;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--muted, #6b7280);
+}
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   A scheduled send, sitting at the top of the list where it will stay. */
+
+.countdown {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 0.25rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--rule, #e5e7eb);
+  background: rgba(37, 99, 235, 0.05);
+  font-size: 0.85rem;
+  color: var(--fg, #111827);
+  opacity: 1;
+}
+
+/* A small clock face, drawn. */
+.countdown::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--link, #2563eb);
+  background:
+    linear-gradient(to bottom, var(--link, #2563eb) 0 1.5px, transparent 1.5px) 50% 22% / 2px 5px no-repeat,
+    linear-gradient(to right, var(--link, #2563eb) 0 1.5px, transparent 1.5px) 62% 50% / 5px 2px no-repeat;
+}
+
+.countdown::after {
+  content: "Scheduled";
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--link, #2563eb);
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   The note as the message body, version number in the subject line. */
+
+.card-message {
+  margin: 1rem 0 0;
+  padding: 1rem 1.1rem 1.2rem;
+  border: 1px solid var(--rule, #e5e7eb);
+  border-radius: 6px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.card-message::before {
+  content: "Subject:";
+  order: -3;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted, #6b7280);
+}
+
+.card-recipient {
+  order: -2;
+  margin: 0.15rem 0 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule, #e5e7eb);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--fg, #111827);
+}
+
+.card-recipient::before { content: "A version number for "; font-weight: 400; }
+
+.card-from {
+  order: -1;
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem;
+  color: var(--muted, #6b7280);
+}
+
+.card-from::before { content: "From "; }
+
+.card-note {
+  margin: 0;
+  color: var(--fg, #111827);
 }
