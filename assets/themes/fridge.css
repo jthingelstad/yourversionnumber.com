@@ -1,168 +1,389 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Nunito:wght@400;600;700&display=swap');
+
+/* Fridge Door.
+ *
+ * A rebuild. The manifest promised "built for a page with the whole household
+ * on it" and the old file delivered warm cream and a handwriting font, which is
+ * not a fridge door. This is the door: brushed steel, notes held on with drawn
+ * magnets, names in crayon, and a height chart ruled up the left edge.
+ *
+ * The height chart is the part that makes it a household rather than a list —
+ * --major raises each note up the door, so the tallest person really is highest.
+ *
+ * Drawn in refs/Rebuilt Themes.html §02. */
 
 :root {
-  --bg-1: #fff7ed;
-  --bg-2: #ffe4c4;
-  --fg: #3e2723;
-  --muted: #8d6e63;
-  --accent: #d97706;
-  --accent-2: #be185d;
-  --card: #fffefb;
-  --shadow: 0 6px 18px rgba(120, 60, 0, 0.08);
+  --steel-1: #d9dbd8;
+  --steel-2: #c3c6c3;
+  --paper: #fffef9;
+  --note-yellow: #fdf3b8;
+  --ink: #2c2a26;
+  --crayon-red: #c8442f;
+  --crayon-blue: #2f6fb0;
+  --crayon-green: #3d8a4a;
+  --crayon-amber: #d9a12b;
+  --shadow: rgba(0, 0, 0, 0.26);
 }
 
 body {
-  background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  margin: 0;
+  /* Brushed steel: a vertical gradient with a fine horizontal grain over it. */
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.35) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, var(--steel-1), var(--steel-2));
   background-attachment: fixed;
-  color: var(--fg);
+  color: var(--ink);
   font-family: 'Nunito', system-ui, sans-serif;
-  font-size: 17px;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
 }
 
 #app {
-  max-width: 760px;
+  max-width: 44rem;
   margin: 0 auto;
-  padding: 3rem 1.5rem;
+  padding: 2.5rem 1.5rem 4rem;
 }
 
 .site-header {
-  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
 }
 
 .site-title {
-  font-family: 'Caveat', cursive;
-  font-size: 3.25rem;
-  font-weight: 700;
   margin: 0;
-  color: var(--accent-2);
-  transform: rotate(-2deg);
-  display: inline-block;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 2.1rem;
+  font-weight: 400;
+  color: var(--crayon-red);
+  letter-spacing: 0.01em;
 }
 
-.theme-select {
-  appearance: none;
-  font-family: 'Caveat', cursive;
-  font-size: 1.4rem;
+.header-controls { gap: 0.5rem; }
+
+.home-btn, .about-btn, .edit-btn, .theme-select {
+  font-family: 'Nunito', sans-serif;
   font-weight: 700;
-  background: var(--card);
-  color: var(--accent);
-  border: 2px dashed var(--accent);
-  border-radius: 999px;
-  padding: 0.2rem 2.2rem 0.2rem 1rem;
-  cursor: pointer;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><path d='M3 5l4 4 4-4' stroke='%23d97706' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  box-shadow: var(--shadow);
-}
-
-.theme-select:focus {
-  outline: none;
-  border-color: var(--accent-2);
-}
-
-.home-btn, .about-btn, .edit-btn {
-  font-family: 'Caveat', cursive;
-  font-size: 1.4rem;
-  font-weight: 700;
-  background: var(--accent-2);
-  color: #fff;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--paper);
+  color: var(--ink);
   border: 0;
-  border-radius: 999px;
-  padding: 0.25rem 1.1rem;
-  box-shadow: var(--shadow);
+  border-radius: 3px;
+  padding: 0.4rem 0.7rem;
+  box-shadow: 0 1px 3px var(--shadow);
+  cursor: pointer;
 }
 
-.home-btn:hover, .about-btn:hover, .edit-btn:hover {
-  transform: scale(1.05);
-}
+.theme-select { appearance: none; padding-right: 1.5rem; }
 
 .intro {
-  text-align: center;
-  color: var(--muted);
-  font-size: 1.05rem;
-  max-width: 38ch;
-  margin: 0 auto 2.5rem;
+  background: var(--paper);
+  padding: 1rem 1.1rem;
+  border-radius: 2px;
+  box-shadow: 0 3px 8px var(--shadow);
+  transform: rotate(-0.6deg);
+  font-size: 0.95rem;
 }
 
 .intro code {
-  font-family: 'Nunito', monospace;
-  background: rgba(217, 119, 6, 0.15);
-  color: var(--accent);
-  padding: 0.1em 0.45em;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.85em;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  background: var(--note-yellow);
+  padding: 0.05em 0.3em;
 }
 
+/* ── The door ──────────────────────────────────────────────────────────────
+   A ruled height chart down the left, notes pinned along it. */
+
 .people {
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  position: relative;
+  display: block;
+  margin: 2rem 0 0;
+  padding-left: 3.25rem;
+}
+
+.people::before {
+  content: "";
+  position: absolute;
+  left: 1.1rem;
+  top: 0;
+  bottom: 0;
+  width: 26px;
+  background:
+    /* ticks every 24px, longer every fifth */
+    repeating-linear-gradient(180deg, rgba(44, 42, 38, 0.45) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(180deg, rgba(44, 42, 38, 0.25) 0 1px, transparent 1px 120px),
+    linear-gradient(90deg, transparent 0 8px, rgba(255, 255, 255, 0.45) 8px 10px, transparent 10px);
+  background-size: 12px 24px, 26px 120px, 100% 100%;
+  background-repeat: repeat-y;
+  background-position: left top, left top, left top;
+  border-left: 2px solid rgba(44, 42, 38, 0.5);
 }
 
 .person {
-  background: var(--card);
-  border-radius: 24px;
-  padding: 1.75rem 2rem;
-  box-shadow: var(--shadow);
-  width: 100%;
-  transition: transform 0.15s ease;
+  position: relative;
+  width: auto;
+  max-width: 22rem;
+  margin: 0 0 3rem;
+  padding: 1.5rem 1.2rem 1.2rem;
+  background: var(--paper);
+  border-radius: 2px;
+  box-shadow: 0 4px 10px var(--shadow);
+  /* --major raises the note up the door: a decade is a hand's width. Clamped,
+     because an eleventh decade would otherwise lift a note into the one above. */
+  transform:
+    translateY(calc(-1 * min(var(--major, 0) * 5px, 40px)))
+    rotate(var(--row-tilt, 0deg));
 }
 
-.person:hover {
-  transform: translateY(-3px) scale(1.01);
+/* The magnet holding it on. Eight drawn shapes, one per variant. */
+.person::before {
+  content: "";
+  position: absolute;
+  top: -11px;
+  left: 1.4rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #ff8a6b, var(--crayon-red));
+  box-shadow: 0 2px 3px var(--shadow), inset 0 -2px 3px rgba(0, 0, 0, 0.25);
+  z-index: 2;
 }
 
-.person:nth-child(odd) { transform: rotate(-0.5deg); }
-.person:nth-child(even) { transform: rotate(0.5deg); }
-.person:nth-child(odd):hover { transform: translateY(-2px) rotate(-0.5deg); }
-.person:nth-child(even):hover { transform: translateY(-2px) rotate(0.5deg); }
+/* 1 · alphabet letter */
+.person[data-row-variant="1"]::before {
+  border-radius: 3px;
+  background: var(--crayon-blue);
+  box-shadow: 0 2px 3px var(--shadow), inset 0 0 0 3px var(--paper), inset 0 0 0 6px var(--crayon-blue);
+}
+/* 2 · fruit */
+.person[data-row-variant="2"]::before {
+  border-radius: 50% 50% 46% 54% / 58% 58% 42% 42%;
+  background: radial-gradient(circle at 36% 30%, #8ed07a, var(--crayon-green));
+}
+/* 3 · disc */
+.person[data-row-variant="3"]::before {
+  background: radial-gradient(circle at 36% 30%, #ffd98a, var(--crayon-amber));
+  box-shadow: 0 2px 3px var(--shadow), inset 0 0 0 4px rgba(255, 255, 255, 0.55);
+}
+/* 4 · star */
+.person[data-row-variant="4"]::before {
+  border-radius: 0;
+  background: var(--crayon-amber);
+  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  box-shadow: none;
+  filter: drop-shadow(0 2px 2px var(--shadow));
+}
+/* 5 · clip */
+.person[data-row-variant="5"]::before {
+  border-radius: 6px;
+  width: 14px;
+  height: 30px;
+  top: -15px;
+  background: none;
+  border: 3px solid #9aa0a6;
+  box-shadow: none;
+}
+/* 6 · hook */
+.person[data-row-variant="6"]::before {
+  border-radius: 50% 50% 0 0;
+  width: 22px;
+  height: 26px;
+  top: -14px;
+  background: none;
+  border: 4px solid var(--crayon-blue);
+  border-bottom: 0;
+  box-shadow: none;
+}
+/* 7 · flower */
+.person[data-row-variant="7"]::before {
+  background:
+    radial-gradient(circle at 50% 18%, #f4a0c0 0 6px, transparent 6.5px),
+    radial-gradient(circle at 82% 50%, #f4a0c0 0 6px, transparent 6.5px),
+    radial-gradient(circle at 50% 82%, #f4a0c0 0 6px, transparent 6.5px),
+    radial-gradient(circle at 18% 50%, #f4a0c0 0 6px, transparent 6.5px),
+    radial-gradient(circle at 50% 50%, var(--crayon-amber) 0 5px, transparent 5.5px);
+  box-shadow: none;
+  filter: drop-shadow(0 2px 2px var(--shadow));
+}
+/* 0 · dinosaur — a small drawn silhouette */
+.person[data-row-variant="0"]::before {
+  border-radius: 0;
+  width: 30px;
+  height: 24px;
+  background: var(--crayon-green);
+  clip-path: polygon(4% 88%, 16% 60%, 10% 44%, 22% 28%, 40% 22%, 52% 8%, 66% 16%, 72% 34%, 88% 46%, 96% 66%, 80% 62%, 74% 78%, 60% 88%, 44% 78%, 30% 88%);
+  box-shadow: none;
+  filter: drop-shadow(0 2px 2px var(--shadow));
+}
+
+/* A tick on the chart, level with the note. */
+.person::after {
+  content: "";
+  position: absolute;
+  left: -2.15rem;
+  top: 1.9rem;
+  width: 1.9rem;
+  height: 2px;
+  background: rgba(44, 42, 38, 0.55);
+}
+
+.person-name {
+  display: block;
+  margin: 0 0 0.15rem;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--crayon-blue);
+  opacity: 1;
+}
+
+.person[data-row-variant="1"] .person-name,
+.person[data-row-variant="5"] .person-name { color: var(--crayon-red); }
+.person[data-row-variant="2"] .person-name,
+.person[data-row-variant="6"] .person-name { color: var(--crayon-green); }
+.person[data-row-variant="3"] .person-name,
+.person[data-row-variant="7"] .person-name { color: var(--crayon-amber); }
 
 .version {
+  --version-size: clamp(2.2rem, 9vw, 3.1rem);
   font-family: 'Nunito', sans-serif;
-  font-weight: 900;
-  color: var(--accent);
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.04em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  display: block;
 }
 
 .add-btn {
   display: block;
-  margin: 0 auto;
-  font-family: 'Caveat', cursive;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--accent);
-  padding: 0.5rem 2rem;
-  border: 2px dashed var(--accent);
-  border-radius: 999px;
-  transition: all 0.2s ease;
-}
-
-.add-btn:hover {
-  background: var(--accent);
-  color: #fff;
-  transform: scale(1.03);
+  margin: 1rem 0 0;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.2rem;
+  background: var(--note-yellow);
+  color: var(--ink);
+  border: 0;
+  border-radius: 2px;
+  padding: 0.6rem 1.2rem;
+  box-shadow: 0 3px 7px var(--shadow);
+  transform: rotate(1.5deg);
+  cursor: pointer;
 }
 
 .site-footer {
-  margin-top: 4rem;
+  margin-top: 2.5rem;
+  padding: 1rem 1.1rem;
+  background: var(--paper);
+  border-radius: 2px;
+  box-shadow: 0 3px 8px var(--shadow);
+  transform: rotate(0.5deg);
+  font-size: 0.82rem;
+}
+
+.site-footer a { color: var(--crayon-blue); font-weight: 700; }
+
+/* ── Countdown ─────────────────────────────────────────────────────────────
+   The way a child counts it. */
+
+.countdown {
+  position: relative;
+  max-width: 15rem;
+  margin: 2rem 0 0;
+  padding: 1.4rem 1rem 1.1rem;
+  background: var(--note-yellow);
+  border-radius: 2px;
+  box-shadow: 0 3px 8px var(--shadow);
+  transform: rotate(-2deg);
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  color: var(--crayon-red);
   text-align: center;
-  font-size: 0.9rem;
-  color: var(--muted);
+  font-size: 0;
+  opacity: 1;
 }
 
-.site-footer a {
-  color: var(--accent-2);
-  font-weight: 600;
+.countdown::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 22px;
+  height: 14px;
+  margin-left: -11px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #5aa86b, var(--crayon-green));
+  box-shadow: 0 2px 3px var(--shadow);
 }
 
-.person.is-bumping { animation: family-wave 1.1s ease-out, family-pop 1.1s ease-out; }
-@keyframes family-wave {
-  0%, 100% { transform: rotate(0); }
-  25%      { transform: rotate(-1.5deg); }
-  75%      { transform: rotate(1.5deg); }
+.countdown::after {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  content: "nearly!";
 }
 
-@keyframes family-pop{0%,100%{box-shadow:var(--shadow);}50%{box-shadow:0 10px 30px rgba(190,24,93,.28);}}
-.theme-fx::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 15%,rgba(255,255,255,.25)0 2px,transparent 3px) 0 0/120px 120px;opacity:.35;animation:family-float 16s linear infinite;}@keyframes family-float{to{transform:translateY(120px)}}
+body[data-countdown="0"] .countdown::after { content: "today!"; }
+body[data-countdown="1"] .countdown::after { content: "1 more sleep!"; }
+body[data-countdown="2"] .countdown::after { content: "2 more sleeps!"; }
+body[data-countdown="3"] .countdown::after { content: "3 more sleeps!"; }
+body[data-countdown="4"] .countdown::after { content: "4 more sleeps!"; }
+body[data-countdown="5"] .countdown::after { content: "5 more sleeps!"; }
+body[data-countdown="6"] .countdown::after { content: "6 more sleeps!"; }
+body[data-countdown="7"] .countdown::after { content: "7 more sleeps!"; }
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   A second note, under a different magnet. */
+
+.card-message {
+  position: relative;
+  max-width: 20rem;
+  margin: 2.25rem 0 0;
+  padding: 1.5rem 1.1rem 1.2rem;
+  background: var(--note-yellow);
+  border-radius: 2px;
+  box-shadow: 0 3px 8px var(--shadow);
+  transform: rotate(2.2deg);
+}
+
+.card-message::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  right: 1.4rem;
+  width: 22px;
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #5aa86b, var(--crayon-green));
+  box-shadow: 0 2px 3px var(--shadow);
+}
+
+.card-recipient {
+  margin: 0 0 0.35rem;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.3rem;
+  color: var(--crayon-blue);
+}
+
+.card-note {
+  margin: 0;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.15rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.card-from {
+  margin: 0.7rem 0 0;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1rem;
+  color: var(--crayon-red);
+}
+
+.card-from::before { content: "— "; }
