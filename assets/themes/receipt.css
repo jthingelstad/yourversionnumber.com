@@ -144,14 +144,14 @@ body {
   font-weight: 700;
 }
 .person-name::before { content: "ITEM #"; color: var(--faded); margin-right: 0.4em; font-weight: 400; }
-.person[data-row-variant="0"] .person-name::before { content: "001 ▸ "; }
-.person[data-row-variant="1"] .person-name::before { content: "042 ▸ "; }
-.person[data-row-variant="2"] .person-name::before { content: "104 ▸ "; }
-.person[data-row-variant="3"] .person-name::before { content: "215 ▸ "; }
-.person[data-row-variant="4"] .person-name::before { content: "337 ▸ "; }
-.person[data-row-variant="5"] .person-name::before { content: "451 ▸ "; }
-.person[data-row-variant="6"] .person-name::before { content: "608 ▸ "; }
-.person[data-row-variant="7"] .person-name::before { content: "729 ▸ "; }
+.person[data-row-variant="0"] .person-name::before { content: "001 > "; }
+.person[data-row-variant="1"] .person-name::before { content: "042 > "; }
+.person[data-row-variant="2"] .person-name::before { content: "104 > "; }
+.person[data-row-variant="3"] .person-name::before { content: "215 > "; }
+.person[data-row-variant="4"] .person-name::before { content: "337 > "; }
+.person[data-row-variant="5"] .person-name::before { content: "451 > "; }
+.person[data-row-variant="6"] .person-name::before { content: "608 > "; }
+.person[data-row-variant="7"] .person-name::before { content: "729 > "; }
 
 .version {
   font-family: 'Courier Prime', monospace;

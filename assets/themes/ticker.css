@@ -47,7 +47,7 @@ body {
   text-transform: uppercase;
 }
 .site-title::before {
-  content: "● LIVE  ";
+  content: "LIVE  ";
   color: var(--down);
   letter-spacing: 0.05em;
   animation: ticker-blink 2s infinite;
@@ -126,7 +126,7 @@ body {
 }
 
 .person::before {
-  content: "▲";
+  content: "^";
   position: absolute;
   top: 1.25rem;
   right: 1.5rem;

@@ -46,7 +46,7 @@ body {
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
-.site-title::before { content: "33⅓ "; color: var(--label); font-size: 0.7em; }
+.site-title::before { content: "33 RPM "; color: var(--label); font-size: 0.7em; }
 
 .home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: 'Bebas Neue', sans-serif;
@@ -70,7 +70,7 @@ body {
   font-size: 1rem;
   border-radius: 0 4px 4px 0;
 }
-.intro::before { content: "▶ NOW SPINNING — "; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.08em; color: var(--label); }
+.intro::before { content: "> NOW SPINNING — "; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.08em; color: var(--label); }
 .intro code { background: var(--vinyl); color: var(--label); padding: 0.05em 0.4em; border-radius: 3px; font-size: 0.85em; }
 
 .people {
@@ -238,7 +238,7 @@ body[data-countdown] .person::after {
   border-radius: 2px;
   padding: 0.85rem 1.75rem;
 }
-.add-btn::before { content: "● "; }
+.add-btn::before { content: "* "; }
 
 .site-footer {
   margin-top: 3rem;

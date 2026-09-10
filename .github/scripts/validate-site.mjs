@@ -167,7 +167,7 @@ const DUPLICATE_SELECTOR_BASELINE = new Set([
 const EMOJI_BASELINE = new Set([
 ]);
 
-const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{1F1E6}-\u{1F1FF}]/u;
+const EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/u;
 
 for (const file of (await readdir(resolve(repoRoot, "assets/themes"))).filter((f) => f.endsWith(".css"))) {
   const css = await readFile(resolve(repoRoot, "assets/themes", file), "utf8");

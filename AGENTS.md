@@ -16,7 +16,9 @@ A bookmarkable static page that displays people's "version numbers" (`MAJOR.MINO
 ```
 index.html                 landing page — the front door, links to both editions
 about/index.html           concept, math, privacy model, contributing
-themes/index.html          theme gallery — live previews of all 42 themes
+themes/index.html          theme gallery — all 28, previewed with the visitor's number
+card/new/index.html        the card composer
+server/                    card-api, card-page and og-render lambdas + deploy.sh
 assets/
   site.css                 neutral site chrome shared by the three spine pages
   gallery.js               builds gallery cards from each edition's THEMES manifest
@@ -47,11 +49,11 @@ The two `app.js` files are deliberately parallel. Keep their logic in sync when 
 
 `/`, `/about/`, `/examples/` and `/themes/` are the unthemed layer, sharing
 `assets/site.css`. Site nav lives here and only here — putting it inside a themed
-edition would mean 42 stylesheets each deciding what the nav looks like.
+edition would mean 28 stylesheets each deciding what the nav looks like.
 
 **Unthemed does not mean undesigned.** The first version of this layer used
 system fonts and grey rules on the theory that neutral chrome would not fight the
-42 themes. It read as bland next to them, and the contrast was jarring rather
+the themes. It read as bland next to them, and the contrast was jarring rather
 than calm. `site.css` is now the forty-third design — the one you cannot swap:
 
 - Space Grotesk for display and body, JetBrains Mono for anything numeric.
@@ -103,6 +105,38 @@ but it cannot know whether anyone is still alive.
 The gallery does *not* hardcode theme cards. `assets/gallery.js` scrapes the
 `THEMES` array out of each edition's `app.js` at runtime, so adding a theme stays
 a two-step job. That is why every theme entry needs a `blurb`.
+
+## Cards and the server
+
+Everything above is still a static site. Cards are the one exception and they
+are the reason there is a server at all: crawlers do not run JavaScript, so a
+card's `og:` tags have to be in the HTML the origin returns.
+
+- **S3 + CloudFront** serve the site. `server/deploy.sh` syncs and invalidates.
+- **`/c/<code>`** is `card-page` λ: reads DynamoDB, returns the real edition in
+  the sender's theme with the card block injected and `body[data-card]` set.
+- **`/api/card`** is `card-api` λ: validates, writes DynamoDB, returns a code.
+- **`/og/<code>/<date>.png`** is `og-render` λ: photographs the card at
+  1200×630 with `?og=1`, writes the PNG to S3, and serves it. The key carries
+  the date because a live card cannot have a permanent preview — one cached
+  forever would still say "3 days to go" next April.
+- All three sit behind an **API Gateway HTTP API**. Lambda function URLs were
+  the first choice and are blocked in this account — public ones return
+  Forbidden, and so did CloudFront-signed ones via OAC despite a correct policy.
+  Do not spend time on that path again.
+
+**A card is the only thing this site stores.** Name, date, note, sender, 400-day
+TTL, nothing else — no email, no account, no IP, no analytics on `/c/*`. The
+ordinary date-entry flow still stores nothing at all, and `/about/` says so in
+plain words. Notes are capped at 140 characters, rejected if they contain angle
+brackets, and rendered with `textContent` — never `innerHTML`.
+
+**Anything a theme renders must survive a bare font environment.** The link
+preview is photographed by a Chromium with almost no system fonts, so a glyph
+that is not in one of the theme's own imported faces arrives as tofu — in the
+image that gets shared. That is the same failure as emoji, one step removed.
+Guard B covers the pictograph ranges; geometric shapes like `▸` and `▶` are not
+caught and must be drawn or replaced with ASCII.
 
 ## Core conventions (do not break these)
 

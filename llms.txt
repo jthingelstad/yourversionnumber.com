@@ -10,8 +10,10 @@ The site is a small static site served from GitHub Pages: a landing page and two
 - [Birthday Edition](https://yourversionnumber.com/birthday/): birthday-based version number. URL state: `?theme=<name>&p=Name:YYYY-MM-DD` (the `p` parameter is repeatable; the name is optional). Moved here from `/` in September 2026; old `/?p=...` bookmarks no longer resolve.
 - [Work Edition](https://yourversionnumber.com/work/): quarter-anchored version number for a job. `MAJOR` is years of tenure, `MINOR` is the quarter within the current tenure year (0–3, 3 calendar months apart from the anniversary), `PATCH` is business days into that quarter. URL state: `?theme=<name>&j=Title:YYYY-MM-DD`.
 - [Examples](https://yourversionnumber.com/examples/): eight worked examples, one to eight people, using public figures with well-documented birthdays. Each links into the birthday edition with the roster in the URL.
-- [Theme gallery](https://yourversionnumber.com/themes/): live previews of all 42 themes across both editions, built from each edition's theme manifest at runtime.
-- [About](https://yourversionnumber.com/about/): the origin, the birthday and work math, the privacy model, and how to contribute a theme.
+- [Theme gallery](https://yourversionnumber.com/themes/): live previews of all 28 themes, every one selectable in both editions. Enter a date and each preview renders your own number.
+- [About](https://yourversionnumber.com/about/): the origin, the birthday and work arithmetic, and exactly what a card stores.
+- [Send a card](https://yourversionnumber.com/card/new/): compose a card — a name, a date, a note and a theme. The card is a live page: it counts down before the day and keeps climbing after it.
+- Card pages live at `/c/<code>`, carry a `noindex` header, and expire 400 days after they are made.
 
 ## Source
 

@@ -67,7 +67,7 @@ body {
   text-transform: uppercase;
 }
 
-.site-title::before { content: "▶ "; color: var(--lcd-3); }
+.site-title::before { content: "> "; color: var(--lcd-3); }
 
 .home-btn, .theme-select, .about-btn, .edit-btn {
   font-family: 'VT323', monospace;

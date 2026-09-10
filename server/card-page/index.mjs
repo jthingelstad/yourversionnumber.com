@@ -16,7 +16,7 @@ const db = new DynamoDBClient({});
 const TABLE = process.env.TABLE_NAME || "yvn-cards";
 const ORIGIN = process.env.SITE_ORIGIN || "https://yourversionnumber.com";
 
-function page({ code, card, today }) {
+function page({ code, card, today, og }) {
   const edition = card.occasion === "work" ? "work" : "birthday";
   const base = `/${edition}/`;
   const name = escapeHtml(card.name);
@@ -57,7 +57,7 @@ function page({ code, card, today }) {
     name: card.name, date: card.date, note: card.note, from: card.from,
   }).replace(/</g, "\\u003c")}</script>
 </head>
-<body>
+${og ? '<body data-og>' : '<body>'}
 <main id="app"></main>
 <script type="module" src="${base}assets/app.js?v=4"></script>
 </body>
@@ -98,5 +98,7 @@ export async function handler(event) {
 
   const card = Object.fromEntries(Object.entries(item).map(([k, v]) => [k, v.S ?? v.N]));
   const today = new Date().toISOString().slice(0, 10);
-  return { statusCode: 200, headers, body: page({ code, card, today }) };
+  // ?og=1 is the renderer asking for a portrait: no nav, no footer, card centred.
+  const og = (event.rawQueryString || "").includes("og=1");
+  return { statusCode: 200, headers, body: page({ code, card, today, og }) };
 }

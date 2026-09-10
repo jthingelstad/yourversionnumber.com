@@ -696,15 +696,16 @@ setTimeout(() => trackEvent('theme.viewed', state.theme), 0);
 
 // First-visit nudge: pop the About dialog once so new visitors understand the
 // YEARS.QUARTERS.DAYS framing. Single boolean in localStorage — no PII.
-// The theme gallery embeds this page 42 times over. An auto-opening modal in
-// every frame would bury the previews it exists to show, so the nudge is for
-// top-level visits only.
+// The gallery embeds this page 28 times over, and the link-preview renderer
+// loads it in a fresh browser every time — an auto-opening modal would bury the
+// previews it exists to show, and would be the photograph in every unfurl. The
+// nudge is for top-level visits that are not cards.
 const isFramed = (() => {
   try { return window.top !== window.self; } catch (_) { return true; }
 })();
 
 try {
-  if (!isFramed && !localStorage.getItem('yvnw-about-seen')) {
+  if (!isFramed && !CARD && !localStorage.getItem('yvnw-about-seen')) {
     localStorage.setItem('yvnw-about-seen', '1');
     requestAnimationFrame(() => requestAnimationFrame(openAbout));
   }

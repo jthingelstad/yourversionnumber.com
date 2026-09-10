@@ -207,7 +207,7 @@ body {
 .site-cross-link { margin-bottom: 0.4rem; }
 .site-footer a { color: var(--link); font-weight: 600; }
 
-body[data-quarter-start="true"] .person::after { content: "🆕  NEW"; background: rgba(0, 82, 204, 0.12); color: var(--in-progress); }
+body[data-quarter-start="true"] .person::after { content: "NEW  NEW"; background: rgba(0, 82, 204, 0.12); color: var(--in-progress); }
 body[data-tenure-anniversary="true"] .person::after { content: "EPIC"; background: rgba(101, 84, 192, 0.15); color: #6554c0; }
 
 /* ── Ticket identity ───────────────────────────────────────────────────────

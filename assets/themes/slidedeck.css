@@ -176,7 +176,7 @@ body::before {
   margin: 0;
 }
 .version::after {
-  content: "▸ Synergized cross-functional outcomes\A▸ Best-in-class velocity (YoY)\A▸ Robust pipeline of strategic initiatives";
+  content: "> Synergized cross-functional outcomes\A> Best-in-class velocity (YoY)\A> Robust pipeline of strategic initiatives";
   display: block;
   white-space: pre-line;
   font-size: 0.95rem;
@@ -188,14 +188,14 @@ body::before {
   margin-top: 1rem;
   font-family: "Helvetica Neue", -apple-system, sans-serif;
 }
-.person[data-row-variant="0"] .version::after { content: "▸ Synergized cross-functional outcomes\A▸ Best-in-class velocity (YoY)\A▸ Robust pipeline of strategic initiatives"; }
-.person[data-row-variant="1"] .version::after { content: "▸ KPIs trending up and to the right\A▸ Aligned on north-star metrics\A▸ Doubling down on what works"; }
-.person[data-row-variant="2"] .version::after { content: "▸ Drove material business impact\A▸ Operationalized the playbook\A▸ De-risked Q3 deliverables"; }
-.person[data-row-variant="3"] .version::after { content: "▸ Unlocked net-new ARR\A▸ Improved win rates by ~14%\A▸ Pipeline coverage at 3.2x"; }
-.person[data-row-variant="4"] .version::after { content: "▸ Activated mission-critical workstreams\A▸ Tightened the feedback loop\A▸ Sunsetted legacy approach"; }
-.person[data-row-variant="5"] .version::after { content: "▸ Stood up the new operating model\A▸ Hit every milestone in the gantt\A▸ Investing in scalable foundations"; }
-.person[data-row-variant="6"] .version::after { content: "▸ Closed the loop on key learnings\A▸ Aligned stakeholders end-to-end\A▸ Quick wins → durable advantages"; }
-.person[data-row-variant="7"] .version::after { content: "▸ Disrupted the status quo (kindly)\A▸ Hit the ground running\A▸ Net-positive in every cohort"; }
+.person[data-row-variant="0"] .version::after { content: "> Synergized cross-functional outcomes\A> Best-in-class velocity (YoY)\A> Robust pipeline of strategic initiatives"; }
+.person[data-row-variant="1"] .version::after { content: "> KPIs trending up and to the right\A> Aligned on north-star metrics\A> Doubling down on what works"; }
+.person[data-row-variant="2"] .version::after { content: "> Drove material business impact\A> Operationalized the playbook\A> De-risked Q3 deliverables"; }
+.person[data-row-variant="3"] .version::after { content: "> Unlocked net-new ARR\A> Improved win rates by ~14%\A> Pipeline coverage at 3.2x"; }
+.person[data-row-variant="4"] .version::after { content: "> Activated mission-critical workstreams\A> Tightened the feedback loop\A> Sunsetted legacy approach"; }
+.person[data-row-variant="5"] .version::after { content: "> Stood up the new operating model\A> Hit every milestone in the gantt\A> Investing in scalable foundations"; }
+.person[data-row-variant="6"] .version::after { content: "> Closed the loop on key learnings\A> Aligned stakeholders end-to-end\A> Quick wins -> durable advantages"; }
+.person[data-row-variant="7"] .version::after { content: "> Disrupted the status quo (kindly)\A> Hit the ground running\A> Net-positive in every cohort"; }
 
 /* Per-slide footer with company / page-of-pages — varies by row variant */
 .person::after {

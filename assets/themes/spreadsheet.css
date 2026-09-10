@@ -46,7 +46,7 @@ body {
   text-transform: uppercase;
 }
 .site-title::before {
-  content: "▦  ";
+  content: "#  ";
   color: var(--selection);
 }
 

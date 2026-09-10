@@ -4,7 +4,7 @@ A small static site that shows people's "version numbers" — their age expresse
 
 ## Structure
 
-Six pages. The three spine pages share one neutral stylesheet and are not themed; the two editions are single-page apps that 42 stylesheets fight over.
+Seven pages. The spine pages share one stylesheet and are not themed; the two editions are single-page apps that 28 stylesheets dress up.
 
 | Path | What it is |
 | --- | --- |
@@ -12,7 +12,9 @@ Six pages. The three spine pages share one neutral stylesheet and are not themed
 | `/birthday/` | Birthday edition. The original app. |
 | `/work/` | Work Edition™. |
 | `/examples/` | Eight worked examples, one to eight people. |
-| `/themes/` | Theme gallery — live previews of all 42 themes. |
+| `/themes/` | Theme gallery — all 28 previewed live, showing your own number. |
+| `/card/new/` | Compose a card to send someone. |
+| `/c/<code>` | A sent card. Server-rendered so link previews work. |
 | `/about/` | The origin, the math, the privacy model, how to contribute. |
 
 The birthday edition lived at `/` until September 2026. Moving it to `/birthday/` freed the front door for a real landing page and broke every old `/?p=...` bookmark, which was a deliberate trade.
@@ -30,7 +32,7 @@ https://yourversionnumber.com/birthday/?theme=family&p=Jamie:1974-01-15&p=Sara:1
 
 ## Themes
 
-Twenty-five ship for the birthday edition. Each is a standalone stylesheet in `themes/`.
+Twenty-eight ship, every one selectable in both editions. Each is a standalone stylesheet in `themes/`.
 
 - `dark` — Minimalist dark mode with violet accents.
 - `family` — Warm cream + handwritten Caveat, family-album feel.

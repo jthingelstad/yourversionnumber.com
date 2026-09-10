@@ -159,6 +159,21 @@ input {
   white-space: normal;
 }
 
+/* Portrait mode for the link preview: the renderer photographs the real page,
+   so all it needs is the card, centred, with the furniture out of the way. */
+body[data-og] .site-header,
+body[data-og] .site-footer,
+body[data-og] .countdown ~ .site-footer {
+  display: none;
+}
+
+body[data-og] #app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 630px;
+}
+
 /* A card page has exactly one person and nothing to configure. */
 body[data-card] .add-btn,
 body[data-card] .theme-picker,

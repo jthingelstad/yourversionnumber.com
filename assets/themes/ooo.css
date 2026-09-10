@@ -201,7 +201,7 @@ body {
   font-size: 13px;
   font-family: inherit;
 }
-.add-btn::before { content: "↩  "; color: var(--warning); }
+.add-btn::before { content: "+  "; color: var(--warning); }
 .add-btn:hover { background: var(--header); }
 
 .site-footer {

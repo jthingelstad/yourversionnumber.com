@@ -679,15 +679,16 @@ setTimeout(() => trackEvent('theme.viewed', state.theme), 0);
 // First-visit nudge: pop the About dialog once so new visitors understand the
 // MAJOR.MINOR.PATCH framing. A single localStorage flag is the only persisted
 // state on the site — no PII, no birthdays, no theme/people memory.
-// The theme gallery embeds this page 42 times over. An auto-opening modal in
-// every frame would bury the previews it exists to show, so the nudge is for
-// top-level visits only.
+// The gallery embeds this page 28 times over, and the link-preview renderer
+// loads it in a fresh browser every time — an auto-opening modal would bury the
+// previews it exists to show, and would be the photograph in every unfurl. The
+// nudge is for top-level visits that are not cards.
 const isFramed = (() => {
   try { return window.top !== window.self; } catch (_) { return true; }
 })();
 
 try {
-  if (!isFramed && !localStorage.getItem('yvn-about-seen')) {
+  if (!isFramed && !CARD && !localStorage.getItem('yvn-about-seen')) {
     localStorage.setItem('yvn-about-seen', '1');
     // Wait for two animation frames so the page paints once before the modal
     // pops. requestAnimationFrame fires reliably even where short-delay
