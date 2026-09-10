@@ -158,7 +158,7 @@ const FONT_IMPORT_BASELINE = new Set([]);
 // Themes that already re-declare a selector. Shrink as each is rebuilt.
 const DUPLICATE_SELECTOR_BASELINE = new Set([
   "birthday.css", "brutalist.css", "cubicle.css", "memphis.css",
-  "ooo.css", "severe.css", "terminal.css",
+  "ooo.css", "terminal.css",
   "zen.css",
 ]);
 

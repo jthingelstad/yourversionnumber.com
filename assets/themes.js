@@ -20,8 +20,8 @@ export const THEMES = [
   // — home: birthday —
   { name: 'birthday',    label: 'Birthday',    home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Confetti, balloons and party-hat pink. The default, and unapologetic about it.' },
-  { name: 'severe',      label: 'Severe',      home: 'birthday', animate: false, chime: null,      card: false,
-    blurb: 'Minimalist dark mode, violet accents, nothing shouting. The one to pick when the number is the point.' },
+  { name: 'severe',      label: 'Severe',      home: 'birthday', animate: false, chime: null,      card: true,
+    blurb: 'One typeface, no colour at all, and an enormous number. Nothing else does restraint.' },
   { name: 'zen',         label: 'Zen',         home: 'birthday', animate: false, chime: null,      card: true,
     blurb: 'Quiet cream, generous space, one vermillion first-letter doing all the work.' },
   { name: 'receipt',     label: 'Receipt',     home: 'birthday', animate: false, chime: 'tick',    card: true,

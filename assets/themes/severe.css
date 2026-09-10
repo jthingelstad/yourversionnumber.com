@@ -1,157 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;800&display=swap');
+
+/* Severe.
+ *
+ * A rebuild, not a repair. The old file was "dark mode with violet accents",
+ * which is an absence of decisions rather than a position. This is the position:
+ * one typeface at two weights, no gradient, no glow, no radius, no shadow, and
+ * no accent colour anywhere. The number is enormous and everything else is
+ * 11px grey. Restraint is the theme.
+ *
+ * Drawn in refs/Rebuilt Themes.html §01. */
+
 :root {
-  --bg: #0d0f14;
-  --surface: #161922;
-  --surface-2: #1f2330;
-  --fg: #e8eaf0;
-  --muted: #8b92a5;
-  --accent: #7c9cff;
-  --accent-2: #a78bff;
-  --border: #2a2f3d;
+  --ground: #0b0b0c;
+  --ink: #f4f4f2;
+  --rule: #1c1c1e;
+  --quiet: rgba(244, 244, 242, 0.38);
 }
 
 body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-weight: 300;
   font-size: 16px;
   line-height: 1.5;
   min-height: 100vh;
 }
 
 #app {
-  max-width: 720px;
+  max-width: 60rem;
   margin: 0 auto;
-  padding: 3rem 1.5rem;
+  padding: 4rem 1.5rem 5rem;
+}
+
+/* Everything that is not the number is the same 11px grey. */
+.site-title,
+.intro,
+.person-name,
+.site-footer,
+.site-cross-link,
+.site-attribution,
+.site-stats,
+.home-btn,
+.about-btn,
+.edit-btn,
+.theme-select,
+.add-btn {
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--quiet);
 }
 
 .site-header {
-  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
 }
 
 .site-title {
-  font-size: 1.5rem;
-  font-weight: 600;
   margin: 0;
-  letter-spacing: -0.01em;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
+.header-controls {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1.5rem;
+}
+
+.home-btn,
+.about-btn,
+.edit-btn,
 .theme-select {
-  appearance: none;
-  background: var(--surface);
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 0.45rem 2rem 0.45rem 0.85rem;
-  font-size: 0.9rem;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
   cursor: pointer;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%238b92a5' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 0.65rem center;
+  appearance: none;
 }
 
-.theme-select option {
-  background: var(--surface);
-  color: var(--fg);
-}
-
-.theme-select:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-.home-btn, .about-btn, .edit-btn {
-  background: transparent;
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 0.45rem 0.95rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.home-btn:hover, .about-btn:hover, .edit-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+.home-btn:hover,
+.about-btn:hover,
+.edit-btn:hover,
+.theme-select:hover {
+  color: var(--ink);
 }
 
 .intro {
-  color: var(--muted);
-  margin: 0 0 2.5rem;
+  margin: 2rem 0 0;
+  max-width: 34rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 13px;
+  line-height: 1.7;
 }
 
 .intro code {
-  background: var(--surface-2);
-  color: var(--accent);
-  padding: 0.05em 0.4em;
-  border-radius: 4px;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 0.9em;
+  font-family: inherit;
+  color: var(--ink);
 }
 
 .people {
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  display: block;
+  margin: 0;
 }
 
 .person {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.5rem 1.75rem;
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--rule);
   width: 100%;
-  transition: border-color 0.15s ease;
 }
 
-.person:hover {
-  border-color: var(--accent);
+.person-name {
+  display: block;
+  margin: 0 0 0.75rem;
 }
 
 .version {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  margin-bottom: 0.85rem;
+  --version-size: clamp(5rem, 22vw, 14rem);
+  --version-leading: 0.86;
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  display: block;
 }
 
 .add-btn {
-  display: inline-block;
-  padding: 0.6rem 1.25rem;
-  border: 1px dashed var(--border);
-  border-radius: 8px;
-  color: var(--muted);
-  font-weight: 500;
+  margin: 3rem 0 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 0 0 0.4rem;
+  cursor: pointer;
 }
 
 .add-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  color: var(--ink);
+  border-bottom-color: var(--ink);
 }
 
 .site-footer {
   margin-top: 4rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
-  font-size: 0.85rem;
-  color: var(--muted);
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  text-transform: none;
+  letter-spacing: 0.06em;
+  line-height: 1.9;
 }
 
-.site-footer a { color: var(--accent); }
-
-.person { transition: transform 220ms, box-shadow 220ms; }
-.person:hover { transform: translateY(-1px); box-shadow: 0 4px 24px rgba(255,255,255,0.06); }
-.person.is-bumping .version { animation: dark-pulse 1s ease-out; }
-@keyframes dark-pulse {
-  0%, 100% { text-shadow: none; }
-  40%      { text-shadow: 0 0 24px var(--accent, #6ea8ff); }
+.site-footer a,
+.site-attribution a,
+.site-cross-link a {
+  color: var(--quiet);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
-.person{position:relative;overflow:hidden;}
-.person::after{content:'';position:absolute;inset:auto -30% -40% auto;width:220px;height:220px;background:radial-gradient(circle,rgba(121,95,255,.22),transparent 70%);}
+.site-footer a:hover { color: var(--ink); }
+
+/* Countdown: a single number. Nothing else needs saying. */
+.countdown {
+  margin: 2.5rem 0 0;
+  padding: 0;
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 9vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--quiet);
+  /* the core sentence is replaced by the digit alone */
+  font-size: 0;
+  opacity: 1;
+}
+
+.countdown::before {
+  display: block;
+  font-size: clamp(2.5rem, 9vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  content: "";
+}
+
+body[data-countdown="0"] .countdown::before { content: "0"; }
+body[data-countdown="1"] .countdown::before { content: "1"; }
+body[data-countdown="2"] .countdown::before { content: "2"; }
+body[data-countdown="3"] .countdown::before { content: "3"; }
+body[data-countdown="4"] .countdown::before { content: "4"; }
+body[data-countdown="5"] .countdown::before { content: "5"; }
+body[data-countdown="6"] .countdown::before { content: "6"; }
+body[data-countdown="7"] .countdown::before { content: "7"; }
+
+/* Card: the sender's words in the same grey as every other label. The number
+   stays the only loud thing on the page — that is the whole position. */
+.card-message {
+  margin: 3rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-width: 34rem;
+}
+
+.card-recipient,
+.card-note,
+.card-from {
+  margin: 0;
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--quiet);
+  line-height: 1.9;
+}
+
+.card-note {
+  text-transform: none;
+  letter-spacing: 0.04em;
+  font-size: 13px;
+}
+
+/* No theme-fx, no motion, nothing to reduce. */
