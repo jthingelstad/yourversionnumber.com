@@ -8,7 +8,7 @@ A bookmarkable static page that displays people's "version numbers" (`MAJOR.MINO
   - **Birthday edition** at `/birthday/` — `MAJOR.MINOR.PATCH` is decade / year-in-decade / days since last birthday. People in URL via `?p=Name:YYYY-MM-DD`. Lived at `/` until September 2026; old `/?p=...` bookmarks were deliberately allowed to break.
   - **Work edition** at `/work/` — `YEARS.QUARTERS.DAYS` (business days only). Roles in URL via `?j=Title:YYYY-MM-DD`.
 - **No build step**, no framework, no bundler.
-- Deployed via GitHub Pages from `main` / repo root.
+- Static files on S3 behind CloudFront. No server-side code of any kind. A push to `main` validates, then syncs the repo to the bucket.
 - Vanilla JS module per edition. Vanilla CSS. One stylesheet per theme.
 
 ## Layout
@@ -17,8 +17,8 @@ A bookmarkable static page that displays people's "version numbers" (`MAJOR.MINO
 index.html                 landing page — the front door, links to both editions
 about/index.html           concept, math, privacy model, contributing
 themes/index.html          theme gallery — all 28, previewed with the visitor's number
-card/new/index.html        the card composer
-server/                    card-api, card-page and og-render lambdas + deploy.sh
+card/new/index.html        the card composer — builds a link, nothing else
+deploy.sh                  the same S3 sync CI runs, by hand
 assets/
   site.css                 neutral site chrome shared by the three spine pages
   gallery.js               builds gallery cards from each edition's THEMES manifest
@@ -26,7 +26,7 @@ assets/
 assets/
   themes.js                the one theme manifest, imported by both editions
   themes/<name>.css        one standalone stylesheet per theme, shared
-  core.js                  the seven core hooks + the chime synthesiser
+  core.js                  the seven core hooks, the chime synthesiser, card read/write
 
 birthday/
   index.html               birthday edition shell
@@ -106,41 +106,52 @@ The gallery does *not* hardcode theme cards. `assets/gallery.js` scrapes the
 `THEMES` array out of each edition's `app.js` at runtime, so adding a theme stays
 a two-step job. That is why every theme entry needs a `blurb`.
 
-## Cards and the server
+## Cards
 
-Everything above is still a static site. Cards are the one exception and they
-are the reason there is a server at all: crawlers do not run JavaScript, so a
-card's `og:` tags have to be in the HTML the origin returns.
+A card is a view with one person and a signed note, and it lives in the URL like
+everything else:
 
-- **S3 + CloudFront** serve the site. `server/deploy.sh` syncs and invalidates.
-- **`/c/<code>`** is `card-page` λ: reads DynamoDB, returns the real edition in
-  the sender's theme with the card block injected and `body[data-card]` set.
-- **`/api/card`** is `card-api` λ: validates, writes DynamoDB, returns a code.
-- **`/og/<code>/<date>.png`** is `og-render` λ: photographs the card at
-  1200×630 with `?og=1`, writes the PNG to S3, and serves it. The key carries
-  the date because a live card cannot have a permanent preview — one cached
-  forever would still say "3 days to go" next April.
-- All three sit behind an **API Gateway HTTP API**. Lambda function URLs were
-  the first choice and are blocked in this account — public ones return
-  Forbidden, and so did CloudFront-signed ones via OAC despite a correct policy.
-  Do not spend time on that path again.
+```
+/birthday/?theme=departures&card=Sara:1984-03-09&from=Jamie&note=Four%20whole%20decades.
+/work/?theme=timesheet&card=Sara:2019-09-03&from=Jamie&note=Five%20years.
+```
 
-**A card is the only thing this site stores.** Name, date, note, sender, 400-day
-TTL, nothing else — no email, no account, no IP, no analytics on `/c/*`. The
-ordinary date-entry flow still stores nothing at all, and `/about/` says so in
-plain words. Notes are capped at 140 characters, rejected if they contain angle
-brackets, and rendered with `textContent` — never `innerHTML`.
+- `card=Name:YYYY-MM-DD` takes the place of `p=`/`j=` and is what puts the page
+  in card mode: `body[data-card]` is set, the roster/picker/edit controls hide,
+  and `.card-message` (recipient, note, from) renders under the number. Both
+  `from` and `note` are optional.
+- `readCardData()` and `cardURL()` in `core.js` are the reader and the writer.
+  The composer builds with one, the editions parse with the other, so the two
+  cannot drift. The edition applies the same real-date/not-future checks to
+  the card's date that it applies to a `p=` entry.
+- Limits (`CARD_LIMITS`: name 40, from 40, note 140) are clipped on read, not
+  rejected — a long link still renders. Free text is rendered with
+  `textContent`, never `innerHTML`.
+- The composer's preview is an iframe of the real link. There is no second
+  renderer.
 
-**Anything a theme renders must survive a bare font environment.** The link
-preview is photographed by a Chromium with almost no system fonts, so a glyph
-that is not in one of the theme's own imported faces arrives as tofu — in the
-image that gets shared. That is the same failure as emoji, one step removed.
-Guard B covers the pictograph ranges; geometric shapes like `▸` and `▶` are not
-caught and must be drawn or replaced with ASCII.
+**History, so nobody rebuilds it.** From 2026-09-09 to 2026-09-14 cards were
+server-side: `POST /api/card` wrote DynamoDB, `/c/<code>` was a Lambda that
+returned per-card `og:` tags, and `/og/<code>/<date>.png` was a headless-Chromium
+screenshot Lambda. It existed for one thing — per-card link previews, since
+crawlers do not run JS — and it cost an unauthenticated public write endpoint,
+a database of other people's names and notes, and 75 MB of Chromium whose
+source never made it into the repo. Four cards were ever created, all in QA.
+It was torn down on 2026-09-14. The trade accepted: a card link unfurls with
+the edition's generic image and title, not the recipient's name. If per-card
+unfurls are ever wanted again, the right shape is a single *stateless* function
+that reads the card from the query string and emits `og:` tags with a static
+per-theme image — no writes, no table, no Chromium. Build it after someone
+other than Jamie has sent a card, not before.
+
+**Anything a theme renders must survive a bare font environment.** A glyph that
+is not in one of the theme's own imported faces renders as tofu on machines
+without it. Guard B covers the pictograph ranges; geometric shapes like `▸` and
+`▶` are not caught and must be drawn or replaced with ASCII.
 
 ## Core conventions (do not break these)
 
-1. **URL is the single source of truth.** Birthday: `?theme=...&p=Name:YYYY-MM-DD`. Work: `?theme=...&j=Title:YYYY-MM-DD`. Each bookmark is self-contained. Do not add `localStorage`/cookies/IndexedDB for theme or people — different bookmarks intentionally have different themes, and persisting either would cause surprising bleed between bookmarks. The one exception is `yvn-about-seen` / `yvnw-about-seen` — a single boolean each that lets the About dialog auto-open once for new visitors. No PII, no app state.
+1. **URL is the single source of truth — for everything, cards included.** Birthday: `?theme=...&p=Name:YYYY-MM-DD`. Work: `?theme=...&j=Title:YYYY-MM-DD`. Card: `?theme=...&card=Name:YYYY-MM-DD&from=...&note=...`. Each link is self-contained and the site stores nothing, anywhere, ever. This was broken once (server-side cards, September 2026) and reverted within a week; see *Cards* above before proposing anything that writes. Do not add `localStorage`/cookies/IndexedDB for theme or people — different bookmarks intentionally have different themes, and persisting either would cause surprising bleed between bookmarks. The one exception is `yvn-about-seen` / `yvnw-about-seen` — a single boolean each that lets the About dialog auto-open once for new visitors. No PII, no app state.
 2. **No build tooling.** No bundler, no transpiler, no SSG, no `package.json`. The user explicitly prefers lean over conventional. If a feature seems to need tooling, push back; usually it doesn't.
 3. **Themes are CSS-only.** No per-theme JS. When a theme idea can't be expressed in CSS, the answer is to add a *generic* hook in core `app.js` that all themes can opt into via CSS — that's how we got `.theme-fx`, `data-row-variant`, `--row-hue`, version-event flags, etc. Per-theme JS would create lifecycle/teardown bugs, cross-theme conflicts, review burden, and a real privacy risk: birthdays live in the URL and an accepted-but-malicious theme could beacon them. Don't open that door.
 4. **Themes paint display only.** Header, person rows, footer, empty-state CTA, and the `.theme-fx` decorative layer. They do **not** style the About or Edit dialogs — those are app chrome with a neutral OS-light/dark look in `base.css`. Selectors under `.app-dialog` are off-limits.
@@ -225,4 +236,10 @@ The tinylytics analytics embed normally posts `window.location.href` to its coll
 
 ## Cache behavior
 
-GitHub Pages serves with `Cache-Control: max-age=600` plus `ETag`; browsers revalidate every 10 min. There is no asset hashing. For deploys that couple JS and CSS in a way that would visibly break mid-rollout, manually bump a `?v=N` query on the affected `<link>`/`<script>` tags in the relevant `index.html`. Don't reach for build tooling to automate this.
+CloudFront in front of S3. `deploy.yml` stamps `Cache-Control: public, max-age=300`
+on HTML and invalidates `/*` on every deploy; CSS and JS carry `max-age=600` set
+by `deploy.sh`. There is no asset hashing. For deploys that couple JS and CSS in
+a way that would visibly break mid-rollout, manually bump the `?v=N` query on
+the affected `<link>`/`<script>`/`import` — `core.js` is imported from five
+places, so bump all of them together or you ship two module instances. Don't
+reach for build tooling to automate this.

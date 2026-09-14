@@ -6,7 +6,7 @@
 
 import { THEMES } from '/assets/themes.js';
 import { mountPreview } from '/assets/preview.js';
-import { localDateString } from '/assets/core.js?v=2';
+import { localDateString } from '/assets/core.js?v=3';
 
 const list = document.getElementById('gallery');
 const dateInput = document.getElementById('gallery-date');

@@ -144,18 +144,39 @@ export function playChime(kind) {
 
 // — Card mode ——————————————————————————————————————————————————————————————
 
-// The card page is the real edition with one person on it and nothing to
-// configure. card-page.λ writes the record into a JSON script tag rather than
-// the URL, because a card's contents are not the visitor's to edit.
-export function readCardData() {
-  const el = document.getElementById('card-data');
-  if (!el) return null;
-  try {
-    const card = JSON.parse(el.textContent);
-    return card && card.name && card.date ? card : null;
-  } catch (_) {
-    return null;
-  }
+// A card is a view with exactly one person and a signed note, and like every
+// other view it lives entirely in its URL: ?card=Name:YYYY-MM-DD&from=…&note=….
+// `card=` instead of `p=`/`j=` is what puts the page into card mode. Nothing is
+// stored anywhere; the link is the card. Only the shape is checked here — the
+// edition's own parser decides whether the date is real and not in the future.
+export const CARD_LIMITS = { name: 40, from: 40, note: 140 };
+
+export function readCardData(params = new URLSearchParams(location.search)) {
+  const raw = params.get('card');
+  if (!raw) return null;
+  const idx = raw.lastIndexOf(':');
+  if (idx === -1) return null;
+  const clip = (value, max) => (value || '').trim().slice(0, max);
+  const name = clip(raw.slice(0, idx), CARD_LIMITS.name);
+  const date = raw.slice(idx + 1).trim();
+  if (!name || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  return {
+    name,
+    date,
+    from: clip(params.get('from'), CARD_LIMITS.from),
+    note: clip(params.get('note'), CARD_LIMITS.note),
+  };
+}
+
+// The inverse: the composer builds the link with this so the two never drift.
+export function cardURL(edition, card) {
+  const params = new URLSearchParams();
+  if (card.theme) params.set('theme', card.theme);
+  params.set('card', `${card.name}:${card.date}`);
+  if (card.from) params.set('from', card.from);
+  if (card.note) params.set('note', card.note);
+  // URLSearchParams escapes the colon; it is the one character worth reading.
+  return `/${edition}/?${params.toString().replace(/%3A/gi, ':')}`;
 }
 
 // The same three elements in every theme. base.css gives them a plain default
@@ -169,16 +190,22 @@ export function renderCardMessage(card) {
   recipient.className = 'card-recipient';
   recipient.textContent = card.name;
 
-  const note = document.createElement('p');
-  note.className = 'card-note';
+  box.append(recipient);
+
   // textContent, never innerHTML — the note is someone else's free text.
-  note.textContent = card.note;
+  if (card.note) {
+    const note = document.createElement('p');
+    note.className = 'card-note';
+    note.textContent = card.note;
+    box.append(note);
+  }
 
-  const from = document.createElement('p');
-  from.className = 'card-from';
-  from.textContent = card.from;
-
-  box.append(recipient, note, from);
+  if (card.from) {
+    const from = document.createElement('p');
+    from.className = 'card-from';
+    from.textContent = card.from;
+    box.append(from);
+  }
   return box;
 }
 

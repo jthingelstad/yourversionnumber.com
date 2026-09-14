@@ -36,25 +36,21 @@ jobs:
           role-to-assume: arn:aws:iam::999153317627:role/yvn-deploy
           aws-region: us-east-1
 
-      # og/ and _build/ exist only in the bucket — generated link previews and
-      # the lambda bundle. --delete removes anything not present locally, so
-      # they are excluded rather than wiped on every deploy.
+      # The bucket holds exactly what the repo ships and nothing else, so
+      # --delete is safe: anything not in this checkout is not part of the site.
       - name: Sync to S3
         run: |
           aws s3 sync . s3://yourversionnumber-com-site/ \
             --exclude ".git/*" \
             --exclude ".github/*" \
-            --exclude "server/*" \
             --exclude "design_handoff_theme_refresh/*" \
             --exclude "*.md" \
             --exclude "*.mjs" \
-            --exclude "SALVAGE.txt" \
+            --exclude "*.sh" \
             --exclude ".gitignore" \
             --exclude "CNAME" \
             --exclude "themes-preview.html" \
             --exclude "_*.html" \
-            --exclude "_build/*" \
-            --exclude "og/*" \
             --delete --only-show-errors
 
       - name: Set HTML cache headers

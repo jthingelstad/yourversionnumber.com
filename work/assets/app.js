@@ -1,5 +1,5 @@
 import { THEMES, orderForEdition } from '/assets/themes.js';
-import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage, localDateString } from '/assets/core.js?v=2';
+import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage, localDateString } from '/assets/core.js?v=3';
 
 const EDITION = 'work';
 const THEME_NAMES = THEMES.map(t => t.name);
@@ -264,7 +264,7 @@ function render() {
   attribution.className = 'site-attribution';
   attribution.innerHTML = 'Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>. ';
   attribution.appendChild(document.createTextNode(CARD
-    ? 'Keep this link to return to the saved card, or '
+    ? 'The whole card is in this link. Keep it, or '
     : 'Bookmark this URL to return to this view, or '));
   attribution.appendChild(makeShareButton());
   attribution.appendChild(document.createTextNode('.'));
@@ -469,7 +469,7 @@ function openAbout() {
             <li><strong>PATCH</strong> &mdash; business days into the quarter. Weekends do not tick, because real work doesn&rsquo;t happen on weekends. <em>You&rsquo;re welcome.</em></li>
           </ul>
           <p>A version of <code>2.1.15</code> means two completed years, the second quarter of that tenure year (0-indexed, because we&rsquo;re engineers), and fifteen weekdays into that quarter. Public holidays count as weekdays; there is no holiday calendar. <strong>Ship it.</strong></p>
-          <p class="app-dialog__privacy"><strong>Views live in URLs; cards are saved.</strong> This work view reads its names, dates, and theme from the URL. Bookmark it to return to the view. Creating a card saves its contents on our server and gives you a shareable link. Anyone with either kind of link can read what it shares. <a href="/about/">Storage, sharing, and analytics details</a>.</p>
+          <p class="app-dialog__privacy"><strong>Everything lives in the URL.</strong> This page reads its names, dates, theme &mdash; and, on a card, the note and sender &mdash; from the address bar and stores none of it. Bookmark the link to come back; share it and anyone who has it can read what it contains. <a href="/about/">Sharing and analytics details</a>.</p>
           <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. For the birthday version, see <a href="/birthday/">Your Version Number</a>.</p>
         </div>
       </article>
@@ -682,15 +682,23 @@ function scheduleMidnightTick() {
 applyEnvironment(EDITION);
 watchForInteraction();
 
-// A card page carries its record in a script tag rather than the URL. When one
-// is present the page shows exactly that person and hides everything that
-// would let you change it.
-const CARD = readCardData();
-if (CARD) document.body.dataset.card = '';
-
+// A card is a view with one person, a note and a sender, all read from the URL
+// like everything else (?card=Name:YYYY-MM-DD&from=…&note=…). When one is
+// present the page shows exactly that person and hides everything that would
+// let you change it. The date gets the same checks as a p= entry.
 const parsed = parseURL();
-state.theme = CARD?.theme || parsed.theme;
-state.themeIsExplicit = CARD ? true : parsed.themeIsExplicit;
+let CARD = readCardData();
+if (CARD && (!isRealDate(CARD.date) || isFutureDate(CARD.date))) {
+  console.warn(`Skipping invalid date in card=${CARD.name}:${CARD.date}`);
+  CARD = null;
+}
+if (CARD) {
+  CARD.occasion = EDITION;
+  document.body.dataset.card = '';
+}
+
+state.theme = parsed.theme;
+state.themeIsExplicit = parsed.themeIsExplicit;
 state.roles = CARD
   ? [{ name: CARD.name, startDate: CARD.date }]
   : parsed.roles;

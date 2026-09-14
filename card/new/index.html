@@ -86,7 +86,7 @@
 </nav>
 <main class="wrap">
   <h1>Send someone their number</h1>
-  <p class="lede">Choose a birthday or work start date, pick a theme, and add a signed note. The card&rsquo;s number updates using the viewer&rsquo;s local date.</p>
+  <p class="lede">Choose a birthday or work start date, pick a theme, and add a signed note. The link is the card &mdash; nothing is saved here &mdash; and its number updates using the viewer&rsquo;s local date.</p>
 
   <form id="compose" class="hero__grid" autocomplete="off">
     <div class="hero__main">
@@ -118,9 +118,9 @@
       <div class="panel">
         <div class="panel__label"><span>Step 3 — your note</span><span id="c-left" class="panel__live">140</span></div>
         <div class="panel__body">
-          <textarea aria-label="Your note" id="c-note" maxlength="140" rows="3" required placeholder="Four whole decades and still no breaking changes." style="width:100%;font:400 15px/1.5 var(--font-body);padding:.7rem;background:var(--panel);color:var(--ink);border:1px solid var(--edge-strong);border-radius:0"></textarea>
+          <textarea aria-label="Your note" id="c-note" maxlength="140" rows="3" placeholder="Four whole decades and still no breaking changes." style="width:100%;font:400 15px/1.5 var(--font-body);padding:.7rem;background:var(--panel);color:var(--ink);border:1px solid var(--edge-strong);border-radius:0"></textarea>
           <label class="dateline" style="margin:.75rem 0 0">From
-            <input type="text" id="c-from" maxlength="40" placeholder="Jamie" required style="font-family:var(--font-body)">
+            <input type="text" id="c-from" maxlength="40" placeholder="Jamie" style="font-family:var(--font-body)">
           </label>
         </div>
       </div>
@@ -128,11 +128,11 @@
 
     <div class="hero__fields" style="align-content:start">
       <div class="field"><span class="field__label">Reads as</span><span class="field__value" id="c-reads">—</span></div>
-      <div class="field field--dark"><span class="field__label">Link</span><span class="field__value" id="c-url">—</span></div>
+      <div class="field field--dark"><span class="field__label">Link</span><span class="field__value" id="c-url" style="word-break:break-all;line-height:1.4">—</span></div>
       <div class="field" style="display:block">
         <div id="c-preview" class="rack__screen" style="max-width:none;margin-bottom:.75rem;aspect-ratio:1000/630"></div>
-        <p style="margin:0 0 .75rem;font-size:.85rem">Creating a card saves these details on our server. Anyone with its link can read them. Records are marked for expiry after 400 days. <a href="/about/">Storage and sharing details</a>.</p>
-        <button class="btn btn--primary" type="submit" id="c-submit" style="width:100%">Create the card</button>
+        <p style="margin:0 0 .75rem;font-size:.85rem">Everything on the card travels in its link, readable by anyone you send it to &mdash; and by anyone they forward it to. <a href="/about/">How links and sharing work</a>.</p>
+        <button class="btn btn--primary" type="submit" id="c-submit" style="width:100%" disabled>Copy the link</button>
         <p id="c-status" role="status" style="margin:.6rem 0 0;font:400 11px/1.6 var(--font-mono);color:var(--ink-3)">A countdown appears in the final seven days before the next birthday or work anniversary.</p>
       </div>
     </div>
@@ -145,6 +145,6 @@
   </div>
 </footer>
 <script type="module" src="/assets/site.js?v=2"></script>
-<script type="module" src="/assets/compose.js?v=4"></script>
+<script type="module" src="/assets/compose.js?v=5"></script>
 </body>
 </html>

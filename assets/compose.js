@@ -1,11 +1,13 @@
 // The card composer.
 //
-// A recipient, date, theme, note, and sender. The preview is the real card page, so what the
-// sender sees is what arrives — there is no second implementation of anything.
+// A recipient, date, theme, note, and sender. Nothing is created or saved: the
+// link *is* the card, built here from the same helper the editions read it
+// with, and the preview is that link in a frame, so what the sender sees is
+// exactly what arrives.
 
 import { THEMES, orderForEdition } from '/assets/themes.js';
 import { mountPreview } from '/assets/preview.js?v=2';
-import { localDateString } from '/assets/core.js?v=2';
+import { localDateString, cardURL, CARD_LIMITS } from '/assets/core.js?v=3';
 
 const form = document.getElementById('compose');
 const els = Object.fromEntries(['name', 'date', 'work', 'theme', 'note', 'from', 'reads',
@@ -13,7 +15,10 @@ const els = Object.fromEntries(['name', 'date', 'work', 'theme', 'note', 'from',
   .map((k) => [k, document.getElementById('c-' + k)]));
 
 els.date.max = localDateString();
-let previewKey = '';
+els.note.maxLength = CARD_LIMITS.note;
+els.name.maxLength = CARD_LIMITS.name;
+els.from.maxLength = CARD_LIMITS.from;
+let link = '';
 let previewObserver;
 
 function fillThemes() {
@@ -41,34 +46,38 @@ function fillThemes() {
 }
 
 function refresh() {
-  els.left.textContent = String(140 - els.note.value.length);
+  els.left.textContent = String(CARD_LIMITS.note - els.note.value.length);
   const date = els.date.value;
   const name = els.name.value.trim();
   if (!date || !els.date.validity.valid || !name) {
-    previewKey = '';
+    link = '';
     previewObserver?.disconnect();
     els.preview.replaceChildren();
     els.reads.textContent = '—';
+    els.url.textContent = '—';
+    els.submit.disabled = true;
     return;
   }
 
   const edition = els.work.checked ? 'work' : 'birthday';
-  const card = { name, date, theme: els.theme.value, occasion: edition,
-    note: els.note.value.trim(), from: els.from.value.trim() };
-  const key = JSON.stringify(card);
-  if (key === previewKey) return;
-  previewKey = key;
+  const next = cardURL(edition, { name, date, theme: els.theme.value,
+    note: els.note.value.trim(), from: els.from.value.trim() });
+  if (next === link) return;
+  link = next;
+  els.url.textContent = link;
+  els.submit.disabled = false;
   previewObserver?.disconnect();
   els.reads.textContent = '—';
 
-  // Use the same card-data and edition renderer as the delivered card. Keep
-  // the draft in this document: no API write or personal data in preview URLs.
-  const frame = mountPreview(els.preview, 'about:blank', 'Card preview');
+  // The preview is the real page at the real link. Same origin, so the number
+  // it renders can be read back for the "Reads as" readout.
+  const frame = mountPreview(els.preview, link, 'Card preview');
   frame.style.height = '630px';
   els.preview.style.aspectRatio = '1000 / 630';
   frame.addEventListener('load', async () => {
     if (!frame.isConnected) return;
     const doc = frame.contentDocument;
+    if (!doc) return;
     const updateReadout = () => {
       els.reads.textContent = doc.querySelector('.version')?.getAttribute('aria-label') || '—';
     };
@@ -84,14 +93,6 @@ function refresh() {
     frame.style.height = `${height}px`;
     els.preview.style.aspectRatio = `1000 / ${height}`;
   });
-  frame.srcdoc = `<!doctype html><html lang="en"><head>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Card preview</title>
-    <link rel="stylesheet" href="/${edition}/assets/base.css?v=5">
-    <link id="theme-css" rel="stylesheet" href="/assets/themes/${card.theme}.css">
-    <script id="card-data" type="application/json">${key.replace(/</g, '\\u003c')}</script>
-    </head><body data-og><main id="app"></main>
-    <script type="module" src="/${edition}/assets/app.js?v=6"></script></body></html>`;
 }
 
 for (const el of [els.name, els.date, els.note, els.from]) el.addEventListener('input', refresh);
@@ -100,36 +101,15 @@ els.work.addEventListener('change', () => { fillThemes(); refresh(); });
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
-  els.submit.disabled = true;
-  els.status.textContent = 'Creating…';
-  try {
-    const res = await fetch('/api/card', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        name: els.name.value.trim(),
-        date: els.date.value,
-        occasion: els.work.checked ? 'work' : 'birthday',
-        theme: els.theme.value,
-        note: els.note.value.trim(),
-        from: els.from.value.trim(),
-      }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'could not create the card');
-    const link = `${location.origin}/c/${data.code}`;
-    els.url.textContent = `/c/${data.code}`;
-    els.status.innerHTML = '';
-    const a = document.createElement('a');
-    a.href = link;
-    a.textContent = link;
-    els.status.append('Ready — ', a, '. Share this link to let someone open the saved card.');
-    try { await navigator.clipboard.writeText(link); } catch (_) { /* clipboard is a nicety */ }
-  } catch (err) {
-    els.status.textContent = err.message;
-  } finally {
-    els.submit.disabled = false;
-  }
+  if (!link) return;
+  const full = location.origin + link;
+  els.status.replaceChildren();
+  const a = document.createElement('a');
+  a.href = full;
+  a.textContent = full;
+  let copied = false;
+  try { await navigator.clipboard.writeText(full); copied = true; } catch (_) { /* clipboard is a nicety */ }
+  els.status.append(copied ? 'Copied — ' : 'Your link: ', a, '. Everything on the card is in that link; nothing is kept here.');
 });
 
 fillThemes();

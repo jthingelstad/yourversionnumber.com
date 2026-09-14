@@ -6,18 +6,16 @@ export AWS_PROFILE="${AWS_PROFILE:-jamie}"
 export AWS_PAGER=""
 BUCKET=yourversionnumber-com-site
 DIST=EXHEH2YDGRSWL
-cd "$(cd "$(dirname "$0")/.." && pwd)"
+cd "$(dirname "$0")"
 
-  # og/ and _build/ exist only in the bucket — generated previews and the lambda
-  # bundle. --delete would remove anything not present locally, so they are
-  # excluded from the sync rather than re-uploaded.
+# The bucket holds exactly what the repo ships and nothing else, so --delete is
+# safe: anything not in this checkout is not part of the site.
 aws s3 sync . "s3://$BUCKET/" \
-  --exclude ".git/*" --exclude ".github/*" --exclude "server/*" \
+  --exclude ".git/*" --exclude ".github/*" \
   --exclude "design_handoff_theme_refresh/*" \
-  --exclude "*.md" --exclude "*.mjs" --exclude "SALVAGE.txt" \
+  --exclude "*.md" --exclude "*.mjs" --exclude "*.sh" \
   --exclude ".gitignore" --exclude "CNAME" --exclude "themes-preview.html" \
   --exclude ".DS_Store" --exclude "_*.html" \
-  --exclude "_build/*" --exclude "og/*" \
   --delete --only-show-errors
 
 # HTML is small and re-read often, so it gets a short max-age.

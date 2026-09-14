@@ -2,7 +2,7 @@
 
 Birthday and work milestones expressed as version numbers, with 28 themes and shareable cards. Inspired by [Jamie Thingelstad's 2018 post](https://www.thingelstad.com/2018/02/24/your-version-number.html).
 
-The ordinary editions are static pages whose settings live in the URL. Creating a card saves a server-side record and returns a short link to it. No account is required for either flow.
+It is a static site with no server-side code. Every view, cards included, keeps all of its state in the URL; nothing is stored anywhere and no account exists.
 
 ## Pages
 
@@ -13,15 +13,14 @@ The ordinary editions are static pages whose settings live in the URL. Creating 
 | `/work/` | Tenure as years.quarters.weekdays-in-quarter. |
 | `/examples/` | Eight birthday rosters, with one to eight people. |
 | `/themes/` | All 28 themes, previewed with a date you choose. |
-| `/card/new/` | Compose and preview a card before saving it. |
-| `/c/<code>` | Look up a saved card; its HTML includes link-preview metadata. |
-| `/about/` | Origin, arithmetic, storage, sharing, and analytics. |
+| `/card/new/` | Compose a card and copy its link. |
+| `/about/` | Origin, arithmetic, sharing, and analytics. |
 
 The birthday edition moved from `/` to `/birthday/` in September 2026. Old `/?p=...` bookmarks are not redirected.
 
-## Ordinary view URLs
+## View URLs
 
-For ordinary birthday and work views, the URL contains the names, dates, and selected theme. Editing these views does not create a saved card record. Bookmark the URL to return to the same people or roles, with their numbers recalculated using the viewer's local date.
+The URL contains the names, dates, and selected theme. Bookmark the URL to return to the same people or roles, with their numbers recalculated using the viewer's local date.
 
 ```
 https://yourversionnumber.com/birthday/?theme=birthday&p=Jamie:1974-01-15&p=Sara:1976-03-20&p=2008-09-04
@@ -42,13 +41,16 @@ Work numbers are completed years of tenure, the quarter within the current tenur
 
 Both editions calculate from the viewer's local date and refresh at local midnight. A countdown appears during the final seven days before the next birthday or annual work anniversary.
 
-## Saved cards
+## Cards
 
-The composer previews a draft in the browser. Pressing **Create the card** sends the details to `/api/card`, which stores them in DynamoDB and returns a `/c/<code>` link. The card URL contains a lookup code, not the recipient's date or note.
+A card is a view with one person and a signed note. The composer at `/card/new/` builds the link and the link *is* the card — there is nothing to create, save, or expire:
 
-A record includes recipient name, date, occasion, theme, note, sender name, link code, creation date, and expiry time. Notes are limited to 140 characters; names to 40. Text containing angle brackets is rejected. Notes are rendered as text, not HTML. Cards cannot be edited after creation.
+```
+https://yourversionnumber.com/birthday/?theme=departures&card=Sara:1984-03-09&from=Jamie&note=Four%20whole%20decades.
+https://yourversionnumber.com/work/?theme=timesheet&card=Sara:2019-09-03&from=Jamie&note=Five%20years.
+```
 
-Records are marked for expiry 400 days after creation. Automatic deletion may occur later; this is not an exact access cutoff. Cached previews and copies may outlast the card record. Card pages ask search engines not to index them, but anyone with the link can open or forward the card. There is no login gate.
+`card=Name:YYYY-MM-DD` takes the place of `p=`/`j=` and puts the page in card mode (one person, no picker, no editing). `from` and `note` are optional. Notes are clipped to 140 characters and names to 40, and both are rendered as text, never HTML. Anyone holding the link can read, forward, or edit it.
 
 ## Themes and implementation
 
@@ -65,20 +67,18 @@ npx live-server
 node .github/scripts/validate-site.mjs
 ```
 
-The local server opens at `http://localhost:8080/`. Open `/birthday/`, `/work/`, and `/themes-preview.html` to test the editions and theme states. Card drafts can be previewed locally; a static development server does not provide `/api/card` or saved-card routes.
+The local server opens at `http://localhost:8080/`. Open `/birthday/`, `/work/`, and `/themes-preview.html` to test the editions and theme states. The composer works locally too; it is all client-side.
 
 The validation workflow also checks JavaScript syntax. Walk changed flows in a browser, including narrow screens and reduced motion.
 
 ## Deployment
 
-The production domain is served by Amazon S3 and CloudFront. A push to `main` runs the site validator; after success, the Deploy workflow syncs static files to S3 and invalidates CloudFront using GitHub Actions OIDC. `server/deploy.sh` is the manual static-site deployment path.
-
-Card creation and card pages use Lambda behind API Gateway, with records in DynamoDB. Social-preview URLs use `/og/<code>/<date>.png`. The static-site workflow excludes `server/`; pushing a Lambda source change alone does not deploy that Lambda.
+The production domain is served by Amazon S3 and CloudFront; the bucket holds exactly the files in this repo. A push to `main` runs the site validator; after success, the Deploy workflow syncs the files to S3 and invalidates CloudFront using GitHub Actions OIDC. `deploy.sh` is the same sync, run by hand.
 
 ## Sharing and analytics
 
-Ordinary links expose names and dates in their query string; card links grant access to saved card contents. Either can be forwarded or retained in browser history, bookmarks, or history sync. Use information you are comfortable sharing.
+A link exposes what it shows: names and dates, and on a card the note and sender. It can be forwarded or retained in browser history, bookmarks, or history sync. Use information you are comfortable sharing.
 
-Outside card pages, Tinylytics receives visit counts and interaction events such as theme selections and link copies. An inline privacy shim removes query strings and fragments from the page URL and referrer fields of analytics requests. This is analytics filtering, not a guarantee that a shared URL stays in the browser. Card pages do not load the analytics embed.
+Tinylytics receives visit counts and interaction events such as theme selections and link copies. An inline privacy shim removes query strings and fragments from the page URL and referrer fields of analytics requests. This is analytics filtering, not a guarantee that a shared URL stays in the browser.
 
-The app saves one local-storage flag per edition (`yvn-about-seen` / `yvnw-about-seen`) to remember whether its intro has been shown. It does not save names, dates, themes, or card drafts in local storage. Card records do not include email addresses, accounts, or IP addresses.
+The app saves one local-storage flag per edition (`yvn-about-seen` / `yvnw-about-seen`) to remember whether its intro has been shown. It does not save names, dates, themes, or card drafts in local storage.
