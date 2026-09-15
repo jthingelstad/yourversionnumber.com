@@ -1,5 +1,5 @@
 import { THEMES, orderForEdition } from '/assets/themes.js';
-import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage, localDateString } from '/assets/core.js?v=3';
+import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage, localDateString } from '/assets/core.js?v=4';
 
 const EDITION = 'birthday';
 const THEME_NAMES = THEMES.map(t => t.name);

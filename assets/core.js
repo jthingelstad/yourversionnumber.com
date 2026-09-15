@@ -151,12 +151,22 @@ export function playChime(kind) {
 // edition's own parser decides whether the date is real and not in the future.
 export const CARD_LIMITS = { name: 40, from: 40, note: 140 };
 
+// Limits are in code points, never UTF-16 units: String.prototype.slice on a
+// 141-unit note cuts an emoji in half and the card ends in U+FFFD. The
+// composer counts the same way, so what it says is left is what fits.
+export function countPoints(value) {
+  return Array.from(value || '').length;
+}
+export function clipPoints(value, max) {
+  return Array.from(value || '').slice(0, max).join('');
+}
+
 export function readCardData(params = new URLSearchParams(location.search)) {
   const raw = params.get('card');
   if (!raw) return null;
   const idx = raw.lastIndexOf(':');
   if (idx === -1) return null;
-  const clip = (value, max) => (value || '').trim().slice(0, max);
+  const clip = (value, max) => clipPoints((value || '').trim(), max);
   const name = clip(raw.slice(0, idx), CARD_LIMITS.name);
   const date = raw.slice(idx + 1).trim();
   if (!name || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
@@ -172,9 +182,9 @@ export function readCardData(params = new URLSearchParams(location.search)) {
 export function cardURL(edition, card) {
   const params = new URLSearchParams();
   if (card.theme) params.set('theme', card.theme);
-  params.set('card', `${card.name}:${card.date}`);
-  if (card.from) params.set('from', card.from);
-  if (card.note) params.set('note', card.note);
+  params.set('card', `${clipPoints(card.name, CARD_LIMITS.name)}:${card.date}`);
+  if (card.from) params.set('from', clipPoints(card.from, CARD_LIMITS.from));
+  if (card.note) params.set('note', clipPoints(card.note, CARD_LIMITS.note));
   // URLSearchParams escapes the colon; it is the one character worth reading.
   return `/${edition}/?${params.toString().replace(/%3A/gi, ':')}`;
 }

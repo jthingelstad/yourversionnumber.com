@@ -71,6 +71,14 @@ await validateEdition({ htmlPath: "work/edition/index.html", privateQuery: "?j="
   }
   if (homes.birthday !== 20) failures.push(`assets/themes.js: ${homes.birthday} birthday themes, page copy says twenty`);
   if (homes.work !== 9) failures.push(`assets/themes.js: ${homes.work} work themes, page copy says nine`);
+  // Each edition's fallback theme must exist, or every themeless visit — which
+  // is what the front doors' own forms produce — loads a 404 stylesheet.
+  for (const app of ["birthday/assets/app.js", "work/edition/assets/app.js"]) {
+    const src = await readFile(resolve(repoRoot, app), "utf8");
+    const m = src.match(/const DEFAULT_THEME = '([^']+)'/);
+    if (!m) failures.push(`${app}: no DEFAULT_THEME`);
+    else if (!entries.includes(m[1])) failures.push(`${app}: DEFAULT_THEME '${m[1]}' is not in the manifest`);
+  }
   // Two entries share the label "Boarding Pass" on purpose; slugs are what must be unique.
   if (new Set(entries).size !== entries.length) failures.push("assets/themes.js: duplicate theme slug");
 

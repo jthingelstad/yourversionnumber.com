@@ -9,7 +9,7 @@
 
 import { THEMES } from '/assets/themes.js';
 import { mountPreview } from '/assets/wall.js?v=1';
-import { localDateString, cardURL, CARD_LIMITS } from '/assets/core.js?v=3';
+import { localDateString, cardURL, CARD_LIMITS, countPoints } from '/assets/core.js?v=4';
 
 const FACE = document.body.dataset.face || 'birthday';
 const DEFAULT_THEME = FACE === 'work' ? 'timesheet' : 'departures';
@@ -21,9 +21,10 @@ const els = Object.fromEntries(['name', 'date', 'theme', 'note', 'from', 'reads'
   .map((k) => [k, document.getElementById('c-' + k)]));
 
 els.date.max = localDateString();
-els.note.maxLength = CARD_LIMITS.note;
-els.name.maxLength = CARD_LIMITS.name;
-els.from.maxLength = CARD_LIMITS.from;
+// No maxlength attributes: the browser would count UTF-16 units and stop an
+// emoji-heavy note early while the counter (code points) said there was room.
+// The counter is the limit; the link is clipped to it either way.
+for (const el of [els.note, els.name, els.from]) el.removeAttribute('maxlength');
 let link = '';
 let previewObserver;
 
@@ -46,10 +47,12 @@ function fillThemes() {
 }
 
 function refresh() {
-  els.left.textContent = String(CARD_LIMITS.note - els.note.value.length);
+  const left = CARD_LIMITS.note - countPoints(els.note.value);
+  els.left.textContent = String(left);
+  els.left.classList.toggle('is-over', left < 0);
   const date = els.date.value;
   const name = els.name.value.trim();
-  if (!date || !els.date.validity.valid || !name) {
+  if (!date || !els.date.validity.valid || !name || left < 0) {
     link = '';
     previewObserver?.disconnect();
     els.preview.replaceChildren();

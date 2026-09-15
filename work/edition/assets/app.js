@@ -1,5 +1,5 @@
 import { THEMES, orderForEdition } from '/assets/themes.js';
-import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage, localDateString } from '/assets/core.js?v=3';
+import { applyEnvironment, applyCountdown, renderVersionDigits, watchForInteraction, playChime, readCardData, renderCardMessage, localDateString } from '/assets/core.js?v=4';
 
 const EDITION = 'work';
 const THEME_NAMES = THEMES.map(t => t.name);
@@ -34,9 +34,12 @@ function trackEvent(name, value) {
 
 const state = { theme: null, themeIsExplicit: false, roles: [] };
 
-// Default theme when no ?theme= is in the URL. Pinned to 'earnings' so the
-// first paint matches the og-image people see in link previews.
-const DEFAULT_THEME = 'earnings';
+// Default theme when no ?theme= is in the URL. Pinned so the first paint
+// matches the og-image people see in link previews.
+// 'earnings' until 2026-09-15 — a theme that had been renamed to ticker, so
+// every themeless visit (including the front door's own form) loaded a 404
+// stylesheet. Pinned to ticker, which is also the og-image.
+const DEFAULT_THEME = 'ticker';
 
 function parseURL() {
   const params = new URLSearchParams(location.search);
