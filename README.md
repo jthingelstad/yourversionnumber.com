@@ -69,7 +69,7 @@ From the repo root:
 ```sh
 npx live-server
 node .github/scripts/validate-site.mjs
-node --test .github/tests/
+node --test '.github/tests/*.test.mjs'
 npx --yes html-validate@9 index.html about/index.html themes/index.html examples/index.html card/index.html card/new/index.html 404.html work/index.html work/themes/index.html work/card/index.html work/about/index.html birthday/index.html work/edition/index.html
 ```
 

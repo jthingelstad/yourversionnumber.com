@@ -27,6 +27,6 @@ jobs:
       - name: Validate site assets and privacy guards
         run: node .github/scripts/validate-site.mjs
       - name: Unit tests
-        run: node --test .github/tests/
+        run: node --test '.github/tests/*.test.mjs'
       - name: Validate HTML
         run: npx --yes html-validate@9 index.html about/index.html themes/index.html examples/index.html card/index.html card/new/index.html 404.html work/index.html work/themes/index.html work/card/index.html work/about/index.html birthday/index.html work/edition/index.html

@@ -278,7 +278,7 @@ piece of it runs locally with nothing installed:
    hook and off-limits rules, the examples page's static links, and that
    **every reference to one asset carries the same `?v=`** (a module imported
    at two versions loads twice — bump all references together).
-3. `node --test .github/tests/` — three suites, no dependencies: the door's
+3. `node --test '.github/tests/*.test.mjs'` — three suites, no dependencies: the door's
    arithmetic must equal the edition's (`computeVersion`, `computeWorkVersion`
    with build; a Fri–Mon span; month-end rolls; quarters 1–4), the card codec
    (round-trips, code-point clipping, no split surrogates, bad shapes),
