@@ -18,6 +18,6 @@ jobs:
         with:
           node-version: "24"
       - name: Check JavaScript syntax
-        run: node --check birthday/assets/app.js && node --check work/assets/app.js && node --check assets/themes.js && node --check assets/gallery.js && node --check assets/site.js && node --check assets/examples.js && node --check assets/preview.js && node --check assets/core.js && node --check assets/compose.js
+        run: for f in birthday/assets/app.js work/edition/assets/app.js assets/themes.js assets/core.js assets/site.js assets/wall.js assets/home.js assets/work-home.js assets/gallery.js assets/examples.js assets/compose.js; do node --check "$f" || exit 1; done
       - name: Validate site assets and privacy guards
         run: node .github/scripts/validate-site.mjs
