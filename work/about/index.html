@@ -20,7 +20,7 @@
 <meta name="twitter:image" content="https://yourversionnumber.com/work/edition/og-image.png">
 <meta name="theme-color" content="#f7f4ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16181b" media="(prefers-color-scheme: dark)">
-<link rel="stylesheet" href="/assets/site.css?v=3">
+<link rel="stylesheet" href="/assets/site.css?v=4">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%92%BC%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -96,16 +96,20 @@
   </div>
 
   <h1>How the number is calculated</h1>
-  <p class="lede">Three figures, one start date, <span class="hi">no discretion applied</span>.</p>
+  <p class="lede">Four figures, one start date, <span class="hi">no discretion applied</span>.</p>
 
   <table class="ledger">
     <tbody>
       <tr><th scope="row">Years</th><td>completed years in the seat</td></tr>
       <tr><th scope="row">Quarters</th><td>1 to 4, in three-month steps from your anniversary</td></tr>
       <tr><th scope="row">Days</th><td>business days into the current quarter; a quarter starts at zero</td></tr>
+      <tr><th scope="row">Build</th><td>every business day ever logged &mdash; never resets</td></tr>
     </tbody>
   </table>
-  <p>Someone three years and change into a job is <span class="vnum vnum--inline" aria-label="3.2.40"><span class="d">3</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">4</span><span class="d">0</span></span>: three completed years, in the second quarter of the fourth, forty business days into that quarter.</p>
+  <p>Someone three years and change into a job is <span class="vnum vnum--inline" aria-label="3.2.40+888"><span class="d">3</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">4</span><span class="d">0</span></span><span class="build">+888</span>: three completed years, in the second quarter of the fourth, forty business days into that quarter, and 888 business days in the seat altogether. The build goes after the <code>+</code> because that is where build metadata goes in a real version string, and it goes up forever whether or not anything improved.</p>
+
+  <h2>Why the build number</h2>
+  <p>A birthday resets. Tenure accrues. Nobody arrives on their work anniversary with a clean slate; the whole feeling of tenure is accumulation, and a purely cyclical triple cannot express it. Nobody knows what build they are on, everybody has seen one in an About dialog, and here you still are.</p>
 
   <h2>Why quarters start on your anniversary</h2>
   <p>Because it is your number, not the company&rsquo;s. Anchoring to a calendar or fiscal quarter would mean two people with identical tenure showing different figures, which defeats the purpose. Quarter 1 begins on the day you started; quarter 4 ends the day before your next anniversary. If an anniversary lands past the end of a month it rolls forward: three months after 31 January is 1 May.</p>
@@ -128,6 +132,6 @@
     <p class="mono"><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/work/about/">&mdash;</span> visits</p>
   </div>
 </footer>
-<script type="module" src="/assets/site.js?v=4"></script>
+<script type="module" src="/assets/site.js?v=5"></script>
 </body>
 </html>

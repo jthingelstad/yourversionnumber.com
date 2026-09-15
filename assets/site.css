@@ -222,9 +222,18 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .vnum .sep { color: var(--orange); }
 .vnum .d { display: inline-block; }
 
+/* The work face's build number: one element beside the hero triple, at 30%
+   of its size in secondary ink. Metadata, not a fourth number; it never
+   animates. */
+.hero__num { display: flex; align-items: baseline; gap: 0.15em; flex-wrap: wrap; }
+.build { font-family: var(--mono); font-weight: 500; font-size: 0.3em; letter-spacing: -0.02em; color: var(--ink-2); }
+.vnum--hero + .build, .hero__num .build { font-size: clamp(0.95rem, 4.35vw, 2.1rem); }
+.ledger .build { font-size: inherit; color: inherit; font-weight: inherit; }
+
 /* The hero number. Clamped so 5.2.113 (7 characters of a wide mono) fits
    inside 390px minus the gutters, and never wraps. */
 .vnum--hero { font-size: clamp(2.9rem, 14.5vw, 7rem); line-height: 1; display: block; }
+.hero__num .vnum--hero { display: inline-block; }
 
 .vnum--big { font-size: clamp(1.8rem, 6vw, 2.6rem); }
 .vnum--inline { font-size: 0.95em; font-weight: 500; }

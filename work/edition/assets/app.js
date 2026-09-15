@@ -152,7 +152,12 @@ function computeWorkVersion(startDate, today = new Date()) {
   const nextAnniversary = anniversaryDate(anniversaryYear + 1, sm, sd);
   const daysUntil = Math.round((nextAnniversary - todayMid) / 86_400_000);
 
-  return { major: tenureYears, minor, patch, cycleDays, daysUntil };
+  // BUILD: every business day ever logged, cumulative. A birthday resets;
+  // tenure accrues, and semver has a slot for exactly that — build metadata
+  // after a `+`. Exact, not years * 261; somebody will check.
+  const build = businessDaysBetween(startMid, todayMid);
+
+  return { major: tenureYears, minor, patch, build, cycleDays, daysUntil };
 }
 
 // Counts business days (Mon–Fri) strictly after `start`, up to and including `end`.
@@ -170,6 +175,19 @@ function businessDaysBetween(start, end) {
 
 function formatVersion(v) {
   return `${v.major}.${v.minor}.${v.patch}`;
+}
+
+// The triple is rendered per character by core (hook 4) so themes can treat
+// each glyph as an object; the build number is appended as ONE span after
+// them, so a tube-per-digit theme never sees it. base.css sizes it at 0.3em;
+// a theme may restyle .build. The aria-label carries the whole string.
+function renderWorkVersion(el, v) {
+  renderVersionDigits(el, formatVersion(v));
+  const build = document.createElement('span');
+  build.className = 'build';
+  build.textContent = `+${v.build.toLocaleString()}`;
+  el.appendChild(build);
+  el.setAttribute('aria-label', `${formatVersion(v)}+${v.build}`);
 }
 
 function setFlag(key, on) {
@@ -472,8 +490,9 @@ function openAbout() {
             <li><strong>MAJOR</strong> &mdash; years of tenure. Bumps when HR sends the anniversary email.</li>
             <li><strong>MINOR</strong> &mdash; quarter (1&ndash;4). Three calendar months each, counted from your start date &mdash; if you started Feb 10, Q2 begins May 10. The unit of all things scheduled, planned, and reviewed.</li>
             <li><strong>PATCH</strong> &mdash; business days into the quarter. Weekends do not tick, because real work doesn&rsquo;t happen on weekends. <em>You&rsquo;re welcome.</em></li>
+            <li><strong>BUILD</strong> &mdash; every business day you have ever logged, after the <code>+</code>, exactly where build metadata goes in a real version string. A birthday resets; tenure accrues. It goes up forever whether or not anything improved.</li>
           </ul>
-          <p>A version of <code>2.2.15</code> means two completed years, the second quarter of that tenure year, and fifteen weekdays into that quarter. Public holidays count as weekdays; there is no holiday calendar. <strong>Ship it.</strong></p>
+          <p>A version of <code>2.2.15+601</code> means two completed years, the second quarter of that tenure year, fifteen weekdays into that quarter, and 601 business days in the seat altogether. Public holidays count as weekdays; there is no holiday calendar. <strong>Ship it.</strong></p>
           <p class="app-dialog__privacy"><strong>Everything lives in the URL.</strong> This page reads its names, dates, theme &mdash; and, on a card, the note and sender &mdash; from the address bar and stores none of it. Bookmark the link to come back; share it and anyone who has it can read what it contains. <a href="/about/">Sharing and analytics details</a>.</p>
           <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. For the birthday version, see <a href="/birthday/">Your Version Number</a>.</p>
         </div>
@@ -616,7 +635,7 @@ function countUp(el, version) {
   const shouldAnimate = themeMeta?.animate && isFirstRender && !reduceMotion;
 
   if (!shouldAnimate) {
-    renderVersionDigits(el, formatVersion(version));
+    renderWorkVersion(el, version);
     return;
   }
 
@@ -635,7 +654,7 @@ function countUp(el, version) {
     const patch = Math.round(version.patch * k);
     el.textContent = `${major}.${minor}.${patch}`;
     if (t < 1) requestAnimationFrame(frame);
-    else renderVersionDigits(el, formatVersion(version));
+    else renderWorkVersion(el, version);
   }
   requestAnimationFrame(frame);
 }
@@ -656,12 +675,13 @@ function updateVersionDisplay(el, startDate, row) {
     row.style.setProperty('--major', String(v.major));
     row.style.setProperty('--minor', String(v.minor));
     row.style.setProperty('--patch', String(v.patch));
+    row.style.setProperty('--build', String(v.build));
     row.style.setProperty('--patch-pct', (v.patch / v.cycleDays).toFixed(4));
   }
   countUp(el, v);
   const yearWord = v.major === 1 ? 'year' : 'years';
   const dayWord = v.patch === 1 ? 'day' : 'days';
-  el.title = `${v.major} ${yearWord} of tenure, quarter ${v.minor} of 4, ${v.patch} business ${dayWord} in`;
+  el.title = `${v.major} ${yearWord} of tenure, quarter ${v.minor} of 4, ${v.patch} business ${dayWord} in, build ${v.build.toLocaleString()}`;
 }
 
 let midnightTimer = null;

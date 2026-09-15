@@ -20,7 +20,7 @@
 <meta name="twitter:image" content="https://yourversionnumber.com/work/edition/og-image.png">
 <meta name="theme-color" content="#f7f4ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16181b" media="(prefers-color-scheme: dark)">
-<link rel="stylesheet" href="/assets/site.css?v=3">
+<link rel="stylesheet" href="/assets/site.css?v=4">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%92%BC%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -117,7 +117,7 @@
   <p class="stamp">Confidential &mdash; distribute freely</p>
 
   <h1>Your tenure also has a version number.</h1>
-  <p class="lede">Years in the seat. Which quarter of your tenure year you&rsquo;re in. Business days into that quarter. <span class="hi">Weekends don&rsquo;t ship.</span></p>
+  <p class="lede">Years in the seat. Which quarter of your tenure year. Business days into it &mdash; plus a build number that counts every one you have ever logged. <span class="hi">Weekends don&rsquo;t ship.</span></p>
 
   <form class="ask" id="ask" action="/work/edition/" method="get">
     <label class="ask__label" for="ask-date">Employee start date <small>(as recorded by HR)</small></label>
@@ -125,14 +125,15 @@
     <button class="btn btn--hi" type="submit" id="ask-go">Read my tenure</button>
   </form>
 
-  <span class="vnum vnum--hero hero__num" id="hero-vnum" aria-label="3.2.40"><span class="d">3</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">4</span><span class="d">0</span></span>
-  <p class="hero__says" id="hero-says">A worked example: <strong>3.2.40</strong> is 3 years in, quarter 2 of the year, 40 business days logged. Tomorrow adds one, assuming tomorrow is a workday.</p>
+  <p class="hero__num"><span class="vnum vnum--hero" id="hero-vnum" aria-label="3.2.40+888"><span class="d">3</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">4</span><span class="d">0</span></span><span class="build" id="hero-build">+888</span></p>
+  <p class="hero__says" id="hero-says">A worked example: <strong>3.2.40+888</strong> is 3 years in, quarter 2 of the year, 40 business days into it. Build 888 &mdash; every business day they have ever logged. Tomorrow adds one, assuming tomorrow is a workday.</p>
 
   <table class="ledger ledger--greenbar">
     <tbody>
       <tr><th scope="row">Years</th><td>completed years in the seat</td><td class="num" id="w-years">3</td></tr>
       <tr><th scope="row">Quarters</th><td>1 to 4, counted from your anniversary, not January</td><td class="num" id="w-quarters">2</td></tr>
       <tr><th scope="row">Days</th><td>Monday to Friday since the quarter began, no holiday calendar</td><td class="num" id="w-days">40</td></tr>
+      <tr><th scope="row">Build</th><td>cumulative business days, never resets</td><td class="num build" id="w-build">+888</td></tr>
       <tr><th scope="row">Approved by</th><td>no one</td><td class="num">&mdash;</td></tr>
     </tbody>
   </table>
@@ -202,7 +203,7 @@
     <p class="mono"><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/work/">&mdash;</span> visits</p>
   </div>
 </footer>
-<script type="module" src="/assets/site.js?v=4"></script>
+<script type="module" src="/assets/site.js?v=5"></script>
 <script type="module" src="/assets/work-home.js?v=1"></script>
 </body>
 </html>

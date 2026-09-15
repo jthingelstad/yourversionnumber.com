@@ -6,14 +6,15 @@
 // visitor sees one click later. No circle, no confetti — nobody circles
 // anything on a form.
 
-import { renderVnum, onMidnight, localDate, computeTenure, tenureString } from '/assets/site.js?v=4';
+import { renderVnum, onMidnight, localDate, computeTenure, tenureString, buildString } from '/assets/site.js?v=5';
 import { mountWall, setPreview } from '/assets/wall.js?v=1';
 
 // The worked example in the static markup. Fixed, so it never disagrees.
-const EXAMPLE = { years: 3, quarters: 2, days: 40 };
+const EXAMPLE = { years: 3, quarters: 2, days: 40, build: 888 };
 const SAMPLE = 'j=Engineer:2019-09-03&j=Analyst:2023-02-13';
 
 const num = document.getElementById('hero-vnum');
+const buildEl = document.getElementById('hero-build');
 const says = document.getElementById('hero-says');
 const date = document.getElementById('ask-date');
 const go = document.getElementById('ask-go');
@@ -22,6 +23,7 @@ const cells = {
   years: document.getElementById('w-years'),
   quarters: document.getElementById('w-quarters'),
   days: document.getElementById('w-days'),
+  build: document.getElementById('w-build'),
 };
 
 date.max = localDate();
@@ -59,13 +61,17 @@ function paint(ticking) {
   cells.years.textContent = String(t.years);
   cells.quarters.textContent = String(t.quarters);
   cells.days.textContent = String(t.days);
+  cells.build.textContent = buildString(t);
+  // Metadata, not a fourth digit: no animation when it ticks.
+  buildEl.textContent = buildString(t);
+  num.setAttribute('aria-label', `${text}+${t.build}`);
 
   says.replaceChildren();
   if (mine) {
-    says.append(`${t.years} ${t.years === 1 ? 'year' : 'years'} in, quarter ${t.quarters} of your tenure year, ${t.days} business ${t.days === 1 ? 'day' : 'days'} logged. `, tomorrowLine());
+    says.append(`${t.years} ${t.years === 1 ? 'year' : 'years'} in, quarter ${t.quarters} of your tenure year, ${t.days} business ${t.days === 1 ? 'day' : 'days'} into it. Build ${t.build.toLocaleString()} — every business day you have ever logged. `, tomorrowLine());
     go.textContent = 'Retain this page';
   } else {
-    says.append('A worked example: ', strong(text), ' is 3 years in, quarter 2 of the year, 40 business days logged. ', tomorrowLine());
+    says.append('A worked example: ', strong(text + '+888'), ' is 3 years in, quarter 2 of the year, 40 business days into it. Build 888 — every business day they have ever logged. ', tomorrowLine());
     go.textContent = 'Read my tenure';
   }
 

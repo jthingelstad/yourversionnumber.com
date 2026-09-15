@@ -146,6 +146,23 @@ input {
   display: inline-block;
 }
 
+/* The build number: one span after the digits, metadata rather than a fourth
+   number, so it must never compete with the three that matter. Sized off the
+   version so it scales with whatever the theme sets; muted with opacity
+   because this neutral sheet cannot know the theme's ink. Themes may restyle
+   .build in their own voice. */
+.version .build {
+  display: inline-block;
+  /* 30% of the number, but never below what a person can read: several
+     themes set the version near body size. */
+  font-size: max(0.3em, 0.75rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  margin-left: 0.2em;
+  opacity: 0.72;
+  vertical-align: baseline;
+}
+
 /* Adjacent inline-blocks give the line breaker somewhere to break, which a
    single text node never did — without this the number splits mid-value
    ("4.7." / "150") in any theme narrow enough to wrap. Pseudo-elements opt

@@ -59,18 +59,27 @@ export function computeTenure(start, today = new Date()) {
     else break;
   }
 
-  let days = 0;
-  const cur = new Date(quarterStart);
-  while (cur < todayMid) {
-    cur.setDate(cur.getDate() + 1);
-    const dow = cur.getDay();
-    if (dow >= 1 && dow <= 5) days++;
-  }
-  return { years, quarters, days };
+  const workdays = (from, to) => {
+    let n = 0;
+    const cur = new Date(from);
+    while (cur < to) {
+      cur.setDate(cur.getDate() + 1);
+      const dow = cur.getDay();
+      if (dow >= 1 && dow <= 5) n++;
+    }
+    return n;
+  };
+  // BUILD: every business day ever logged. Exact, not years * 261.
+  return { years, quarters, days: workdays(quarterStart, todayMid), build: workdays(startMid, todayMid) };
 }
 
+// The triple only; the build is rendered as its own element beside it.
 export function tenureString(t) {
   return `${t.years}.${t.quarters}.${t.days}`;
+}
+
+export function buildString(t) {
+  return `+${t.build.toLocaleString()}`;
 }
 
 export function localDate(d = new Date()) {

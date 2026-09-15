@@ -6,7 +6,7 @@ A bookmarkable static page that displays people's "version numbers" (`MAJOR.MINO
 
 - Single-page static site, **two editions**:
   - **Birthday edition** at `/birthday/` — `MAJOR.MINOR.PATCH` is decade / year-in-decade / days since last birthday. People in URL via `?p=Name:YYYY-MM-DD`. Lived at `/` until September 2026; old `/?p=...` bookmarks were deliberately allowed to break.
-  - **Work edition** at `/work/edition/` — `YEARS.QUARTERS.DAYS` (quarters 1–4 from the start date; business days only; 0-indexed quarters until 2026-09-15). Roles in URL via `?j=Title:YYYY-MM-DD`. Lived at `/work/` until September 2026; `/work/` is now its front door and forwards `?j=`/`?card=` links to the app.
+  - **Work edition** at `/work/edition/` — `YEARS.QUARTER.DAYS+BUILD` (quarters 1–4 from the start date; business days only; build = every business day ever logged, rendered as one `.build` span after the per-digit triple; 0-indexed and buildless until 2026-09-15). Roles in URL via `?j=Title:YYYY-MM-DD`. Lived at `/work/` until September 2026; `/work/` is now its front door and forwards `?j=`/`?card=` links to the app.
 - **No build step**, no framework, no bundler.
 - Static files on S3 behind CloudFront. No server-side code of any kind. A push to `main` validates, then syncs the repo to the bucket.
 - Vanilla JS module per edition. Vanilla CSS. One stylesheet per theme.
@@ -115,8 +115,10 @@ redesigning anything here; the decisions below came out of it.
   crawler sees the same thing. It becomes the visitor's own number on input;
   the form is a native GET to `/birthday/?p=YYYY-MM-DD` and is never intercepted.
 - **The work front door mirrors the work app's arithmetic exactly**
-  (`computeTenure()` in `site.js` is a copy of `computeWorkVersion()`). If one
-  changes, change both in the same commit.
+  (`computeTenure()` in `site.js` is a copy of `computeWorkVersion()`,
+  build included). If one changes, change both in the same commit. The build
+  is rendered as its own element beside the triple, never inside the
+  per-digit renderer, so a tube-per-digit theme never sees it.
 - **Every preview on the spine is the real page in a scaled iframe**, mounted
   lazily by `wall.js`. There is no second renderer and there must never be one.
   `wall.js` reads `clientWidth`, not `getBoundingClientRect()`, because the

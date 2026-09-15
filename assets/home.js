@@ -6,7 +6,7 @@
 // is a native GET to /birthday/?p=YYYY-MM-DD and is never intercepted; only the
 // button's label changes.
 
-import { computeVersion, versionString, renderVnum, onMidnight, localDate } from '/assets/site.js?v=4';
+import { computeVersion, versionString, renderVnum, onMidnight, localDate } from '/assets/site.js?v=5';
 import { mountWall, setPreview } from '/assets/wall.js?v=1';
 
 // A fixed worked example, so the static markup and the first paint agree on

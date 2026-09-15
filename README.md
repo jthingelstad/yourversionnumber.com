@@ -15,7 +15,7 @@ It is a static site with no server-side code. Every view, cards included, keeps 
 | `/card/` | Write a card and copy its link. |
 | `/about/` | Origin, arithmetic, and why the URL is the only state. |
 | `/work/` | The Work Edition's own front door, in its own voice. |
-| `/work/edition/` | Tenure as years.quarters.weekdays-in-quarter. |
+| `/work/edition/` | Tenure as years.quarter.weekdays-in-quarter+build. |
 | `/work/themes/` | The nine work themes. |
 | `/work/card/` | Circulate an anniversary notice. |
 | `/work/about/` | The tenure arithmetic, stated dryly. |
@@ -41,7 +41,7 @@ https://yourversionnumber.com/work/edition/?theme=ticker&j=Engineer:2024-01-15
 
 Birthday numbers are completed decades, years within the current decade, and calendar days since the last birthday. A person aged 52 years and 113 days is on `5.2.113`. February 29 birthdays use March 1 in non-leap years.
 
-Work numbers are completed years of tenure, the quarter within the current tenure year (1–4), and weekdays since that quarter began. Quarters are three calendar months apart, anchored to the start date. A February 10 start reaches quarter 2 on May 10. Dates beyond the end of a month roll forward: January 31 plus three months becomes May 1. Days start at zero on the quarter's first day; subsequent Monday–Friday dates count, including public holidays. There is no holiday calendar.
+Work numbers are completed years of tenure, the quarter within the current tenure year (1–4), and weekdays since that quarter began. Quarters are three calendar months apart, anchored to the start date. A February 10 start reaches quarter 2 on May 10. Dates beyond the end of a month roll forward: January 31 plus three months becomes May 1. After the `+`, the build number is every business day ever logged, cumulative and never reset. Days start at zero on the quarter's first day; subsequent Monday–Friday dates count, including public holidays. There is no holiday calendar.
 
 Both editions calculate from the viewer's local date and refresh at local midnight. A countdown appears during the final seven days before the next birthday or annual work anniversary.
 
