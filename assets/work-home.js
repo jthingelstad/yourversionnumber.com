@@ -6,7 +6,7 @@
 // visitor sees one click later. No circle, no confetti — nobody circles
 // anything on a form.
 
-import { renderVnum, onMidnight, localDate, computeTenure, tenureString, buildString } from '/assets/site.js?v=5';
+import { renderVnum, onMidnight, localDate, computeTenure, tenureString, buildString } from '/assets/site.js?v=6';
 import { mountWall, setPreview } from '/assets/wall.js?v=1';
 
 // The worked example in the static markup. Fixed, so it never disagrees.
@@ -64,7 +64,6 @@ function paint(ticking) {
   cells.build.textContent = buildString(t);
   // Metadata, not a fourth digit: no animation when it ticks.
   buildEl.textContent = buildString(t);
-  num.setAttribute('aria-label', `${text}+${t.build}`);
 
   says.replaceChildren();
   if (mine) {

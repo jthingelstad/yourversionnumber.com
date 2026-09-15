@@ -129,7 +129,7 @@
   <div class="bar__in">
     <div class="bar__brand">
       <a class="bar__mark" href="/">yourversionnumber<span>.com</span></a>
-      <a class="bar__v" href="/birthday/?theme=terminal&p=yourversionnumber.com:2026-05-01" title="This site's own version number. It shipped on 1 May 2026 &mdash; open its birthday page."><span class="vnum vnum--inline" data-since="2026-05-01" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
+      <a class="bar__v" href="/birthday/?theme=terminal&p=yourversionnumber.com:2026-05-01" title="This site's own version number. It shipped on 1 May 2026 &mdash; open its birthday page."><span class="vnum vnum--inline" data-since="2026-05-01"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
     </div>
     <nav aria-label="Site">
       <a href="/birthday/">Your number</a>
@@ -146,7 +146,7 @@
   <p class="lede">Where this came from, and the arithmetic, which is <span class="hi">the whole trick</span>.</p>
 
   <h2>It started as a blog post</h2>
-  <p>In February 2018 Jamie Thingelstad wrote <a class="squiggle" href="https://www.thingelstad.com/2018/02/24/your-version-number.html">&ldquo;Your Version Number&rdquo;</a>, borrowing an idea from his friend David Hussman: track your age the way software tracks releases. He was on <span class="vnum vnum--inline" aria-label="4.6.52"><span class="d">4</span><span class="sep">.</span><span class="d">6</span><span class="sep">.</span><span class="d">5</span><span class="d">2</span></span> at the time. This site is that post, made clickable.</p>
+  <p>In February 2018 Jamie Thingelstad wrote <a class="squiggle" href="https://www.thingelstad.com/2018/02/24/your-version-number.html">&ldquo;Your Version Number&rdquo;</a>, borrowing an idea from his friend David Hussman: track your age the way software tracks releases. He was on <span class="vnum vnum--inline"><span class="d">4</span><span class="sep">.</span><span class="d">6</span><span class="sep">.</span><span class="d">5</span><span class="d">2</span></span> at the time. This site is that post, made clickable.</p>
   <p>David <a href="https://www.thingelstad.com/2018/08/23/goodbye-to-my.html">died in August 2018</a>, six months later. The habit he started is the whole reason this exists, and the arithmetic below is his.</p>
 
   <h2>Birthdays</h2>
@@ -155,7 +155,7 @@
     <div class="row"><dt>Major</dt><dd>your age divided by ten, rounded down</dd></div>
     <div class="row"><dt>Minor</dt><dd>the years left over</dd></div>
     <div class="row"><dt>Patch</dt><dd>days since your last birthday</dd></div>
-    <div class="row"><dt>52 years, 113 days</dt><dd><span class="vnum vnum--inline" aria-label="5.2.113"><span class="d">5</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">1</span><span class="d">1</span><span class="d">3</span></span></dd></div>
+    <div class="row"><dt>52 years, 113 days</dt><dd><span class="vnum vnum--inline"><span class="d">5</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">1</span><span class="d">1</span><span class="d">3</span></span></dd></div>
   </dl>
   <p>The day they turn 53 they ship <code>5.3.0</code> &mdash; a minor bump, backwards compatible. At 60 it&rsquo;s <code>6.0.0</code>, a major release, and everyone agrees those are the hard ones. February 29 birthdays get March 1 in the other three years. Future dates are skipped rather than counted backwards.</p>
 
@@ -172,7 +172,7 @@
   <p>Twenty of them here, each a single stylesheet with no JavaScript at all &mdash; deliberately, because a theme that could run code could also read the dates in your URL and send them somewhere. Everything a theme needs comes from a handful of generic hooks. <a href="/themes/">Browse them</a>, or see them <a href="/examples/">carrying real people</a>. Nine more are about jobs and live in the <a href="/work/themes/">Work Edition</a>.</p>
 
   <h2>This site has a version number too</h2>
-  <p>It shipped on 1 May 2026, so it has an age, so it has a number: <span class="vnum vnum--big" id="site-vnum-about" data-since="2026-05-01" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span>. It is the shortest explanation of the whole site, and it stays true without anybody maintaining it.</p>
+  <p>It shipped on 1 May 2026, so it has an age, so it has a number: <span class="vnum vnum--big" id="site-vnum-about" data-since="2026-05-01"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span>. It is the shortest explanation of the whole site, and it stays true without anybody maintaining it.</p>
 </main>
 <footer class="foot">
   <div class="foot__in">
@@ -183,6 +183,6 @@
     <p class="mono"><span id="days-since"></span></p>
   </div>
 </footer>
-<script type="module" src="/assets/site.js?v=5"></script>
+<script type="module" src="/assets/site.js?v=6"></script>
 </body>
 </html>

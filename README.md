@@ -69,11 +69,15 @@ From the repo root:
 ```sh
 npx live-server
 node .github/scripts/validate-site.mjs
+node --test .github/tests/
+npx --yes html-validate@9 index.html about/index.html themes/index.html examples/index.html card/index.html card/new/index.html 404.html work/index.html work/themes/index.html work/card/index.html work/about/index.html birthday/index.html work/edition/index.html
 ```
+
+Those three commands are exactly what CI runs. There is no build step and no `package.json`; html-validate runs from the npm cache.
 
 The local server opens at `http://localhost:8080/`. Open `/birthday/`, `/work/edition/`, and `/themes-preview.html` to test the editions and theme states. The composer works locally too; it is all client-side.
 
-The validation workflow also checks JavaScript syntax. Walk changed flows in a browser, including narrow screens and reduced motion.
+Walk changed flows in a browser too, including narrow screens and reduced motion.
 
 ## Deployment
 

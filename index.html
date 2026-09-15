@@ -148,7 +148,7 @@
   <div class="bar__in">
     <div class="bar__brand">
       <a class="bar__mark" href="/" aria-current="page">yourversionnumber<span>.com</span></a>
-      <a class="bar__v" href="/birthday/?theme=terminal&p=yourversionnumber.com:2026-05-01" title="This site's own version number. It shipped on 1 May 2026 &mdash; open its birthday page."><span class="vnum vnum--inline" data-since="2026-05-01" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
+      <a class="bar__v" href="/birthday/?theme=terminal&p=yourversionnumber.com:2026-05-01" title="This site's own version number. It shipped on 1 May 2026 &mdash; open its birthday page."><span class="vnum vnum--inline" data-since="2026-05-01"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
     </div>
     <nav aria-label="Site">
       <a href="/birthday/">Your number</a>
@@ -171,7 +171,7 @@
       <button class="btn btn--go" type="submit" id="ask-go">Read my number</button>
     </form>
 
-    <span class="vnum vnum--hero hero__num" id="hero-vnum" aria-label="5.2.113"><span class="d">5</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">1</span><span class="d">1</span><span class="d">3</span></span>
+    <span class="vnum vnum--hero hero__num" id="hero-vnum"><span class="d">5</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">1</span><span class="d">1</span><span class="d">3</span></span>
 
     <p class="hero__says" id="hero-says">A worked example: someone 52 years and 113 days old is on <strong>5.2.113</strong>. The day they turn 53 they ship 5.3.0 &mdash; a minor bump, backwards compatible.</p>
 
@@ -181,7 +181,7 @@
       <li class="part part--patch"><b>113</b><span>days since the birthday &mdash; each one a bit better than the last</span></li>
     </ul>
 
-    <p class="note" id="hero-tomorrow">Tomorrow they&rsquo;ll be <span class="vnum vnum--inline" aria-label="5.2.114"><span class="d">5</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">1</span><span class="d">1</span><span class="d">4</span></span>. Nobody knows how that one will be different. Hopefully ever so slightly better.</p>
+    <p class="note" id="hero-tomorrow">Tomorrow they&rsquo;ll be <span class="vnum vnum--inline"><span class="d">5</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">1</span><span class="d">1</span><span class="d">4</span></span>. Nobody knows how that one will be different. Hopefully ever so slightly better.</p>
 
     <p class="small" id="ask-note">Nothing is saved. Your date goes in the link and nowhere else.</p>
   </section>
@@ -225,14 +225,14 @@
   </div>
 </section>
 
-<main class="wrap">
+<section class="wrap">
   <h2>The link is the whole thing</h2>
   <p>No accounts, no database, nothing saved anywhere. Names, dates and the theme all live in the address bar &mdash; bookmark it to come back, send it to someone and they see what you see, recalculated for their day. You can even edit it by hand:</p>
   <p class="url"><b>/birthday/</b>?theme=fridge&amp;p=Jamie<b>:</b>1974-01-15&amp;p=Sara<b>:</b>1976-03-20</p>
   <p><a class="squiggle" href="/about/">Where this came from, and how the arithmetic works</a>.</p>
 
   <p class="crosslink">There&rsquo;s also a <a href="/work/">Work Edition</a>, which does the same thing to your job and is considerably less fun about it.</p>
-</main>
+</section>
 <footer class="foot">
   <div class="foot__in">
     <div>
@@ -244,7 +244,7 @@
 </footer>
 <script defer src="/assets/vendor/rough-notation.iife.js?v=1"></script>
 <script defer src="/assets/vendor/confetti.browser.min.js?v=1"></script>
-<script type="module" src="/assets/site.js?v=5"></script>
+<script type="module" src="/assets/site.js?v=6"></script>
 <script type="module" src="/assets/home.js?v=1"></script>
 </body>
 </html>

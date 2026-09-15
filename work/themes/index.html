@@ -129,7 +129,7 @@
   <div class="bar__in">
     <div class="bar__brand">
       <a class="bar__mark" href="/work/">Your Version Number<span>: Work Edition&trade;</span></a>
-      <a class="bar__v" href="/work/edition/?j=yourversionnumber.com:2026-05-01" title="This site's own tenure number, from its start date of 1 May 2026. Open its page."><span class="vnum vnum--inline" data-tenure="2026-05-01" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
+      <a class="bar__v" href="/work/edition/?j=yourversionnumber.com:2026-05-01" title="This site's own tenure number, from its start date of 1 May 2026. Open its page."><span class="vnum vnum--inline" data-tenure="2026-05-01"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
     </div>
     <nav aria-label="Work Edition">
       <a href="/work/edition/">Your tenure</a>
@@ -149,11 +149,11 @@
   <h1>Nine themes, cleared for internal use</h1>
   <p class="lede">A limited selection of approved options. Requests for additional themes should be <span class="hi">submitted in writing</span>.</p>
 
-  <form class="ask" id="ask" action="/work/edition/" method="get">
-    <label class="ask__label" for="ask-date">Enter your start date and every preview below shows your tenure</label>
+  <div class="ask" id="ask" role="group" aria-labelledby="ask-label">
+    <label class="ask__label" id="ask-label" for="ask-date">Enter your start date and every preview below shows your tenure</label>
     <input type="date" id="ask-date" name="j" value="2019-09-03" max="2026-09-15">
     <button class="btn btn--quiet" type="button" data-surprise>Assign one at random</button>
-  </form>
+  </div>
   <p class="small">The selected format is recorded in the URL. No other record is kept.</p>
 
   <ul class="wall wall--themes" id="gallery"></ul>
@@ -173,7 +173,7 @@
     <p class="mono"><span id="days-since"></span></p>
   </div>
 </footer>
-<script type="module" src="/assets/site.js?v=5"></script>
-<script type="module" src="/assets/gallery.js?v=4"></script>
+<script type="module" src="/assets/site.js?v=6"></script>
+<script type="module" src="/assets/gallery.js?v=5"></script>
 </body>
 </html>

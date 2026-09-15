@@ -268,14 +268,53 @@ Opens at `http://localhost:8080/`. Visit `/birthday/` for the birthday edition a
 
 ## Verifying changes
 
-1. `node --check birthday/assets/app.js && node --check work/edition/assets/app.js`, then `node .github/scripts/validate-site.mjs`.
-2. **Open `themes-preview.html`** under `live-server` (`http://localhost:8080/themes-preview.html`). It iframes every theme in both editions side-by-side with shared rosters. Walk the page and eyeball every theme. Switch the roster selector to exercise edge cases (empty / solo / `data-birthday` / `data-round-decade` / `data-quarter-start`).
-3. Open both editions directly to confirm the change in the relevant flow (initial render, Edit dialog, About dialog, theme switch, midnight tick).
-4. Test 3+ rows to confirm `data-row-variant` produces visible per-row variation where it should.
-5. Birthday edition: confirm `?p=:YYYY-MM-DD` (legacy unnamed) and `?p=YYYY-MM-DD` (current unnamed) both still parse.
-6. Toggle OS reduced-motion and confirm `.theme-fx` motion and `.is-bumping` go quiet.
+CI (`.github/workflows/validate.yml`) is the whole quality gate, and every
+piece of it runs locally with nothing installed:
 
-`themes-preview.html` reads each edition's manifest live by fetching `app.js` and regexing `THEMES`. New themes show up automatically once registered. If you change the manifest format, update the regex in the preview script too.
+1. `node --check` on every script.
+2. `node .github/scripts/validate-site.mjs` — the site's own linter: the
+   privacy shim byte-identical on every page and the embed flags it allows,
+   the manifest (20/9 split, unique slugs, every default theme exists), the
+   hook and off-limits rules, the examples page's static links, and that
+   **every reference to one asset carries the same `?v=`** (a module imported
+   at two versions loads twice — bump all references together).
+3. `node --test .github/tests/` — three suites, no dependencies: the door's
+   arithmetic must equal the edition's (`computeVersion`, `computeWorkVersion`
+   with build; a Fri–Mon span; month-end rolls; quarters 1–4), the card codec
+   (round-trips, code-point clipping, no split surrogates, bad shapes),
+   and the analytics shim (virtual paths, no secret in any request, nothing
+   from frames or other hosts, `yvnTrackPath` takes slug paths only). The app
+   functions are lifted out of `app.js` by name (`helpers.mjs`) because those
+   files are browser modules; renaming one fails the test on purpose.
+4. `npx --yes html-validate@9 <the thirteen HTML files>` — recommended rules
+   minus noise (`.htmlvalidate.json`). It found real things on first run: two
+   `<main>`s per front door, `aria-label` on plain spans (ignored by AT), a
+   `<form>` with no submit. The theme `<link>` has a documented exemption:
+   giving it a default `href` would flash the wrong theme.
+
+There is **no build step and no `package.json`**, evaluated and declined in
+September 2026: none of that month's real bugs would have been caught by
+ESLint, Stylelint or Prettier, and the one thing a bundler solves — cache
+busting — is a validator check instead. html-validate runs from the npm cache
+in CI only.
+
+Then by hand:
+
+- **Open `themes-preview.html`** under `npx live-server`. It iframes every
+  theme in both editions side-by-side with shared rosters. Walk the page and
+  eyeball every theme. Switch the roster selector to exercise edge cases.
+- Open both editions directly to confirm the change in the relevant flow
+  (initial render, Edit dialog, first-visit dialog, theme switch, card).
+- Birthday edition: confirm `?p=:YYYY-MM-DD` (legacy unnamed) and
+  `?p=YYYY-MM-DD` both still parse.
+- Toggle OS reduced-motion and confirm `.theme-fx` motion and `.is-bumping`
+  go quiet.
+
+Headless Chrome notes, learned the hard way: it will not lay out below
+~500px (screenshot a 390px iframe inside a wider window); `--virtual-time-budget`
+never finishes a `requestAnimationFrame` count-up (not a bug); it identifies
+as a bot so Tinylytics drops its hits; and framed pages skip the first-visit
+dialog by design, so dialog tests need a top-level `--dump-dom`.
 
 ## What to avoid
 

@@ -1,5 +1,10 @@
 name: Validate site
 
+# The project has no build step, on purpose. This is the whole quality gate:
+# syntax, the site's own validator (privacy shim, manifest, hooks, cache
+# busters), unit tests for the arithmetic the two front doors mirror, the card
+# codec and the analytics shim, and an HTML validator over the static pages.
+# Nothing here is installed locally; html-validate runs from the npm cache.
 on:
   push:
     branches: [main]
@@ -21,3 +26,7 @@ jobs:
         run: for f in birthday/assets/app.js work/edition/assets/app.js assets/themes.js assets/core.js assets/site.js assets/wall.js assets/home.js assets/work-home.js assets/gallery.js assets/examples.js assets/compose.js; do node --check "$f" || exit 1; done
       - name: Validate site assets and privacy guards
         run: node .github/scripts/validate-site.mjs
+      - name: Unit tests
+        run: node --test .github/tests/
+      - name: Validate HTML
+        run: npx --yes html-validate@9 index.html about/index.html themes/index.html examples/index.html card/index.html card/new/index.html 404.html work/index.html work/themes/index.html work/card/index.html work/about/index.html birthday/index.html work/edition/index.html

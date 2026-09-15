@@ -86,17 +86,15 @@ export function localDate(d = new Date()) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-// One span per character, separators marked, aria-label carrying the whole
-// number so a screen reader announces one thing. Same contract as the
-// editions' .version — deliberately, so the motif behaves identically
-// everywhere it appears.
+// One span per character, separators marked. No aria-label: on a plain span
+// it is ignored by assistive tech anyway, and the digits are the accessible
+// text (inline-block spans read as one string).
 //
 // Re-rendering REUSES any span whose character is unchanged and only replaces
 // the ones that differ, marking those .is-new. That is what makes the change
 // animation land on the digits that actually changed: 5.2.113 -> 5.2.114 rolls
 // one digit, not seven. (See .vnum .d.is-new in site.css.)
 export function renderVnum(el, text) {
-  el.setAttribute('aria-label', text);
   // Static markup may carry bare text nodes; the reuse below indexes element
   // children only, so start clean the first time.
   if (el.childNodes.length !== el.children.length) el.replaceChildren();
@@ -146,8 +144,11 @@ function paintSiteVersions() {
   }
 }
 
-paintSiteVersions();
-onMidnight(paintSiteVersions);
+// Only in a browser: the tests import this module for the arithmetic.
+if (typeof document !== 'undefined') {
+  paintSiteVersions();
+  onMidnight(paintSiteVersions);
+}
 
 // Measured from local midnight, exactly like computeVersion's patch. The old
 // site.js used Date.now() here, so the footer could read "0.0.136 · 137 days"
@@ -159,7 +160,7 @@ function daysSince(since, today = new Date()) {
   return Math.round((midnight - new Date(y, m - 1, d)) / 86_400_000);
 }
 
-const days = document.getElementById('days-since');
+const days = typeof document !== 'undefined' ? document.getElementById('days-since') : null;
 if (days) {
   const paintDays = () => { days.textContent = `${daysSince(LAUNCH)} days since the first commit`; };
   paintDays();

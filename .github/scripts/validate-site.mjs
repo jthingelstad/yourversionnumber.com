@@ -188,6 +188,41 @@ for (const [door, other] of [["index.html", 'href="/work/"'], ["work/index.html"
   }
 }
 
+// ── Cache-busting ───────────────────────────────────────────────────────────
+// There is no asset hashing; a ?v=N on each reference is the whole scheme. A
+// module imported at two different versions is loaded twice, so every
+// reference to one asset must carry the same version across every page and
+// script. core.js once drifted across five importers; this makes that fail.
+{
+  const versions = new Map();   // asset path -> Map(version -> [files])
+  const files = [];
+  const walk = async (dir) => {
+    for (const entry of await readdir(resolve(repoRoot, dir), { withFileTypes: true })) {
+      const rel = dir ? `${dir}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) {
+        if ([".git", ".github", "assets/vendor", "assets/themes", "design_handoff_theme_refresh", "node_modules"].includes(rel) || entry.name.startsWith("design_handoff")) continue;
+        await walk(rel);
+      } else if (/\.(html|js)$/.test(entry.name) && !entry.name.startsWith("_") && entry.name !== "themes-preview.html") files.push(rel);
+    }
+  };
+  await walk("");
+  for (const file of files) {
+    const src = await readFile(resolve(repoRoot, file), "utf8");
+    for (const m of src.matchAll(/["'`]([^"'`\s]*?\/assets\/[a-z0-9_\/-]+\.(?:js|css))\?v=(\d+)["'`]/g)) {
+      const asset = m[1].replace(/^(?:\.\.\/)+|^\.\//, "").replace(/^.*?(\/?assets\/)/, "$1").replace(/^\//, "");
+      const byVersion = versions.get(asset) ?? new Map();
+      byVersion.set(m[2], [...(byVersion.get(m[2]) ?? []), file]);
+      versions.set(asset, byVersion);
+    }
+  }
+  for (const [asset, byVersion] of versions) {
+    if (byVersion.size > 1) {
+      const detail = [...byVersion].map(([v, where]) => `v=${v} in ${[...new Set(where)].join(", ")}`).join("; ");
+      failures.push(`${asset}: referenced at ${byVersion.size} different versions — ${detail}`);
+    }
+  }
+}
+
 // The examples page carries its rosters and links in static HTML — the frames
 // are enhancement only. If that inverts, the page stops working without JS.
 {

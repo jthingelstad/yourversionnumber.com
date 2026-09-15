@@ -14,11 +14,8 @@ const APP = FACE === 'work' ? '/work/edition/' : '/birthday/';
 const KEY = FACE === 'work' ? 'j' : 'p';
 
 const list = document.getElementById('gallery');
-const form = document.getElementById('ask');
 const date = document.getElementById('ask-date');
 const themes = THEMES.filter((t) => t.home === FACE);
-
-form.addEventListener('submit', (e) => e.preventDefault());
 
 function urlFor(theme) {
   return `${APP}?theme=${theme}&${KEY}=${date.value}`;
