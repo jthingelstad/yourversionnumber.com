@@ -21,8 +21,8 @@ async function validateEdition({ htmlPath, privateQuery }) {
   for (const required of [
     "tinylytics.app/collector/",
     "sanitizeCollectorUrl",
-    "['url', 'referrer']",
-    "parsed.origin + parsed.pathname",
+    "function virtualPath",
+    "navigator.sendBeacon = function",
     privateQuery,
   ]) {
     if (!html.includes(required)) failures.push(`${htmlPath}: missing privacy guard ${required}`);
@@ -113,7 +113,7 @@ for (const [spinePath, { face }] of Object.entries(SPINE)) {
   for (const required of [
     "tinylytics.app/collector/",
     "sanitizeCollectorUrl",
-    "['url', 'referrer']",
+    "function virtualPath",
     'class="bar__mark"',
     // version-busted, so match the href without its query string
     'href="/assets/site.css',
@@ -150,6 +150,42 @@ for (const [door, other] of [["index.html", 'href="/work/"'], ["work/index.html"
 {
   const html = await readFile(resolve(repoRoot, "work/index.html"), "utf8");
   if (!html.includes("location.replace('/work/edition/'")) failures.push("work/index.html: missing the ?j=/?card= forwarder");
+}
+
+// ── Analytics ───────────────────────────────────────────────────────────────
+// The privacy shim is inlined in every page and must be byte-identical: it is
+// the one piece of code that decides what leaves the browser. The embed may
+// only carry ?events — ?beacon and ?auto switch it to sendBeacon paths the
+// shim wraps but nobody has tested, ?hits was the footer counters (removed),
+// ?spa would count again on history changes. The two edition shells declare
+// the theme the shim reports when the URL names none; it must be the app's.
+{
+  const PAGES = [...Object.keys(SPINE), "birthday/index.html", "work/edition/index.html"];
+  const shimOf = (html) => {
+    const start = html.indexOf("<script>\n// Analytics privacy shim, v2");
+    const end = html.indexOf("</script>", start);
+    return start === -1 ? null : html.slice(start, end);
+  };
+  const reference = shimOf(await readFile(resolve(repoRoot, "index.html"), "utf8"));
+  if (!reference) failures.push("index.html: analytics shim v2 not found");
+  for (const page of PAGES) {
+    const html = await readFile(resolve(repoRoot, page), "utf8");
+    if (shimOf(html) !== reference) failures.push(`${page}: analytics shim differs from index.html`);
+    const embed = html.match(/tinylytics\.app\/embed\/[^"]+/g) || [];
+    if (embed.length !== 1) failures.push(`${page}: expected exactly one tinylytics embed, found ${embed.length}`);
+    for (const e of embed) {
+      if (!e.endsWith("/min.js?events")) failures.push(`${page}: embed must be min.js?events, got ${e}`);
+    }
+    if (/hits-span|tinylytics_hits/.test(html)) failures.push(`${page}: hit counter markup is back`);
+  }
+  for (const [shell, app] of [["birthday/index.html", "birthday/assets/app.js"], ["work/edition/index.html", "work/edition/assets/app.js"]]) {
+    const html = await readFile(resolve(repoRoot, shell), "utf8");
+    const src = await readFile(resolve(repoRoot, app), "utf8");
+    const declared = html.match(/data-analytics-default="([^"]+)"/)?.[1];
+    const actual = src.match(/const DEFAULT_THEME = '([^']+)'/)?.[1];
+    if (!declared) failures.push(`${shell}: missing data-analytics-default on <html>`);
+    else if (declared !== actual) failures.push(`${shell}: data-analytics-default '${declared}' but ${app} defaults to '${actual}'`);
+  }
 }
 
 // The examples page carries its rosters and links in static HTML — the frames

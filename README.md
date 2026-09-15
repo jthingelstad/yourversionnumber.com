@@ -83,6 +83,6 @@ The production domain is served by Amazon S3 and CloudFront; the bucket holds ex
 
 A link exposes what it shows: names and dates, and on a card the note and sender. It can be forwarded or retained in browser history, bookmarks, or history sync. Use information you are comfortable sharing.
 
-Tinylytics receives visit counts and interaction events such as theme selections and link copies. An inline privacy shim removes query strings and fragments from the page URL and referrer fields of analytics requests. This is analytics filtering, not a guarantee that a shared URL stays in the browser.
+Tinylytics receives visit counts and interaction events such as theme selections and link copies. An inline privacy shim rewrites every analytics request before it leaves the browser: the page URL becomes a path that carries only the theme (`/birthday/fridge/`, `/card/birthday/departures/`), the referrer is reduced to its path, and nothing is sent from previews or from any host but the live site. Names, dates, notes and senders never reach the collector. This is analytics filtering, not a guarantee that a shared URL stays in the browser.
 
 The app saves one local-storage flag per edition (`yvn-about-seen` / `yvnw-about-seen`) to remember whether its intro has been shown. It does not save names, dates, themes, or card drafts in local storage.

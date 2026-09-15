@@ -296,16 +296,6 @@ function render() {
   attribution.appendChild(document.createTextNode('.'));
   footer.appendChild(attribution);
 
-  const stats = document.createElement('div');
-  stats.className = 'site-stats';
-  const hitsSpan = document.getElementById('hits-span');
-  if (hitsSpan) {
-    const hitsWrap = document.createElement('span');
-    hitsWrap.className = 'hit-counter';
-    hitsWrap.append(hitsSpan, ' visits');
-    stats.appendChild(hitsWrap);
-  }
-  footer.appendChild(stats);
   app.appendChild(footer);
 }
 

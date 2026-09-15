@@ -107,6 +107,9 @@ form.addEventListener('submit', async (event) => {
   a.textContent = full;
   let copied = false;
   try { await navigator.clipboard.writeText(full); copied = true; } catch (_) { /* clipboard is a nicety */ }
+  // The sender's half of the card funnel, as a view of a virtual path so it
+  // sits beside the recipient views in the Cards segment. No names, no dates.
+  window.yvnTrackPath?.(`/card/copied/${FACE}/${els.theme.value}/`);
   els.status.append(copied ? 'Copied — ' : 'Your link: ', a,
     FACE === 'work' ? '. Circulate as appropriate. No copy is retained.' : '. Everything on the card is in that link; nothing is kept here.');
 });

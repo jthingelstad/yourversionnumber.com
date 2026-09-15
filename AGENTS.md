@@ -290,7 +290,14 @@ Opens at `http://localhost:8080/`. Visit `/birthday/` for the birthday edition a
 
 Birthdays in the URL are visible to anyone with the link and to browser history sync. Do not store sensitive data. Don't add any feature that exfiltrates birthdays beyond the URL the user chose to share. This is the primary reason themes are CSS-only — a JS-capable theme could read URL params and beacon them.
 
-The tinylytics analytics embed normally posts `window.location.href` to its collector — which would leak `?p=` and `?j=` content. Both `index.html` files install a `fetch` interceptor before the deferred tinylytics script loads that strips `url` and `referrer` from any request to `tinylytics.app/collector/`. Only the path counts. If you swap the analytics provider, port the same scrubber.
+The tinylytics analytics embed normally posts `window.location.href` to its collector — which would leak `?p=`, `?j=`, `?card=`, `?note=` and `?from=`. Every page inlines the **analytics shim v2** before the deferred embed (CI diffs all twelve copies byte-for-byte). It wraps `fetch` and `navigator.sendBeacon` and, for any collector request:
+
+- sends nothing from a frame (every preview is a real edition page) or from any host but `yourversionnumber.com` (local checkouts, QA harnesses — the September 2026 dashboard is mostly one harness run);
+- replaces the page URL with a **virtual path** that carries the theme and nothing a person typed: `/birthday/<theme>/`, `/work/edition/<theme>/`, `/card/<edition>/<theme>/`. The theme slug is validated; a missing or invalid one becomes the edition's default, declared as `data-analytics-default` on `<html>` (CI checks it equals `DEFAULT_THEME`);
+- reduces the referrer to origin + path;
+- exposes `window.yvnTrackPath(vp)` for the two card actions — the composers record a copy as a view of `/card/copied/<edition>/<theme>/`, so the Cards segment reads compose → copied → viewed top to bottom.
+
+The embed is `min.js?events` and nothing else: `?hits` was the footer counters (removed), `?beacon`/`?auto` would switch to beacons nobody has tested, `?spa` would double count. Tinylytics **segments** are `/birthday`, `/work`, `/card`; **goals** are `/card/copied` and `/card/birthday` + `/card/work`. If you swap the analytics provider, port the same shim.
 
 ## Cache behavior
 

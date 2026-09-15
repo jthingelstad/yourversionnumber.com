@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-analytics-default="ticker">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,12 +24,41 @@
 <link id="theme-css" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%92%BC%3C/text%3E%3C/svg%3E">
 <script>
-// Privacy: tinylytics' embed sends window.location.href (the full URL, with any
-// ?j= dates in the query string) and the full referrer to its collector.
-// sanitizeCollectorUrl reduces both to origin + path before the request fires:
-// analytics still records which page was viewed and where the visitor came
-// from, while the dates in the query string never leave the browser.
+// Analytics privacy shim, v2. Inlined in every page, byte-identical; CI diffs
+// them. It sits in front of the tinylytics embed and does three things to
+// every collector request before it leaves the browser:
+//
+// 1. Never sends from a frame (previews are real edition pages) or from any
+//    host but yourversionnumber.com (local checkouts, QA harnesses).
+// 2. Replaces the page URL with a VIRTUAL PATH that carries what we want to
+//    read and nothing a person typed: /birthday/<theme>/, /work/edition/<theme>/,
+//    /card/<edition>/<theme>/. Names, dates, notes and senders in ?p= ?j=
+//    ?card= ?note= ?from= never leave. The theme slug is validated.
+// 3. Reduces the referrer to origin + path.
+//
+// Wraps fetch AND sendBeacon: the embed uses fetch today, and would switch to
+// a beacon for ?beacon / ?auto, which CI therefore refuses.
 (function () {
+  var SITE = 'yourversionnumber.com';
+  var COLLECTOR = 'https://tinylytics.app/collector/8JZbs4z3jyWQay28S2av';
+  var SLUG = /^[a-z0-9-]{1,32}$/;
+  var VPATH = /^\/[a-z0-9\/-]+\/$/;
+  var framed;
+  try { framed = window.top !== window.self; } catch (e) { framed = true; }
+  var allowed = location.hostname === SITE && !framed;
+
+  function virtualPath() {
+    var path = location.pathname;
+    var edition = path === '/birthday/' ? 'birthday' : path === '/work/edition/' ? 'work' : null;
+    if (!edition) return path;
+    var q = new URLSearchParams(location.search);
+    var theme = q.get('theme');
+    if (!theme || !SLUG.test(theme)) {
+      theme = document.documentElement.getAttribute('data-analytics-default') || 'default';
+    }
+    if (q.has('card')) return '/card/' + edition + '/' + theme + '/';
+    return path + theme + '/';
+  }
   function pathOnly(value) {
     try {
       var parsed = new URL(value, location.origin);
@@ -40,25 +69,47 @@
   }
   function sanitizeCollectorUrl(input) {
     var u = new URL(input, location.origin);
-    ['url', 'referrer'].forEach(function (key) {
-      var raw = u.searchParams.get(key);
-      // An absent or empty referrer means "direct". Leave it alone rather than
-      // resolving '' against location and inventing a self-referral.
-      if (!raw) return;
+    var vp = virtualPath();
+    if (u.searchParams.has('url')) u.searchParams.set('url', location.origin + vp);
+    if (u.searchParams.has('path')) u.searchParams.set('path', vp);
+    var raw = u.searchParams.get('referrer');
+    // An absent or empty referrer means "direct". Leave it alone rather than
+    // resolving '' against location and inventing a self-referral.
+    if (raw) {
       var safe = pathOnly(raw);
-      if (safe) u.searchParams.set(key, safe);
-      else u.searchParams.delete(key);
-    });
+      if (safe) u.searchParams.set('referrer', safe);
+      else u.searchParams.delete('referrer');
+    }
     return u.toString();
   }
+  function isCollector(input) {
+    return typeof input === 'string' && input.indexOf('tinylytics.app/collector/') !== -1;
+  }
   var origFetch = window.fetch.bind(window);
+  var swallow = function () { return Promise.resolve(new Response(null, { status: 204 })); };
   window.fetch = function (input, init) {
-    try {
-      if (typeof input === 'string' && input.indexOf('tinylytics.app/collector/') !== -1) {
-        input = sanitizeCollectorUrl(input);
-      }
-    } catch (e) { /* leave fetch input as-is */ }
+    if (isCollector(input)) {
+      if (!allowed) return swallow();
+      // If the rewrite fails for any reason, the raw request must not go out.
+      try { input = sanitizeCollectorUrl(input); } catch (e) { return swallow(); }
+    }
     return origFetch(input, init);
+  };
+  if (navigator.sendBeacon) {
+    var origBeacon = navigator.sendBeacon.bind(navigator);
+    navigator.sendBeacon = function (url, data) {
+      if (isCollector(url)) {
+        if (!allowed) return true;
+        try { url = sanitizeCollectorUrl(url); } catch (e) { return true; }
+      }
+      return origBeacon(url, data);
+    };
+  }
+  // A synthetic view for the two card actions, e.g. /card/copied/birthday/departures/.
+  // Only ever a slug path; the same guards apply.
+  window.yvnTrackPath = function (vp) {
+    if (!allowed || !VPATH.test(vp)) return;
+    origFetch(COLLECTOR + '?url=' + encodeURIComponent(location.origin + vp) + '&path=' + encodeURIComponent(vp) + '&referrer=', { method: 'post' });
   };
 })();
 </script>
@@ -81,7 +132,7 @@
   "sameAs": "https://github.com/jthingelstad/yourversionnumber.com"
 }
 </script>
-<script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
+<script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events"></script>
 </head>
 <body>
 <main id="app">
@@ -97,9 +148,6 @@
     <p class="intro">For the original, birthday-based version, see <a href="/birthday/">Your Version Number</a>.</p>
   </noscript>
 </main>
-<div id="tly-slots" hidden>
-  <span id="hits-span" class="tinylytics_hits" data-path="/work/edition/">&mdash;</span>
-</div>
-<script type="module" src="assets/app.js?v=10"></script>
+<script type="module" src="assets/app.js?v=11"></script>
 </body>
 </html>
