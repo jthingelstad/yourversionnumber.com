@@ -6,8 +6,11 @@ const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
 const RANDOM_THEME = '__random__';
 
+// Surprise me draws from this edition's own wardrobe — the other product's
+// themes still render if a URL names them, but are never dealt at random.
+const OWN_THEME_NAMES = THEMES.filter(t => t.home === EDITION).map(t => t.name);
 function pickRandomTheme(except) {
-  const pool = except ? THEME_NAMES.filter(n => n !== except) : THEME_NAMES;
+  const pool = except ? OWN_THEME_NAMES.filter(n => n !== except) : OWN_THEME_NAMES;
   return pool[Math.floor(Math.random() * pool.length)];
 }
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;

@@ -6,7 +6,7 @@ A bookmarkable static page that displays people's "version numbers" (`MAJOR.MINO
 
 - Single-page static site, **two editions**:
   - **Birthday edition** at `/birthday/` — `MAJOR.MINOR.PATCH` is decade / year-in-decade / days since last birthday. People in URL via `?p=Name:YYYY-MM-DD`. Lived at `/` until September 2026; old `/?p=...` bookmarks were deliberately allowed to break.
-  - **Work edition** at `/work/edition/` — `YEARS.QUARTERS.DAYS` (business days only). Roles in URL via `?j=Title:YYYY-MM-DD`. Lived at `/work/` until September 2026; `/work/` is now its front door and forwards `?j=`/`?card=` links to the app.
+  - **Work edition** at `/work/edition/` — `YEARS.QUARTERS.DAYS` (quarters 1–4 from the start date; business days only; 0-indexed quarters until 2026-09-15). Roles in URL via `?j=Title:YYYY-MM-DD`. Lived at `/work/` until September 2026; `/work/` is now its front door and forwards `?j=`/`?card=` links to the app.
 - **No build step**, no framework, no bundler.
 - Static files on S3 behind CloudFront. No server-side code of any kind. A push to `main` validates, then syncs the repo to the bucket.
 - Vanilla JS module per edition. Vanilla CSS. One stylesheet per theme.

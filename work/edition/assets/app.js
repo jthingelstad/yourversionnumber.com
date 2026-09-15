@@ -6,8 +6,11 @@ const THEME_NAMES = THEMES.map(t => t.name);
 const THEME_BY_NAME = Object.fromEntries(THEMES.map(t => [t.name, t]));
 const RANDOM_THEME = '__random__';
 
+// Surprise me draws from this edition's own wardrobe — the other product's
+// themes still render if a URL names them, but are never dealt at random.
+const OWN_THEME_NAMES = THEMES.filter(t => t.home === EDITION).map(t => t.name);
 function pickRandomTheme(except) {
-  const pool = except ? THEME_NAMES.filter(n => n !== except) : THEME_NAMES;
+  const pool = except ? OWN_THEME_NAMES.filter(n => n !== except) : OWN_THEME_NAMES;
   return pool[Math.floor(Math.random() * pool.length)];
 }
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -122,16 +125,18 @@ function computeWorkVersion(startDate, today = new Date()) {
 
   const tenureYears = anniversaryYear - sy;
 
-  // Quarters are 3 calendar months on the anniversary day-of-month.
-  // Start Feb 10 → Q1 May 10, Q2 Aug 10, Q3 Nov 10. End-of-month rollover
-  // (e.g. Aug 31 → Nov 31 → Dec 1) follows JS's Date convention, matching
-  // how anniversaryDate handles Feb 29.
-  let minor = 0;
+  // Quarters are 3 calendar months on the anniversary day-of-month, and they
+  // are 1-indexed: you are always IN a quarter, and nobody says "quarter
+  // zero". Start Feb 10 → Q1 Feb 10, Q2 May 10, Q3 Aug 10, Q4 Nov 10.
+  // End-of-month rollover (e.g. Aug 31 → Nov 31 → Dec 1) follows JS's Date
+  // convention, matching how anniversaryDate handles Feb 29. (0-indexed until
+  // 2026-09-15; every bookmark's middle number went up by one that day.)
+  let minor = 1;
   let quarterStart = anniversary;
   for (let q = 1; q <= 3; q++) {
     const candidate = anniversaryDate(anniversaryYear, sm + q * 3, sd);
     if (todayMid >= candidate) {
-      minor = q;
+      minor = q + 1;
       quarterStart = candidate;
     } else {
       break;
@@ -142,7 +147,7 @@ function computeWorkVersion(startDate, today = new Date()) {
 
   // The quarter this patch sits in, measured the same way the patch is — in
   // business days — so --patch-pct is a real fraction of the quarter.
-  const nextQuarterStart = anniversaryDate(anniversaryYear, sm + (minor + 1) * 3, sd);
+  const nextQuarterStart = anniversaryDate(anniversaryYear, sm + minor * 3, sd);
   const cycleDays = Math.max(1, businessDaysBetween(quarterStart, nextQuarterStart));
   const nextAnniversary = anniversaryDate(anniversaryYear + 1, sm, sd);
   const daysUntil = Math.round((nextAnniversary - todayMid) / 86_400_000);
@@ -193,10 +198,10 @@ function render() {
     const v = computeWorkVersion(r.startDate);
     if (!v) continue;
     if (v.patch === 0) anyQuarterStart = true;
-    if (v.minor === 0 && v.patch === 0) anyAnniversary = true;
+    if (v.minor === 1 && v.patch === 0) anyAnniversary = true;
     const digits = `${v.major}${v.minor}${v.patch}`;
     if (digits.length > 1 && digits === digits.split('').reverse().join('')) anyPalindrome = true;
-    if (v.major > 0 && v.major % 10 === 0 && v.minor === 0 && v.patch === 0) anyRoundDecade = true;
+    if (v.major > 0 && v.major % 10 === 0 && v.minor === 1 && v.patch === 0) anyRoundDecade = true;
     if (firstPct === null) firstPct = v.patch / v.cycleDays;
     if (soonest === null || v.daysUntil < soonest) {
       soonest = v.daysUntil;
@@ -313,7 +318,7 @@ function renderHomeOnly() {
   wrap.className = 'header-controls';
   const homeBtn = document.createElement('a');
   homeBtn.className = 'home-btn';
-  homeBtn.href = '/';
+  homeBtn.href = '/work/';
   homeBtn.textContent = 'Home';
   homeBtn.title = 'Back to yourversionnumber.com';
   wrap.appendChild(homeBtn);
@@ -329,7 +334,7 @@ function renderHeaderControls() {
   // already pair with .about-btn and .edit-btn.
   const homeBtn = document.createElement('a');
   homeBtn.className = 'home-btn';
-  homeBtn.href = '/';
+  homeBtn.href = '/work/';
   homeBtn.textContent = 'Home';
   homeBtn.title = 'Back to yourversionnumber.com';
   homeBtn.setAttribute('data-tinylytics-event', 'home.click');
@@ -465,10 +470,10 @@ function openAbout() {
           <p>Introducing the <strong>Work Edition</strong>™ &mdash; the same beloved <code>MAJOR.MINOR.PATCH</code> you trust, now <strong>OPTIMIZED FOR THE MODERN ENTERPRISE</strong>. Where the original tracked your trip around the sun, the Work Edition™ tracks your trip through the corporate calendar. Quarters. OKRs. Earnings. The eternal march of fiscal time.</p>
           <ul>
             <li><strong>MAJOR</strong> &mdash; years of tenure. Bumps when HR sends the anniversary email.</li>
-            <li><strong>MINOR</strong> &mdash; quarter (0&ndash;3). Three calendar months from your start date &mdash; if you started Feb 10, Q1 begins May 10. The unit of all things scheduled, planned, and reviewed.</li>
+            <li><strong>MINOR</strong> &mdash; quarter (1&ndash;4). Three calendar months each, counted from your start date &mdash; if you started Feb 10, Q2 begins May 10. The unit of all things scheduled, planned, and reviewed.</li>
             <li><strong>PATCH</strong> &mdash; business days into the quarter. Weekends do not tick, because real work doesn&rsquo;t happen on weekends. <em>You&rsquo;re welcome.</em></li>
           </ul>
-          <p>A version of <code>2.1.15</code> means two completed years, the second quarter of that tenure year (0-indexed, because we&rsquo;re engineers), and fifteen weekdays into that quarter. Public holidays count as weekdays; there is no holiday calendar. <strong>Ship it.</strong></p>
+          <p>A version of <code>2.2.15</code> means two completed years, the second quarter of that tenure year, and fifteen weekdays into that quarter. Public holidays count as weekdays; there is no holiday calendar. <strong>Ship it.</strong></p>
           <p class="app-dialog__privacy"><strong>Everything lives in the URL.</strong> This page reads its names, dates, theme &mdash; and, on a card, the note and sender &mdash; from the address bar and stores none of it. Bookmark the link to come back; share it and anyone who has it can read what it contains. <a href="/about/">Sharing and analytics details</a>.</p>
           <p class="app-dialog__credit">Concept from Jamie Thingelstad&rsquo;s 2018 post <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html" target="_blank" rel="noopener">&ldquo;Your Version Number&rdquo;</a>. For the birthday version, see <a href="/birthday/">Your Version Number</a>.</p>
         </div>

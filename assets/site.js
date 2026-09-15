@@ -33,7 +33,7 @@ export function versionString(v) {
 
 // Same as work/edition/assets/app.js computeWorkVersion(), kept in step by
 // hand. YEARS = completed years in the seat; QUARTERS =
-// which three-month step of the tenure year (0-3, from the start date, not
+// which three-month step of the tenure year (1-4, from the start date, not
 // January); DAYS = business days since that quarter began. Month-end
 // anniversaries roll forward the way JS dates do: three months after 31
 // January is 1 May.
@@ -51,11 +51,11 @@ export function computeTenure(start, today = new Date()) {
   }
   const years = anniversaryYear - sy;
 
-  let quarters = 0;
+  let quarters = 1;
   let quarterStart = anniversary;
   for (let q = 1; q <= 3; q++) {
     const candidate = new Date(anniversaryYear, sm - 1 + q * 3, sd);
-    if (todayMid >= candidate) { quarters = q; quarterStart = candidate; }
+    if (todayMid >= candidate) { quarters = q + 1; quarterStart = candidate; }
     else break;
   }
 
