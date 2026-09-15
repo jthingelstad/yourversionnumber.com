@@ -102,7 +102,7 @@ function writeURL() {
 }
 
 function applyTheme(theme) {
-  document.getElementById('theme-css').href = `/assets/themes/${theme}.css`;
+  document.getElementById('theme-css').href = `/assets/themes/${theme}.css?v=2`;
   document.documentElement.dataset.theme = theme;
 }
 

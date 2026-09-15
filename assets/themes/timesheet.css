@@ -121,7 +121,9 @@ body {
 .person {
   position: relative;
   display: grid;
-  grid-template-columns: 10ch minmax(0, 1fr) 9ch;
+  /* The work edition appends a build such as +1,454. Give the figure enough
+     room for the whole self-contained version at tablet and desktop widths. */
+  grid-template-columns: 10ch minmax(0, 1fr) 13ch;
   align-items: baseline;
   gap: 0 1ch;
   width: 100%;
@@ -367,4 +369,59 @@ body[data-weekday="fri"] .site-footer::after {
 
 @media (prefers-reduced-motion: reduce) {
   .person.is-bumping::after { animation: none; }
+}
+
+/* The desktop sheet has three fixed columns: job code, role and figure. On a
+   phone that leaves the role only a handful of characters, so long titles and
+   build numbers print over one another and widen the whole document. Preserve
+   the paper vocabulary, but let each mobile row use a second line. */
+@media (max-width: 520px) {
+  #app { padding: 1.5rem 2rem 2.5rem; }
+
+  .person {
+    grid-template-columns: 8ch minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: start;
+    height: auto;
+    min-height: calc(var(--pitch) * 2);
+    padding: 0.4rem 0.5rem 0.55rem;
+  }
+
+  .person::before {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .person-name {
+    grid-column: 2;
+    grid-row: 1;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+  }
+
+  .version {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: left;
+  }
+
+  .person::after,
+  .version::before,
+  .version::after {
+    right: 0.5rem;
+    top: auto;
+    bottom: 0.25rem;
+    font-size: 0.72rem;
+  }
+}
+
+/* At legacy 320px widths the stamp and the complete figure cannot share a
+   line. The printed data wins; the green bar and job code still carry the
+   timesheet identity. */
+@media (max-width: 360px) {
+  .person { min-height: calc(var(--pitch) * 1.7); }
+  .person::after,
+  .version::before,
+  .version::after { display: none; }
 }

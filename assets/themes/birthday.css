@@ -379,6 +379,7 @@ body[data-birthday="true"] .theme-fx::after {
 .card-from::before { content: "— "; color: var(--ink); font-weight: 400; }
 
 @media (prefers-reduced-motion: reduce) {
+  .person::before { animation: none; }
   .countdown::before,
   .countdown::after { transition: none; }
 }

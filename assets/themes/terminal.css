@@ -322,5 +322,12 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .site-title::after,
   .card-note::after { animation: none; }
+}
+
+@media (max-width: 360px) {
+  /* The neutral 3.5rem minimum is wider than a 320px terminal once the prompt
+     brackets and row padding are included. */
+  .version { --version-size: clamp(2.75rem, 15vw, 3.5rem); }
 }

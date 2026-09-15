@@ -328,3 +328,8 @@ body[data-countdown="7"] .countdown::before { content: "T-7  ·  "; }
 }
 
 .card-from::before { content: "RATED BY "; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-title::before,
+  .person::before { animation: none; }
+}

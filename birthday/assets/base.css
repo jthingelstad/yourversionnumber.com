@@ -529,21 +529,28 @@ a:focus-visible {
   .edit-btn,
   .about-btn,
   .theme-select,
-  .add-btn {
+  .add-btn,
+  .share-btn,
+  .app-dialog__close,
+  .edit-add {
     min-height: 44px;
   }
 
   /* Keep the label centred once the box is taller than its text. */
   .home-btn,
   .edit-btn,
-  .about-btn {
+  .about-btn,
+  .share-btn,
+  .app-dialog__close,
+  .edit-add {
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
 
   /* The About control is a single "?" — tall enough but only 20px wide. */
-  .about-btn {
+  .about-btn,
+  .app-dialog__close {
     min-width: 44px;
   }
 }

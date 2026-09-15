@@ -361,7 +361,39 @@ body[data-face="work"] .escape {
 }
 body[data-face="work"] .escape:hover { background: #ffee7a; color: #14161a; box-shadow: none; transform: none; }
 
-@media (max-width: 719px) { .escape { margin-left: 0; } }
+@media (max-width: 719px) {
+  /* Two compact rows on phones: identity first, then a single non-wrapping
+     navigation rail with the cross-product door kept visible at the right. */
+  .bar__in {
+    gap: 0.25rem 0.65rem;
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+  }
+  .bar__brand { flex-wrap: nowrap; min-width: 0; gap: 0.35rem; }
+  .bar__mark { min-width: 0; font-size: 1rem; }
+  .bar__v { flex: none; padding-inline: 0.4rem; }
+  .bar__in nav {
+    flex: 1 1 0;
+    min-width: 0;
+    flex-wrap: nowrap;
+    gap: 0.85rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .bar__in nav::-webkit-scrollbar { display: none; }
+  .bar__in nav a { flex: none; }
+  .escape { flex: none; margin-left: 0; }
+
+  main { padding-top: 1.75rem; padding-bottom: 3rem; }
+}
+
+@media (max-width: 340px) {
+  /* Keep the longer office wordmark on the identity line at the smallest
+     supported width. The full wording remains visible and readable. */
+  body[data-face="work"] .bar__mark { font-size: 0.75rem; }
+}
 
 main { display: block; padding: 2.5rem 0 4rem; }
 
@@ -536,6 +568,13 @@ body[data-face="work"] .btn:hover { transform: none; box-shadow: 3px 3px 0 var(-
    A well, a name, one line. The anchor wraps the whole item. */
 
 .wall { display: grid; gap: 1.5rem 1.25rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+@media (min-width: 360px) and (max-width: 619px) {
+  /* The theme catalogue is a chooser, so phone-sized thumbnails scan better
+     in two columns. Other walls keep their roomier editorial layout. */
+  .wall--themes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem 0.85rem; }
+  .wall--themes h3 { font-size: 1rem; }
+  .wall--themes p { font-size: 0.85rem; line-height: 1.4; }
+}
 @media (min-width: 620px) { .wall { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 960px) { .wall { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
@@ -617,8 +656,11 @@ body[data-face="work"] .field input, body[data-face="work"] .field select, body[
 .count { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); }
 .is-over { color: var(--orange-ink); font-weight: 700; }
 
-/* The composer: preview on top on a phone, sticky on the right from 900px. */
+/* Answer the questions first on a phone; the preview follows. From 900px the
+   preview returns to the sticky right rail. */
 .compose { display: grid; gap: 1.75rem; }
+.compose__form { order: 1; }
+.compose__preview { order: 2; }
 @media (min-width: 900px) {
   .compose { grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); align-items: start; }
   .compose__preview { position: sticky; top: 1.5rem; order: 2; }
@@ -626,6 +668,23 @@ body[data-face="work"] .field input, body[data-face="work"] .field select, body[
 .compose__preview .shot { aspect-ratio: 1000 / 700; }
 .compose__preview .shot iframe { height: 700px; }
 .compose__preview .mono { margin: 0.6rem 0 0; }
+
+@media (max-width: 719px) {
+  /* The question is the front door's first job. Document furniture remains,
+     but follows the actionable content on small screens. */
+  .work-hero { display: flex; flex-direction: column; }
+  .work-hero h1 { order: 1; }
+  .work-hero .ask { order: 2; margin-top: 0.75rem; }
+  .work-hero .lede { order: 3; margin-top: 1.5rem; }
+  .work-hero .formline { order: 4; margin-top: 1.5rem; }
+  .work-hero .stamp { order: 5; }
+
+  .work-card-main { display: flex; flex-direction: column; }
+  .work-card-main h1 { order: 1; }
+  .work-card-main > .lede { order: 2; }
+  .work-card-main > .compose { order: 3; }
+  .work-card-main > .formline { order: 4; margin-top: 2rem; }
+}
 
 /* ── 11. The work face's document furniture ────────────────────────────────*/
 /* All CSS, no images. Uppercase lives here and nowhere else. */
