@@ -6,13 +6,14 @@ The production site is static files served by Amazon S3 and CloudFront. No serve
 
 ## Pages
 
-- [Home](https://yourversionnumber.com/): landing page. Explains the concept and links to both editions, the theme gallery and the about page. No URL state.
+- [Home](https://yourversionnumber.com/): the birthday product's front door. Asks your birthday, shows your number live, links into the birthday edition, the themes, the examples, the card composer and the about page. No URL state.
+- [Work Edition front door](https://yourversionnumber.com/work/): the second product's own front door, in its own (deadpan office) voice, with its own themes, composer and about page under `/work/`. Old `/work/?j=` and `/work/?card=` links forward to the app.
 - [Birthday Edition](https://yourversionnumber.com/birthday/): birthday-based version number. URL state: `?theme=<name>&p=Name:YYYY-MM-DD` (the `p` parameter is repeatable; the name is optional). Moved here from `/` in September 2026; old `/?p=...` bookmarks no longer resolve.
-- [Work Edition](https://yourversionnumber.com/work/): quarter-anchored version number for a job. `MAJOR` is years of tenure, `MINOR` is the quarter within the current tenure year (0–3, 3 calendar months apart from the anniversary), `PATCH` is business days into that quarter. URL state: `?theme=<name>&j=Title:YYYY-MM-DD`.
+- [Work Edition](https://yourversionnumber.com/work/edition/): quarter-anchored version number for a job. `MAJOR` is years of tenure, `MINOR` is the quarter within the current tenure year (0–3, 3 calendar months apart from the anniversary), `PATCH` is business days into that quarter. URL state: `?theme=<name>&j=Title:YYYY-MM-DD`. Moved from `/work/` in September 2026; `/work/` forwards those links.
 - [Examples](https://yourversionnumber.com/examples/): eight worked examples, one to eight people, using public figures with well-documented birthdays. Each links into the birthday edition with the roster in the URL.
-- [Theme gallery](https://yourversionnumber.com/themes/): live previews of all 28 themes, every one selectable in both editions. Enter a date and each preview renders your own number.
+- [Theme gallery](https://yourversionnumber.com/themes/): live previews of the twenty birthday themes; enter a date and each preview renders your own number. The nine work themes have their own gallery at [/work/themes/](https://yourversionnumber.com/work/themes/). A theme belongs to one product; every stylesheet still renders if a URL names it in the other.
 - [About](https://yourversionnumber.com/about/): the origin, the birthday and work arithmetic, and the privacy model (the URL is the only state).
-- [Send a card](https://yourversionnumber.com/card/new/): builds a card link from a recipient name, birthday or work start date, theme, note, and sender name. The link is the card: `/birthday/?theme=<name>&card=Name:YYYY-MM-DD&from=Sender&note=Text` (or `/work/?...` for a work anniversary). Numbers use the viewer's local date; a countdown appears in the final seven days before the next occasion.
+- [Send a card](https://yourversionnumber.com/card/): builds a card link from a recipient name, birthday or work start date, theme, note, and sender name. The link is the card: `/birthday/?theme=<name>&card=Name:YYYY-MM-DD&from=Sender&note=Text` (or `/work/edition/?...` for a work anniversary, written by [/work/card/](https://yourversionnumber.com/work/card/)). `/card/new/` redirects here. Numbers use the viewer's local date; a countdown appears in the final seven days before the next occasion.
 
 ## Source
 

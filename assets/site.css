@@ -1,515 +1,678 @@
-/* The spine — rack unit.
+/* The spine.
  *
- * The two editions are dressed up 28 different ways; this is the one surface
- * that cannot be. Two earlier attempts got it wrong in opposite directions:
- * the first was neutral to the point of looking unfinished, the second borrowed
- * the birthday theme's cream and pink and so competed with the themes on colour
- * while looking related to exactly one of them.
+ * The two editions are dressed up 29 different ways; these pages cannot be.
+ * Three earlier attempts treated that as a skin problem — neutral grey (read as
+ * unfinished), the birthday theme's cream and pink (competed with one theme),
+ * instrument hardware with engraved labels and a status LED (competent, and
+ * joyless). This one treats it as a scale and voice problem: warm white, an
+ * enormous blue number with orange dots, sentence case, and no ornament that is
+ * not the number itself.
  *
- * This takes a third position. The chrome is monochrome instrument hardware and
- * is deliberately colour-blind — greys plus one amber signal, and amber only
- * ever means live, selected or interactive. So any colour on the page belongs
- * to a theme, which is what a page full of scaled-down theme previews needs. It
- * reads as designed rather than absent because the material has weight: bevels,
- * bolt heads, engraved labels.
- *
- * Reference: refs/Spine Directions.html, turn 2, option 2b. Spec in 06-spine.md.
+ * Two faces in one sheet, switched by body[data-face="work"]: hand-drawn
+ * (birthday) and photocopier (work). Each face has a dark block that is its own
+ * idea rather than an inversion — chalk on a blackboard, the office at 11pm.
+ * prefers-color-scheme only; there is no toggle and nothing is stored.
+ * Spec: design_handoff_spine_joy/03-site-css.md, 11-work-front-door.md,
+ * 14-dark-mode.md.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Saira:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Martian+Mono:wght@400;500;700&display=swap');
+
+/* ── 1. Tokens ─────────────────────────────────────────────────────────────*/
 
 :root {
-  --chassis:       #e6e5e0;
-  --chassis-grain: repeating-linear-gradient(90deg, rgba(0,0,0,.022) 0 1px, transparent 1px 3px);
-  --panel:         #f5f4f0;
-  --panel-sunk:    #d5d4ce;
-  --edge:          #c4c3bd;
-  --edge-strong:   #b7b6b0;
-  --screw:         radial-gradient(circle at 35% 30%, #e8e7e2, #9a9994);
-  --ink:           #1c1d1a;
-  --ink-2:         rgba(28,29,26,.78);
-  --ink-3:         rgba(28,29,26,.72);
-  --plate:         #1c1d1a;
-  --plate-ink:     #e9eae5;
-  --signal:        #e0850b;   /* fills, dots, text on dark ground */
-  --signal-ink:    #8a5200;   /* amber as text on a light ground */
-  --font-head: 'Saira Condensed', system-ui, sans-serif;
-  --font-body: 'Saira', system-ui, sans-serif;
-  --font-mono: 'DM Mono', ui-monospace, monospace;
+  color-scheme: light;
+
+  /* Face 1 — birthday. The default; every spine page outside /work/ uses it. */
+  --paper:     #fffbf2;
+  --white:     #ffffff;
+  --chrome:    #fffbf2;
+  --band:      #ffd6e8;   /* the one full-bleed band: "make one for someone else" */
+  --tile-major:#e0e9ff;
+  --tile-minor:#ffe6d3;
+  --tile-patch:#ffd6e8;
+  --rule:      #cfdcf7;
+  --ink:       #14163a;   /* type and every outline */
+  --ink-2:     #3b3d63;
+  --blue:      #1a4fe0;   /* every .vnum digit, links, one button */
+  --orange:    #ff5a1f;   /* the dots, the primary button — fills only, never text */
+  --orange-ink:#c43c00;
+  --pink:      #ffd6e8;
+  --pink-ink:  #c9186a;
+  --sun:       #ffd43d;   /* the ask box's shadow, the sticky note */
+  --hi-lite:   #ffd6e8;
+  --stamp:     #b3261e;
+  --btn-ink:   #14163a;   /* type on the filled button; flips to paper at night */
+  --line: 2.5px;          /* outline weight — the page is drawn, not shaded */
+
+  --font: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  --mono: 'Martian Mono', ui-monospace, 'DM Mono', monospace;
+
+  --measure: 34rem;   /* prose line length */
+  --gutter: 1.25rem;  /* page padding at 390px */
+  --radius: 14px;
 }
 
-/* Dark is not an inversion. Light is brushed aluminium, dark is anodized
-   black — two materials, one instrument. */
+/* Face 2 — the Work Edition's front door. Same class names, same sizes, worse
+   suit: photocopier cream, black line work, square corners. */
+body[data-face="work"] {
+  --paper:     #f7f4ec;
+  --white:     #ffffff;
+  --chrome:    #eae5d6;   /* bar and footer: a shade of manila */
+  --band:      #eae5d6;
+  --tile-major:#eef2e4;   /* the green-bar stripe */
+  --tile-minor:#eae5d6;
+  --tile-patch:#fff6a8;
+  --rule:      #c9c2ac;
+  --ink:       #14161a;
+  --ink-2:     #3d3a30;
+  --blue:      #14161a;   /* the number is black here, not cobalt */
+  --orange:    #b3261e;   /* stamp red does the dots */
+  --orange-ink:#b3261e;
+  --pink:      #fff6a8;
+  --pink-ink:  #b3261e;
+  --sun:       #d8d2bd;   /* dust-grey shadow, not sunshine */
+  --hi-lite:   #fff6a8;
+  --stamp:     #b3261e;
+  --btn-ink:   #14161a;
+  --radius: 0;
+  --line: 2px;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --chassis:     #131412;
-    --panel:       #1e201d;
-    --panel-sunk:  #1a1c19;
-    --edge:        #2a2c28;
-    --edge-strong: #3a3d37;
-    --screw:       radial-gradient(circle at 35% 30%, #55574f, #24261f);
-    --ink:         #e9eae5;
-    --ink-2:       rgba(233,234,229,.82);
-    --ink-3:       rgba(233,234,229,.70);
-    --plate:       #0a0b0a;
-    --plate-ink:   #e9eae5;
-    --signal:      #e0850b;
-    --signal-ink:  #e0850b;
+    color-scheme: dark;
+    /* Chalk on a blackboard. Outlines in warm off-white on deep indigo. */
+    --paper:     #131634;
+    --white:     #1c2047;
+    --chrome:    #131634;
+    --ink:       #fdf6e8;
+    --ink-2:     #b9bede;
+    --blue:      #8fb4ff;
+    --orange:    #ff8a4d;
+    --orange-ink:#ffab6b;
+    --pink:      #46203a;   /* the band and the marker highlight go DEEP */
+    --pink-ink:  #ff9ecb;
+    --sun:       #ffd43d;   /* the sticky note is a physical object; no night mode */
+    --tile-major:#1b2550;
+    --tile-minor:#3a2b25;
+    --tile-patch:#46203a;
+    --band:      #46203a;
+    --rule:      #2e3566;
+    --hi-lite:   #46203a;
+    --btn-ink:   #131634;   /* the fill stays bright, so the label goes dark */
+  }
+
+  body[data-face="work"] {
+    /* The office at 11pm. */
+    --paper:     #16181b;
+    --white:     #1f2226;
+    --chrome:    #1f2226;
+    --band:      #1f2226;
+    --ink:       #e8e4d8;
+    --ink-2:     #a9a394;
+    --blue:      #e8e4d8;
+    --orange:    #ff6a5c;
+    --orange-ink:#ff6a5c;
+    --pink:      #3a3320;
+    --pink-ink:  #ff6a5c;
+    --stamp:     #ff6a5c;
+    --hi-lite:   #d9c04a;   /* highlighter at night is a duller amber */
+    --tile-major:#1f2a22;
+    --tile-minor:#1f2226;
+    --tile-patch:#3a3320;
+    --rule:      #3a3d42;
+    --sun:       #000000;   /* the offset shadow becomes a real shadow */
+    --btn-ink:   #16181b;
   }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
+html { -webkit-text-size-adjust: 100%; }
+
 body {
   margin: 0;
-  background: var(--chassis);
-  background-image: var(--chassis-grain);
+  background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 15.5px;
+  font-family: var(--font);
+  font-size: 17px;
   line-height: 1.55;
+  font-variation-settings: 'wdth' 100;
   -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
 }
 
-.wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.5rem; }
+@media (min-width: 640px) { :root { --gutter: 2rem; } }
 
-/* ── Nav ───────────────────────────────────────────────────────────────────*/
+.wrap { width: 100%; max-width: 64rem; margin: 0 auto; padding: 0 var(--gutter); }
 
-.site-nav {
-  /* Not a fixed height: between the 640px breakpoint and about 735px the
-     one-line nav did not fit and the whole page scrolled sideways. Wrapping is
-     allowed at every width now, so there is no band where it can overflow. */
-  min-height: 48px;
-  background: var(--plate);
-  color: var(--plate-ink);
-}
+/* ── 2. Type ───────────────────────────────────────────────────────────────*/
+/* Sentence case throughout. The only text-transform in this file is on the
+   work face's document furniture (.formline, .stamp, .cc, .notice). */
 
-.site-nav__inner {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  min-height: 48px;
-}
-
-.site-nav__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7rem;
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: .13em;
-  text-transform: uppercase;
-  color: var(--plate-ink);
-  text-decoration: none;
-  margin-right: auto;
-  align-self: stretch;
-}
-
-.site-nav__brand::before {
-  content: "YVN";
-  border: 1px solid rgba(233,234,229,.5);
-  padding: 3px 6px;
-  font: 500 10px/1 var(--font-mono);
-  letter-spacing: 0;
-}
-
-.site-nav a:not(.site-nav__brand) {
-  font-family: var(--font-head);
-  font-weight: 600;
-  font-size: 12px;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  color: rgba(233,234,229,.72);
-  text-decoration: none;
-  line-height: 48px;
-}
-
-.site-nav a:not(.site-nav__brand):hover { color: var(--plate-ink); }
-
-.site-nav a[aria-current="page"] {
-  color: var(--plate-ink);
-  box-shadow: inset 0 -2px 0 var(--signal);
-}
-
-/* Status lamp and the site's own version, far right behind a divider. */
-.site-nav__status {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding-left: 18px;
-  border-left: 1px solid rgba(233,234,229,.18);
-  font: 400 10.5px/1 var(--font-mono);
-  color: rgba(233,234,229,.75);
-}
-
-.site-nav__led {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--signal);
-  box-shadow: 0 0 7px var(--signal);
-  animation: yvn-blink 2.4s infinite;
-}
-
-@keyframes yvn-blink { 0%,45% { opacity: 1 } 55%,100% { opacity: .35 } }
-
-@media (prefers-reduced-motion: reduce) {
-  .site-nav__led { animation: none; }
-}
-
-@media (max-width: 767px) {
-  /* Every one of these links used to be display:none below 640px, and the rule
-     that revealed them again pointed at a .site-nav__menu that was never built
-     in any page -- so on a phone the nav was the wordmark and nothing else, and
-     Birthday, Work, Cards, Examples, Themes and About were all unreachable from
-     it. They wrap onto a second row now: no disclosure state, nothing to
-     script, nothing that can fail to open. */
-  .site-nav__inner {
-    column-gap: 0.7rem;
-    row-gap: 0;
-    padding-top: 0.4rem;
-    padding-bottom: 0.45rem;
-  }
-
-  .site-nav__brand { order: 0; min-height: 28px; }
-  .site-nav__status { order: 1; }
-
-  /* A full-width item of no height, which cannot share the first row and so
-     pushes the links onto their own. */
-  .site-nav__inner::after {
-    content: "";
-    order: 2;
-    flex: 1 0 100%;
-  }
-
-  .site-nav a:not(.site-nav__brand) {
-    order: 3;
-    font-size: 11px;
-    line-height: 2.5;
-  }
-}
-
-/* ── Prose ─────────────────────────────────────────────────────────────────*/
-
-main.wrap { padding-top: 2.5rem; padding-bottom: 3.5rem; }
+h1, h2, h3 { font-family: var(--font); margin: 0; text-wrap: balance; }
 
 h1 {
-  margin: 0 0 0.75rem;
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: clamp(1.9rem, 5vw, 2.6rem);
-  line-height: 1.05;
-  letter-spacing: .02em;
-  text-transform: uppercase;
-  text-wrap: balance;
+  font-size: clamp(2.1rem, 8.5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.6rem;
 }
 
 h2 {
-  margin: 2.75rem 0 0.75rem;
-  font-family: var(--font-head);
+  font-size: clamp(1.4rem, 4.5vw, 2rem);
   font-weight: 700;
-  font-size: 1.15rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 3.5rem 0 0.75rem;
 }
 
 h3 {
-  margin: 0 0 0.25rem;
-  font-family: var(--font-head);
+  font-size: 1.2rem;
   font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: .11em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.3rem;
 }
 
-p { margin: 0.85rem 0; max-width: 68ch; }
+p { margin: 0.9rem 0; max-width: var(--measure); }
 
-.lede { font-size: 1.1rem; color: var(--ink-2); max-width: 60ch; margin-bottom: 1.75rem; }
+.lede { font-size: clamp(1.15rem, 3.4vw, 1.4rem); line-height: 1.4; color: var(--ink-2); max-width: 30rem; }
 
-a { color: var(--ink); text-decoration-color: var(--signal-ink); text-underline-offset: .18em; }
-a:hover { color: var(--signal-ink); }
+.small { font-size: 0.9375rem; color: var(--ink-2); }
 
-code { font-family: var(--font-mono); font-size: .88em; background: var(--panel-sunk); padding: .08em .35em; }
+.mono { font-family: var(--mono); font-size: 0.8125rem; letter-spacing: -0.02em; color: var(--ink-2); }
 
-/* ── Panel ─────────────────────────────────────────────────────────────────*/
+code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  letter-spacing: -0.03em;
+  background: var(--band);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+}
 
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--edge);
+a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--orange); text-decoration-thickness: 2px; text-underline-offset: 0.18em; }
+a:hover { color: var(--orange-ink); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
   border-radius: 3px;
-  box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(0,0,0,.09);
 }
 
-@media (prefers-color-scheme: dark) {
-  .panel { box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 1px 2px rgba(0,0,0,.4); }
+/* A text link that has to sit beside a button: same height, no pill. */
+.link { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+
+/* ── 3. The motif — .vnum ──────────────────────────────────────────────────*/
+/* Every dotted number on the site. site.js wraps the characters:
+   <span class="vnum"><span class="d">5</span><span class="sep">.</span>…</span>
+   with an aria-label carrying the plain string, exactly like the editions'
+   .version. */
+
+.vnum {
+  color: var(--blue);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
 }
 
-.panel__label {
+.vnum .sep { color: var(--orange); }
+.vnum .d { display: inline-block; }
+
+/* The hero number. Clamped so 5.2.113 (7 characters of a wide mono) fits
+   inside 390px minus the gutters, and never wraps. */
+.vnum--hero { font-size: clamp(2.9rem, 14.5vw, 7rem); line-height: 1; display: block; }
+
+.vnum--big { font-size: clamp(1.8rem, 6vw, 2.6rem); }
+.vnum--inline { font-size: 0.95em; font-weight: 500; }
+
+/* Per-digit change animation.
+ *
+ * When the date changes, ONLY the characters that actually differ move. The
+ * renderer rebuilds .vnum's spans and reuses the DOM node for any character
+ * whose position and value are unchanged, so the animation only ever fires on
+ * the ones that are new — 5.2.113 -> 5.2.114 rolls one digit, not seven.
+ *
+ * Birthday face rolls up, staggered 35ms per character. Work face clunks
+ * sideways in 120ms with no stagger, like a carriage return: it is a document,
+ * and documents do not bounce. */
+@keyframes vnum-roll  { from { transform: translateY(0.45em); opacity: 0 } to { transform: none; opacity: 1 } }
+@keyframes vnum-clunk { from { transform: translateX(-0.18em); opacity: 0 } to { transform: none; opacity: 1 } }
+@keyframes vnum-lift  { from { transform: translateY(6px); opacity: 0 } to { transform: none; opacity: 1 } }
+
+.vnum .d.is-new { animation: vnum-roll 260ms cubic-bezier(.2,.9,.3,1.1) both; }
+.vnum .d.is-new:nth-child(2) { animation-delay: 35ms; }
+.vnum .d.is-new:nth-child(3) { animation-delay: 70ms; }
+.vnum .d.is-new:nth-child(4) { animation-delay: 105ms; }
+.vnum .d.is-new:nth-child(5) { animation-delay: 140ms; }
+.vnum .d.is-new:nth-child(6) { animation-delay: 175ms; }
+.vnum .d.is-new:nth-child(7) { animation-delay: 210ms; }
+body[data-face="work"] .vnum .d.is-new { animation: vnum-clunk 120ms ease-out both; animation-delay: 0s; }
+
+/* The midnight tick lifts the whole number once. */
+.vnum--hero.is-ticking .d { animation: vnum-lift 600ms ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vnum .d.is-new, .vnum--hero.is-ticking .d { animation: none; }
+}
+
+/* ── 4. Bar (nav) and foot ─────────────────────────────────────────────────*/
+/* The same markup on every spine page. No LED, no brand badge, no uppercase.
+   The site's own version sits beside the wordmark as a link to its own page. */
+
+.bar { border-bottom: 2px solid var(--ink); background: var(--chrome); }
+
+.bar__in {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 9px 14px;
-  border-bottom: 1px solid var(--edge);
-  font: 600 10.5px/1 var(--font-head);
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--ink-3);
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  padding: 0.8rem var(--gutter);
+  max-width: 64rem;
+  margin: 0 auto;
 }
 
-.panel__live { color: var(--signal-ink); }
-.panel__body { padding: 1.1rem 1.2rem 1.25rem; }
+.bar__brand { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.6rem; flex: 1 0 100%; margin-right: auto; }
 
-/* ── Buttons ───────────────────────────────────────────────────────────────*/
+.bar__mark {
+  font-weight: 800;
+  font-size: 1.0625rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.bar__mark span { color: var(--ink-2); font-weight: 500; }  /* the ".com" */
+
+.bar__in nav { display: flex; flex-wrap: wrap; gap: 0.15rem 1.1rem; align-items: center; }
+
+.bar__in nav a {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  padding: 0.45rem 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.bar__in nav a:hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--orange); text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+.bar__in nav a[aria-current="page"] { color: var(--ink); font-weight: 700; box-shadow: inset 0 -3px 0 var(--orange); }
+
+/* The site's own version number, next to the wordmark, as a link to the site's
+   own birthday page. An aside that doubles as proof the thing works — it is
+   deliberately NOT in the hero any more. */
+.bar__v {
+  font-family: var(--mono); font-weight: 500; font-size: 0.8125rem; letter-spacing: -0.03em;
+  color: var(--blue); text-decoration: none;
+  border: 1.5px solid var(--rule); padding: 0.15rem 0.5rem;
+}
+.bar__v:hover { border-color: var(--ink); color: var(--blue); }
+
+@media (min-width: 720px) {
+  .bar__brand { flex: 0 0 auto; }
+  .bar__in nav a { min-height: 0; padding: 0; }
+}
+
+/* .escape — the door to the other product, hard right in the bar.
+ *
+ * NOT a toggle and NOT a nav item. A segmented Birthdays|Work control reads as
+ * two modes of one thing, which is exactly the merge this redesign undoes. It
+ * is one link, written in the voice of the page you are leaving:
+ *
+ *   on /        "Go to the office!"    -> /work/
+ *   on /work/   "Let's go home!"       -> /
+ *
+ * The work page's is the one cheerful element on it, which is the joke. */
+.escape {
+  margin-left: auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0.45rem 0.9rem;
+  font-size: 0.9375rem; font-weight: 700;
+  color: var(--btn-ink);
+  background: var(--sun);
+  border: var(--line) solid var(--ink);
+  border-radius: 18px 24px 16px 22px / 22px 16px 24px 18px;
+  text-decoration: none;
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+.escape:hover, .escape:focus-visible { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); color: var(--btn-ink); }
+@media (prefers-reduced-motion: reduce) { .escape, .escape:hover { transform: none; transition: none; } }
+
+/* Work face: the same button as a yellow slip taped to the document — square,
+   dashed, no shadow trick. */
+body[data-face="work"] .escape {
+  padding: 0.3rem 0.6rem;
+  background: var(--hi-lite);
+  border: 1.5px dashed var(--ink);
+  border-radius: 0;
+}
+body[data-face="work"] .escape:hover { background: #ffee7a; color: #14161a; box-shadow: none; transform: none; }
+
+@media (max-width: 719px) { .escape { margin-left: 0; } }
+
+main { display: block; padding: 2.5rem 0 4rem; }
+
+.foot { border-top: 2px solid var(--ink); background: var(--chrome); }
+.foot__in {
+  max-width: 64rem; margin: 0 auto; padding: 1.75rem var(--gutter) 2.5rem;
+  display: grid; gap: 0.75rem;
+}
+.foot p { margin: 0; font-size: 0.9375rem; color: var(--ink-2); max-width: 36rem; }
+.foot a { color: var(--ink-2); }
+.tribute { margin-top: 0.5rem; }
+@media (min-width: 720px) { .foot__in { grid-template-columns: 1fr auto; align-items: end; } }
+
+/* ── 5. Hero and the one question — .ask ───────────────────────────────────*/
+
+.hero { padding-top: 0.5rem; }
+
+.hero__num { margin: 1.75rem 0 0.9rem; }
+
+/* The plain-language line under the number. It carries a .vnum inline, so it
+   must not be clamped to --measure. */
+.hero__says { font-size: clamp(1.05rem, 3.2vw, 1.2rem); color: var(--ink-2); max-width: 32rem; margin: 0 0 1.5rem; }
+.hero__says strong { color: var(--ink); font-weight: 700; }
+
+/* Three tinted tiles, one per part of the number, each with its own wobble and
+   its own reason-why label. They wrap at 390px rather than squeezing. */
+.parts {
+  display: grid; list-style: none; padding: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+  gap: 0.6rem; margin: 0 0 1.75rem; max-width: 40rem;
+}
+.part { border: 2px solid var(--ink); padding: 0.8rem 0.9rem; }
+.part--major { background: var(--tile-major); }
+.part--minor { background: var(--tile-minor); }
+.part--patch { background: var(--tile-patch); }
+.part b { display: block; font-family: var(--mono); font-weight: 700; font-size: 1.6rem; letter-spacing: -0.04em; color: var(--blue); }
+.part--minor b { color: var(--orange-ink); }
+.part--patch b { color: var(--pink-ink); }
+.part span { display: block; font-size: 0.8125rem; line-height: 1.3; color: var(--ink-2); margin-top: 0.15rem; }
+
+/* One question, one field. Used on /, /themes/ and /work/. The first thing
+   under the lede, above the number: you are asked before you are shown. The
+   sun-yellow offset is the only shadow on the page that is not a hover state. */
+.ask {
+  display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center;
+  background: var(--white);
+  border: var(--line) solid var(--ink);
+  border-radius: 16px;
+  padding: 0.9rem;
+  max-width: 33rem;
+  box-shadow: 7px 7px 0 var(--sun);
+}
+.ask__label { flex: 1 0 100%; font-weight: 700; font-size: 1.125rem; }
+.ask__label small { font-weight: 500; font-size: 0.9375rem; color: var(--ink-2); }
+.ask input[type="date"] {
+  font-family: var(--mono); font-size: 1rem; letter-spacing: -0.02em;
+  padding: 0.6rem 0.7rem; min-height: 48px; flex: 1 1 11rem;
+  background: var(--paper); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 10px;
+}
+.ask .btn { flex: 1 1 auto; }
+
+/* ── 5b. Hand-drawn, in CSS only ───────────────────────────────────────────*/
+/* No SVG, no illustration, no asset. All of it on the birthday face;
+   body[data-face="work"] overrides it away (square corners, no rotations
+   except the stamp). */
+
+/* Wobbly boxes: two-value radii so no two corners match. Each component gets
+   its OWN set — a repeated wobble reads as a shape, not as a hand. */
+.ask      { border-radius: 26px 34px 24px 32px / 32px 24px 34px 26px; }
+.part--major { border-radius: 18px 24px 16px 22px / 22px 16px 24px 18px; }
+.part--minor { border-radius: 22px 16px 24px 18px / 16px 22px 18px 24px; }
+.part--patch { border-radius: 16px 22px 18px 26px / 24px 18px 22px 16px; }
+.note     { border-radius: 14px 22px 16px 20px / 20px 14px 22px 16px; }
+.bar__v   { border-radius: 14px 20px 16px 22px / 20px 14px 22px 16px; }
+.url      { border-radius: 14px 20px 16px 22px / 20px 14px 22px 16px; }
+.shot     { border-radius: 20px 28px 18px 26px / 26px 18px 28px 20px; }
+.wall li:nth-child(2) .shot { border-radius: 24px 18px 26px 20px / 18px 24px 20px 26px; }
+.wall li:nth-child(3) .shot { border-radius: 18px 26px 22px 28px / 28px 22px 26px 18px; }
+body[data-face="work"] .ask,
+body[data-face="work"] .shot,
+body[data-face="work"] .note,
+body[data-face="work"] [class*="part--"],
+body[data-face="work"] .url,
+body[data-face="work"] .bar__v { border-radius: 0; }
+
+/* Tiny rotations. Never more than 2deg, never on a block of body copy. */
+.ask { transform: rotate(-0.35deg); }
+.note { transform: rotate(1.1deg); }
+.wall li:nth-child(3n+1) { transform: rotate(-0.6deg); }
+.wall li:nth-child(3n+2) { transform: rotate(0.5deg); }
+.wall li:nth-child(3n)   { transform: rotate(-0.35deg); }
+.bar__v { transform: rotate(-1.2deg); }
+body[data-face="work"] .ask,
+body[data-face="work"] .note,
+body[data-face="work"] .wall li,
+body[data-face="work"] .bar__v { transform: none; }
+
+/* Marker highlight. One per page, in the lede. At night the highlight goes
+   deep and the text stays chalk — same class, opposite construction. */
+.hi {
+  display: inline-block;
+  background: var(--pink);
+  color: var(--ink);
+  padding: 0.05em 0.3em;
+  transform: rotate(-1deg);
+  border-radius: 6px 10px 7px 12px / 10px 6px 12px 7px;
+}
+body[data-face="work"] .hi { background: var(--hi-lite); transform: none; border-radius: 0; }
+@media (prefers-color-scheme: dark) { body[data-face="work"] .hi { color: var(--btn-ink); } }
+
+/* The sticky note: tomorrow's number lives here. Dark text on yellow in both
+   modes — it is a physical object. */
+.note {
+  display: inline-block; margin: 0;
+  background: var(--sun);
+  color: #14163a;
+  border: var(--line) solid var(--ink);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.9375rem;
+  max-width: 30rem;
+}
+.note .vnum { color: #1a4fe0; }
+.note .vnum .sep { color: #ff5a1f; }
+
+/* One wavy underline, on the prose link that matters most (the 2018 post). */
+.squiggle { text-decoration: underline wavy; text-decoration-color: var(--orange); text-decoration-thickness: 2px; text-underline-offset: 0.22em; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Static rotations are not motion and stay — but nothing animates into them. */
+  .ask, .note, .wall li, .bar__v, .hi { transition: none; }
+}
+
+/* ── 6. Buttons ────────────────────────────────────────────────────────────*/
 
 .btn {
-  display: inline-block;
-  padding: 0.75rem 1.2rem;
-  min-height: 44px;
-  border: 0;
-  border-radius: 0;
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  text-decoration: none;
-  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0.4rem;
+  min-height: 48px; padding: 0.7rem 1.15rem;
+  font-family: var(--font); font-weight: 700; font-size: 1rem; letter-spacing: -0.01em;
+  border: var(--line) solid var(--ink); border-radius: 999px;
+  text-decoration: none; cursor: pointer;
+  background: var(--white); color: var(--ink);
+  transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
 }
+/* Tangerine fill with ink type (5.4:1) — white on tangerine is 2.8:1 and is
+   never used. At night the fill stays bright and the label goes dark. */
+.btn--go { background: var(--orange); color: var(--btn-ink); }
+.btn--blue { background: var(--blue); color: #fff; }
+.btn--hi { background: var(--hi-lite); color: var(--btn-ink); }    /* work face */
+.btn--ink { background: var(--ink); color: var(--paper); }         /* work face */
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+.btn[disabled] { opacity: 0.45; cursor: default; transform: none; box-shadow: none; }
+.btn--quiet { border-color: var(--rule); font-weight: 500; }
+body[data-face="work"] .btn { border-radius: 0; }
+body[data-face="work"] .btn:hover { transform: none; box-shadow: 3px 3px 0 var(--sun); }
 
-.btn--primary { background: var(--ink); color: var(--panel); }
-.btn--secondary { background: transparent; color: var(--ink); border: 1px solid var(--edge-strong); }
-.btn:hover { border-color: var(--signal); color: var(--signal-ink); }
-.btn--primary:hover { background: var(--ink); color: var(--panel); box-shadow: inset 0 -3px 0 var(--signal); }
-.btn:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .btn, .btn:hover { transform: none; transition: none; } }
 
-/* Links had no author focus style at all, so keyboard users got whatever the
-   browser drew -- including over the dark nav plate, where the default ring is
-   least dependable. One signal colour everywhere. */
-a:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
-.site-nav a:focus-visible { outline-color: var(--signal); outline-offset: -2px; }
+/* ── 7. Bands and asides ───────────────────────────────────────────────────*/
 
-/* ── Landing hero ──────────────────────────────────────────────────────────*/
+/* A full-bleed band. One per page at most. */
+.band { background: var(--band); border-top: var(--line) solid var(--ink); border-bottom: var(--line) solid var(--ink); margin-top: 3.5rem; }
+.band__in { max-width: 64rem; margin: 0 auto; padding: 2.5rem var(--gutter); }
+.band h2 { margin-top: 0; }
 
-.hero__grid { display: grid; gap: 1px; background: var(--edge); }
+/* The one line each front door spends on the other product. */
+.crosslink { margin: 2.5rem 0 0; border-top: 1px dashed var(--ink); padding-top: 1rem; font-size: 0.9375rem; color: var(--ink-2); }
 
-@media (min-width: 860px) {
-  .hero__grid { grid-template-columns: minmax(0, 1fr) 300px; }
+/* ── 8. .wall — the one preview component ──────────────────────────────────*/
+/* Used by / (3 items), /themes/ (20), /work/themes/ (9) and /examples/ (8).
+   A well, a name, one line. The anchor wraps the whole item. */
+
+.wall { display: grid; gap: 1.5rem 1.25rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+@media (min-width: 620px) { .wall { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 960px) { .wall { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.wall a { display: block; text-decoration: none; color: inherit; }
+
+/* The well. Fixed 8:5 box; wall.js scales a 1000px-wide iframe into it with a
+   ResizeObserver, so it is fluid down to 320px without a magic number. The
+   iframe holds a real theme with its own colours: never filter or dim it. */
+.shot {
+  position: relative; overflow: hidden;
+  aspect-ratio: 8 / 5;
+  background: repeating-linear-gradient(135deg, var(--tile-major) 0 9px, var(--tile-minor) 9px 18px);
+  border: var(--line) solid var(--ink);
+  transition: transform 140ms ease, box-shadow 140ms ease;
 }
-
-.hero__main, .hero__fields { background: var(--panel); padding: 1.25rem 1.4rem 1.5rem; }
-
-.hero__kicker {
-  font: 600 10.5px/1 var(--font-head);
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  margin: 0 0 0.6rem;
-}
-
-.hero__vnum {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: clamp(3rem, 9vw, 5.25rem);
-  letter-spacing: -.045em;
-  line-height: 1;
-  margin: 0 0 0.75rem;
-}
-
-.hero__lede { max-width: 44ch; color: var(--ink-2); margin: 0 0 1.25rem; }
-.hero__actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-
-.hero__fields { display: grid; gap: 1px; background: var(--edge); padding: 0; }
-
-.field {
-  background: var(--panel);
-  padding: 0.7rem 1rem;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.field__label { font: 600 10px/1.4 var(--font-head); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); }
-.field__value { font: 500 15px/1 var(--font-mono); }
-.field--dark { background: var(--plate); color: var(--plate-ink); }
-.field--dark .field__label { color: rgba(233,234,229,.62); }
-.field--dark .field__value { color: var(--signal); }
-
-/* ── Edition cards ─────────────────────────────────────────────────────────*/
-
-.editions { display: grid; gap: 1rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
-@media (min-width: 720px) { .editions { grid-template-columns: 1fr 1fr; } }
-
-.edition {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  background: var(--panel);
-  border: 1px solid var(--edge);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.edition:hover { border-color: var(--signal); color: inherit; }
-
-.edition__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 10px 14px;
-  background: var(--plate);
-  color: var(--plate-ink);
-  font: 700 13px/1 var(--font-head);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-
-.edition__slot { font: 400 10px/1 var(--font-mono); color: var(--signal); letter-spacing: 0; }
-.edition__body { padding: 1rem 1.1rem; }
-.edition__body p { margin: 0; color: var(--ink-2); max-width: none; }
-
-.edition__foot {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.7rem 1.1rem;
-  border-top: 1px solid var(--edge);
-  font: 400 10.5px/1 var(--font-mono);
-  color: var(--ink-3);
-}
-
-/* ── Rack rows: themes and examples ────────────────────────────────────────*/
-
-.rack { display: grid; gap: 1px; background: var(--edge); margin: 1.5rem 0 0; padding: 0; list-style: none; }
-
-.rack__row {
-  display: grid;
-  grid-template-columns: 322px minmax(0, 1fr);
-  gap: 22px;
-  padding: 16px 24px;
-  background: var(--panel);
-  align-items: start;
-}
-
-@media (max-width: 720px) {
-  .rack__row { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-}
-
-/* A screen in a bezel. The frame is the only chrome the preview gets, and it
-   never takes a colour from the theme inside it. */
-.rack__screen {
-  position: relative;
-  width: 100%;
-  max-width: 322px;
-  aspect-ratio: 322 / 180;
-  overflow: hidden;
-  border: 1px solid #4a4b46;
-  box-shadow: inset 0 0 12px rgba(0,0,0,.5);
-  background: var(--panel-sunk);
-}
-
-@media (prefers-color-scheme: dark) { .rack__screen { border-color: #000; } }
-
-.rack__screen iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1000px;
-  height: 560px;
-  border: 0;
+.shot iframe {
+  position: absolute; top: 0; left: 0;
+  width: 1000px; height: 625px; border: 0;
   transform-origin: top left;
-  transform: scale(var(--preview-scale, .322));
+  transform: scale(var(--s, 0.3));
+  pointer-events: none;   /* the card is the link; the preview is not clickable */
+}
+.wall a:hover .shot, .wall a:focus-visible .shot { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--orange); }
+body[data-face="work"] .wall a:hover .shot, body[data-face="work"] .wall a:focus-visible .shot { transform: none; box-shadow: 4px 4px 0 var(--sun); }
+
+.wall h3 { margin: 0.8rem 0 0.15rem; }
+.wall p { margin: 0; font-size: 0.9375rem; color: var(--ink-2); max-width: none; }
+.wall__meta { font-family: var(--mono); font-size: 0.75rem; letter-spacing: -0.02em; color: var(--ink-2); }
+
+@media (prefers-reduced-motion: reduce) { .shot, .wall a:hover .shot { transform: none; transition: none; } }
+
+/* /themes/ is a long grid: slightly tighter names. */
+.wall--themes h3 { font-size: 1.1rem; }
+
+/* ── 9. Strip, rows and the URL artefact ───────────────────────────────────*/
+
+.strip {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem;
+  margin: 1.25rem 0;
+}
+.strip p:first-child { margin-top: 0; }
+.strip p:last-child { margin-bottom: 0; }
+
+/* A worked example: label on the left, value on the right, hairlines between. */
+.rows { display: grid; gap: 0; margin: 1.25rem 0; max-width: 34rem; }
+.row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--rule); }
+.row:last-child { border-bottom: 0; }
+.row dt, .row__k { font-weight: 700; }
+.row dd, .row__v { margin: 0; font-family: var(--mono); font-size: 0.9375rem; letter-spacing: -0.03em; color: var(--ink-2); text-align: right; }
+
+/* A URL shown as an artefact. Wraps at any width; never a horizontal scroll. */
+.url {
+  font-family: var(--mono); font-size: 0.8125rem; line-height: 1.6; letter-spacing: -0.03em;
+  background: var(--tile-major); padding: 0.7rem 0.8rem;
+  overflow-wrap: anywhere; word-break: break-word;
+}
+.url b { color: var(--pink-ink); font-weight: 500; }
+
+/* ── 10. Form bits (the card composers) ────────────────────────────────────*/
+
+.field { display: grid; gap: 0.35rem; margin: 0 0 1rem; max-width: 30rem; }
+.field > span { font-weight: 700; }
+.field > span small { font-weight: 500; color: var(--ink-2); }
+.field input[type="text"], .field input[type="date"], .field select, .field textarea {
+  font-family: var(--font); font-size: 1rem;
+  padding: 0.65rem 0.7rem; min-height: 48px;
+  background: var(--paper); color: var(--ink);
+  border: 1.5px solid var(--ink-2); border-radius: 10px;
+  width: 100%;
+}
+.field input[type="date"], .field select { font-family: var(--mono); letter-spacing: -0.02em; }
+.field textarea { min-height: 5.5rem; line-height: 1.5; resize: vertical; }
+.field__hint { font-size: 0.8125rem; color: var(--ink-2); font-weight: 400; }
+body[data-face="work"] .field input, body[data-face="work"] .field select, body[data-face="work"] .field textarea { border: 2px solid var(--ink); border-radius: 0; background: var(--white); }
+
+.count { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); }
+
+/* The composer: preview on top on a phone, sticky on the right from 900px. */
+.compose { display: grid; gap: 1.75rem; }
+@media (min-width: 900px) {
+  .compose { grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); align-items: start; }
+  .compose__preview { position: sticky; top: 1.5rem; order: 2; }
+}
+.compose__preview .shot { aspect-ratio: 1000 / 700; }
+.compose__preview .shot iframe { height: 700px; }
+.compose__preview .mono { margin: 0.6rem 0 0; }
+
+/* ── 11. The work face's document furniture ────────────────────────────────*/
+/* All CSS, no images. Uppercase lives here and nowhere else. */
+
+.formline {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1rem;
+  border-bottom: 1px dashed var(--ink); padding-bottom: 0.6rem; margin: 0 0 1.5rem;
+  font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--ink-2);
+}
+.cc { margin: 0 0 2rem; font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.04em; color: var(--ink-2); }
+.bullets { margin: 0 0 1rem; padding-left: 1.1rem; max-width: 34rem; color: var(--ink-2); }
+.bullets li { margin-bottom: 0.35rem; }
+.pull { margin: 0 0 2.5rem; border-left: 3px solid var(--rule); padding-left: 0.9rem; font-size: 0.9375rem; color: var(--ink-2); max-width: 34rem; }
+.notice {
+  margin: 2.5rem 0 0; padding: 0.9rem 1rem; max-width: 34rem;
+  background: var(--chrome); border: 1px dashed var(--ink);
+  font-family: var(--mono); font-size: 0.6875rem; line-height: 1.7; letter-spacing: 0.03em;
+  color: var(--ink-2);
 }
 
-.rack__plate { display: flex; flex-direction: column; gap: 0.5rem; }
-
-.rack__head { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-
-.rack__led {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--signal); box-shadow: 0 0 6px var(--signal);
-  flex: none;
-}
-
-.rack__name {
-  margin: 0;
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: 25px;
-  letter-spacing: .11em;
+/* Rubber stamp. One per page, and it is the only rotated thing on this face. */
+.stamp {
+  display: inline-block; margin: 0 0 0.9rem;
+  font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--stamp); border: 2px solid var(--stamp);
+  padding: 0.25rem 0.5rem; transform: rotate(-2deg);
 }
+@media (prefers-reduced-motion: reduce) { .stamp { transform: none; } }
 
-.rack__unit { font: 400 10px/1 var(--font-mono); color: var(--ink-3); }
-.rack__blurb { margin: 0; color: var(--ink-2); font-size: 0.95rem; max-width: 52ch; }
+.ledger { border-collapse: collapse; width: 100%; max-width: 34rem; font-size: 0.9375rem; margin: 0 0 1.5rem; border: 2px solid var(--ink); }
+.ledger tr { border-bottom: 1px solid var(--rule); }
+.ledger th { text-align: left; font-weight: 700; padding: 0.6rem 0.7rem; vertical-align: top; }
+.ledger td { padding: 0.6rem 0.7rem; color: var(--ink-2); vertical-align: top; }
+.ledger .num { text-align: right; font-family: var(--mono); letter-spacing: -0.03em; color: var(--ink); white-space: nowrap; }
+.ledger--greenbar tr:nth-child(odd) { background: var(--tile-major); }   /* fanfold stripe */
 
-.rack__chips { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-
-.chip {
-  border: 1px solid var(--edge-strong);
-  padding: 2px 7px;
-  font: 400 10px/1.6 var(--font-mono);
-  color: var(--ink-3);
+/* Tractor-feed holes down both edges of the page, so the whole thing reads as
+   something that came off a dot-matrix printer. The bar, band and footer
+   cancel the inset with a negative margin. */
+body[data-face="work"] {
+  padding: 0 18px;
+  background-image:
+    radial-gradient(circle at 9px 50%, var(--sun) 0 3.5px, transparent 3.5px),
+    radial-gradient(circle at calc(100% - 9px) 50%, var(--sun) 0 3.5px, transparent 3.5px);
+  background-repeat: repeat-y, repeat-y;
+  background-size: 18px 24px, 18px 24px;
+  background-position: left top, right top;
 }
+body[data-face="work"] .bar,
+body[data-face="work"] .band,
+body[data-face="work"] .foot { margin-left: -18px; margin-right: -18px; }
 
-.rack__actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.2rem; }
-.rack__actions .btn { padding: 0.5rem 0.9rem; min-height: 36px; font-size: 11px; }
-/* The compact rack button is a mouse affordance. On touch it goes back to the
-   44px floor -- 36px is under the 24px AA minimum's comfortable margin and
-   these are the primary way into a theme. */
-@media (pointer: coarse) {
-  .rack__actions .btn { min-height: 44px; }
+/* ── 12. Utilities ─────────────────────────────────────────────────────────*/
+
+.stack > * + * { margin-top: 1rem; }
+.row-actions { display: flex; flex-wrap: wrap; gap: 0.6rem 1.25rem; align-items: center; margin: 1.25rem 0 0; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
-
-.rack__roster {
-  margin: 0;
-  font: 400 11px/1.9 var(--font-mono);
-  color: var(--ink-3);
-}
-
-/* One inline field, no panel, no ceremony. */
-.dateline {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin: 1.5rem 0 0;
-  font: 600 10.5px/1 var(--font-head);
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.dateline input {
-  font: 400 14px/1 var(--font-mono);
-  padding: 0.6rem 0.7rem;
-  min-height: 44px;
-  background: var(--panel);
-  color: var(--ink);
-  border: 1px solid var(--edge-strong);
-  border-radius: 0;
-}
-
-.dateline input:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
-
-/* ── Footer ────────────────────────────────────────────────────────────────*/
-
-.site-foot { border-top: 1px solid var(--edge); }
-
-.site-foot__inner {
-  display: flex;
-  justify-content: space-between;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  padding: 1.25rem 0 2.5rem;
-  font: 400 10.5px/1.9 var(--font-mono);
-  color: var(--ink-3);
-}
-
-.site-foot p { margin: 0; max-width: 52ch; }
-.site-foot a { color: var(--ink-3); }

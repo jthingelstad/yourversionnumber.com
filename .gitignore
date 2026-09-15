@@ -5,6 +5,7 @@ node_modules/
 *.log
 .playwright-mcp/
 design_handoff_theme_refresh/
+design_handoff_spine_joy/
 
 # Local scratch probes used while building themes — never shipped.
 # Any underscore-prefixed HTML at the root is a throwaway render harness.

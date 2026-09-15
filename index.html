@@ -18,7 +18,9 @@
 <meta name="twitter:title" content="Your Version Number">
 <meta name="twitter:description" content="How old are you, in semver? Your age as MAJOR.MINOR.PATCH — decade, year-in-decade, days since your last birthday.">
 <meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
-<link rel="stylesheet" href="/assets/site.css?v=2">
+<meta name="theme-color" content="#fffbf2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131634" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="/assets/site.css?v=3">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -42,7 +44,7 @@
     {
       "@type": "WebApplication",
       "name": "Work Edition",
-      "url": "https://yourversionnumber.com/work/",
+      "url": "https://yourversionnumber.com/work/edition/",
       "applicationCategory": "UtilityApplication"
     }
   ]
@@ -91,73 +93,107 @@
 <script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
 </head>
 <body>
-<nav class="site-nav">
-  <div class="wrap site-nav__inner">
-    <a class="site-nav__brand" href="/" aria-current="page">yourversionnumber.com</a>
-    <a href="/birthday/">Birthday</a>
-    <a href="/work/">Work</a>
-    <a href="/card/new/">Cards</a>
-    <a href="/examples/">Examples</a>
-    <a href="/themes/">Themes</a>
-    <a href="/about/">About</a>
-    <span class="site-nav__status"><i class="site-nav__led"></i><span id="site-vnum" data-since="2026-05-01">0.0.0</span></span>
-  </div>
-</nav>
-<main class="wrap">
-  <h1>How old are you, in semver?</h1>
-  <p class="lede">Software gets a version number. People should too.</p>
-
-  <div class="panel">
-    <div class="panel__label"><span>Unit 01 — human version readout</span><span class="panel__live">&#9679; LIVE</span></div>
-    <div class="hero__grid">
-      <div class="hero__main">
-        <p class="hero__kicker">This site, in its own notation</p>
-        <p class="hero__vnum" id="site-hero-vnum">0.0.0</p>
-        <p class="hero__lede">A person&rsquo;s version number is their age written the way software is: <code>MAJOR</code> is your decade, <code>MINOR</code> is your year inside it, <code>PATCH</code> is the days since your last birthday.</p>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="/birthday/">Read your number</a>
-          <a class="btn btn--secondary" href="/card/new/">Send someone theirs</a>
-        </div>
-      </div>
-      <div class="hero__fields">
-        <div class="field"><span class="field__label">Major &middot; decade</span><span class="field__value" id="site-major">0</span></div>
-        <div class="field"><span class="field__label">Minor &middot; year in</span><span class="field__value" id="site-minor">0</span></div>
-        <div class="field"><span class="field__label">Patch &middot; days since</span><span class="field__value" id="site-patch">0</span></div>
-        <div class="field field--dark"><span class="field__label">Next patch</span><span class="field__value">00:00</span></div>
-      </div>
+<header class="bar">
+  <div class="bar__in">
+    <div class="bar__brand">
+      <a class="bar__mark" href="/" aria-current="page">yourversionnumber<span>.com</span></a>
+      <a class="bar__v" href="/birthday/?theme=terminal&p=yourversionnumber.com:2026-05-01" title="This site's own version number. It shipped on 1 May 2026 &mdash; open its birthday page."><span class="vnum vnum--inline" data-since="2026-05-01" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
     </div>
+    <nav aria-label="Site">
+      <a href="/birthday/">Your number</a>
+      <a href="/themes/">Themes</a>
+      <a href="/examples/">Examples</a>
+      <a href="/card/">Send a card</a>
+      <a href="/about/">About</a>
+    </nav>
+    <a class="escape" href="/work/">Go to the office!</a>
   </div>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <h1>You shipped a new patch this morning.</h1>
+    <p class="lede">Your age, written the way software is versioned: a new decade is a major release, a birthday is a minor one, and <span class="hi">every single day is a patch</span>.</p>
 
-  <h2>Two editions</h2>
-  <ul class="editions">
-    <li><a class="edition" href="/birthday/">
-      <span class="edition__head">Birthday Edition <span class="edition__slot">SLOT A</span></span>
-      <span class="edition__body"><p>Your age, from your birthday. Add as many people as you like &mdash; the whole household fits on one page.</p></span>
-      <span class="edition__foot"><span>/birthday/</span><span>4.6.52</span></span>
+    <form class="ask" id="ask" action="/birthday/" method="get">
+      <label class="ask__label" for="ask-date">When&rsquo;s your birthday?</label>
+      <input type="date" id="ask-date" name="p" max="2026-09-15" required>
+      <button class="btn btn--go" type="submit" id="ask-go">Read my number</button>
+    </form>
+
+    <span class="vnum vnum--hero hero__num" id="hero-vnum" aria-label="5.2.113"><span class="d">5</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">1</span><span class="d">1</span><span class="d">3</span></span>
+
+    <p class="hero__says" id="hero-says">A worked example: someone 52 years and 113 days old is on <strong>5.2.113</strong>. The day they turn 53 they ship 5.3.0 &mdash; a minor bump, backwards compatible.</p>
+
+    <ul class="parts" id="hero-parts">
+      <li class="part part--major"><b>5</b><span>decades &mdash; you&rsquo;re a different person in each one</span></li>
+      <li class="part part--minor"><b>2</b><span>years in &mdash; new goals, nothing breaking</span></li>
+      <li class="part part--patch"><b>113</b><span>days since the birthday &mdash; each one a bit better than the last</span></li>
+    </ul>
+
+    <p class="note" id="hero-tomorrow">Tomorrow they&rsquo;ll be <span class="vnum vnum--inline" aria-label="5.2.114"><span class="d">5</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">1</span><span class="d">1</span><span class="d">4</span></span>. Nobody knows how that one will be different. Hopefully ever so slightly better.</p>
+
+    <p class="small" id="ask-note">Nothing is saved. Your date goes in the link and nowhere else.</p>
+  </section>
+
+  <h2>Then keep it</h2>
+  <p>Bookmark your page and it&rsquo;s there every morning, recalculated for the day you open it. Add anyone else you&rsquo;d want to see &mdash; your household, your band, the group chat &mdash; and everybody ticks on the same page.</p>
+  <p>Then dress it up. Twenty themes, and the one you pick rides along in the bookmark.</p>
+
+  <ul class="wall" id="home-wall">
+    <li><a href="/themes/#fridge">
+      <div class="shot" data-preview="/birthday/?theme=fridge&p=Jamie:1974-01-15&p=Sara:1976-03-20&p=Nora:2009-11-02" data-title="Fridge Door theme preview"></div>
+      <h3>Fridge Door</h3>
+      <p>Brushed steel, crayon names, a height chart. The one true multi-person theme.</p>
     </a></li>
-    <li><a class="edition" href="/work/">
-      <span class="edition__head">Work Edition&trade; <span class="edition__slot">SLOT B</span></span>
-      <span class="edition__body"><p>Years of tenure, quarter within the tenure year, business days into that quarter. Weekends don&rsquo;t tick.</p></span>
-      <span class="edition__foot"><span>/work/</span><span>3.2.40</span></span>
+    <li><a href="/themes/#receipt">
+      <div class="shot" data-preview="/birthday/?theme=receipt&p=Jamie:1974-01-15" data-title="Receipt theme preview"></div>
+      <h3>Receipt</h3>
+      <p>Thermal-printer monospace, QTY 1, thank you for your business.</p>
+    </a></li>
+    <li><a href="/themes/#departures">
+      <div class="shot" data-preview="/birthday/?theme=departures&p=Sara:1976-03-20&p=Nora:2009-11-02" data-title="Departures theme preview"></div>
+      <h3>Departures</h3>
+      <p>A split-flap board where the status comes from the date, and the flaps really flip.</p>
     </a></li>
   </ul>
 
-  <h2>Send someone their number</h2>
-  <p>Add a note to someone&rsquo;s birthday or work anniversary and send them the link. A countdown appears in the final seven days before the next occasion, and the number updates using the viewer&rsquo;s local date. <a href="/card/new/">Make a card</a> &mdash; no account, nothing saved.</p>
-
-  <h2>The link is the whole thing</h2>
-  <p>Every view &mdash; a household of birthdays, a career of roles, a card with a note &mdash; keeps its names, dates and theme in the URL and nowhere else. Bookmark it to return; share it and the other person gets exactly what you see, with the numbers recalculated for their day. <a href="/about/">How that works, and what it means for sharing.</a></p>
-
-  <h2>Twenty-eight themes</h2>
-  <p>Every view can be dressed up: a thermal receipt, a split-flap board, a nixie tube bank, a fridge door, a stock ticker, an out-of-office reply. All twenty-eight work in both editions &mdash; browse the <a href="/themes/">gallery</a> or see them <a href="/examples/">carrying real people</a>.</p>
+  <div class="row-actions">
+    <a class="btn" href="/themes/">See all twenty themes</a>
+    <a class="link" href="/examples/">Eight pages with real people on them</a>
+  </div>
 </main>
-<footer class="site-foot">
-  <div class="wrap site-foot__inner">
-    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>.</p>
-    <p><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/">&mdash;</span> visits</p>
+
+<section class="band">
+  <div class="band__in">
+    <h2>Or make one for someone else</h2>
+    <p>A birthday, a first day, a fortieth. Put their date and a note in your own words, pick how it should look, and send the link. It arrives as a card &mdash; and for the last seven days before the day itself, it counts down to it.</p>
+    <div class="row-actions">
+      <a class="btn btn--go" href="/card/">Write a card</a>
+      <a class="link" href="/birthday/?theme=departures&card=Sara:1984-03-09&from=Jamie&note=Four%20whole%20decades%20and%20still%20no%20breaking%20changes.">See one first</a>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <h2>The link is the whole thing</h2>
+  <p>No accounts, no database, nothing saved anywhere. Names, dates and the theme all live in the address bar &mdash; bookmark it to come back, send it to someone and they see what you see, recalculated for their day. You can even edit it by hand:</p>
+  <p class="url"><b>/birthday/</b>?theme=fridge&amp;p=Jamie<b>:</b>1974-01-15&amp;p=Sara<b>:</b>1976-03-20</p>
+  <p><a class="squiggle" href="/about/">Where this came from, and how the arithmetic works</a>.</p>
+
+  <p class="crosslink">There&rsquo;s also a <a href="/work/">Work Edition</a>, which does the same thing to your job and is considerably less fun about it.</p>
+</main>
+<footer class="foot">
+  <div class="foot__in">
+    <div>
+      <p>A joke by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a> from 2018 that turned out to be useful. <a href="https://github.com/jthingelstad/yourversionnumber.com">Source on GitHub</a>.</p>
+      <p class="tribute">Counting your age this way was <a href="https://www.thingelstad.com/2018/08/23/goodbye-to-my.html">David Hussman</a>&rsquo;s idea. He died in August 2018, six months after the post. This is kept in his memory.</p>
+    </div>
+    <p class="mono"><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/">&mdash;</span> visits</p>
   </div>
 </footer>
-<script type="module" src="/assets/site.js?v=3"></script>
-
+<script defer src="/assets/vendor/rough-notation.iife.js?v=1"></script>
+<script defer src="/assets/vendor/confetti.browser.min.js?v=1"></script>
+<script type="module" src="/assets/site.js?v=4"></script>
+<script type="module" src="/assets/home.js?v=1"></script>
 </body>
 </html>

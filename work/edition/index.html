@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Version Number: Work Edition</title>
+<meta name="description" content="How long have you worked there, in semver? YEARS.QUARTERS.DAYS = tenure · quarters in · business days deep. Now ENTERPRISE-READY.">
+<link rel="canonical" href="https://yourversionnumber.com/work/edition/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Your Version Number">
+<meta property="og:title" content="Your Version Number: Work Edition">
+<meta property="og:description" content="How long have you worked there, in semver? YEARS.QUARTERS.DAYS = tenure · quarters in · business days deep. ENTERPRISE-READY.">
+<meta property="og:url" content="https://yourversionnumber.com/work/edition/">
+<meta property="og:image" content="https://yourversionnumber.com/work/edition/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A live stock-ticker showing version 3.2.40 — years of tenure, quarters in, business days deep.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your Version Number: Work Edition">
+<meta name="twitter:description" content="How long have you worked there, in semver? YEARS.QUARTERS.DAYS = tenure · quarters in · business days deep.">
+<meta name="twitter:image" content="https://yourversionnumber.com/work/edition/og-image.png">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="stylesheet" href="assets/base.css?v=6">
+<link id="theme-css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%92%BC%3C/text%3E%3C/svg%3E">
+<script>
+// Privacy: tinylytics' embed sends window.location.href (the full URL, with any
+// ?j= dates in the query string) and the full referrer to its collector.
+// sanitizeCollectorUrl reduces both to origin + path before the request fires:
+// analytics still records which page was viewed and where the visitor came
+// from, while the dates in the query string never leave the browser.
+(function () {
+  function pathOnly(value) {
+    try {
+      var parsed = new URL(value, location.origin);
+      return parsed.origin + parsed.pathname;
+    } catch (e) {
+      return '';
+    }
+  }
+  function sanitizeCollectorUrl(input) {
+    var u = new URL(input, location.origin);
+    ['url', 'referrer'].forEach(function (key) {
+      var raw = u.searchParams.get(key);
+      // An absent or empty referrer means "direct". Leave it alone rather than
+      // resolving '' against location and inventing a self-referral.
+      if (!raw) return;
+      var safe = pathOnly(raw);
+      if (safe) u.searchParams.set(key, safe);
+      else u.searchParams.delete(key);
+    });
+    return u.toString();
+  }
+  var origFetch = window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    try {
+      if (typeof input === 'string' && input.indexOf('tinylytics.app/collector/') !== -1) {
+        input = sanitizeCollectorUrl(input);
+      }
+    } catch (e) { /* leave fetch input as-is */ }
+    return origFetch(input, init);
+  };
+})();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Your Version Number: Work Edition",
+  "url": "https://yourversionnumber.com/work/edition/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any (web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "description": "How long have you worked there, in semver? YEARS.QUARTERS.DAYS = tenure, quarters in, business days deep.",
+  "author": {
+    "@type": "Person",
+    "name": "Jamie Thingelstad",
+    "url": "https://www.thingelstad.com"
+  },
+  "sameAs": "https://github.com/jthingelstad/yourversionnumber.com"
+}
+</script>
+<script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
+</head>
+<body>
+<main id="app">
+  <!-- Static first paint. Gives crawlers and no-JS visitors real content; app.js
+       clears #app and re-renders the live version on load. -->
+  <header class="site-header">
+    <h1 class="site-title">Your Version Number: Work Edition™</h1>
+  </header>
+  <p class="intro">It’s the version number you know and love &mdash; now <strong>ENTERPRISE-READY</strong>. The <strong>Work Edition</strong>™ ships with <code>YEARS.QUARTERS.DAYS</code>, where days are <em>business</em> days, because real work doesn’t happen on weekends. Synergize your timeline. Add a role to begin.</p>
+  <noscript>
+    <p class="intro">This page needs JavaScript to calculate version numbers. Names, dates, themes &mdash; and on a card, the note &mdash; are read from the URL and stored nowhere. <a href="/about/">How links and sharing work</a>.</p>
+    <p class="intro">To work one out by hand: <code>YEARS</code> is how long you have been in the job, <code>QUARTERS</code> is which quarter of your current tenure year you are in (0&ndash;3, counted in three-month steps from your start date, not from January), and <code>DAYS</code> is the number of business days into that quarter. Someone three years and change into a job is <code>3.2.40</code>.</p>
+    <p class="intro">For the original, birthday-based version, see <a href="/birthday/">Your Version Number</a>.</p>
+  </noscript>
+</main>
+<div id="tly-slots" hidden>
+  <span id="hits-span" class="tinylytics_hits" data-path="/work/edition/">&mdash;</span>
+</div>
+<script type="module" src="assets/app.js?v=7"></script>
+</body>
+</html>

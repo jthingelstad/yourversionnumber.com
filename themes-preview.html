@@ -269,7 +269,7 @@ function renderAll() {
   bGrid.innerHTML = '';
   wGrid.innerHTML = '';
   for (const t of birthdayThemes) bGrid.appendChild(makeCard(t, '/birthday/', 'p', r.p));
-  for (const t of workThemes)     wGrid.appendChild(makeCard(t, '/work/', 'j', r.j));
+  for (const t of workThemes)     wGrid.appendChild(makeCard(t, '/work/edition/', 'j', r.j));
   if (!birthdayThemes.length) bGrid.innerHTML = '<div class="empty">No themes parsed from assets/themes.js</div>';
   if (!workThemes.length) wGrid.innerHTML = '<div class="empty">No themes parsed from assets/themes.js</div>';
 }

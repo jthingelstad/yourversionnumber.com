@@ -6,7 +6,7 @@ A bookmarkable static page that displays people's "version numbers" (`MAJOR.MINO
 
 - Single-page static site, **two editions**:
   - **Birthday edition** at `/birthday/` — `MAJOR.MINOR.PATCH` is decade / year-in-decade / days since last birthday. People in URL via `?p=Name:YYYY-MM-DD`. Lived at `/` until September 2026; old `/?p=...` bookmarks were deliberately allowed to break.
-  - **Work edition** at `/work/` — `YEARS.QUARTERS.DAYS` (business days only). Roles in URL via `?j=Title:YYYY-MM-DD`.
+  - **Work edition** at `/work/edition/` — `YEARS.QUARTERS.DAYS` (business days only). Roles in URL via `?j=Title:YYYY-MM-DD`. Lived at `/work/` until September 2026; `/work/` is now its front door and forwards `?j=`/`?card=` links to the app.
 - **No build step**, no framework, no bundler.
 - Static files on S3 behind CloudFront. No server-side code of any kind. A push to `main` validates, then syncs the repo to the bucket.
 - Vanilla JS module per edition. Vanilla CSS. One stylesheet per theme.
@@ -14,18 +14,32 @@ A bookmarkable static page that displays people's "version numbers" (`MAJOR.MINO
 ## Layout
 
 ```
-index.html                 landing page — the front door, links to both editions
-about/index.html           concept, math, privacy model, contributing
-themes/index.html          theme gallery — all 28, previewed with the visitor's number
-card/new/index.html        the card composer — builds a link, nothing else
+index.html                 the birthday product's front door (asks your birthday, answers live)
+about/index.html           origin, arithmetic, "everything is in the URL"
+themes/index.html          the twenty birthday themes, previewed with the visitor's number
+examples/index.html        eight rosters of real people, one to eight
+card/index.html            write someone a card — builds a link, nothing else
+card/new/index.html        six-line redirect to /card/ (the old address)
+404.html
+work/index.html            the Work Edition's front door, in its own voice (data-face="work")
+work/themes/index.html     the nine work themes
+work/card/index.html       circulate an anniversary notice
+work/about/index.html      the tenure arithmetic, stated dryly
 deploy.sh                  the same S3 sync CI runs, by hand
 assets/
-  site.css                 neutral site chrome shared by the three spine pages
-  gallery.js               builds gallery cards from each edition's THEMES manifest
+  site.css                 the spine's one stylesheet: two faces, light and dark each
+  site.js                  the .vnum renderer, the site's own number, the midnight tick
+  home.js                  the landing hero: date field, live number, parts, sticky note
+  work-home.js             the same for /work/, mirroring the work app's arithmetic
+  wall.js                  the one preview mounter (lazy, fluid) for every scaled iframe
+  gallery.js               builds either gallery from the manifest, filtered by face
+  examples.js              one line: mount the previews
+  compose.js               the composer, for both faces
+  vendor/                  rough-notation + canvas-confetti, guarded, deletable (README inside)
 
 assets/
   themes.js                the one theme manifest, imported by both editions
-  themes/<name>.css        one standalone stylesheet per theme, shared
+  themes/<name>.css        one standalone stylesheet per theme
   core.js                  the seven core hooks, the chime synthesiser, card read/write
 
 birthday/
@@ -33,7 +47,7 @@ birthday/
   assets/app.js            birthday behavior — parsing, render, dialogs, animation
   assets/base.css          reset, layout, neutral dialog & theme-fx styles
 
-work/
+work/edition/
   index.html               work edition shell
   assets/app.js            work behavior (deliberate near-duplicate of birthday)
   assets/base.css          same neutral chrome
@@ -47,41 +61,83 @@ The two `app.js` files are deliberately parallel. Keep their logic in sync when 
 
 ## The spine
 
-`/`, `/about/`, `/examples/` and `/themes/` are the unthemed layer, sharing
-`assets/site.css`. Site nav lives here and only here — putting it inside a themed
-edition would mean 28 stylesheets each deciding what the nav looks like.
+The unthemed layer: `/`, `/about/`, `/themes/`, `/examples/`, `/card/`,
+`404.html`, and under `/work/` the front door, `/work/themes/`, `/work/card/`
+and `/work/about/`. Ten pages sharing `assets/site.css`. Site nav lives here
+and only here — putting it inside a themed edition would mean 29 stylesheets
+each deciding what the nav looks like. **The spine never enters the editions**:
+no shared nav, no Home button, no `site.css` link inside a themed page.
 
-**Unthemed does not mean undesigned.** The first version of this layer used
-system fonts and grey rules on the theory that neutral chrome would not fight the
-the themes. It read as bland next to them, and the contrast was jarring rather
-than calm. `site.css` is now the forty-third design — the one you cannot swap:
+Rebuilt in September 2026 from `design_handoff_spine_joy/` (a Claude Design
+handoff, gitignored). The one before it was a rack unit — engraved labels,
+`SLOT A / SLOT B`, a status LED, CSS-counter version tags on every heading —
+and it was competent and joyless. Read the handoff's `01-decisions.md` before
+redesigning anything here; the decisions below came out of it.
 
-- Space Grotesk for display and body, JetBrains Mono for anything numeric.
-  Imported once at the top of `site.css`, not linked from four `<head>`s.
-- Warm cream and pink, taken from the birthday theme, so the front door looks
-  related to what is behind it. Full dark counterpart.
-- The motif is the product: dotted three-part numbers in mono with the
-  separators in accent (`.vnum`, `.vnum .dot`). Section headings get their own
-  version tags from a CSS counter on `h2::before`, so the numbering cannot drift
-  from the markup.
-- The landing hero computes the site's own version number from its 2026-05-01
-  launch date (`assets/site.js`). It demonstrates the idea rather than
-  describing it, and stays true without maintenance.
-
-Keep new spine pages inside this system. If chrome needs to recede, it is
-because a theme preview sits next to it — that is what `--surface-sunk` and the
-card borders are for, not a reason to drain the colour out again.
+- **Two products, not one product with a toggle.** `/` is the birthday
+  product's front door; `/work/` is the Work Edition's, with its own wordmark,
+  nav, palette, copy and jokes, and the work app lives at `/work/edition/`.
+  Neither nav offers the other. The one door between them is `.escape`, hard
+  right in the bar: "Go to the office!" / "Let's go home!". Not a
+  `Birthdays | Work` segmented control — that says "two modes of one thing",
+  which is the merge this undid.
+- **Three jobs per front door, in order: look, keep, give.** Hero (see your
+  number, live) → "Then keep it" (bookmark, add people, dress it up) → a band
+  for making one for someone else. One filled button per job; everything else
+  is an outline `.btn` or a `.link`. Themes are not a fourth job — they are
+  how you personalise the page you keep, so their tiles sit inside job 2.
+- **The motif is `.vnum`**: mono digits in cobalt, separators in tangerine,
+  rendered per-character by `site.js` `renderVnum()` with an `aria-label`
+  carrying the whole string — the same contract as the editions' `.version`.
+  Re-rendering reuses unchanged spans so only the digits that changed animate.
+  No CSS counters, no version tags on headings; that experiment is retired.
+- **The site's own number appears once**, as the `.bar__v` pill beside the
+  wordmark, linking to the site's own birthday page
+  (`/birthday/?theme=terminal&p=yourversionnumber.com:2026-05-01`). Not the
+  hero, not the footer.
+- **Two faces in one stylesheet**, switched by `body[data-face="work"]`: hand-
+  drawn (wobbly two-value radii, sub-2° rotations, a marker highlight, a sticky
+  note, sun-yellow offset shadow) and photocopier (square corners, dashed
+  rules, tractor-feed holes, one rubber stamp). Same class names and sizes.
+- **Light and dark per face**, and dark is a concept, not an inversion: chalk
+  on a blackboard, and the office at 11pm. `prefers-color-scheme` only. **No
+  toggle, no stored preference** — the spine has no storage of any kind, and
+  `validate-site.mjs` fails on `localStorage` in any spine page.
+- **Type:** Bricolage Grotesque (display and body), Martian Mono (numbers
+  only). Imported once at the top of `site.css`. Sentence case everywhere; the
+  only uppercase is the work face's document furniture.
+- **Hand-drawn, in CSS only** — except for two vendored, guarded, deletable
+  libraries on `/` alone: rough-notation (one scribbled circle round your
+  number) and canvas-confetti (only when `patch === 0`). `assets/vendor/README.md`
+  has the rules. `/work/` gets neither.
+- **The landing page's opening state is a fixed worked example** (`5.2.113`),
+  identical in the static markup and in `home.js`, so nothing flashes and a
+  crawler sees the same thing. It becomes the visitor's own number on input;
+  the form is a native GET to `/birthday/?p=YYYY-MM-DD` and is never intercepted.
+- **The work front door mirrors the work app's arithmetic exactly**
+  (`computeTenure()` in `site.js` is a copy of `computeWorkVersion()`). If one
+  changes, change both in the same commit.
+- **Every preview on the spine is the real page in a scaled iframe**, mounted
+  lazily by `wall.js`. There is no second renderer and there must never be one.
+  `wall.js` reads `clientWidth`, not `getBoundingClientRect()`, because the
+  tiles are rotated a fraction of a degree and the bounding box lies.
+- **`--orange` never carries text and white never sits on it.** The primary
+  button is ink-on-tangerine (5.4:1); at night the label flips to `--btn-ink`.
+- **David Hussman is credited in the footer of every spine page**, in words
+  only — never a version number for him, never mourning styling. Same rule that
+  keeps `/examples/` to living people.
 
 Two duplications in this layer are deliberate:
 
-- **The analytics privacy shim is inlined in all five HTML files.** It must run
+- **The analytics privacy shim is inlined in every spine HTML file.** It must run
   before the tinylytics embed, and inline script cannot half-load. Moved to an
   external file it could 404 while the embed still fires, leaking the dates in
   the query string. Copies are cheaper than that failure mode. `validate-site.mjs`
   checks every page still has it.
-- **Nav and footer markup are repeated across the three spine pages.** Removing
-  that would take a build step, which convention 2 rules out; three copies of a
-  rarely-touched nav is the smaller cost. Revisit if the spine outgrows ~6 pages.
+- **Nav and footer markup are repeated across the spine pages.** Removing that
+  would take a build step, which convention 2 rules out. The pages were last
+  emitted from a throwaway script; when you touch the bar or foot, touch all
+  ten.
 
 ### The examples page uses real people
 
@@ -102,9 +158,9 @@ swapping a person, so the sizes 1-8 stay covered. `validate-site.mjs` enforces
 that every size from 1 to 8 is present and that each preview has a static link,
 but it cannot know whether anyone is still alive.
 
-The gallery does *not* hardcode theme cards. `assets/gallery.js` scrapes the
-`THEMES` array out of each edition's `app.js` at runtime, so adding a theme stays
-a two-step job. That is why every theme entry needs a `blurb`.
+The galleries do *not* hardcode theme tiles. `assets/gallery.js` imports the
+manifest and filters by `body[data-face]`, so adding a theme stays a two-step
+job. That is why every theme entry needs a `blurb`.
 
 ## Cards
 
@@ -113,7 +169,7 @@ everything else:
 
 ```
 /birthday/?theme=departures&card=Sara:1984-03-09&from=Jamie&note=Four%20whole%20decades.
-/work/?theme=timesheet&card=Sara:2019-09-03&from=Jamie&note=Five%20years.
+/work/edition/?theme=timesheet&card=Sara:2019-09-03&from=Jamie&note=Five%20years.
 ```
 
 - `card=Name:YYYY-MM-DD` takes the place of `p=`/`j=` and is what puts the page
@@ -156,7 +212,7 @@ without it. Guard B covers the pictograph ranges; geometric shapes like `▸` an
 3. **Themes are CSS-only.** No per-theme JS. When a theme idea can't be expressed in CSS, the answer is to add a *generic* hook in core `app.js` that all themes can opt into via CSS — that's how we got `.theme-fx`, `data-row-variant`, `--row-hue`, version-event flags, etc. Per-theme JS would create lifecycle/teardown bugs, cross-theme conflicts, review burden, and a real privacy risk: birthdays live in the URL and an accepted-but-malicious theme could beacon them. Don't open that door.
 4. **Themes paint display only.** Header, person rows, footer, empty-state CTA, and the `.theme-fx` decorative layer. They do **not** style the About or Edit dialogs — those are app chrome with a neutral OS-light/dark look in `base.css`. Selectors under `.app-dialog` are off-limits.
 5. **Person rows have no editing affordances.** No inline inputs, no click-to-edit. Editing is gated behind the header's Birthdays/Roles button (class `.edit-btn`) → `<dialog>`. Visual hover effects (tilt, scale, glow) are fine — the rule is no *editing* affordances on rows, not no animation.
-6. **One theme manifest, `assets/themes.js`.** Both editions import it; neither carries its own copy. Each entry: `{ name, label, home, animate, chime, card, blurb }`. `home` is `'birthday' | 'work' | null` and controls **ordering only** — every theme is selectable in both editions, natives first in each picker. `kind` and `<optgroup>`s are retired; the picker is a flat list. `animate: true` opts into count-up; `chime` names a sound core plays on the midnight tick; `card: true` means the theme styles `.card-message` in its own voice.
+6. **One theme manifest, `assets/themes.js`.** Both editions import it; neither carries its own copy. Each entry: `{ name, label, home, animate, chime, card, blurb }`. `home` is `'birthday' | 'work'` and is **load-bearing**: a theme belongs to exactly one product and is offered only in that product's picker, gallery and composer — twenty birthday, nine work. (Every stylesheet still renders if a URL names it in the other edition; it is simply never offered.) The counts are hard-coded in page copy ("Twenty themes", "Nine themes") and asserted by CI. Boarding Pass is the one theme in both products, as two forked stylesheets sharing one label: `holiday` (birthday) and `boardingpass` (work). `kind` and `<optgroup>`s are retired; the picker is a flat list. `animate: true` opts into count-up; `chime` names a sound core plays on the midnight tick; `card: true` means the theme styles `.card-message` in its own voice.
 
 ## Themable hooks (for theme authors)
 
@@ -206,11 +262,11 @@ without it. Guard B covers the pictograph ranges; geometric shapes like `▸` an
 npx live-server
 ```
 
-Opens at `http://localhost:8080/`. Visit `/` for the birthday edition and `/work/` for the work edition. There is no test suite. Verify changes by opening the page in a browser and walking the relevant flows.
+Opens at `http://localhost:8080/`. Visit `/birthday/` for the birthday edition and `/work/edition/` for the work edition; `/` and `/work/` are the two front doors. There is no test suite. Verify changes by opening the page in a browser and walking the relevant flows.
 
 ## Verifying changes
 
-1. `node --check assets/app.js && node --check work/assets/app.js`.
+1. `node --check birthday/assets/app.js && node --check work/edition/assets/app.js`, then `node .github/scripts/validate-site.mjs`.
 2. **Open `themes-preview.html`** under `live-server` (`http://localhost:8080/themes-preview.html`). It iframes every theme in both editions side-by-side with shared rosters. Walk the page and eyeball every theme. Switch the roster selector to exercise edge cases (empty / solo / `data-birthday` / `data-round-decade` / `data-quarter-start`).
 3. Open both editions directly to confirm the change in the relevant flow (initial render, Edit dialog, About dialog, theme switch, midnight tick).
 4. Test 3+ rows to confirm `data-row-variant` produces visible per-row variation where it should.
@@ -241,5 +297,6 @@ on HTML and invalidates `/*` on every deploy; CSS and JS carry `max-age=600` set
 by `deploy.sh`. There is no asset hashing. For deploys that couple JS and CSS in
 a way that would visibly break mid-rollout, manually bump the `?v=N` query on
 the affected `<link>`/`<script>`/`import` — `core.js` is imported from five
-places, so bump all of them together or you ship two module instances. Don't
+places and `site.js` from every spine page, so bump all of them together or
+you ship two module instances. Don't
 reach for build tooling to automate this.

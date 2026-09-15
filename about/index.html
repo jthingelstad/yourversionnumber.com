@@ -4,21 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About — Your Version Number</title>
-<meta name="description" content="How version numbers work, and why every link on this site carries everything it needs.">
+<meta name="description" content="Where it came from, the arithmetic, and why the URL is the only thing this site keeps.">
 <link rel="canonical" href="https://yourversionnumber.com/about/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Your Version Number">
 <meta property="og:title" content="About — Your Version Number">
-<meta property="og:description" content="How version numbers work, and why every link on this site carries everything it needs.">
+<meta property="og:description" content="Where it came from, the arithmetic, and why the URL is the only thing this site keeps.">
 <meta property="og:url" content="https://yourversionnumber.com/about/">
 <meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="About — Your Version Number">
-<meta name="twitter:description" content="How version numbers work, and why every link on this site carries everything it needs.">
+<meta name="twitter:description" content="Where it came from, the arithmetic, and why the URL is the only thing this site keeps.">
 <meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
-<link rel="stylesheet" href="/assets/site.css?v=2">
+<meta name="theme-color" content="#fffbf2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131634" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="/assets/site.css?v=3">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -26,7 +28,7 @@
   "@type": "AboutPage",
   "name": "About Your Version Number",
   "url": "https://yourversionnumber.com/about/",
-  "description": "The arithmetic, and the privacy model: the URL is the only state."
+  "description": "Where it came from, the arithmetic, and why the URL is the only thing this site keeps."
 }
 </script>
 
@@ -72,63 +74,64 @@
 <script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
 </head>
 <body>
-<nav class="site-nav">
-  <div class="wrap site-nav__inner">
-    <a class="site-nav__brand" href="/">yourversionnumber.com</a>
-    <a href="/birthday/">Birthday</a>
-    <a href="/work/">Work</a>
-    <a href="/card/new/">Cards</a>
-    <a href="/examples/">Examples</a>
-    <a href="/themes/">Themes</a>
-    <a href="/about/" aria-current="page">About</a>
-    <span class="site-nav__status"><i class="site-nav__led"></i><span id="site-vnum" data-since="2026-05-01">0.0.0</span></span>
+<header class="bar">
+  <div class="bar__in">
+    <div class="bar__brand">
+      <a class="bar__mark" href="/">yourversionnumber<span>.com</span></a>
+      <a class="bar__v" href="/birthday/?theme=terminal&p=yourversionnumber.com:2026-05-01" title="This site's own version number. It shipped on 1 May 2026 &mdash; open its birthday page."><span class="vnum vnum--inline" data-since="2026-05-01" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
+    </div>
+    <nav aria-label="Site">
+      <a href="/birthday/">Your number</a>
+      <a href="/themes/">Themes</a>
+      <a href="/examples/">Examples</a>
+      <a href="/card/">Send a card</a>
+      <a href="/about/" aria-current="page">About</a>
+    </nav>
+    <a class="escape" href="/work/">Go to the office!</a>
   </div>
-</nav>
+</header>
 <main class="wrap">
   <h1>About</h1>
-  <p class="lede">Where this came from, how the arithmetic works, and why the URL is the only thing this site keeps.</p>
+  <p class="lede">Where this came from, and the arithmetic, which is <span class="hi">the whole trick</span>.</p>
 
-  <div class="panel">
-    <div class="panel__label"><span>Origin</span></div>
-    <div class="panel__body">
-      <p>In February 2018 Jamie Thingelstad wrote <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">&ldquo;Your Version Number&rdquo;</a>, borrowing an idea from his friend David Hussman: track your age the way software tracks releases. He was on <code>4.6.52</code> at the time. This site is that post, made clickable.</p>
-    </div>
-  </div>
+  <h2>It started as a blog post</h2>
+  <p>In February 2018 Jamie Thingelstad wrote <a class="squiggle" href="https://www.thingelstad.com/2018/02/24/your-version-number.html">&ldquo;Your Version Number&rdquo;</a>, borrowing an idea from his friend David Hussman: track your age the way software tracks releases. He was on <span class="vnum vnum--inline" aria-label="4.6.52"><span class="d">4</span><span class="sep">.</span><span class="d">6</span><span class="sep">.</span><span class="d">5</span><span class="d">2</span></span> at the time. This site is that post, made clickable.</p>
+  <p>David <a href="https://www.thingelstad.com/2018/08/23/goodbye-to-my.html">died in August 2018</a>, six months later. The habit he started is the whole reason this exists, and the arithmetic below is his.</p>
 
-  <h2>The birthday arithmetic</h2>
-  <div class="panel">
-    <div class="panel__label"><span>Worked example</span></div>
-    <div class="hero__fields">
-      <div class="field"><span class="field__label">Major &middot; decade</span><span class="field__value">age &divide; 10, rounded down</span></div>
-      <div class="field"><span class="field__label">Minor &middot; year in</span><span class="field__value">the remainder</span></div>
-      <div class="field"><span class="field__label">Patch &middot; days since</span><span class="field__value">days since last birthday</span></div>
-      <div class="field field--dark"><span class="field__label">52 years, 113 days</span><span class="field__value">5.2.113</span></div>
-    </div>
-  </div>
-  <p>The day they turn 53 they ship <code>5.3.0</code> &mdash; a minor bump, backwards-compatible. At 60 it is <code>6.0.0</code>, a major release. February 29 birthdays get March 1 in non-leap years, and future dates are skipped rather than counted backwards.</p>
+  <h2>Birthdays</h2>
+  <p>Three numbers, all of them from one date.</p>
+  <dl class="rows">
+    <div class="row"><dt>Major</dt><dd>your age divided by ten, rounded down</dd></div>
+    <div class="row"><dt>Minor</dt><dd>the years left over</dd></div>
+    <div class="row"><dt>Patch</dt><dd>days since your last birthday</dd></div>
+    <div class="row"><dt>52 years, 113 days</dt><dd><span class="vnum vnum--inline" aria-label="5.2.113"><span class="d">5</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">1</span><span class="d">1</span><span class="d">3</span></span></dd></div>
+  </dl>
+  <p>The day they turn 53 they ship <code>5.3.0</code> &mdash; a minor bump, backwards compatible. At 60 it&rsquo;s <code>6.0.0</code>, a major release, and everyone agrees those are the hard ones. February 29 birthdays get March 1 in the other three years. Future dates are skipped rather than counted backwards.</p>
 
-  <h2>The work arithmetic</h2>
-  <p>The <a href="/work/">Work Edition</a> anchors on a start date. <code>YEARS</code> is completed years of tenure. <code>QUARTERS</code> is which quarter of the current tenure year you are in, counted in three-month steps from the start date rather than from January &mdash; start on February 10 and Q1 begins May 10. <code>DAYS</code> counts Monday through Friday after the quarter starts; there is no holiday calendar. A quarter starts at zero. If an anniversary or quarter date falls beyond the end of a month, it rolls into the following month: three months after January 31 is May 1. Dates and daily updates use the viewer&rsquo;s local calendar.</p>
+  <h2>Jobs</h2>
+  <p>The <a href="/work/">Work Edition</a> anchors on a start date instead. <code>YEARS</code> is completed years in the seat. <code>QUARTERS</code> is which quarter of your own tenure year you&rsquo;re in &mdash; counted in three-month steps from your start date, not from January, so starting on 10 February means your next quarter begins on 10 May. <code>DAYS</code> counts Monday to Friday since that quarter began, with no holiday calendar, and a quarter always starts at zero.</p>
+  <p>If an anniversary lands past the end of a month it rolls forward: three months after 31 January is 1 May. Everything uses the calendar of whoever is looking.</p>
 
-  <h2>Everything lives in the URL</h2>
-  <p>On <code>/birthday/</code> and <code>/work/</code>, the names, dates, and selected theme are read from the URL and nowhere else. Bookmark the URL to return to the same people or roles; their numbers are calculated again from the viewer&rsquo;s local date. Change the roster and the address bar changes with it.</p>
-  <p>A card is the same idea with a note attached. <a href="/card/new/">The composer</a> builds a link like <code>/birthday/?theme=departures&amp;card=Sara:1984-03-09&amp;from=Jamie&amp;note=&hellip;</code> and that link is the card: the recipient&rsquo;s name and date, the theme, the note, and who it is from. Nothing is written down on our side. There is no account, no record, no expiry, and nothing to delete &mdash; if the link is gone, the card is gone. Anyone holding a link can also edit it, which is a feature: fix a typo by fixing the URL.</p>
-
-  <h2>Sharing and analytics</h2>
-  <p>A link exposes what it contains &mdash; names and dates, and on a card the note and sender. Links can appear in browser history, bookmarks, and history sync, and anyone you share with can pass them on. Use information you are comfortable sharing.</p>
-  <p><a href="https://tinylytics.app">Tinylytics</a> receives visit counts and interactions such as theme selections and link copies. The analytics requests have the query string and fragment removed from their page URL and referrer fields, so the names, dates, and notes in a link never reach it. This filtering applies to analytics; it does not make a shared URL private.</p>
-  <p>Each edition keeps one local-storage flag to remember whether its intro has been shown. Names, dates, themes, and card drafts are not saved in local storage.</p>
+  <h2>Everything is in the URL</h2>
+  <p>Names, dates, the theme, and on a card the note and who it&rsquo;s from &mdash; all of it is read out of the address bar and nowhere else. There is no account, no database, no record, nothing to delete. Bookmark a link and it keeps working; the numbers are recalculated from the day you open it.</p>
+  <p class="url"><b>/birthday/</b>?theme=fridge&amp;p=Jamie<b>:</b>1974-01-15&amp;p=Sara<b>:</b>1976-03-20</p>
+  <p>Which also means you can edit one by hand. Fix a typo in a name by fixing it in the URL. And it means a link is exactly as private as you make it: whoever holds it can read it, and pass it on.</p>
 
   <h2>Themes</h2>
-  <p>Twenty-eight themes, each one a single standalone stylesheet with no JavaScript &mdash; a deliberate restriction, because a theme that could run code could also read the dates in the URL and send them somewhere. Anything a theme needs comes from seven generic hooks in the core. Browse them in the <a href="/themes/">gallery</a>, or see them <a href="/examples/">carrying real people</a>.</p>
+  <p>Twenty of them here, each a single stylesheet with no JavaScript at all &mdash; deliberately, because a theme that could run code could also read the dates in your URL and send them somewhere. Everything a theme needs comes from a handful of generic hooks. <a href="/themes/">Browse them</a>, or see them <a href="/examples/">carrying real people</a>. Nine more are about jobs and live in the <a href="/work/themes/">Work Edition</a>.</p>
+
+  <h2>This site has a version number too</h2>
+  <p>It shipped on 1 May 2026, so it has an age, so it has a number: <span class="vnum vnum--big" id="site-vnum-about" data-since="2026-05-01" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span>. It is the shortest explanation of the whole site, and it stays true without anybody maintaining it.</p>
 </main>
-<footer class="site-foot">
-  <div class="wrap site-foot__inner">
-    <p>Concept by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a>, from a 2018 post. Source on <a href="https://github.com/jthingelstad/yourversionnumber.com">GitHub</a>.</p>
-    <p><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/about/">&mdash;</span> visits</p>
+<footer class="foot">
+  <div class="foot__in">
+    <div>
+      <p>A joke by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a> from 2018 that turned out to be useful. <a href="https://github.com/jthingelstad/yourversionnumber.com">Source on GitHub</a>.</p>
+      <p class="tribute">Counting your age this way was <a href="https://www.thingelstad.com/2018/08/23/goodbye-to-my.html">David Hussman</a>&rsquo;s idea. He died in August 2018, six months after the post. This is kept in his memory.</p>
+    </div>
+    <p class="mono"><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/about/">&mdash;</span> visits</p>
   </div>
 </footer>
-<script type="module" src="/assets/site.js?v=2"></script>
-
+<script type="module" src="/assets/site.js?v=4"></script>
 </body>
 </html>

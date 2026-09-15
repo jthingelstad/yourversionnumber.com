@@ -7,10 +7,10 @@ Themes are the easiest way to contribute. Each one is a single CSS file. There's
 1. **Drop a file** at `assets/themes/<your-name>.css`. One file works in both editions. Pick a short, lowercase, hyphenated name.
 2. **Register it** in `assets/themes.js` — add an entry to the `THEMES` array near the top:
    ```js
-   { name: 'your-name', label: 'Your Name', home: null, animate: false, chime: null, card: true,
+   { name: 'your-name', label: 'Your Name', home: 'birthday', animate: false, chime: null, card: true,
      blurb: 'One sentence describing the look. Shown in the theme gallery.' },
    ```
-   - `home` is `'birthday'`, `'work'`, or `null` and controls ordering only. Every theme is available in both editions.
+   - `home` is `'birthday'` or `'work'`: the product the theme belongs to. It is offered only there (twenty birthday themes, nine work), though the stylesheet renders in either edition if a URL names it. The counts are hard-coded in page copy and asserted by CI — adding a theme means updating "Twenty" or "Nine" too.
    - `chime` names a core-synthesized sound, or `null` for silence.
    - `card: true` indicates that the theme styles `.card-message`.
    - `animate: true` opts the theme into the count-up animation on initial page load. Use it for vibrant themes; leave it `false` for calmer ones.
@@ -70,7 +70,7 @@ Both editions load from `assets/themes/` and read `assets/themes.js`. There is n
 
 Extra hooks unique to work mode:
 
-- `body[data-mode="work"]` — always present on the `/work/` page. Useful if you ever share styles between modes.
+- `body[data-mode="work"]` — always present on the `/work/edition/` page. Useful if you ever share styles between modes.
 - `body[data-quarter-start="true"]` — a role on the page just rolled over to a new quarter (PATCH = 0). Analogous to `data-birthday="true"` in the birthday edition.
 - `body[data-tenure-anniversary="true"]` — a role's MAJOR just bumped (MINOR = 0 ∧ PATCH = 0). Always implies `data-quarter-start="true"`.
 

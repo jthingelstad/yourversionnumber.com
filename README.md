@@ -8,15 +8,19 @@ It is a static site with no server-side code. Every view, cards included, keeps 
 
 | Path | What it is |
 | --- | --- |
-| `/` | Landing page. |
+| `/` | The birthday product's front door: asks your birthday, answers live. |
 | `/birthday/` | Age as decade.year-in-decade.days-since-birthday. |
-| `/work/` | Tenure as years.quarters.weekdays-in-quarter. |
+| `/themes/` | The twenty birthday themes, previewed with a date you choose. |
 | `/examples/` | Eight birthday rosters, with one to eight people. |
-| `/themes/` | All 28 themes, previewed with a date you choose. |
-| `/card/new/` | Compose a card and copy its link. |
-| `/about/` | Origin, arithmetic, sharing, and analytics. |
+| `/card/` | Write a card and copy its link. |
+| `/about/` | Origin, arithmetic, and why the URL is the only state. |
+| `/work/` | The Work Edition's own front door, in its own voice. |
+| `/work/edition/` | Tenure as years.quarters.weekdays-in-quarter. |
+| `/work/themes/` | The nine work themes. |
+| `/work/card/` | Circulate an anniversary notice. |
+| `/work/about/` | The tenure arithmetic, stated dryly. |
 
-The birthday edition moved from `/` to `/birthday/` in September 2026. Old `/?p=...` bookmarks are not redirected.
+The birthday edition moved from `/` to `/birthday/` in September 2026; old `/?p=...` bookmarks are not redirected. The work edition moved from `/work/` to `/work/edition/` the same month; `/work/?j=...` and `/work/?card=...` links are forwarded.
 
 ## View URLs
 
@@ -24,7 +28,7 @@ The URL contains the names, dates, and selected theme. Bookmark the URL to retur
 
 ```
 https://yourversionnumber.com/birthday/?theme=birthday&p=Jamie:1974-01-15&p=Sara:1976-03-20&p=2008-09-04
-https://yourversionnumber.com/work/?theme=ticker&j=Engineer:2024-01-15
+https://yourversionnumber.com/work/edition/?theme=ticker&j=Engineer:2024-01-15
 ```
 
 - `theme` names a theme from `assets/themes.js`, with a stylesheet in `assets/themes/`. All themes work in both editions.
@@ -43,11 +47,11 @@ Both editions calculate from the viewer's local date and refresh at local midnig
 
 ## Cards
 
-A card is a view with one person and a signed note. The composer at `/card/new/` builds the link and the link *is* the card — there is nothing to create, save, or expire:
+A card is a view with one person and a signed note. The composers at `/card/` and `/work/card/` build the link and the link *is* the card — there is nothing to create, save, or expire:
 
 ```
 https://yourversionnumber.com/birthday/?theme=departures&card=Sara:1984-03-09&from=Jamie&note=Four%20whole%20decades.
-https://yourversionnumber.com/work/?theme=timesheet&card=Sara:2019-09-03&from=Jamie&note=Five%20years.
+https://yourversionnumber.com/work/edition/?theme=timesheet&card=Sara:2019-09-03&from=Jamie&note=Five%20years.
 ```
 
 `card=Name:YYYY-MM-DD` takes the place of `p=`/`j=` and puts the page in card mode (one person, no picker, no editing). `from` and `note` are optional. Notes are clipped to 140 characters and names to 40, and both are rendered as text, never HTML. Anyone holding the link can read, forward, or edit it.
@@ -56,7 +60,7 @@ https://yourversionnumber.com/work/?theme=timesheet&card=Sara:2019-09-03&from=Ja
 
 No framework, bundler, build step, or project dependencies. The two editions use parallel vanilla JavaScript modules and separate base stylesheets. They share core hooks, one theme manifest (`assets/themes.js`), and 28 standalone stylesheets (`assets/themes/`). The manifest and [theme gallery](https://yourversionnumber.com/themes/) are the current theme list.
 
-Themes style the display and card messages using CSS only. About and Edit dialogs use neutral app chrome. Each manifest entry contains `name`, `label`, `home`, `animate`, `chime`, `card`, and `blurb`. `home` controls picker ordering, not edition availability. See [CONTRIBUTING.md](CONTRIBUTING.md) for the recipe and checks.
+Themes style the display and card messages using CSS only. About and Edit dialogs use neutral app chrome. Each manifest entry contains `name`, `label`, `home`, `animate`, `chime`, `card`, and `blurb`. `home` is the product a theme belongs to; a theme is offered only in its own product's picker, gallery and composer (twenty birthday, nine work), though every stylesheet still renders if a URL names it. See [CONTRIBUTING.md](CONTRIBUTING.md) for the recipe and checks.
 
 ## Local development and validation
 
@@ -67,7 +71,7 @@ npx live-server
 node .github/scripts/validate-site.mjs
 ```
 
-The local server opens at `http://localhost:8080/`. Open `/birthday/`, `/work/`, and `/themes-preview.html` to test the editions and theme states. The composer works locally too; it is all client-side.
+The local server opens at `http://localhost:8080/`. Open `/birthday/`, `/work/edition/`, and `/themes-preview.html` to test the editions and theme states. The composer works locally too; it is all client-side.
 
 The validation workflow also checks JavaScript syntax. Walk changed flows in a browser, including narrow screens and reduced motion.
 

@@ -1,17 +1,23 @@
-// The card composer.
+// The card composer, for both faces: /card/ writes birthday cards, /work/card/
+// circulates anniversary notices. The product you are standing in decides the
+// edition, so there is no "is this a work anniversary?" control.
 //
 // A recipient, date, theme, note, and sender. Nothing is created or saved: the
 // link *is* the card, built here from the same helper the editions read it
 // with, and the preview is that link in a frame, so what the sender sees is
 // exactly what arrives.
 
-import { THEMES, orderForEdition } from '/assets/themes.js';
-import { mountPreview } from '/assets/preview.js?v=2';
+import { THEMES } from '/assets/themes.js';
+import { mountPreview } from '/assets/wall.js?v=1';
 import { localDateString, cardURL, CARD_LIMITS } from '/assets/core.js?v=3';
 
+const FACE = document.body.dataset.face || 'birthday';
+const DEFAULT_THEME = FACE === 'work' ? 'timesheet' : 'departures';
+const themes = THEMES.filter((t) => t.home === FACE);
+
 const form = document.getElementById('compose');
-const els = Object.fromEntries(['name', 'date', 'work', 'theme', 'note', 'from', 'reads',
-                                'url', 'preview', 'submit', 'status', 'left', 'count']
+const els = Object.fromEntries(['name', 'date', 'theme', 'note', 'from', 'reads',
+                                'preview', 'submit', 'status', 'left', 'count']
   .map((k) => [k, document.getElementById('c-' + k)]));
 
 els.date.max = localDateString();
@@ -21,28 +27,22 @@ els.from.maxLength = CARD_LIMITS.from;
 let link = '';
 let previewObserver;
 
+// The work app lives one level under its front door. cardURL() writes the
+// product root; point it at the app.
+function appURL(url) {
+  return FACE === 'work' ? url.replace(/^\/work\//, '/work/edition/') : url;
+}
+
 function fillThemes() {
-  const edition = els.work.checked ? 'work' : 'birthday';
-  const { native, rest } = orderForEdition(edition);
-  const selected = els.theme.value;
   els.theme.replaceChildren();
-  const add = (t) => {
+  for (const t of themes) {
     const opt = document.createElement('option');
     opt.value = t.name;
     opt.textContent = t.label;
     els.theme.appendChild(opt);
-  };
-  native.forEach(add);
-  if (rest.length) {
-    const rule = document.createElement('option');
-    rule.disabled = true;
-    rule.textContent = '─'.repeat(10);
-    els.theme.appendChild(rule);
-    rest.forEach(add);
   }
-  // Departures has the best countdown and the most compelling thing to receive.
-  els.theme.value = selected || 'departures';
-  els.count.textContent = `${THEMES.length} available`;
+  els.theme.value = DEFAULT_THEME;
+  els.count.textContent = `${themes.length} ${FACE === 'work' ? 'approved options' : 'themes'}`;
 }
 
 function refresh() {
@@ -53,33 +53,29 @@ function refresh() {
     link = '';
     previewObserver?.disconnect();
     els.preview.replaceChildren();
-    els.reads.textContent = '—';
-    els.url.textContent = '—';
+    els.reads.textContent = 'Reads as —';
     els.submit.disabled = true;
     return;
   }
 
-  const edition = els.work.checked ? 'work' : 'birthday';
-  const next = cardURL(edition, { name, date, theme: els.theme.value,
-    note: els.note.value.trim(), from: els.from.value.trim() });
+  const next = appURL(cardURL(FACE, { name, date, theme: els.theme.value,
+    note: els.note.value.trim(), from: els.from.value.trim() }));
   if (next === link) return;
   link = next;
-  els.url.textContent = link;
   els.submit.disabled = false;
   previewObserver?.disconnect();
-  els.reads.textContent = '—';
+  els.reads.textContent = 'Reads as —';
 
   // The preview is the real page at the real link. Same origin, so the number
-  // it renders can be read back for the "Reads as" readout.
+  // it renders can be read back for the "Reads as" line.
   const frame = mountPreview(els.preview, link, 'Card preview');
-  frame.style.height = '630px';
-  els.preview.style.aspectRatio = '1000 / 630';
   frame.addEventListener('load', async () => {
     if (!frame.isConnected) return;
     const doc = frame.contentDocument;
     if (!doc) return;
     const updateReadout = () => {
-      els.reads.textContent = doc.querySelector('.version')?.getAttribute('aria-label') || '—';
+      const label = doc.querySelector('.version')?.getAttribute('aria-label');
+      els.reads.textContent = label ? `Reads as ${label}` : 'Reads as —';
     };
     previewObserver = new MutationObserver(updateReadout);
     previewObserver.observe(doc.body, { subtree: true, childList: true, attributes: true,
@@ -88,8 +84,8 @@ function refresh() {
     await doc.fonts.ready;
     if (!frame.isConnected) return;
     // Some themes (records, photographs, slides) make tall cards. Show the
-    // whole note instead of cropping every theme to the same landscape box.
-    const height = Math.max(630, doc.documentElement.scrollHeight);
+    // whole note instead of cropping every theme to the same box.
+    const height = Math.max(700, doc.documentElement.scrollHeight);
     frame.style.height = `${height}px`;
     els.preview.style.aspectRatio = `1000 / ${height}`;
   });
@@ -97,7 +93,6 @@ function refresh() {
 
 for (const el of [els.name, els.date, els.note, els.from]) el.addEventListener('input', refresh);
 els.theme.addEventListener('change', refresh);
-els.work.addEventListener('change', () => { fillThemes(); refresh(); });
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -109,7 +104,8 @@ form.addEventListener('submit', async (event) => {
   a.textContent = full;
   let copied = false;
   try { await navigator.clipboard.writeText(full); copied = true; } catch (_) { /* clipboard is a nicety */ }
-  els.status.append(copied ? 'Copied — ' : 'Your link: ', a, '. Everything on the card is in that link; nothing is kept here.');
+  els.status.append(copied ? 'Copied — ' : 'Your link: ', a,
+    FACE === 'work' ? '. Circulate as appropriate. No copy is retained.' : '. Everything on the card is in that link; nothing is kept here.');
 });
 
 fillThemes();

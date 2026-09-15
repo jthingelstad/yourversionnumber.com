@@ -4,28 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Your Version Number: Work Edition</title>
-<meta name="description" content="How long have you worked there, in semver? YEARS.QUARTERS.DAYS = tenure · quarters in · business days deep. Now ENTERPRISE-READY.">
+<meta name="description" content="Your tenure as a version number: years in the seat, quarter of your tenure year, business days into it. Weekends do not ship.">
 <link rel="canonical" href="https://yourversionnumber.com/work/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Your Version Number">
 <meta property="og:title" content="Your Version Number: Work Edition">
-<meta property="og:description" content="How long have you worked there, in semver? YEARS.QUARTERS.DAYS = tenure · quarters in · business days deep. ENTERPRISE-READY.">
+<meta property="og:description" content="Your tenure as a version number: years in the seat, quarter of your tenure year, business days into it. Weekends do not ship.">
 <meta property="og:url" content="https://yourversionnumber.com/work/">
-<meta property="og:image" content="https://yourversionnumber.com/work/og-image.png">
+<meta property="og:image" content="https://yourversionnumber.com/work/edition/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A live stock-ticker showing version 3.2.40 — years of tenure, quarters in, business days deep.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Your Version Number: Work Edition">
-<meta name="twitter:description" content="How long have you worked there, in semver? YEARS.QUARTERS.DAYS = tenure · quarters in · business days deep.">
-<meta name="twitter:image" content="https://yourversionnumber.com/work/og-image.png">
-<meta name="theme-color" content="#0a0a0a">
-<link rel="stylesheet" href="assets/base.css?v=6">
-<link id="theme-css" rel="stylesheet">
+<meta name="twitter:description" content="Your tenure as a version number: years in the seat, quarter of your tenure year, business days into it. Weekends do not ship.">
+<meta name="twitter:image" content="https://yourversionnumber.com/work/edition/og-image.png">
+<meta name="theme-color" content="#f7f4ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181b" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="/assets/site.css?v=3">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%92%BC%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Your Version Number: Work Edition",
+  "url": "https://yourversionnumber.com/work/",
+  "description": "Your tenure as a version number: years in the seat, quarter of your tenure year, business days into it.",
+  "author": {
+    "@type": "Person",
+    "name": "Jamie Thingelstad",
+    "url": "https://www.thingelstad.com"
+  },
+  "hasPart": {
+    "@type": "WebApplication",
+    "name": "Work Edition",
+    "url": "https://yourversionnumber.com/work/edition/",
+    "applicationCategory": "UtilityApplication"
+  }
+}
+</script>
+<script>
+// Any /work/?j= or /work/?card= link predates the front door and means the app.
+// Forward it, query string intact, before the page paints.
+(function () {
+  var q = location.search;
+  if (/[?&](j|card)=/.test(q)) location.replace('/work/edition/' + q + location.hash);
+})();
+</script>
 <script>
 // Privacy: tinylytics' embed sends window.location.href (the full URL, with any
-// ?j= dates in the query string) and the full referrer to its collector.
+// ?p= or ?j= dates in the query string) and the full referrer to its collector.
 // sanitizeCollectorUrl reduces both to origin + path before the request fires:
 // analytics still records which page was viewed and where the visitor came
 // from, while the dates in the query string never leave the browser.
@@ -62,44 +89,120 @@
   };
 })();
 </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Your Version Number: Work Edition",
-  "url": "https://yourversionnumber.com/work/",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Any (web browser)",
-  "browserRequirements": "Requires JavaScript",
-  "isAccessibleForFree": true,
-  "description": "How long have you worked there, in semver? YEARS.QUARTERS.DAYS = tenure, quarters in, business days deep.",
-  "author": {
-    "@type": "Person",
-    "name": "Jamie Thingelstad",
-    "url": "https://www.thingelstad.com"
-  },
-  "sameAs": "https://github.com/jthingelstad/yourversionnumber.com"
-}
-</script>
 <script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
 </head>
-<body>
-<main id="app">
-  <!-- Static first paint. Gives crawlers and no-JS visitors real content; app.js
-       clears #app and re-renders the live version on load. -->
-  <header class="site-header">
-    <h1 class="site-title">Your Version Number: Work Edition™</h1>
-  </header>
-  <p class="intro">It’s the version number you know and love &mdash; now <strong>ENTERPRISE-READY</strong>. The <strong>Work Edition</strong>™ ships with <code>YEARS.QUARTERS.DAYS</code>, where days are <em>business</em> days, because real work doesn’t happen on weekends. Synergize your timeline. Add a role to begin.</p>
-  <noscript>
-    <p class="intro">This page needs JavaScript to calculate version numbers. Names, dates, themes &mdash; and on a card, the note &mdash; are read from the URL and stored nowhere. <a href="/about/">How links and sharing work</a>.</p>
-    <p class="intro">To work one out by hand: <code>YEARS</code> is how long you have been in the job, <code>QUARTERS</code> is which quarter of your current tenure year you are in (0&ndash;3, counted in three-month steps from your start date, not from January), and <code>DAYS</code> is the number of business days into that quarter. Someone three years and change into a job is <code>3.2.40</code>.</p>
-    <p class="intro">For the original, birthday-based version, see <a href="/birthday/">Your Version Number</a>.</p>
-  </noscript>
+<body data-face="work">
+<header class="bar">
+  <div class="bar__in">
+    <div class="bar__brand">
+      <a class="bar__mark" href="/work/">Your Version Number<span>: Work Edition&trade;</span></a>
+      <a class="bar__v" href="/work/edition/?j=yourversionnumber.com:2026-05-01" title="This site's own tenure number, from its start date of 1 May 2026. Open its page."><span class="vnum vnum--inline" data-tenure="2026-05-01" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
+    </div>
+    <nav aria-label="Work Edition">
+      <a href="/work/edition/">Your tenure</a>
+      <a href="/work/themes/">Themes</a>
+      <a href="/work/card/">Circulate a notice</a>
+      <a href="/work/about/">About</a>
+    </nav>
+    <a class="escape" href="/">Let&rsquo;s go home!</a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="formline">
+    <span>Form YVN&#8209;1 &middot; Rev. 3</span>
+    <span>Period: Q3 FY26</span>
+    <span>Retain a copy for your records</span>
+  </div>
+
+  <p class="stamp">Confidential &mdash; distribute freely</p>
+
+  <h1>Your tenure also has a version number.</h1>
+  <p class="lede">Years in the seat. Which quarter of your tenure year you&rsquo;re in. Business days into that quarter. <span class="hi">Weekends don&rsquo;t ship.</span></p>
+
+  <form class="ask" id="ask" action="/work/edition/" method="get">
+    <label class="ask__label" for="ask-date">Employee start date <small>(as recorded by HR)</small></label>
+    <input type="date" id="ask-date" name="j" max="2026-09-15" required>
+    <button class="btn btn--hi" type="submit" id="ask-go">Read my tenure</button>
+  </form>
+
+  <span class="vnum vnum--hero hero__num" id="hero-vnum" aria-label="3.2.40"><span class="d">3</span><span class="sep">.</span><span class="d">2</span><span class="sep">.</span><span class="d">4</span><span class="d">0</span></span>
+  <p class="hero__says" id="hero-says">A worked example: <strong>3.2.40</strong> is 3 years in, quarter 2 of the year, 40 business days logged. Tomorrow adds one, assuming tomorrow is a workday.</p>
+
+  <table class="ledger ledger--greenbar">
+    <tbody>
+      <tr><th scope="row">Years</th><td>completed years in the seat</td><td class="num" id="w-years">3</td></tr>
+      <tr><th scope="row">Quarters</th><td>0 to 3, counted from your anniversary, not January</td><td class="num" id="w-quarters">2</td></tr>
+      <tr><th scope="row">Days</th><td>Monday to Friday since the quarter began, no holiday calendar</td><td class="num" id="w-days">40</td></tr>
+      <tr><th scope="row">Approved by</th><td>no one</td><td class="num">&mdash;</td></tr>
+    </tbody>
+  </table>
+  <p class="cc">cc: your manager &middot; HR &middot; nobody</p>
+
+  <h2>Performance summary</h2>
+  <ul class="bullets">
+    <li>Consistently present on business days. Weekends show no activity, as designed.</li>
+    <li>Demonstrates strong alignment with the calendar.</li>
+    <li>Areas for development: none identified. Areas for identification: none developed.</li>
+  </ul>
+  <p class="pull">Next review cycle begins the moment this one ends. Please continue to accrue.</p>
+
+  <h2>Retain it for your records</h2>
+  <p>Bookmark the page and it recalculates every business morning. Add colleagues to it &mdash; your team, your department, everyone who started the same week &mdash; and the whole roster accrues in one place. No approval is required.</p>
+  <p>Nine presentation formats are cleared for internal use: an out-of-office reply, a timesheet on green-bar fanfold, a stock ticker of your career, a slide that says CONFIDENTIAL and offers three bullets. The birthday themes are not available here, and frankly would not be appropriate.</p>
+
+  <ul class="wall" id="work-wall">
+    <li><a href="/work/themes/#timesheet">
+      <div class="shot" data-preview="/work/edition/?theme=timesheet&j=Engineer:2019-09-03&j=Analyst:2023-02-13" data-title="Timesheet theme preview"></div>
+      <h3>Timesheet</h3>
+      <p>Green-bar fanfold, an off-register stamp, and totals that are always one day out.</p>
+    </a></li>
+    <li><a href="/work/themes/#ooo">
+      <div class="shot" data-preview="/work/edition/?theme=ooo&j=Engineer:2019-09-03" data-title="OOO theme preview"></div>
+      <h3>OOO</h3>
+      <p>An out-of-office auto-reply, signed by hand. Back never.</p>
+    </a></li>
+    <li><a href="/work/themes/#ticker">
+      <div class="shot" data-preview="/work/edition/?theme=ticker&j=Engineer:2019-09-03&j=Analyst:2023-02-13" data-title="Ticker theme preview"></div>
+      <h3>Ticker</h3>
+      <p>A live ticker on a black trading screen. Your career, but as a stock.</p>
+    </a></li>
+  </ul>
+
+  <div class="row-actions">
+    <a class="btn btn--ink" href="/work/themes/">Review all nine formats</a>
+  </div>
 </main>
-<div id="tly-slots" hidden>
-  <span id="hits-span" class="tinylytics_hits" data-path="/work/">&mdash;</span>
-</div>
-<script type="module" src="assets/app.js?v=7"></script>
+
+<section class="band">
+  <div class="band__in">
+    <div class="formline">
+      <span>Service recognition</span>
+      <span>One per employee per year</span>
+    </div>
+    <h2>Or recognise someone else&rsquo;s service</h2>
+    <p>Somebody&rsquo;s anniversary is this week and nobody has noticed. Enter their start date of record, add a remark in your own words, select a presentation format, and circulate the link. Recognition is important.</p>
+    <div class="row-actions">
+      <a class="btn btn--hi" href="/work/card/">Circulate a notice</a>
+      <span class="cc" style="margin:0">cc: your manager &middot; HR &middot; nobody</span>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <p class="notice">Mandatory notice: this portal is provided as a courtesy and confers no rights. Your version number is not a benefit, is not tracked by Payroll, and may not be cited in a compensation discussion.</p>
+
+  <p class="crosslink">Not at work? <a href="/">Your Version Number</a> does the same thing with birthdays, and is considerably more fun.</p>
+</main>
+<footer class="foot">
+  <div class="foot__in">
+    <div>
+      <p class="mono">Filed by <a href="https://www.thingelstad.com/">Jamie Thingelstad</a> &middot; no records retained &middot; <a href="https://github.com/jthingelstad/yourversionnumber.com">source on GitHub</a></p>
+      <p class="mono tribute">Counting your age this way was <a href="https://www.thingelstad.com/2018/08/23/goodbye-to-my.html">David Hussman</a>&rsquo;s idea. He died in August 2018, six months after the post. This is kept in his memory.</p>
+    </div>
+    <p class="mono"><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/work/">&mdash;</span> visits</p>
+  </div>
+</footer>
+<script type="module" src="/assets/site.js?v=4"></script>
+<script type="module" src="/assets/work-home.js?v=1"></script>
 </body>
 </html>

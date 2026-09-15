@@ -4,23 +4,110 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Not found — Your Version Number</title>
-<link rel="stylesheet" href="/assets/site.css">
+<meta name="description" content="This page has not shipped.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Your Version Number">
+<meta property="og:title" content="Not found — Your Version Number">
+<meta property="og:description" content="This page has not shipped.">
+<meta property="og:url" content="https://yourversionnumber.com/404.html">
+<meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Not found — Your Version Number">
+<meta name="twitter:description" content="This page has not shipped.">
+<meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
+<meta name="theme-color" content="#fffbf2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131634" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="/assets/site.css?v=3">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Not found",
+  "url": "https://yourversionnumber.com/404.html"
+}
+</script>
+
+<script>
+// Privacy: tinylytics' embed sends window.location.href (the full URL, with any
+// ?p= or ?j= dates in the query string) and the full referrer to its collector.
+// sanitizeCollectorUrl reduces both to origin + path before the request fires:
+// analytics still records which page was viewed and where the visitor came
+// from, while the dates in the query string never leave the browser.
+(function () {
+  function pathOnly(value) {
+    try {
+      var parsed = new URL(value, location.origin);
+      return parsed.origin + parsed.pathname;
+    } catch (e) {
+      return '';
+    }
+  }
+  function sanitizeCollectorUrl(input) {
+    var u = new URL(input, location.origin);
+    ['url', 'referrer'].forEach(function (key) {
+      var raw = u.searchParams.get(key);
+      // An absent or empty referrer means "direct". Leave it alone rather than
+      // resolving '' against location and inventing a self-referral.
+      if (!raw) return;
+      var safe = pathOnly(raw);
+      if (safe) u.searchParams.set(key, safe);
+      else u.searchParams.delete(key);
+    });
+    return u.toString();
+  }
+  var origFetch = window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    try {
+      if (typeof input === 'string' && input.indexOf('tinylytics.app/collector/') !== -1) {
+        input = sanitizeCollectorUrl(input);
+      }
+    } catch (e) { /* leave fetch input as-is */ }
+    return origFetch(input, init);
+  };
+})();
+</script>
+<script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
 </head>
 <body>
-<nav class="site-nav">
-  <div class="wrap site-nav__inner">
-    <a class="site-nav__brand" href="/">Your Version Number</a>
-    <a href="/birthday/">Birthday</a>
-    <a href="/work/">Work</a>
-    <a href="/examples/">Examples</a>
-    <a href="/themes/">Themes</a>
-    <a href="/about/">About</a>
+<header class="bar">
+  <div class="bar__in">
+    <div class="bar__brand">
+      <a class="bar__mark" href="/">yourversionnumber<span>.com</span></a>
+      <a class="bar__v" href="/birthday/?theme=terminal&p=yourversionnumber.com:2026-05-01" title="This site's own version number. It shipped on 1 May 2026 &mdash; open its birthday page."><span class="vnum vnum--inline" data-since="2026-05-01" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
+    </div>
+    <nav aria-label="Site">
+      <a href="/birthday/">Your number</a>
+      <a href="/themes/">Themes</a>
+      <a href="/examples/">Examples</a>
+      <a href="/card/">Send a card</a>
+      <a href="/about/">About</a>
+    </nav>
+    <a class="escape" href="/work/">Go to the office!</a>
   </div>
-</nav>
+</header>
 <main class="wrap">
-  <h1>0.0.0</h1>
-  <p class="lede">That page does not exist — which, in versioning terms, is where everything starts.</p>
-  <p><a href="/">Back to the front page</a>.</p>
+  <section class="hero">
+    <h1 class="vnum vnum--hero" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></h1>
+    <p class="lede">This page hasn&rsquo;t shipped. Nothing here has a version number yet, which is the one state the site can&rsquo;t render.</p>
+    <div class="row-actions">
+      <a class="btn btn--go" href="/">Back to the front door</a>
+      <a class="btn" href="/birthday/">Read your number</a>
+    </div>
+  </section>
 </main>
+<footer class="foot">
+  <div class="foot__in">
+    <div>
+      <p>A joke by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a> from 2018 that turned out to be useful. <a href="https://github.com/jthingelstad/yourversionnumber.com">Source on GitHub</a>.</p>
+      <p class="tribute">Counting your age this way was <a href="https://www.thingelstad.com/2018/08/23/goodbye-to-my.html">David Hussman</a>&rsquo;s idea. He died in August 2018, six months after the post. This is kept in his memory.</p>
+    </div>
+    <p class="mono"><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/404.html">&mdash;</span> visits</p>
+  </div>
+</footer>
+<script type="module" src="/assets/site.js?v=4"></script>
 </body>
 </html>

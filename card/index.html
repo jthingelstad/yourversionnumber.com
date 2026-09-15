@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Themes — Your Version Number</title>
-<meta name="description" content="Twenty ways to render the same three numbers, every one previewed live with your own birthday.">
-<link rel="canonical" href="https://yourversionnumber.com/themes/">
+<title>Write someone a card — Your Version Number</title>
+<meta name="description" content="A birthday card whose number keeps counting. The link is the card; nothing is saved.">
+<link rel="canonical" href="https://yourversionnumber.com/card/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Your Version Number">
-<meta property="og:title" content="Themes — Your Version Number">
-<meta property="og:description" content="Twenty ways to render the same three numbers, every one previewed live with your own birthday.">
-<meta property="og:url" content="https://yourversionnumber.com/themes/">
+<meta property="og:title" content="Write someone a card — Your Version Number">
+<meta property="og:description" content="A birthday card whose number keeps counting. The link is the card; nothing is saved.">
+<meta property="og:url" content="https://yourversionnumber.com/card/">
 <meta property="og:image" content="https://yourversionnumber.com/birthday/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Themes — Your Version Number">
-<meta name="twitter:description" content="Twenty ways to render the same three numbers, every one previewed live with your own birthday.">
+<meta name="twitter:title" content="Write someone a card — Your Version Number">
+<meta name="twitter:description" content="A birthday card whose number keeps counting. The link is the card; nothing is saved.">
 <meta name="twitter:image" content="https://yourversionnumber.com/birthday/og-image.png">
 <meta name="theme-color" content="#fffbf2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#131634" media="(prefers-color-scheme: dark)">
@@ -25,10 +25,10 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "Theme gallery",
-  "url": "https://yourversionnumber.com/themes/",
-  "description": "All twenty birthday themes, previewed live with your own number."
+  "@type": "WebPage",
+  "name": "Write someone a card",
+  "url": "https://yourversionnumber.com/card/",
+  "description": "A birthday card whose number keeps counting. The link is the card; nothing is saved."
 }
 </script>
 
@@ -82,30 +82,56 @@
     </div>
     <nav aria-label="Site">
       <a href="/birthday/">Your number</a>
-      <a href="/themes/" aria-current="page">Themes</a>
+      <a href="/themes/">Themes</a>
       <a href="/examples/">Examples</a>
-      <a href="/card/">Send a card</a>
+      <a href="/card/" aria-current="page">Send a card</a>
       <a href="/about/">About</a>
     </nav>
     <a class="escape" href="/work/">Go to the office!</a>
   </div>
 </header>
 <main class="wrap">
-  <h1>Twenty themes</h1>
-  <p class="lede">Twenty ways to render the same three numbers. Nine more are about jobs and live in the <a href="/work/themes/">Work Edition</a>.</p>
+  <h1>Write someone a card</h1>
+  <p class="lede">Their birthday, a theme, and a note in your own words. The link <span class="hi">is</span> the card &mdash; nothing is saved here.</p>
 
-  <form class="ask" id="ask" action="/birthday/" method="get">
-    <label class="ask__label" for="ask-date">Put your own birthday in and every preview below shows <em>your</em> number</label>
-    <input type="date" id="ask-date" name="p" value="1974-01-15" max="2026-09-15">
-    <button class="btn btn--quiet" type="button" data-surprise>Surprise me</button>
+  <form id="compose" class="compose" autocomplete="off">
+    <div class="compose__preview">
+      <div class="shot" id="c-preview"></div>
+      <p class="mono" id="c-reads">Reads as &mdash;</p>
+    </div>
+
+    <div class="compose__form">
+      <label class="field">
+        <span>Who&rsquo;s it for?</span>
+        <input type="text" id="c-name" maxlength="40" placeholder="Sara" required>
+      </label>
+
+      <label class="field">
+        <span>Their birthday</span>
+        <input type="date" id="c-date" required>
+      </label>
+
+      <label class="field">
+        <span>What should it look like?</span>
+        <select id="c-theme"></select>
+        <span class="field__hint"><span id="c-count"></span> &middot; <a href="/themes/">see them all</a></span>
+      </label>
+
+      <label class="field">
+        <span>Say something</span>
+        <textarea id="c-note" maxlength="140" rows="3" placeholder="Four whole decades and still no breaking changes."></textarea>
+        <span class="field__hint"><span id="c-left">140</span> characters left</span>
+      </label>
+
+      <label class="field">
+        <span>From</span>
+        <input type="text" id="c-from" maxlength="40" placeholder="Jamie">
+      </label>
+
+      <button class="btn btn--go" type="submit" id="c-submit" disabled>Copy the link</button>
+      <p class="small" id="c-status" role="status">Everything you write travels in the link, readable by whoever you send it to &mdash; and by anyone they forward it to. In the last seven days before the day itself, the card counts down.</p>
+    </div>
   </form>
-  <p class="small">Pick a theme and it becomes part of your URL, so a bookmark keeps it.</p>
-
-  <ul class="wall wall--themes" id="gallery"></ul>
-
-  <noscript>
-    <p>The live previews need JavaScript. Without it you can still reach any theme by name &mdash; append <code>?theme=receipt</code> (or any other) to <a href="/birthday/">the birthday edition</a>.</p>
-  </noscript>
 </main>
 <footer class="foot">
   <div class="foot__in">
@@ -113,10 +139,10 @@
       <p>A joke by <a href="https://www.thingelstad.com/2018/02/24/your-version-number.html">Jamie Thingelstad</a> from 2018 that turned out to be useful. <a href="https://github.com/jthingelstad/yourversionnumber.com">Source on GitHub</a>.</p>
       <p class="tribute">Counting your age this way was <a href="https://www.thingelstad.com/2018/08/23/goodbye-to-my.html">David Hussman</a>&rsquo;s idea. He died in August 2018, six months after the post. This is kept in his memory.</p>
     </div>
-    <p class="mono"><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/themes/">&mdash;</span> visits</p>
+    <p class="mono"><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/card/">&mdash;</span> visits</p>
   </div>
 </footer>
 <script type="module" src="/assets/site.js?v=4"></script>
-<script type="module" src="/assets/gallery.js?v=4"></script>
+<script type="module" src="/assets/compose.js?v=6"></script>
 </body>
 </html>

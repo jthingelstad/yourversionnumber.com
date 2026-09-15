@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circulate an anniversary notice — Your Version Number: Work Edition</title>
+<meta name="description" content="A work-anniversary notice whose number keeps accruing. The link is the notice; no copy is retained.">
+<link rel="canonical" href="https://yourversionnumber.com/work/card/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Your Version Number">
+<meta property="og:title" content="Circulate an anniversary notice — Your Version Number: Work Edition">
+<meta property="og:description" content="A work-anniversary notice whose number keeps accruing. The link is the notice; no copy is retained.">
+<meta property="og:url" content="https://yourversionnumber.com/work/card/">
+<meta property="og:image" content="https://yourversionnumber.com/work/edition/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Circulate an anniversary notice — Your Version Number: Work Edition">
+<meta name="twitter:description" content="A work-anniversary notice whose number keeps accruing. The link is the notice; no copy is retained.">
+<meta name="twitter:image" content="https://yourversionnumber.com/work/edition/og-image.png">
+<meta name="theme-color" content="#f7f4ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181b" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="/assets/site.css?v=3">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%92%BC%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Circulate an anniversary notice",
+  "url": "https://yourversionnumber.com/work/card/",
+  "description": "A work-anniversary notice whose number keeps accruing. The link is the notice; no copy is retained."
+}
+</script>
+
+<script>
+// Privacy: tinylytics' embed sends window.location.href (the full URL, with any
+// ?p= or ?j= dates in the query string) and the full referrer to its collector.
+// sanitizeCollectorUrl reduces both to origin + path before the request fires:
+// analytics still records which page was viewed and where the visitor came
+// from, while the dates in the query string never leave the browser.
+(function () {
+  function pathOnly(value) {
+    try {
+      var parsed = new URL(value, location.origin);
+      return parsed.origin + parsed.pathname;
+    } catch (e) {
+      return '';
+    }
+  }
+  function sanitizeCollectorUrl(input) {
+    var u = new URL(input, location.origin);
+    ['url', 'referrer'].forEach(function (key) {
+      var raw = u.searchParams.get(key);
+      // An absent or empty referrer means "direct". Leave it alone rather than
+      // resolving '' against location and inventing a self-referral.
+      if (!raw) return;
+      var safe = pathOnly(raw);
+      if (safe) u.searchParams.set(key, safe);
+      else u.searchParams.delete(key);
+    });
+    return u.toString();
+  }
+  var origFetch = window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    try {
+      if (typeof input === 'string' && input.indexOf('tinylytics.app/collector/') !== -1) {
+        input = sanitizeCollectorUrl(input);
+      }
+    } catch (e) { /* leave fetch input as-is */ }
+    return origFetch(input, init);
+  };
+})();
+</script>
+<script defer src="https://tinylytics.app/embed/8JZbs4z3jyWQay28S2av/min.js?events&hits"></script>
+</head>
+<body data-face="work">
+<header class="bar">
+  <div class="bar__in">
+    <div class="bar__brand">
+      <a class="bar__mark" href="/work/">Your Version Number<span>: Work Edition&trade;</span></a>
+      <a class="bar__v" href="/work/edition/?j=yourversionnumber.com:2026-05-01" title="This site's own tenure number, from its start date of 1 May 2026. Open its page."><span class="vnum vnum--inline" data-tenure="2026-05-01" aria-label="0.0.0"><span class="d">0</span><span class="sep">.</span><span class="d">0</span><span class="sep">.</span><span class="d">0</span></span></a>
+    </div>
+    <nav aria-label="Work Edition">
+      <a href="/work/edition/">Your tenure</a>
+      <a href="/work/themes/">Themes</a>
+      <a href="/work/card/" aria-current="page">Circulate a notice</a>
+      <a href="/work/about/">About</a>
+    </nav>
+    <a class="escape" href="/">Let&rsquo;s go home!</a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="formline">
+    <span>Form YVN&#8209;3 &middot; Service recognition</span>
+    <span>One per employee per year</span>
+  </div>
+
+  <h1>Circulate an anniversary notice</h1>
+  <p class="lede">Recognition is important. Please keep it to <span class="hi">140 characters</span>.</p>
+
+  <form id="compose" class="compose" autocomplete="off">
+    <div class="compose__preview">
+      <div class="shot" id="c-preview"></div>
+      <p class="mono" id="c-reads">Reads as &mdash;</p>
+    </div>
+
+    <div class="compose__form">
+      <label class="field">
+        <span>Employee name <small>(as it appears in the directory)</small></span>
+        <input type="text" id="c-name" maxlength="40" placeholder="R. Patel" required>
+      </label>
+
+      <label class="field">
+        <span>Start date of record</span>
+        <input type="date" id="c-date" required>
+      </label>
+
+      <label class="field">
+        <span>Presentation format</span>
+        <select id="c-theme"></select>
+        <span class="field__hint"><span id="c-count"></span> &middot; <a href="/work/themes/">see them all</a></span>
+      </label>
+
+      <label class="field">
+        <span>Remarks</span>
+        <textarea id="c-note" maxlength="140" rows="3" placeholder="Seven years of uninterrupted service. No incidents."></textarea>
+        <span class="field__hint"><span id="c-left">140</span> characters remaining</span>
+      </label>
+
+      <label class="field">
+        <span>Submitted by</span>
+        <input type="text" id="c-from" maxlength="40" placeholder="J. Thingelstad">
+      </label>
+
+      <button class="btn btn--hi" type="submit" id="c-submit" disabled>Copy link for circulation</button>
+      <p class="cc" style="margin-top:.75rem">cc: your manager &middot; HR &middot; nobody</p>
+      <p class="small" id="c-status" role="status">The notice travels in its link and is readable by anyone it is forwarded to. In the seven days before the anniversary of record, it counts down. No copy is retained.</p>
+    </div>
+  </form>
+</main>
+<footer class="foot">
+  <div class="foot__in">
+    <div>
+      <p class="mono">Filed by <a href="https://www.thingelstad.com/">Jamie Thingelstad</a> &middot; no records retained &middot; <a href="https://github.com/jthingelstad/yourversionnumber.com">source on GitHub</a></p>
+      <p class="mono tribute">Counting your age this way was <a href="https://www.thingelstad.com/2018/08/23/goodbye-to-my.html">David Hussman</a>&rsquo;s idea. He died in August 2018, six months after the post. This is kept in his memory.</p>
+    </div>
+    <p class="mono"><span id="days-since"></span> &middot; <span id="hits-span" class="tinylytics_hits" data-path="/work/card/">&mdash;</span> visits</p>
+  </div>
+</footer>
+<script type="module" src="/assets/site.js?v=4"></script>
+<script type="module" src="/assets/compose.js?v=6"></script>
+</body>
+</html>

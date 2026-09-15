@@ -36,7 +36,7 @@ async function validateEdition({ htmlPath, privateQuery }) {
 }
 
 await validateEdition({ htmlPath: "birthday/index.html", privateQuery: "?p=" });
-await validateEdition({ htmlPath: "work/index.html", privateQuery: "?j=" });
+await validateEdition({ htmlPath: "work/edition/index.html", privateQuery: "?j=" });
 
 // One manifest, one theme folder, both editions reading the same array.
 // A manifest entry without a stylesheet ships a picker option that 404s; a
@@ -59,51 +59,102 @@ await validateEdition({ htmlPath: "work/index.html", privateQuery: "?j=" });
 
   // `kind` was only ever there to build optgroups; the picker is flat now.
   if (/\bkind:/.test(manifestSrc)) failures.push("assets/themes.js: `kind` is retired, use `home`");
+  // `home` is load-bearing now: it decides which product offers the theme, and
+  // a theme belongs to exactly one. The counts are hard-coded in page copy
+  // ("Twenty themes", "Nine themes"), so they are asserted here.
+  const homes = { birthday: 0, work: 0 };
   for (const m of manifestSrc.matchAll(/name:\s*'([^']+)'[\s\S]*?home:\s*(null|'([^']*)')/g)) {
     const home = m[3] ?? null;
-    if (home !== null && home !== "birthday" && home !== "work") {
-      failures.push(`assets/themes.js: ${m[1]} has home '${home}', expected birthday | work | null`);
-    }
+    if (home !== "birthday" && home !== "work") {
+      failures.push(`assets/themes.js: ${m[1]} has home '${home}', expected birthday | work`);
+    } else homes[home]++;
   }
+  if (homes.birthday !== 20) failures.push(`assets/themes.js: ${homes.birthday} birthday themes, page copy says twenty`);
+  if (homes.work !== 9) failures.push(`assets/themes.js: ${homes.work} work themes, page copy says nine`);
+  // Two entries share the label "Boarding Pass" on purpose; slugs are what must be unique.
+  if (new Set(entries).size !== entries.length) failures.push("assets/themes.js: duplicate theme slug");
 
   // Nothing may reach into a per-edition theme folder any more.
-  for (const stale of ["birthday/themes", "work/themes"]) {
+  for (const stale of ["birthday/themes", "work/edition/themes"]) {
     if (existsSync(resolve(repoRoot, stale))) failures.push(`${stale}/ still exists; themes live in assets/themes/`);
   }
 }
 
-// Spine pages: neutral chrome, no theme manifest, but the same privacy shim
-// (kept inline on every page so it cannot half-load ahead of the embed) and the
-// shared nav that ties the site together.
-for (const spinePath of ["index.html", "about/index.html", "themes/index.html",
-                         "examples/index.html", "card/new/index.html"]) {
+// Spine pages: two faces, one stylesheet, the same privacy shim on every one
+// (kept inline on every page so it cannot half-load ahead of the embed), and
+// each face's own nav. The work face never links into the birthday nav and
+// vice versa; the one door between them is .escape.
+const SPINE = {
+  "index.html":            { face: "birthday" },
+  "about/index.html":      { face: "birthday" },
+  "themes/index.html":     { face: "birthday" },
+  "examples/index.html":   { face: "birthday" },
+  "card/index.html":       { face: "birthday" },
+  "404.html":              { face: "birthday" },
+  "work/index.html":       { face: "work" },
+  "work/themes/index.html":{ face: "work" },
+  "work/card/index.html":  { face: "work" },
+  "work/about/index.html": { face: "work" },
+};
+const NAV = {
+  birthday: ["/birthday/", "/themes/", "/examples/", "/card/", "/about/", "/work/"],
+  work: ["/work/edition/", "/work/themes/", "/work/card/", "/work/about/", "/"],
+};
+for (const [spinePath, { face }] of Object.entries(SPINE)) {
   const html = await readFile(resolve(repoRoot, spinePath), "utf8");
   for (const required of [
     "tinylytics.app/collector/",
     "sanitizeCollectorUrl",
     "['url', 'referrer']",
-    'class="site-nav__brand"',
+    'class="bar__mark"',
     // version-busted, so match the href without its query string
     'href="/assets/site.css',
     'type="application/ld+json"',
   ]) {
     if (!html.includes(required)) failures.push(`${spinePath}: missing ${required}`);
   }
-  for (const dest of ["/birthday/", "/work/", "/examples/", "/themes/", "/about/", "/card/new/"]) {
+  for (const dest of NAV[face]) {
     if (!html.includes(`href="${dest}"`)) failures.push(`${spinePath}: no link to ${dest}`);
   }
+  // David Hussman's credit is on every spine page, in words, never as a number.
+  if (!/class="[^"]*\btribute\b/.test(html)) failures.push(`${spinePath}: missing the tribute line`);
+  if (face === "work" && !html.includes('<body data-face="work">')) failures.push(`${spinePath}: not on the work face`);
+  if (face === "birthday" && html.includes('data-face="work"')) failures.push(`${spinePath}: on the work face`);
+  // The spine never stores anything. Not even a dark-mode preference.
+  if (/localStorage|sessionStorage|document\.cookie/.test(html)) failures.push(`${spinePath}: storage on a spine page`);
+  // Uppercase labels were most of where the old joylessness lived.
+  if (/UNIT 0\d|SLOT [AB]|site-nav__led/.test(html)) failures.push(`${spinePath}: the rack unit is back`);
+}
+// The two front doors mention the other product exactly once in the body,
+// plus the .escape in the bar.
+for (const [door, other] of [["index.html", 'href="/work/"'], ["work/index.html", 'href="/"']]) {
+  const html = await readFile(resolve(repoRoot, door), "utf8");
+  const body = html.slice(html.indexOf("<main"));
+  const n = body.split(other).length - 1;
+  if (n !== 1) failures.push(`${door}: links the other product ${n} times in the body, expected 1`);
+}
+// The old composer address still resolves.
+{
+  const stub = await readFile(resolve(repoRoot, "card/new/index.html"), "utf8");
+  if (!stub.includes('content="0;url=/card/"')) failures.push("card/new/index.html: no redirect to /card/");
+}
+// Old /work/?j= and ?card= links must forward to the app.
+{
+  const html = await readFile(resolve(repoRoot, "work/index.html"), "utf8");
+  if (!html.includes("location.replace('/work/edition/'")) failures.push("work/index.html: missing the ?j=/?card= forwarder");
 }
 
 // The examples page carries its rosters and links in static HTML — the frames
 // are enhancement only. If that inverts, the page stops working without JS.
 {
   const html = await readFile(resolve(repoRoot, "examples/index.html"), "utf8");
-  const slots = [...html.matchAll(/data-example-url="([^"]+)"/g)].map((m) => m[1]);
+  const slots = [...html.matchAll(/data-preview="([^"]+)"/g)].map((m) => m[1]);
   if (slots.length < 8) failures.push(`examples/index.html: only ${slots.length} examples`);
   for (const href of slots) {
     if (!html.includes(`<a href="${href}">`)) failures.push(`examples/index.html: ${href} has a preview but no static link`);
+    if (href.includes("%3A")) failures.push(`examples/index.html: ${href} escapes the colon; write it literally`);
   }
-  const sizes = [...html.matchAll(/<span class="chip">(\d+) (?:person|people)<\/span>/g)].map((m) => Number(m[1]));
+  const sizes = [...html.matchAll(/<p class="wall__meta">(\d+) (?:person|people)/g)].map((m) => Number(m[1]));
   for (const n of [1, 2, 3, 4, 5, 6, 7, 8]) {
     if (!sizes.includes(n)) failures.push(`examples/index.html: no example with ${n} people`);
   }
@@ -130,7 +181,8 @@ for (const themeFile of (await readdir(resolve(repoRoot, "assets/themes")))
 
 // The UI stopped asking for contributions; keep it that way.
 for (const page of ["index.html", "about/index.html", "themes/index.html", "examples/index.html",
-                    "birthday/assets/app.js", "work/assets/app.js"]) {
+                    "work/index.html", "work/about/index.html",
+                    "birthday/assets/app.js", "work/edition/assets/app.js"]) {
   const html = await readFile(resolve(repoRoot, page), "utf8");
   if (/pull request|CONTRIBUTING\.md|your theme here/i.test(html)) {
     failures.push(`${page}: contribution call-to-action is back`);
