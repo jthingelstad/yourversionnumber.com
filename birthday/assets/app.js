@@ -424,6 +424,47 @@ function makeShareButton() {
   return btn;
 }
 
+// The first-visit dialog. Not a brochure — a signpost: say what the number on
+// the page behind it is, offer the full story in a NEW TAB (the page behind is
+// the artefact somebody sent; never navigate away from it), and get out of the
+// way. The figures are the real ones from the first person on the page, so it
+// explains the number the visitor is looking at rather than a sample. App
+// chrome: themes must not style .first-visit, same rule as .app-dialog.
+function openIntro() {
+  let dialog = document.getElementById('first-visit');
+  if (!dialog) {
+    const first = state.people.find(p => DATE_RE.test(p.birthday) && isRealDate(p.birthday) && !isFutureDate(p.birthday));
+    const v = first ? computeVersion(first.birthday) : { major: 4, minor: 6, patch: 52 };
+    dialog = document.createElement('dialog');
+    dialog.id = 'first-visit';
+    dialog.className = 'first-visit';
+    dialog.setAttribute('aria-labelledby', 'first-visit-title');
+    dialog.innerHTML = `
+      <h2 id="first-visit-title">This is an age, written like software.</h2>
+      <p>Every version number has three parts. So does this one:</p>
+      <ul class="first-visit__parts">
+        <li><b></b> ${v.major === 1 ? 'decade' : 'decades'} old</li>
+        <li><b></b> ${v.minor === 1 ? 'year' : 'years'} into that decade</li>
+        <li><b></b> ${v.patch === 1 ? 'day' : 'days'} since the birthday</li>
+      </ul>
+      <p>Tomorrow the last number goes up by one. That is the whole idea.</p>
+      <div class="first-visit__actions">
+        <button class="first-visit__go" type="button" autofocus>Got it</button>
+        <a class="first-visit__more" href="/" target="_blank" rel="noopener">What is this? (opens a new tab)</a>
+      </div>`;
+    const cells = dialog.querySelectorAll('.first-visit__parts b');
+    [v.major, v.minor, v.patch].forEach((n, i) => { cells[i].textContent = String(n); });
+    dialog.querySelector('.first-visit__go').addEventListener('click', () => dialog.close());
+    attachBackdropClose(dialog);
+    // Closing by any route — button, Escape, backdrop — is a dismissal.
+    dialog.addEventListener('close', () => {
+      try { localStorage.setItem('yvn-about-seen', '1'); } catch (_) { /* private mode */ }
+    });
+    document.body.appendChild(dialog);
+  }
+  dialog.showModal();
+}
+
 function attachBackdropClose(dialog) {
   dialog.addEventListener('click', (e) => {
     const rect = dialog.getBoundingClientRect();
@@ -706,10 +747,9 @@ const isFramed = (() => {
 
 try {
   if (!isFramed && !CARD && !localStorage.getItem('yvn-about-seen')) {
-    localStorage.setItem('yvn-about-seen', '1');
-    // Wait for two animation frames so the page paints once before the modal
-    // pops. requestAnimationFrame fires reliably even where short-delay
-    // setTimeouts get throttled.
-    requestAnimationFrame(() => requestAnimationFrame(openAbout));
+    // The flag is set when the dialog closes, by any route. Wait for two
+    // animation frames so the number paints first — the dialog should feel
+    // like an annotation on a page that is already there, not a gate.
+    requestAnimationFrame(() => requestAnimationFrame(openIntro));
   }
 } catch (_) { /* localStorage unavailable (private mode, etc.) — skip */ }

@@ -31,7 +31,7 @@ Themes paint the **display**. That's:
 
 ## What a theme does NOT style
 
-The About and Edit dialogs are app chrome — they look the same on every theme, in a neutral light/dark card that follows the OS preference. **Don't add rules for `.app-dialog`, `.edit-row`, `.edit-list`, `.edit-add`, or any of their descendants.** If you want a "themed" feel for forms, the answer is no — those live in the dialog and stay neutral.
+The About and Edit dialogs are app chrome — they look the same on every theme, in a neutral light/dark card that follows the OS preference. **Don't add rules for `.app-dialog`, `.first-visit`, `.edit-row`, `.edit-list`, `.edit-add`, or any of their descendants.** If you want a "themed" feel for forms, the answer is no — those live in the dialog and stay neutral.
 
 ## Hooks you can use
 

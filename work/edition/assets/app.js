@@ -463,6 +463,48 @@ function makeShareButton() {
   return btn;
 }
 
+// The first-visit dialog. Not a brochure — a signpost: say what the number on
+// the page behind it is, offer the full story in a NEW TAB (the page behind is
+// the artefact somebody sent; never navigate away from it), and get out of the
+// way. The figures are the real ones from the first person on the page, so it
+// explains the number the visitor is looking at rather than a sample. App
+// chrome: themes must not style .first-visit, same rule as .app-dialog.
+function openIntro() {
+  let dialog = document.getElementById('first-visit');
+  if (!dialog) {
+    const first = state.roles.find(r => DATE_RE.test(r.startDate) && isRealDate(r.startDate) && !isFutureDate(r.startDate));
+    const v = (first && computeWorkVersion(first.startDate)) || { major: 3, minor: 2, patch: 28, build: 1847 };
+    dialog = document.createElement('dialog');
+    dialog.id = 'first-visit';
+    dialog.className = 'first-visit';
+    dialog.setAttribute('aria-labelledby', 'first-visit-title');
+    dialog.innerHTML = `
+      <h2 id="first-visit-title">This is a tenure, written like software.</h2>
+      <p>Four figures, all from one start date:</p>
+      <ul class="first-visit__parts">
+        <li><b></b> ${v.major === 1 ? 'year' : 'years'} in the seat</li>
+        <li><b></b> which quarter of the tenure year</li>
+        <li><b></b> business ${v.patch === 1 ? 'day' : 'days'} into it</li>
+        <li><b></b> every business day ever logged</li>
+      </ul>
+      <p>Weekends produce no change. Neither does annual leave.</p>
+      <div class="first-visit__actions">
+        <button class="first-visit__go" type="button" autofocus>Understood</button>
+        <a class="first-visit__more" href="/work/" target="_blank" rel="noopener">What is this? (opens a new tab)</a>
+      </div>`;
+    const cells = dialog.querySelectorAll('.first-visit__parts b');
+    [v.major, v.minor, v.patch, `+${v.build.toLocaleString()}`].forEach((n, i) => { cells[i].textContent = String(n); });
+    dialog.querySelector('.first-visit__go').addEventListener('click', () => dialog.close());
+    attachBackdropClose(dialog);
+    // Closing by any route — button, Escape, backdrop — is a dismissal.
+    dialog.addEventListener('close', () => {
+      try { localStorage.setItem('yvnw-about-seen', '1'); } catch (_) { /* private mode */ }
+    });
+    document.body.appendChild(dialog);
+  }
+  dialog.showModal();
+}
+
 function attachBackdropClose(dialog) {
   dialog.addEventListener('click', (e) => {
     const rect = dialog.getBoundingClientRect();
@@ -745,7 +787,9 @@ const isFramed = (() => {
 
 try {
   if (!isFramed && !CARD && !localStorage.getItem('yvnw-about-seen')) {
-    localStorage.setItem('yvnw-about-seen', '1');
-    requestAnimationFrame(() => requestAnimationFrame(openAbout));
+    // The flag is set when the dialog closes, by any route. Wait for two
+    // animation frames so the number paints first — the dialog should feel
+    // like an annotation on a page that is already there, not a gate.
+    requestAnimationFrame(() => requestAnimationFrame(openIntro));
   }
 } catch (_) { /* localStorage unavailable (private mode, etc.) — skip */ }

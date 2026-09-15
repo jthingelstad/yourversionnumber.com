@@ -176,6 +176,80 @@ input {
   white-space: normal;
 }
 
+/* The first-visit intro. App chrome, like .app-dialog: themes must not style
+   it, and it inherits nothing — every value below is set explicitly so a
+   theme that puts letter-spacing or text-transform on a broad selector cannot
+   reach inside. It looks identical over zen and over terminal. */
+.first-visit {
+  color: #14163a;
+  background: #fffbf2;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: left;
+  letter-spacing: normal;
+  text-transform: none;
+  max-width: 24rem;
+  border: 2px solid #14163a;
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 6px 6px 0 #ff5a1f;
+}
+.first-visit::backdrop { background: rgb(20 22 58 / 0.45); }
+.first-visit[open] { animation: first-visit-in 150ms ease-out; }
+@keyframes first-visit-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .first-visit[open] { animation: none; } }
+
+.first-visit h2 { margin: 0 0 0.6rem; font-size: 1.15rem; line-height: 1.2; font-weight: 700; font-family: inherit; letter-spacing: normal; text-transform: none; color: inherit; }
+.first-visit p { margin: 0 0 0.75rem; font-family: inherit; color: inherit; }
+.first-visit p:last-of-type { margin-bottom: 0.9rem; }
+
+.first-visit__parts { list-style: none; margin: 0 0 0.9rem; padding: 0; display: grid; gap: 0.35rem; }
+.first-visit__parts li { display: flex; gap: 0.6rem; align-items: baseline; color: inherit; }
+.first-visit__parts b {
+  font-family: ui-monospace, monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  min-width: 2.75rem;
+  text-align: right;
+  color: #1a4fe0;
+}
+
+.first-visit__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+
+.first-visit__go {
+  min-height: 44px;
+  padding: 0.55rem 1.1rem;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: normal;
+  text-transform: none;
+  border: 2px solid #14163a;
+  border-radius: 999px;
+  background: #ff5a1f;   /* ink on tangerine, 5.4:1 — never white on it */
+  color: #14163a;
+  cursor: pointer;
+}
+.first-visit__more {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: #14163a;
+  text-decoration: underline;
+}
+.first-visit__go:focus-visible,
+.first-visit__more:focus-visible { outline: 3px solid #1a4fe0; outline-offset: 2px; }
+
+/* Work edition: square corners, stamp red, highlighter button. */
+.first-visit { border-radius: 0; border-color: #14161a; color: #14161a; background: #f7f4ec; box-shadow: 6px 6px 0 #b3261e; }
+.first-visit::backdrop { background: rgb(20 22 26 / 0.55); }
+.first-visit__parts b { color: #14161a; min-width: 3.4rem; }
+.first-visit__go { border-radius: 0; border-color: #14161a; background: #fff6a8; color: #14161a; }
+.first-visit__more { color: #14161a; }
+.first-visit__go:focus-visible, .first-visit__more:focus-visible { outline-color: #b3261e; }
+
 /* A card page has exactly one person and nothing to configure. */
 body[data-card] .add-btn,
 body[data-card] .theme-picker,
