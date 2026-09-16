@@ -377,10 +377,16 @@ body[data-face="work"] .escape:hover { background: #ffee7a; color: #14161a; box-
     min-width: 0;
     flex-wrap: nowrap;
     gap: 0.85rem;
+    padding-right: 1.5rem;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    /* The rail deliberately stays on one line. Fade its trailing edge so a
+       clipped label reads as "more this way", not broken navigation. The
+       padding lets the final link scroll fully clear of the fade. */
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 1.25rem), transparent 100%);
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 1.25rem), transparent 100%);
   }
   .bar__in nav::-webkit-scrollbar { display: none; }
   .bar__in nav a { flex: none; }

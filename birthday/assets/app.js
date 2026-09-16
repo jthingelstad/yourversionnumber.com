@@ -509,9 +509,10 @@ function openEdit({ addBlankRow = false } = {}) {
       <article class="app-dialog__content">
         <header class="app-dialog__header">
           <h2 class="app-dialog__title">Edit</h2>
-          <button type="button" class="app-dialog__close" aria-label="Close">&times;</button>
+          <button type="button" class="app-dialog__close app-dialog__done">Done</button>
         </header>
         <div class="app-dialog__body">
+          <p class="edit-note">Changes update this page and its URL immediately.</p>
           <div class="edit-list"></div>
           <button type="button" class="edit-add">+ Add another</button>
         </div>
@@ -521,11 +522,7 @@ function openEdit({ addBlankRow = false } = {}) {
     attachBackdropClose(dialog);
     list = dialog.querySelector('.edit-list');
     dialog.querySelector('.edit-add').addEventListener('click', () => {
-      const today = localDateString();
-      state.people.push({ name: '', birthday: today });
-      writeURL();
-      render();
-      appendEditRow(list, true);
+      appendEditRow(list, { name: '', birthday: '' }, true);
     });
     document.body.appendChild(dialog);
   } else {
@@ -533,13 +530,10 @@ function openEdit({ addBlankRow = false } = {}) {
   }
 
   list.innerHTML = '';
+  state.people.forEach(person => appendEditRow(list, person, false));
   if (addBlankRow && state.people.length === 0) {
-    const today = localDateString();
-    state.people.push({ name: '', birthday: today });
-    writeURL();
-    render();
+    appendEditRow(list, { name: '', birthday: '' }, false);
   }
-  state.people.forEach(() => appendEditRow(list, false));
 
   dialog.showModal();
 
@@ -549,11 +543,11 @@ function openEdit({ addBlankRow = false } = {}) {
   }
 }
 
-function appendEditRow(list, focusName) {
+function appendEditRow(list, person, focusName) {
   const row = document.createElement('div');
   row.className = 'edit-row';
 
-  const findIndex = () => Array.from(list.children).indexOf(row);
+  const findIndex = () => state.people.indexOf(person);
 
   const nameInput = document.createElement('input');
   nameInput.type = 'text';
@@ -567,10 +561,8 @@ function appendEditRow(list, focusName) {
   dateInput.max = localDateString();
   dateInput.setAttribute('aria-label', 'Birthday');
 
-  list.appendChild(row); // append before reading state by index
-  const i = findIndex();
-  nameInput.value = state.people[i].name;
-  dateInput.value = state.people[i].birthday;
+  nameInput.value = person.name;
+  dateInput.value = person.birthday;
 
   const removeBtn = document.createElement('button');
   removeBtn.type = 'button';
@@ -581,22 +573,31 @@ function appendEditRow(list, focusName) {
 
   const commitName = () => {
     const idx = findIndex();
-    if (idx < 0) return;
     const newName = nameInput.value.trim();
-    if (newName !== state.people[idx].name) {
-      state.people[idx].name = newName;
+    if (newName !== person.name) {
+      person.name = newName;
+      if (idx < 0) return;
       writeURL();
       render();
     }
   };
 
   const commitDate = () => {
-    const idx = findIndex();
-    if (idx < 0) return;
     const newDate = dateInput.value;
+    const idx = findIndex();
+    if (!newDate) {
+      person.birthday = '';
+      if (idx >= 0) {
+        state.people.splice(idx, 1);
+        writeURL();
+        render();
+      }
+      return;
+    }
     if (!DATE_RE.test(newDate) || !isRealDate(newDate) || isFutureDate(newDate)) return;
-    if (newDate !== state.people[idx].birthday) {
-      state.people[idx].birthday = newDate;
+    if (newDate !== person.birthday || idx < 0) {
+      person.birthday = newDate;
+      if (idx < 0) state.people.push(person);
       writeURL();
       render();
     }
@@ -604,10 +605,11 @@ function appendEditRow(list, focusName) {
 
   removeBtn.addEventListener('click', () => {
     const idx = findIndex();
-    if (idx < 0) return;
-    state.people.splice(idx, 1);
-    writeURL();
-    render();
+    if (idx >= 0) {
+      state.people.splice(idx, 1);
+      writeURL();
+      render();
+    }
     row.remove();
   });
 
@@ -617,6 +619,7 @@ function appendEditRow(list, focusName) {
   dateInput.addEventListener('blur', commitDate);
 
   row.append(nameInput, dateInput, removeBtn);
+  list.appendChild(row);
   if (focusName) nameInput.focus();
 }
 

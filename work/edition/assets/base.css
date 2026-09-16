@@ -355,6 +355,14 @@ body[data-card] .edit-btn {
   color: #111;
 }
 
+.app-dialog__done {
+  border: 1px solid currentColor;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 0.45rem 0.75rem;
+}
+
 .app-dialog__body p {
   margin: 0.6rem 0;
 }
@@ -386,6 +394,11 @@ body[data-card] .edit-btn {
   font-size: 0.9rem;
   color: #666;
   margin-top: 1.25rem;
+}
+
+.edit-note {
+  color: #666;
+  font-size: 0.875rem;
 }
 
 .edit-list {
@@ -503,7 +516,8 @@ a:focus-visible {
   }
   .app-dialog__credit,
   .app-dialog__tip,
-  .app-dialog__privacy {
+  .app-dialog__privacy,
+  .edit-note {
     color: #aaa;
   }
   .edit-row__name,

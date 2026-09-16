@@ -7,6 +7,7 @@
 // with that date.
 
 import { THEMES } from '/assets/themes.js';
+import { localDate } from '/assets/site.js?v=6';
 import { mountWall, setPreview } from '/assets/wall.js?v=1';
 
 const FACE = document.body.dataset.face || 'birthday';
@@ -16,6 +17,10 @@ const KEY = FACE === 'work' ? 'j' : 'p';
 const list = document.getElementById('gallery');
 const date = document.getElementById('ask-date');
 const themes = THEMES.filter((t) => t.home === FACE);
+
+// The gallery stays open across midnights and deploys should never bake a date
+// ceiling into HTML. Match the two front doors and derive today's local date.
+date.max = localDate();
 
 function urlFor(theme) {
   return `${APP}?theme=${theme}&${KEY}=${date.value}`;
