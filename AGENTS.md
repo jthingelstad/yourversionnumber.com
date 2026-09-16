@@ -35,7 +35,7 @@ assets/
   gallery.js               builds either gallery from the manifest, filtered by face
   examples.js              one line: mount the previews
   compose.js               the composer, for both faces
-  vendor/                  rough-notation + canvas-confetti, guarded, deletable (README inside)
+  vendor/                  canvas-confetti, guarded, deletable (README inside)
 
 assets/
   themes.js                the one theme manifest, imported by both editions
@@ -106,10 +106,10 @@ redesigning anything here; the decisions below came out of it.
 - **Type:** Bricolage Grotesque (display and body), Martian Mono (numbers
   only). Imported once at the top of `site.css`. Sentence case everywhere; the
   only uppercase is the work face's document furniture.
-- **Hand-drawn, in CSS only** — except for two vendored, guarded, deletable
-  libraries on `/` alone: rough-notation (one scribbled circle round your
-  number) and canvas-confetti (only when `patch === 0`). `assets/vendor/README.md`
-  has the rules. `/work/` gets neither.
+- **Hand-drawn, in CSS only** — except for one vendored, guarded, deletable
+  library on `/` alone: canvas-confetti (only when `patch === 0`).
+  `assets/vendor/README.md` has the rules. `/work/` gets none. (rough-notation
+  once circled the hero number; removed September 2026 — do not bring it back.)
 - **The landing page's opening state is a fixed worked example** (`5.2.113`),
   identical in the static markup and in `home.js`, so nothing flashes and a
   crawler sees the same thing. It becomes the visitor's own number on input;

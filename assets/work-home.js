@@ -3,8 +3,7 @@
 //
 // The arithmetic is copied from work/assets/app.js computeWorkVersion() and
 // must stay identical to it: the number on this door has to be the number the
-// visitor sees one click later. No circle, no confetti — nobody circles
-// anything on a form.
+// visitor sees one click later. No confetti — nobody celebrates a form.
 
 import { renderVnum, onMidnight, localDate, computeTenure, tenureString, buildString } from '/assets/site.js?v=6';
 import { mountWall, setPreview } from '/assets/wall.js?v=1';

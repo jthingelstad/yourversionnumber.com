@@ -25,9 +25,7 @@ const wall = document.getElementById('home-wall');
 
 date.max = localDate();
 
-let ring = null;          // the one hand-drawn circle; removed before redrawing
 let confettiFired = false;
-const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function tile(cls, n, label) {
   const li = document.createElement('li');
@@ -60,19 +58,6 @@ function inlineVnum(text) {
   renderVnum(el, text);
   for (const d of el.querySelectorAll('.is-new')) d.classList.remove('is-new');
   return el;
-}
-
-// The scribbled circle: once, on the number you came for, and only when the
-// library is present — rename the vendored file and this line is a no-op.
-function circle() {
-  ring?.remove();
-  ring = null;
-  if (reduceMotion() || !window.RoughNotation) return;
-  const color = getComputedStyle(document.documentElement).getPropertyValue('--orange').trim();
-  ring = window.RoughNotation.annotate(num, {
-    type: 'circle', color, strokeWidth: 3, padding: 14, animationDuration: 700,
-  });
-  ring.show();
 }
 
 // Confetti only on the day someone's patch is 0 — their birthday. Fires once.
@@ -131,10 +116,7 @@ function paint(ticking) {
     setPreview(well, well.dataset.preview.replace(/p=[^&]*(&p=[^&]*)*/, roster));
   }
 
-  if (mine && !ticking) {
-    circle();
-    celebrate(v);
-  }
+  if (mine && !ticking) celebrate(v);
 }
 
 date.addEventListener('input', () => paint(false));
