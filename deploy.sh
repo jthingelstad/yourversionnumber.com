@@ -2,7 +2,7 @@
 # Publish the static site to S3 and invalidate CloudFront.
 # The site is plain files, so this is a sync and nothing more.
 set -euo pipefail
-export AWS_PROFILE="${AWS_PROFILE:-jamie}"
+export AWS_PROFILE="${AWS_PROFILE:-cloud-engineer}"
 export AWS_PAGER=""
 BUCKET=yourversionnumber-com-site
 DIST=EXHEH2YDGRSWL
