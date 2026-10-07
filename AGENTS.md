@@ -209,6 +209,12 @@ without it. Guard B covers the pictograph ranges; geometric shapes like `▸` an
 
 ## Core conventions (do not break these)
 
+**Release Notes is not this site.** The daily version-number email whose
+replies are kept as notes (October 2026) lives in `~/Projects/yvn-release-notes`,
+its own repo and stack. It is the only Your Version Number product that stores
+anything. Convention 1 below stays absolute for this repo: if a feature here
+needs storage, it belongs over there, not here.
+
 1. **URL is the single source of truth — for everything, cards included.** Birthday: `?theme=...&p=Name:YYYY-MM-DD`. Work: `?theme=...&j=Title:YYYY-MM-DD`. Card: `?theme=...&card=Name:YYYY-MM-DD&from=...&note=...`. Each link is self-contained and the site stores nothing, anywhere, ever. This was broken once (server-side cards, September 2026) and reverted within a week; see *Cards* above before proposing anything that writes. Do not add `localStorage`/cookies/IndexedDB for theme or people — different bookmarks intentionally have different themes, and persisting either would cause surprising bleed between bookmarks. The one exception is `yvn-about-seen` / `yvnw-about-seen` — a single boolean each, set when the first-visit dialog is dismissed by any route (button, Escape, backdrop), so it shows once. Never on a `?card=` link, never when framed. No PII, no app state.
 2. **No build tooling.** No bundler, no transpiler, no SSG, no `package.json`. The user explicitly prefers lean over conventional. If a feature seems to need tooling, push back; usually it doesn't.
 3. **Themes are CSS-only.** No per-theme JS. When a theme idea can't be expressed in CSS, the answer is to add a *generic* hook in core `app.js` that all themes can opt into via CSS — that's how we got `.theme-fx`, `data-row-variant`, `--row-hue`, version-event flags, etc. Per-theme JS would create lifecycle/teardown bugs, cross-theme conflicts, review burden, and a real privacy risk: birthdays live in the URL and an accepted-but-malicious theme could beacon them. Don't open that door.
