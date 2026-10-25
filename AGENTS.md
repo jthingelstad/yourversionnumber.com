@@ -287,7 +287,12 @@ piece of it runs locally with nothing installed:
    the manifest (20/9 split, unique slugs, every default theme exists), the
    hook and off-limits rules, the examples page's static links, and that
    **every reference to one asset carries the same `?v=`** (a module imported
-   at two versions loads twice — bump all references together).
+   at two versions loads twice — bump all references together). It also
+   holds `llms.txt` (a static file, edited by hand) to the shape the
+   llmstxt.org reference parser reads: under every `##` heading, only
+   `- [name](https://...): notes` lines, one link each, with all prose (the
+   privacy notes too) above the first `##`, because one line without a link
+   crashes the whole parse.
 3. `node --test '.github/tests/*.test.mjs'` — three suites, no dependencies: the door's
    arithmetic must equal the edition's (`computeVersion`, `computeWorkVersion`
    with build; a Fri–Mon span; month-end rolls; quarters 1–4), the card codec

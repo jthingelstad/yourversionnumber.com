@@ -359,9 +359,40 @@ for (const file of (await readdir(resolve(repoRoot, "assets/themes"))).filter((f
   }
 }
 
+// ── llms.txt ────────────────────────────────────────────────────────────────
+// The llmstxt.org reference parser (`llms-txt`, parse_llms_file) splits the
+// file at every line starting "##" ("###" starts a section too) and reads
+// every non-empty line under one as "- [name](url): notes". One line without
+// a link crashes the whole parse; a line with two links keeps only the first.
+// Prose goes above the first "##", after "# Title" and the "> summary", with
+// no headings of its own. This mirrors that, so an edit cannot break the read.
+{
+  const LLMS_ITEM = /^- \[[^\[\]]+\]\(https?:[^)\s]+\)(?:: \S.*)?$/;
+  const llms = await readFile(resolve(repoRoot, "llms.txt"), "utf8");
+  if (!/^# [^\n]+\n\n(?:> [^\n]+\n\n)?/.test(llms)) {
+    failures.push("llms.txt: must open '# Title', a blank line, then an optional one-line '> summary' and a blank line");
+  }
+  let section = null;
+  let items = 0;
+  llms.split("\n").forEach((line, i) => {
+    const where = `llms.txt:${i + 1}`;
+    if (line.startsWith("##")) {
+      if (!/^## [^#\s]/.test(line)) failures.push(`${where}: section headings are '## Name' ('###' starts a section too)`);
+      section = line;
+    } else if (section === null) {
+      if (i > 0 && line.startsWith("#")) failures.push(`${where}: no headings above the first '##'`);
+    } else if (line.trim()) {
+      if (!LLMS_ITEM.test(line)) failures.push(`${where}: under a '##' every line is '- [name](https://...): notes'; prose goes above the first '##'`);
+      else if (line.split("](").length > 2) failures.push(`${where}: two links on one line, the parser keeps only the first; give each its own item`);
+      else items++;
+    }
+  });
+  if (items === 0) failures.push("llms.txt: no '## Section' with links");
+}
+
 if (failures.length > 0) {
   failures.forEach((failure) => console.error(failure));
   process.exit(1);
 }
 
-console.log(`Validated both editions, the shared manifest, theme assets, local references, and analytics privacy guards.`);
+console.log(`Validated both editions, the shared manifest, theme assets, local references, analytics privacy guards, and llms.txt.`);

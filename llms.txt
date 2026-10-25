@@ -4,6 +4,10 @@
 
 The production site is static files served by Amazon S3 and CloudFront. No server-side code, no build step, no framework, vanilla JavaScript and CSS. Each "theme" is a standalone stylesheet contributors can add via pull request.
 
+Privacy: Every link contains everything it shows: names, dates, and theme, and on a card the note and sender. Nothing is stored server-side; there are no records, accounts, or expiry. Anyone holding a link can read it, forward it, or edit it. Links can be retained in browser history and sync. Use information you are comfortable sharing.
+
+Tinylytics receives visit counts and interaction events. Every analytics request is rewritten in the browser to a path carrying only the theme (for example `/birthday/fridge/` or `/card/birthday/departures/`), with the referrer reduced to its path, so names, dates, notes and senders never reach it. Each edition stores one local flag to remember whether its intro has been shown; names, dates, themes, and card drafts are not saved in local storage.
+
 ## Pages
 
 - [Home](https://yourversionnumber.com/): the birthday product's front door. Asks your birthday, shows your number live, links into the birthday edition, the themes, the examples, the card composer and the about page. No URL state.
@@ -11,9 +15,11 @@ The production site is static files served by Amazon S3 and CloudFront. No serve
 - [Birthday Edition](https://yourversionnumber.com/birthday/): birthday-based version number. URL state: `?theme=<name>&p=Name:YYYY-MM-DD` (the `p` parameter is repeatable; the name is optional). Moved here from `/` in September 2026; old `/?p=...` bookmarks no longer resolve.
 - [Work Edition](https://yourversionnumber.com/work/edition/): quarter-anchored version number for a job. `MAJOR` is years of tenure, `MINOR` is the quarter within the current tenure year (1–4, 3 calendar months apart from the anniversary), `PATCH` is business days into that quarter, and after the `+` a build number counts every business day ever logged (e.g. `3.2.40+888`). URL state: `?theme=<name>&j=Title:YYYY-MM-DD`. Moved from `/work/` in September 2026; `/work/` forwards those links.
 - [Examples](https://yourversionnumber.com/examples/): eight worked examples, one to eight people, using public figures with well-documented birthdays. Each links into the birthday edition with the roster in the URL.
-- [Theme gallery](https://yourversionnumber.com/themes/): live previews of the twenty birthday themes; enter a date and each preview renders your own number. The nine work themes have their own gallery at [/work/themes/](https://yourversionnumber.com/work/themes/). A theme belongs to one product; every stylesheet still renders if a URL names it in the other.
+- [Theme gallery](https://yourversionnumber.com/themes/): live previews of the twenty birthday themes; enter a date and each preview renders your own number. A theme belongs to one product; every stylesheet still renders if a URL names it in the other.
+- [Work theme gallery](https://yourversionnumber.com/work/themes/): the nine work themes have their own gallery, previewed live with your own start date.
 - [About](https://yourversionnumber.com/about/): the origin, the birthday and work arithmetic, and the privacy model (the URL is the only state).
-- [Send a card](https://yourversionnumber.com/card/): builds a card link from a recipient name, birthday or work start date, theme, note, and sender name. The link is the card: `/birthday/?theme=<name>&card=Name:YYYY-MM-DD&from=Sender&note=Text` (or `/work/edition/?...` for a work anniversary, written by [/work/card/](https://yourversionnumber.com/work/card/)). `/card/new/` redirects here. Numbers use the viewer's local date; a countdown appears in the final seven days before the next occasion.
+- [Send a card](https://yourversionnumber.com/card/): builds a card link from a recipient name, birthday or work start date, theme, note, and sender name. The link is the card: `/birthday/?theme=<name>&card=Name:YYYY-MM-DD&from=Sender&note=Text` (or `/work/edition/?...` for a work anniversary, written by the work card composer below). `/card/new/` redirects here. Numbers use the viewer's local date; a countdown appears in the final seven days before the next occasion.
+- [Work card composer](https://yourversionnumber.com/work/card/): circulate an anniversary notice. Builds the Work Edition's card link, `/work/edition/?theme=<name>&card=Name:YYYY-MM-DD&from=Sender&note=Text`, from a name, work start date, theme, note, and sender name.
 
 ## Related
 
@@ -24,9 +30,3 @@ The production site is static files served by Amazon S3 and CloudFront. No serve
 - [GitHub repository](https://github.com/jthingelstad/yourversionnumber.com)
 - [README](https://github.com/jthingelstad/yourversionnumber.com/blob/main/README.md): URL format, theme list, deployment notes
 - [CONTRIBUTING](https://github.com/jthingelstad/yourversionnumber.com/blob/main/CONTRIBUTING.md): how to add a new theme
-
-## Privacy
-
-Every link contains everything it shows: names, dates, and theme, and on a card the note and sender. Nothing is stored server-side; there are no records, accounts, or expiry. Anyone holding a link can read it, forward it, or edit it. Links can be retained in browser history and sync. Use information you are comfortable sharing.
-
-Tinylytics receives visit counts and interaction events. Every analytics request is rewritten in the browser to a path carrying only the theme (for example `/birthday/fridge/` or `/card/birthday/departures/`), with the referrer reduced to its path, so names, dates, notes and senders never reach it. Each edition stores one local flag to remember whether its intro has been shown; names, dates, themes, and card drafts are not saved in local storage.
