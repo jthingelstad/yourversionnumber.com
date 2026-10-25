@@ -17,7 +17,7 @@ The production site is static files served by Amazon S3 and CloudFront. No serve
 
 ## Related
 
-- [Release Notes](https://notes.yourversionnumber.com/): a separate Your Version Number product. A daily email whose subject is your birthday version number; whatever you reply is kept as that version's release notes, and you can read and write them on the web. Unlike this site it has accounts and stores what its subscribers write. The birthday pages link to it.
+- [Release Notes](https://notes.yourversionnumber.com/): a separate Your Version Number product. A daily email whose subject is your birthday version number; whatever you reply is kept as that version's release notes, and you can read and write them on the web. Unlike this site it has accounts and stores what its subscribers write. It is free with a subscription to the Weekly Thing, Jamie Thingelstad's newsletter (https://weekly.thingelstad.com/). The birthday pages link to it.
 
 ## Source
 
