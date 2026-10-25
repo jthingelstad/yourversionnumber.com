@@ -213,7 +213,11 @@ without it. Guard B covers the pictograph ranges; geometric shapes like `▸` an
 replies are kept as notes (October 2026) lives in `~/Projects/yvn-release-notes`,
 its own repo and stack. It is the only Your Version Number product that stores
 anything. Convention 1 below stays absolute for this repo: if a feature here
-needs storage, it belongs over there, not here.
+needs storage, it belongs over there, not here. The birthday pages link to it (Jamie,
+2026-10-25: "We also now should link YVN to Release Notes so people may find
+it"): a crosslink on `/` under "The link is the whole thing", which says it
+is the one part that keeps anything, and a line in the six birthday-face
+footers. The work face does not offer it: Release Notes counts birthdays.
 
 1. **URL is the single source of truth — for everything, cards included.** Birthday: `?theme=...&p=Name:YYYY-MM-DD`. Work: `?theme=...&j=Title:YYYY-MM-DD`. Card: `?theme=...&card=Name:YYYY-MM-DD&from=...&note=...`. Each link is self-contained and the site stores nothing, anywhere, ever. This was broken once (server-side cards, September 2026) and reverted within a week; see *Cards* above before proposing anything that writes. Do not add `localStorage`/cookies/IndexedDB for theme or people — different bookmarks intentionally have different themes, and persisting either would cause surprising bleed between bookmarks. The one exception is `yvn-about-seen` / `yvnw-about-seen` — a single boolean each, set when the first-visit dialog is dismissed by any route (button, Escape, backdrop), so it shows once. Never on a `?card=` link, never when framed. No PII, no app state.
 2. **No build tooling.** No bundler, no transpiler, no SSG, no `package.json`. The user explicitly prefers lean over conventional. If a feature seems to need tooling, push back; usually it doesn't.
