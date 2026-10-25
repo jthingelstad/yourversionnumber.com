@@ -352,7 +352,8 @@ The embed is `min.js?events` and nothing else: `?hits` was the footer counters (
 
 CloudFront in front of S3. `deploy.yml` stamps `Cache-Control: public, max-age=300`
 on HTML and invalidates `/*` on every deploy; CSS and JS carry `max-age=600` set
-by `deploy.sh`. There is no asset hashing. For deploys that couple JS and CSS in
+by `deploy.sh`. Both stamp `text/plain; charset=utf-8` on the `.txt` files
+(llms.txt carries UTF-8 dashes). There is no asset hashing. For deploys that couple JS and CSS in
 a way that would visibly break mid-rollout, manually bump the `?v=N` query on
 the affected `<link>`/`<script>`/`import` — `core.js` is imported from five
 places and `site.js` from every spine page, so bump all of them together or

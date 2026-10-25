@@ -61,6 +61,15 @@ jobs:
             --cache-control "public, max-age=300" \
             --content-type "text/html; charset=utf-8" --only-show-errors
 
+      # llms.txt, humans.txt and robots.txt hold UTF-8 (dashes, quotes), and a
+      # bare text/plain leaves the charset to the reader's guess.
+      - name: Set text charset
+        run: |
+          aws s3 cp s3://yourversionnumber-com-site/ s3://yourversionnumber-com-site/ \
+            --recursive --exclude "*" --include "*.txt" \
+            --metadata-directive REPLACE \
+            --content-type "text/plain; charset=utf-8" --only-show-errors
+
       - name: Invalidate CloudFront
         run: |
           aws cloudfront create-invalidation \

@@ -40,5 +40,11 @@ aws s3 cp "s3://$BUCKET/" "s3://$BUCKET/" --recursive \
   --cache-control "public, max-age=600" --content-type "text/javascript" \
   --only-show-errors
 
+# llms.txt, humans.txt and robots.txt hold UTF-8 (dashes, quotes), and a bare
+# text/plain leaves the charset to the reader's guess.
+aws s3 cp "s3://$BUCKET/" "s3://$BUCKET/" --recursive \
+  --exclude "*" --include "*.txt" --metadata-directive REPLACE \
+  --content-type "text/plain; charset=utf-8" --only-show-errors
+
 aws cloudfront create-invalidation --distribution-id "$DIST" --paths "/*" \
   --query "Invalidation.Id" --output text
