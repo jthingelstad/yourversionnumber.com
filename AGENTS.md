@@ -364,3 +364,19 @@ the affected `<link>`/`<script>`/`import` — `core.js` is imported from five
 places and `site.js` from every spine page, so bump all of them together or
 you ship two module instances. Don't
 reach for build tooling to automate this.
+
+## Access logs
+
+The distribution (`EXHEH2YDGRSWL`) sends CloudFront access logs to the
+CloudWatch log group `/yourversionnumber/web-access` (14-day retention), added
+directly on 2026-10-26 (issue #8) because no stack owns this site's AWS
+resources. Delivery source and destination are both
+`yourversionnumber-web-access`, json output, the same shape as Linking Things.
+The delivery's record fields are fixed: timestamp(ms), cs-method, cs-uri-stem,
+sc-status, sc-bytes, sc-range-start, sc-range-end, time-taken,
+time-to-first-byte, x-edge-result-type, x-edge-detailed-result-type,
+x-edge-location, cs-protocol, cs(User-Agent). **Never add `c-ip` or
+`cs-uri-query`**: the query string is where `?p=`, `?j=`, `?card=`, `?note=`
+and `?from=` carry names, dates and notes, and the logs must not hold them any
+more than the analytics may. To undo it, delete the delivery, the destination,
+the source and the log group.
