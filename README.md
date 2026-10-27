@@ -83,6 +83,8 @@ Walk changed flows in a browser too, including narrow screens and reduced motion
 
 The production domain is served by Amazon S3 and CloudFront; the bucket holds exactly the files in this repo. A push to `main` runs the site validator; after success, the Deploy workflow syncs the files to S3 and invalidates CloudFront using GitHub Actions OIDC. `deploy.sh` is the same sync, run by hand.
 
+CloudFront access logs go to the CloudWatch log group `/yourversionnumber/web-access` for 14 days. They record the path, status, timing and user agent of each request, never the query string or the client IP, so the names and dates in a link are not logged.
+
 ## Sharing and analytics
 
 A link exposes what it shows: names and dates, and on a card the note and sender. It can be forwarded or retained in browser history, bookmarks, or history sync. Use information you are comfortable sharing.
