@@ -293,12 +293,16 @@ piece of it runs locally with nothing installed:
    `- [name](https://...): notes` lines, one link each, with all prose (the
    privacy notes too) above the first `##`, because one line without a link
    crashes the whole parse.
-3. `node --test '.github/tests/*.test.mjs'` — three suites, no dependencies: the door's
+3. `node --test '.github/tests/*.test.mjs'` — four suites, no dependencies: the door's
    arithmetic must equal the edition's (`computeVersion`, `computeWorkVersion`
    with build; a Fri–Mon span; month-end rolls; quarters 1–4), the card codec
    (round-trips, code-point clipping, no split surrogates, bad shapes),
    and the analytics shim (virtual paths, no secret in any request, nothing
-   from frames or other hosts, `yvnTrackPath` takes slug paths only). The app
+   from frames or other hosts, `yvnTrackPath` takes slug paths only), and the
+   sitemap: each page's `<lastmod>` must be the day (US Central) of the last
+   commit to its `index.html`, so **change a page and move its lastmod in
+   the same PR** or the run on main fails and nothing deploys (the test
+   prints the right dates; the workflow fetches full history for it). The app
    functions are lifted out of `app.js` by name (`helpers.mjs`) because those
    files are browser modules; renaming one fails the test on purpose.
 4. `npx --yes html-validate@9 <the thirteen HTML files>` — recommended rules
