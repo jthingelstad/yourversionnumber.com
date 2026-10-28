@@ -368,7 +368,8 @@ reach for build tooling to automate this.
 ## Access logs
 
 The distribution (`EXHEH2YDGRSWL`) sends CloudFront access logs to the
-CloudWatch log group `/yourversionnumber/web-access` (14-day retention), added
+CloudWatch log group `/yourversionnumber/web-access` (24-month retention, 731 days, since
+2026-10-28; 14 days before), added
 directly on 2026-10-26 (issue #8) because no stack owns this site's AWS
 resources. Delivery source and destination are both
 `yourversionnumber-web-access`, json output, the same shape as Linking Things.
