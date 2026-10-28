@@ -301,8 +301,9 @@ piece of it runs locally with nothing installed:
    from frames or other hosts, `yvnTrackPath` takes slug paths only), and the
    sitemap: each page's `<lastmod>` must be the day (US Central) of the last
    commit to its `index.html`, so **change a page and move its lastmod in
-   the same PR** or the run on main fails and nothing deploys (the test
-   prints the right dates; the workflow fetches full history for it). The app
+   the same PR**, to the day it merges (a squash merge dates the commit
+   then), or the run on main fails and nothing deploys (the test prints the
+   right dates; the workflow fetches full history for it). The app
    functions are lifted out of `app.js` by name (`helpers.mjs`) because those
    files are browser modules; renaming one fails the test on purpose.
 4. `npx --yes html-validate@9 <the thirteen HTML files>` — recommended rules
