@@ -102,6 +102,13 @@ input {
   margin-bottom: 1.5rem;
 }
 
+/* The Release Notes line, present only when the page shows one person. It is
+ * also a .site-cross-link, so themes dress it as one; this only closes the gap
+ * to the Work Edition line under it. Must stay after .site-cross-link. */
+.site-release-notes {
+  margin-bottom: 0.5rem;
+}
+
 .site-stats {
   display: flex;
   flex-wrap: wrap;

@@ -235,6 +235,9 @@ function render() {
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
 
+  const notesLink = renderReleaseNotesLink();
+  if (notesLink) footer.appendChild(notesLink);
+
   const crossLink = document.createElement('div');
   crossLink.className = 'site-cross-link';
   crossLink.innerHTML = 'Now also available &mdash; <a href="/work/">Your Version Number: Work Edition</a>™.';
@@ -251,6 +254,31 @@ function render() {
   footer.appendChild(attribution);
 
   app.appendChild(footer);
+}
+
+// Release Notes (notes.yourversionnumber.com, its own repo and stack) is the
+// follow-on to seeing your own number, so a page showing exactly one person
+// offers it once, in the footer every theme already styles. The birthday rides
+// in the fragment, which no server sees; Release Notes reads it to prefill its
+// sign-up. The format is fixed: #birthday=YYYY-MM-DD. Not on a group page (whose
+// birthday?) and not on a card (it is somebody's gift, and the composer's
+// preview is this page). referrerpolicy=origin so the query string, which holds
+// the name and date, never goes along as a Referer.
+function renderReleaseNotesLink() {
+  if (CARD || state.people.length !== 1) return null;
+  const { birthday } = state.people[0];
+  if (!DATE_RE.test(birthday) || !isRealDate(birthday) || isFutureDate(birthday)) return null;
+  const line = document.createElement('div');
+  // Also a .site-cross-link, so a theme that dresses its cross-link line (Severe
+  // sets it in capitals) dresses this one the same way without knowing about it.
+  line.className = 'site-cross-link site-release-notes';
+  const link = document.createElement('a');
+  link.href = `https://notes.yourversionnumber.com/#birthday=${birthday}`;
+  link.referrerPolicy = 'origin';
+  link.setAttribute('data-tinylytics-event', 'notes.click');
+  link.textContent = `Keep release notes for ${formatVersion(computeVersion(birthday))}`;
+  line.append(link, ': a daily email you reply to, free with the Weekly Thing.');
+  return line;
 }
 
 function renderRow(person, index) {

@@ -217,7 +217,16 @@ needs storage, it belongs over there, not here. The birthday pages link to it (J
 2026-10-25: "We also now should link YVN to Release Notes so people may find
 it"): a crosslink on `/` under "The link is the whole thing", which says it
 is the one part that keeps anything, and a line in the six birthday-face
-footers. The work face does not offer it: Release Notes counts birthdays.
+footers. The birthday edition adds one more (Jamie, 2026-10-29): when the page
+shows exactly one person, and is not a card, its footer opens with
+`.site-cross-link.site-release-notes` (both classes, so themes dress it as a
+cross-link), "Keep release notes for <version>", linking to
+`https://notes.yourversionnumber.com/#birthday=YYYY-MM-DD`. The birthday rides
+in the fragment so no server sees it, and Release Notes reads it to prefill its
+sign-up; that format is fixed by Release Notes, so do not change it here alone.
+The link carries `referrerpolicy="origin"` so the query string never leaves as a
+Referer. Group pages get none (whose birthday would it be?), and so do cards.
+The work face does not offer it: Release Notes counts birthdays.
 
 1. **URL is the single source of truth — for everything, cards included.** Birthday: `?theme=...&p=Name:YYYY-MM-DD`. Work: `?theme=...&j=Title:YYYY-MM-DD`. Card: `?theme=...&card=Name:YYYY-MM-DD&from=...&note=...`. Each link is self-contained and the site stores nothing, anywhere, ever. This was broken once (server-side cards, September 2026) and reverted within a week; see *Cards* above before proposing anything that writes. Do not add `localStorage`/cookies/IndexedDB for theme or people — different bookmarks intentionally have different themes, and persisting either would cause surprising bleed between bookmarks. The one exception is `yvn-about-seen` / `yvnw-about-seen` — a single boolean each, set when the first-visit dialog is dismissed by any route (button, Escape, backdrop), so it shows once. Never on a `?card=` link, never when framed. No PII, no app state.
 2. **No build tooling.** No bundler, no transpiler, no SSG, no `package.json`. The user explicitly prefers lean over conventional. If a feature seems to need tooling, push back; usually it doesn't.
@@ -256,7 +265,7 @@ footers. The work face does not offer it: Release Notes counts birthdays.
 - `data-weekday` (`sun`…`sat`) and `data-season` (`spring|summer|autumn|winter`) on `body`, from the visitor's local date.
 - `--days-until` and `data-countdown` on `body`, present **only** when the next date is within 7 days — so `body[data-countdown]` is a clean "is this imminent" selector. Every theme should say something of its own; `base.css` prints a plain `.countdown` line until one does.
 
-**Class hooks:** `.person`, `.person-name`, `.version`, `.digit`, `.sep`, `.countdown`, `.site-header`, `.site-title`, `.intro`, `.add-btn`, `.about-btn`, `.edit-btn`, `.theme-select`, `.theme-picker`, `.site-footer`, `.site-cross-link`, `.site-attribution`, `.site-stats`.
+**Class hooks:** `.person`, `.person-name`, `.version`, `.digit`, `.sep`, `.countdown`, `.site-header`, `.site-title`, `.intro`, `.add-btn`, `.about-btn`, `.edit-btn`, `.theme-select`, `.theme-picker`, `.site-footer`, `.site-release-notes` (birthday, one person only; also carries `.site-cross-link`), `.site-cross-link`, `.site-attribution`, `.site-stats`.
 
 **Off-limits** (app chrome, styled in `base.css`):
 - Anything matching `.app-dialog*`, `.edit-row*`, `.edit-list`, `.edit-add`, and `.first-visit*` (the first-visit dialog — it sets every value explicitly and must look identical over zen and over terminal; note it is deliberately NOT called `.intro`, which is the masthead paragraph hook themes do style).
