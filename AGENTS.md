@@ -225,7 +225,8 @@ cross-link), "Keep release notes for <version>", linking to
 in the fragment so no server sees it, and Release Notes reads it to prefill its
 sign-up; that format is fixed by Release Notes, so do not change it here alone.
 The link carries `referrerpolicy="origin"` so the query string never leaves as a
-Referer. Group pages get none (whose birthday would it be?), and so do cards.
+Referer. Group pages get none (whose birthday would it be?), and so do cards and
+anyone before a first birthday (the site's own page, born 2026-05-01, among them).
 The work face does not offer it: Release Notes counts birthdays.
 
 1. **URL is the single source of truth — for everything, cards included.** Birthday: `?theme=...&p=Name:YYYY-MM-DD`. Work: `?theme=...&j=Title:YYYY-MM-DD`. Card: `?theme=...&card=Name:YYYY-MM-DD&from=...&note=...`. Each link is self-contained and the site stores nothing, anywhere, ever. This was broken once (server-side cards, September 2026) and reverted within a week; see *Cards* above before proposing anything that writes. Do not add `localStorage`/cookies/IndexedDB for theme or people — different bookmarks intentionally have different themes, and persisting either would cause surprising bleed between bookmarks. The one exception is `yvn-about-seen` / `yvnw-about-seen` — a single boolean each, set when the first-visit dialog is dismissed by any route (button, Escape, backdrop), so it shows once. Never on a `?card=` link, never when framed. No PII, no app state.

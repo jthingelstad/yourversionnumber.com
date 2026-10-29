@@ -261,13 +261,17 @@ function render() {
 // offers it once, in the footer every theme already styles. The birthday rides
 // in the fragment, which no server sees; Release Notes reads it to prefill its
 // sign-up. The format is fixed: #birthday=YYYY-MM-DD. Not on a group page (whose
-// birthday?) and not on a card (it is somebody's gift, and the composer's
+// birthday?), not before a first birthday, and not on a card (it is somebody's gift, and the composer's
 // preview is this page). referrerpolicy=origin so the query string, which holds
 // the name and date, never goes along as a Referer.
 function renderReleaseNotesLink() {
   if (CARD || state.people.length !== 1) return null;
   const { birthday } = state.people[0];
   if (!DATE_RE.test(birthday) || !isRealDate(birthday) || isFutureDate(birthday)) return null;
+  // Not before a first birthday: the site's own page (born 2026-05-01) and a
+  // newborn's are no one's journal.
+  const version = computeVersion(birthday);
+  if (version.age < 1) return null;
   const line = document.createElement('div');
   // Also a .site-cross-link, so a theme that dresses its cross-link line (Severe
   // sets it in capitals) dresses this one the same way without knowing about it.
@@ -276,7 +280,7 @@ function renderReleaseNotesLink() {
   link.href = `https://notes.yourversionnumber.com/#birthday=${birthday}`;
   link.referrerPolicy = 'origin';
   link.setAttribute('data-tinylytics-event', 'notes.click');
-  link.textContent = `Keep release notes for ${formatVersion(computeVersion(birthday))}`;
+  link.textContent = `Keep release notes for ${formatVersion(version)}`;
   line.append(link, ': a daily email you reply to, free with the Weekly Thing.');
   return line;
 }
