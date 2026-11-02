@@ -44,6 +44,7 @@ jobs:
             --exclude ".git/*" \
             --exclude ".github/*" \
             --exclude "design_handoff_theme_refresh/*" \
+            --exclude "infra/*" \
             --exclude "*.md" \
             --exclude "*.mjs" \
             --exclude "*.sh" \
