@@ -26,7 +26,7 @@ work/themes/index.html     the nine work themes
 work/card/index.html       circulate an anniversary notice
 work/about/index.html      the tenure arithmetic, stated dryly
 deploy.sh                  the same S3 sync CI runs, by hand
-edge-waf.sh                keeps the shared edge web ACL on the distribution, by hand
+infra/site.yaml            the site's AWS resources: stack yourversionnumber-site
 assets/
   site.css                 the spine's one stylesheet: two faces, light and dark each
   site.js                  the .vnum renderer, the site's own number, the midnight tick
@@ -381,13 +381,30 @@ places and `site.js` from every spine page, so bump all of them together or
 you ship two module instances. Don't
 reach for build tooling to automate this.
 
+## AWS resources
+
+Every AWS piece of the site is in one CloudFormation stack,
+`yourversionnumber-site`, from `infra/site.yaml`: the bucket and its policy,
+the origin access control, the `yvn-index-rewrite` function, the CloudFront
+distribution, the access log (group, source, destination, delivery) and the
+`yvn-deploy` role CI assumes. They were made by hand in September and October
+2026 and imported into the stack on 2026-11-02 with no change to how the site
+is served. Every resource is `Retain`, so deleting the stack leaves the site
+running. The certificate is a parameter that keeps its value.
+
+Change them in the template and deploy it from the Mac as `cloud-engineer`
+(the command is at the top of `infra/site.yaml`), never in the console. Always
+pass the five `--tags`: a deploy without them strips the stack's tags from
+every resource. CI never deploys the stack: the `yvn-deploy` role can sync the
+bucket and invalidate, nothing more. The template is not site content, so both
+syncs exclude `infra/`.
+
 ## Access logs
 
-The distribution (`EXHEH2YDGRSWL`) sends CloudFront access logs to the
-CloudWatch log group `/yourversionnumber/web-access` (24-month retention, 731 days, since
-2026-10-28; 14 days before), added
-directly on 2026-10-26 (issue #8) because no stack owns this site's AWS
-resources. Delivery source and destination are both
+The distribution sends CloudFront access logs to the CloudWatch log group
+`/yourversionnumber/web-access` (24-month retention, 731 days, since
+2026-10-28; 14 days before), added on 2026-10-26 (issue #8) and owned by the
+stack since 2026-11-02. Delivery source and destination are both
 `yourversionnumber-web-access`, json output, the same shape as Linking Things.
 The delivery's record fields are fixed: timestamp(ms), cs-method, cs-uri-stem,
 sc-status, sc-bytes, sc-range-start, sc-range-end, time-taken,
@@ -395,15 +412,11 @@ time-to-first-byte, x-edge-result-type, x-edge-detailed-result-type,
 x-edge-location, cs-protocol, cs(User-Agent). **Never add `c-ip` or
 `cs-uri-query`**: the query string is where `?p=`, `?j=`, `?card=`, `?note=`
 and `?from=` carry names, dates and notes, and the logs must not hold them any
-more than the analytics may. To undo it, delete the delivery, the destination,
-the source and the log group.
+more than the analytics may.
 
 ## Web ACL
 
 The distribution carries projects-sysadmin's shared `edge` AWS WAF web ACL
 (stack `edge-waf`, every rule in count mode, nothing blocked; Jamie,
-2026-11-02). No stack owns the distribution, so `edge-waf.sh` sets
-`WebACLId`, the only field it touches, reading the ARN from the
-CloudFormation export `edge-waf-WebAclArn` on every run (`--check` only
-reads). CI never writes the distribution's config (the `yvn-deploy` role can
-only invalidate); a hand edit must keep `WebACLId`, or run `edge-waf.sh` after.
+2026-11-02). The template sets `WebACLId` from the CloudFormation export
+`edge-waf-WebAclArn`, so a deploy keeps it.

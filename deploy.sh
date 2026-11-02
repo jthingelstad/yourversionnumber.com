@@ -13,6 +13,7 @@ cd "$(dirname "$0")"
 aws s3 sync . "s3://$BUCKET/" \
   --exclude ".git/*" --exclude ".github/*" \
   --exclude "design_handoff_theme_refresh/*" \
+  --exclude "infra/*" \
   --exclude "*.md" --exclude "*.mjs" --exclude "*.sh" \
   --exclude ".gitignore" --exclude "CNAME" --exclude "themes-preview.html" \
   --exclude ".DS_Store" --exclude "_*.html" \

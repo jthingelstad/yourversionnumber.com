@@ -81,7 +81,7 @@ Walk changed flows in a browser too, including narrow screens and reduced motion
 
 ## Deployment
 
-The production domain is served by Amazon S3 and CloudFront; the bucket holds exactly the files in this repo. A push to `main` runs the site validator; after success, the Deploy workflow syncs the files to S3 and invalidates CloudFront using GitHub Actions OIDC. `deploy.sh` is the same sync, run by hand.
+The production domain is served by Amazon S3 and CloudFront; the bucket holds exactly the files in this repo. A push to `main` runs the site validator; after success, the Deploy workflow syncs the files to S3 and invalidates CloudFront using GitHub Actions OIDC. `deploy.sh` is the same sync, run by hand. The AWS resources themselves (bucket, distribution, access log, deploy role) are one CloudFormation stack, `infra/site.yaml`, deployed from a Mac.
 
 ## Sharing and analytics
 

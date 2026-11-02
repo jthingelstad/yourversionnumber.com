@@ -1,0 +1,260 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: yourversionnumber.com static site - bucket, CloudFront distribution, access log and CI deploy role
+
+# Every AWS piece of this site, owned by the stack `yourversionnumber-site`.
+# They were made by hand in September and October 2026 and imported into
+# this stack on 2026-11-02 (Jamie: "If you think we should lets make that
+# happen"), with no change to how the site is served. Retain on every
+# resource: deleting the stack leaves the site running.
+#
+# Deploy (cloud-engineer, us-east-1). Always pass the tags: a deploy without
+# them strips the stack's tags from every resource.
+#
+#   aws cloudformation deploy --stack-name yourversionnumber-site \
+#     --template-file infra/site.yaml --capabilities CAPABILITY_NAMED_IAM \
+#     --tags Application=YourVersionNumber Project=yourversionnumber \
+#            Repository=jthingelstad/yourversionnumber.com \
+#            ManagedBy=cloudformation Environment=production
+#
+# The certificate parameter keeps its previous value on every deploy.
+# Content is not deployed here: CI (`.github/workflows/deploy.yml`) syncs the
+# repository to the bucket and invalidates the distribution as `yvn-deploy`.
+
+Parameters:
+  CertificateArn:
+    Type: String
+    Description: ACM certificate in us-east-1 for yourversionnumber.com and www.yourversionnumber.com.
+
+Resources:
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: yourversionnumber-com-site
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+            BucketKeyEnabled: false
+            BlockedEncryptionTypes:
+              EncryptionType:
+                - SSE-C
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        RestrictPublicBuckets: true
+
+  SitePolicy:
+    Type: AWS::S3::BucketPolicy
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Bucket: !Ref SiteBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowCloudFrontRead
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub "${SiteBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
+
+  OriginAccess:
+    Type: AWS::CloudFront::OriginAccessControl
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      OriginAccessControlConfig:
+        Name: yvn-s3
+        Description: YVN site bucket
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # S3 behind origin access control serves objects, not directories, so
+  # directory-style paths are mapped onto their index.html.
+  IndexRewrite:
+    Type: AWS::CloudFront::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: yvn-index-rewrite
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Map directory paths to index.html
+        Runtime: cloudfront-js-2.0
+      FunctionCode: |
+        function handler(event) {
+          var request = event.request;
+          var uri = request.uri;
+          // S3 behind OAC serves objects, not directories: /themes/ has no key, only
+          // /themes/index.html does. Map directory-style paths onto the real object.
+          if (uri.endsWith('/')) {
+            request.uri = uri + 'index.html';
+          } else if (!uri.split('/').pop().includes('.')) {
+            request.uri = uri + '/index.html';
+          }
+          return request;
+        }
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DistributionConfig:
+        Comment: yourversionnumber.com
+        Enabled: true
+        Aliases:
+          - yourversionnumber.com
+          - www.yourversionnumber.com
+        DefaultRootObject: index.html
+        HttpVersion: http2and3
+        IPV6Enabled: true
+        PriceClass: PriceClass_100
+        # The account's shared web ACL (projects-sysadmin
+        # config/edge-waf-stack.yaml); its rules count only until tuned.
+        WebACLId: !ImportValue edge-waf-WebAclArn
+        Origins:
+          - Id: s3-site
+            DomainName: !Sub "${SiteBucket}.s3.${AWS::Region}.amazonaws.com"
+            OriginAccessControlId: !Ref OriginAccess
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+        DefaultCacheBehavior:
+          TargetOriginId: s3-site
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD]
+          CachedMethods: [GET, HEAD]
+          Compress: true
+          # Managed-CachingOptimized.
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt IndexRewrite.FunctionARN
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+            ErrorCachingMinTTL: 60
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+            ErrorCachingMinTTL: 60
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CertificateArn
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+
+  # CloudFront access log, kept 24 months. The record fields are fixed and
+  # never include c-ip or cs-uri-query: the query string carries the names,
+  # dates and notes in ?p=, ?j=, ?card=, ?note= and ?from=.
+  AccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /yourversionnumber/web-access
+      RetentionInDays: 731
+
+  AccessLogSource:
+    Type: AWS::Logs::DeliverySource
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: yourversionnumber-web-access
+      LogType: ACCESS_LOGS
+      ResourceArn: !Sub "arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
+
+  AccessLogDestination:
+    Type: AWS::Logs::DeliveryDestination
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: yourversionnumber-web-access
+      OutputFormat: json
+      DestinationResourceArn: !Sub "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:${AccessLogGroup}"
+
+  AccessLogDelivery:
+    Type: AWS::Logs::Delivery
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeliverySourceName: !Ref AccessLogSource
+      DeliveryDestinationArn: !GetAtt AccessLogDestination.Arn
+      RecordFields:
+        - timestamp(ms)
+        - cs-method
+        - cs-uri-stem
+        - sc-status
+        - sc-bytes
+        - sc-range-start
+        - sc-range-end
+        - time-taken
+        - time-to-first-byte
+        - x-edge-result-type
+        - x-edge-detailed-result-type
+        - x-edge-location
+        - cs-protocol
+        - cs(User-Agent)
+
+  # GitHub Actions on main assumes this role to sync the bucket and
+  # invalidate the distribution. It cannot change the distribution's config.
+  DeployRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName: yvn-deploy
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:oidc-provider/token.actions.githubusercontent.com"
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+              StringLike:
+                token.actions.githubusercontent.com:sub: repo:jthingelstad/yourversionnumber.com:ref:refs/heads/main
+      Policies:
+        - PolicyName: yvn-deploy-site
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                Resource: !GetAtt SiteBucket.Arn
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:GetObject
+                Resource: !Sub "${SiteBucket.Arn}/*"
+              - Effect: Allow
+                Action:
+                  - cloudfront:CreateInvalidation
+                Resource: !Sub "arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
+
+Outputs:
+  DistributionId:
+    Description: The site's CloudFront distribution, for invalidations.
+    Value: !Ref Distribution
+  SiteBucketName:
+    Description: The bucket CI syncs the repository into.
+    Value: !Ref SiteBucket
+  DeployRoleArn:
+    Description: The role GitHub Actions on main assumes to deploy.
+    Value: !GetAtt DeployRole.Arn
