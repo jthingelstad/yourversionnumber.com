@@ -26,6 +26,7 @@ work/themes/index.html     the nine work themes
 work/card/index.html       circulate an anniversary notice
 work/about/index.html      the tenure arithmetic, stated dryly
 deploy.sh                  the same S3 sync CI runs, by hand
+edge-waf.sh                keeps the shared edge web ACL on the distribution, by hand
 assets/
   site.css                 the spine's one stylesheet: two faces, light and dark each
   site.js                  the .vnum renderer, the site's own number, the midnight tick
@@ -396,3 +397,13 @@ x-edge-location, cs-protocol, cs(User-Agent). **Never add `c-ip` or
 and `?from=` carry names, dates and notes, and the logs must not hold them any
 more than the analytics may. To undo it, delete the delivery, the destination,
 the source and the log group.
+
+## Web ACL
+
+The distribution carries projects-sysadmin's shared `edge` AWS WAF web ACL
+(stack `edge-waf`, every rule in count mode, nothing blocked; Jamie,
+2026-11-02). No stack owns the distribution, so `edge-waf.sh` sets
+`WebACLId`, the only field it touches, reading the ARN from the
+CloudFormation export `edge-waf-WebAclArn` on every run (`--check` only
+reads). CI never writes the distribution's config (the `yvn-deploy` role can
+only invalidate); a hand edit must keep `WebACLId`, or run `edge-waf.sh` after.
