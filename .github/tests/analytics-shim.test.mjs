@@ -8,7 +8,7 @@ import vm from "node:vm";
 import { read } from "./helpers.mjs";
 
 const html = read("index.html");
-const start = html.indexOf("<script>\n// Analytics privacy shim, v2") + "<script>".length;
+const start = html.indexOf("<script>\n// Analytics privacy shim, v3") + "<script>".length;
 const shim = html.slice(start, html.indexOf("</script>", start));
 const SECRET = "https://yourversionnumber.com/birthday/?p=Secret:1970-01-01";
 
@@ -30,8 +30,11 @@ function page(href, defaultTheme = "birthday", framed = false) {
   vm.runInContext(shim, ctx);
   const q = `url=${encodeURIComponent(href)}&path=${encodeURIComponent(u.pathname)}&referrer=${encodeURIComponent(SECRET)}&event=theme.viewed&event_value=zen`;
   const collector = "https://tinylytics.app/collector/8JZbs4z3jyWQay28S2av?" + q;
+  const view = "https://tinylytics.app/collector/8JZbs4z3jyWQay28S2av?" + q.replace(/&event=.*$/, "");
   return {
     hit() { ctx.window.fetch(collector, { method: "post" }); return sent.pop(); },
+    view() { const n = sent.length; ctx.window.fetch(view, { method: "post" }); return sent.length > n ? sent.pop() : undefined; },
+    viewBeacon() { const n = sent.length; ctx.navigator.sendBeacon(view); return sent.length > n ? sent.pop() : undefined; },
     beacon() { ctx.navigator.sendBeacon(collector); return sent.pop(); },
     track(vp) { const n = sent.length; ctx.window.yvnTrackPath(vp); return sent.length > n ? sent.pop() : null; },
   };
@@ -98,4 +101,24 @@ test("every collector request carries no secret at all", () => {
     assert.equal(req[1].includes("Secret"), false, href);
     assert.equal(req[1].includes("1970"), false, href);
   }
+});
+
+test("one page view per page load; events and yvnTrackPath still go out", () => {
+  // The embed counts a view again on every history.replaceState, and the
+  // editions rewrite the URL on each edit. Only the first view leaves.
+  const p = page("https://yourversionnumber.com/birthday/?theme=zen&p=Secret:1970-01-01");
+  const first = p.view();
+  assert.equal(params(first).path, "/birthday/zen/");
+  assert.equal(params(first).event, undefined);
+  assert.equal(p.view(), undefined);
+  assert.equal(p.viewBeacon(), undefined);
+  assert.equal(params(p.hit()).event, "theme.viewed");
+  assert.equal(params(p.hit()).event, "theme.viewed");
+  assert.equal(params(p.track("/card/copied/birthday/zen/")).path, "/card/copied/birthday/zen/");
+});
+
+test("the first view may go by beacon, and then fetch views stop", () => {
+  const p = page("https://yourversionnumber.com/work/edition/?j=Secret:2019-09-03", "ticker");
+  assert.equal(params(p.viewBeacon()).path, "/work/edition/ticker/");
+  assert.equal(p.view(), undefined);
 });

@@ -154,28 +154,33 @@ for (const [door, other] of [["index.html", 'href="/work/"'], ["work/index.html"
 
 // ── Analytics ───────────────────────────────────────────────────────────────
 // The privacy shim is inlined in every page and must be byte-identical: it is
-// the one piece of code that decides what leaves the browser. The embed may
-// only carry ?events — ?beacon and ?auto switch it to sendBeacon paths the
-// shim wraps but nobody has tested, ?hits was the footer counters (removed),
-// ?spa would count again on history changes. The two edition shells declare
-// the theme the shim reports when the URL names none; it must be the app's.
+// the one piece of code that decides what leaves the browser. The embed is
+// Tinylytics' one script for every site, with this site's id in data-site and
+// no query string: its options (events on; beacon, auto events and widgets
+// off) live in the site's Tinylytics settings. The old per-site
+// /embed/<id>/min.js tag must not come back: two tags count two views. The
+// two edition shells declare the theme the shim reports when the URL names
+// none; it must be the app's.
 {
   const PAGES = [...Object.keys(SPINE), "birthday/index.html", "work/edition/index.html"];
   const shimOf = (html) => {
-    const start = html.indexOf("<script>\n// Analytics privacy shim, v2");
+    const start = html.indexOf("<script>\n// Analytics privacy shim, v3");
     const end = html.indexOf("</script>", start);
     return start === -1 ? null : html.slice(start, end);
   };
   const reference = shimOf(await readFile(resolve(repoRoot, "index.html"), "utf8"));
-  if (!reference) failures.push("index.html: analytics shim v2 not found");
+  if (!reference) failures.push("index.html: analytics shim v3 not found");
   for (const page of PAGES) {
     const html = await readFile(resolve(repoRoot, page), "utf8");
     if (shimOf(html) !== reference) failures.push(`${page}: analytics shim differs from index.html`);
-    const embed = html.match(/tinylytics\.app\/embed\/[^"]+/g) || [];
-    if (embed.length !== 1) failures.push(`${page}: expected exactly one tinylytics embed, found ${embed.length}`);
-    for (const e of embed) {
-      if (!e.endsWith("/min.js?events")) failures.push(`${page}: embed must be min.js?events, got ${e}`);
+    const EMBED = '<script defer src="https://tinylytics.app/js/script.js" data-site="8JZbs4z3jyWQay28S2av"></script>';
+    const tags = html.match(/<script\b[^>]*tinylytics\.app\/[^>]*>/g) || [];
+    if (tags.length !== 1) failures.push(`${page}: expected exactly one tinylytics script tag, found ${tags.length}`);
+    for (const t of tags) {
+      if (`${t}</script>` !== EMBED) failures.push(`${page}: embed must be ${EMBED}, got ${t}`);
     }
+    if (/tinylytics\.app\/embed\//.test(html)) failures.push(`${page}: the old /embed/ tag is back`);
+    if (html.indexOf("Analytics privacy shim") > html.indexOf(EMBED)) failures.push(`${page}: the shim must come before the embed`);
     if (/hits-span|tinylytics_hits/.test(html)) failures.push(`${page}: hit counter markup is back`);
   }
   for (const [shell, app] of [["birthday/index.html", "birthday/assets/app.js"], ["work/edition/index.html", "work/edition/assets/app.js"]]) {
