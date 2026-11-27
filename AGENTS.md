@@ -211,7 +211,7 @@ without it. Guard B covers the pictograph ranges; geometric shapes like `▸` an
 ## Core conventions (do not break these)
 
 **Release Notes is not this site.** The daily version-number email whose
-replies are kept as notes (October 2026) lives in `~/Projects/yvn-release-notes`,
+replies are kept as notes (October 2026) lives in `~/Projects/release-notes/yvn-release-notes`,
 its own repo and stack. It is the only Your Version Number product that stores
 anything. Convention 1 below stays absolute for this repo: if a feature here
 needs storage, it belongs over there, not here. The birthday pages link to it (Jamie,
